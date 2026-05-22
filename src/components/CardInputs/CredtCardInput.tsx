@@ -1,0 +1,73 @@
+
+import React, { Fragment, useEffect, useState, useCallback, createContext } from 'react';
+import CVCInput from './CVCInput';
+import DateInput from './DateInput';
+import CardNumberInput from './CardNumberInput';
+import CreditCard from '@homeberris/interfaces/card.interface';
+import { Props } from '@homeberris/types/helper.types';
+import { CardContextInterface } from '@homeberris/interfaces/helper.interfaces';
+
+
+export const CreditCardDataContext = createContext<CardContextInterface | null>(null);
+
+export const CardProvider = ({ children }: Props) => {
+  const [cardData, setCardData] = useState<CreditCard | undefined>(undefined);
+
+  return (
+    <CreditCardDataContext.Provider value={{ cardData, setCardData }}>
+      {children}
+    </CreditCardDataContext.Provider>
+  );
+};
+
+const CreditCardInput = () => {
+  const [focusIndex, setFocusIndex] = useState<Array<boolean>>([]);
+  const [cardData, setCardData] = useState<CreditCard | undefined>(undefined);
+
+  const leaveField = (index:number) => {
+    const indexArray = new Array<boolean>(3).fill(false);
+    indexArray[index] = true;
+    setFocusIndex(indexArray);;
+  }
+
+  const setFocusOnFirst = useCallback(
+    () => {
+      leaveField(0);
+    },
+    [],
+  )
+
+  useEffect(() => {
+    leaveField(0);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("focus", setFocusOnFirst);
+    return () => {
+      window.removeEventListener("focus", setFocusOnFirst);
+    }
+  }, [setFocusOnFirst]);
+
+  return (
+    <CreditCardDataContext.Provider value={{ cardData, setCardData }}>
+      <Fragment>
+        <CardNumberInput
+          leaveFieldCallback={leaveField}
+          focus={focusIndex[0]}
+          tabIndex={0}
+        />
+        <DateInput
+          leaveFieldCallback={leaveField}
+          focus={focusIndex[1]}
+          tabIndex={1}
+        />
+        <CVCInput
+          focus={focusIndex[2]}
+          tabIndex={2}
+        />
+      </Fragment>
+    </CreditCardDataContext.Provider>
+  )
+}
+
+export default CreditCardInput;

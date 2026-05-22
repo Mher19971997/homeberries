@@ -1,0 +1,165 @@
+.navbar {
+  padding: 16px 0 24px;
+}
+
+.navbarHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 12px;
+}
+
+.navbarFoother {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 90%;
+  margin: 0 auto;
+}
+.navbarFootherLeft{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo {
+  color: white;
+  font-size: 30px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 1px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05);
+}
+
+.logoGradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.logoBox {
+  background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 900;
+  position: relative;
+}
+
+.logoBox::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+  filter: blur(10px);
+  z-index: -1;
+}
+
+.navbarCenter {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 16px;
+}
+
+.burgerMenu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  height: 42px;
+  width: 42px;
+  border-radius: 5px;
+  border-width: 1px;
+  border-style: solid;
+}
+.searchBoxMD{
+  display: none
+}
+.navbarMobileContent{
+  display: none
+}
+@media only screen and (max-width: 1400px) {
+  .navbar{
+    padding: 16px 16px 24px
+  }
+  .navbarHeader, .navbarFoother{
+    width: 100%;
+    max-width: 100%;
+  }
+}
+@media only screen and (max-width: 1200px) {
+  .navbar{
+    padding: 16px 16px 24px
+  }
+  .navbarHeader, .navbarFoother{
+    width: 100%;
+    max-width: 100%;
+  }
+  .navbarHeader {
+    gap: 12px;
+    padding-bottom: 10px;
+  }
+  .navbarFoother {
+    gap: 12px;
+  }
+  .navbarFootherLeft {
+    gap: 10px;
+  }
+  .navbarCenter{
+    display: none
+  }
+  .searchBoxMD{
+    display: block;
+    width: 100%;
+    margin: 12px auto 0px auto;
+  }
+  .logo{
+    font-size: 25px
+  }
+  .burgerMenu{
+    height: 35px;
+    width: 35px;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  .navbar {
+    padding: 12px 10px 15px;
+  }
+  .logo{
+    font-size: 19px
+  }
+  .navbarHeader, .navbarFoother{
+    display: none;
+  }
+  .navbarMobileContent{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .navbarMobileContent svg{
+    color: white;
+    cursor: pointer
+  }
+  .rightBox{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}

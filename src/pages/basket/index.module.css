@@ -1,0 +1,202 @@
+.body {
+    width: 90%;
+    margin-bottom: 50px;
+    display: flex;
+    gap: 20px;
+}
+
+.leftBox {
+    width: 70%;
+}
+
+.rightBox {
+    width: 30%;
+}
+
+.container {}
+
+.cardBlock {
+    padding: 24px;
+    border-radius: 20px;
+    width: 100%;
+    position: sticky;
+    top: 20px;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease;
+}
+
+.cardBlock:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.priceBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e8e8f0;
+}
+
+.totalLabel {
+    font-size: 18px;
+    font-weight: 600;
+    color: #242424;
+}
+
+.totalPrice {
+    font-size: 24px;
+    font-weight: 700;
+    color: #667eea;
+}
+
+.paymentMethodScrollBtn {
+    cursor: pointer;
+    color: #667eea;
+    font-size: 16px !important;
+    line-height: 22px;
+    font-weight: 500;
+    margin-top: 16px;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.paymentMethodScrollBtn:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+.cardTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #242424;
+    margin-bottom: 16px;
+}
+
+.paymentIconsContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.cardBlock p {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.btnGroup {
+    margin-top: 8px;
+}
+
+.btnGroup .btnGroupContained {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-transform: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btnGroup .btnGroupContained:hover {
+    background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    transform: translateY(-2px);
+}
+
+.userProfileInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 16px;
+    background: #f8f8f8;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.userProfileInfo:hover {
+    background: #f0f0f0;
+}
+
+.emailIcon {
+    color: #868695 !important;
+    font-size: 24px !important;
+    flex-shrink: 0;
+}
+
+.emailText {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #242424 !important;
+    word-break: break-word;
+}
+
+.orderBoxMobile {
+    display: none;
+}
+
+@media only screen and (max-width: 1400px) {
+    .body {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .body {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .leftBox {
+        width: 100%;
+    }
+
+    .rightBox {
+        /* display: none; */
+        width: 100%;
+    }
+
+    .orderBoxMobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: fixed;
+        bottom: 0;
+        padding: 8px 16px;
+        width: 100%;
+        background-color: #fff;
+        border-bottom: 1px solid #e8e8f0;
+        box-shadow: 0 0 20px rgba(0, 0, 0, .1);
+    }
+
+    .orderBoxMobile p {
+        font-size: 12px;
+    }
+
+    .orderBoxMobile .orderPrice {
+        font-size: 12px;
+        font-weight: 700;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .orderBoxMobile {
+        bottom: 50px;
+    }
+
+    .mobileHidden {
+        display: none;
+    }
+    .cardBlock{
+        padding: 15px;
+    }
+    
+}

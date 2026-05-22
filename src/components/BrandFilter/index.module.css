@@ -1,0 +1,56 @@
+.popoverContent {
+  padding: 8px 0;
+  min-width: 240px;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
+.popoverTitle {
+  padding: 12px 16px 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #868695;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.optionsList {
+  padding: 0;
+}
+
+.optionItem {
+  padding: 10px 16px !important;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+
+.optionItem:hover {
+  background-color: #f6f6f9 !important;
+}
+
+.optionItem.selected {
+  background-color: rgba(102, 126, 234, 0.08) !important;
+}
+
+.optionText {
+  margin: 0 !important;
+}
+
+.optionText span {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 400;
+}
+
+.optionItem.selected .optionText span {
+  color: #667eea;
+  font-weight: 600;
+}
+
+.checkIcon {
+  color: #667eea;
+  font-size: 20px;
+  margin-left: 8px;
+}

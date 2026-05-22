@@ -1,0 +1,45 @@
+.cardBlock {
+    position: relative;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    border-radius: 24px;
+    width: 460px;
+    max-width: 100%;
+    margin: 120px auto 180px;
+
+    background: linear-gradient(145deg, #ffffff, #f9f9ff);
+    box-shadow:
+        0 20px 60px rgba(102, 126, 234, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.05);
+
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(102, 126, 234, 0.08);
+    transition: all 0.3s ease;
+}
+
+.cardBlock:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 30px 80px rgba(102, 126, 234, 0.2),
+        0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+@media only screen and (max-width: 1000px) {
+    .cardBlock {
+        width: 100%;
+        padding: 36px 28px;
+        margin: 60px auto 120px;
+        border-radius: 20px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .cardBlock {
+        padding: 28px 20px;
+        margin: 30px auto 90px;
+        gap: 22px;
+        border-radius: 18px;
+    }
+}

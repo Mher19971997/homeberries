@@ -1,0 +1,55 @@
+.body {
+    width: 90%;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: hidden;
+}
+
+.container {
+    margin-top: 24px;
+}
+
+.cardWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+.recomendedTitle {
+    margin: 32px 0 24px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #242424;
+}
+
+@media only screen and (max-width: 1400px) {
+    .body {
+        width: 100%;
+        padding: 24px 20px 80px;
+    }
+
+    .container {
+        margin-top: 20px;
+    }
+
+    .recomendedTitle {
+        margin: 24px 0 20px;
+        font-size: 24px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .body {
+        padding: 20px 16px 60px;
+    }
+
+    .container {
+        margin-top: 16px;
+    }
+
+    .recomendedTitle {
+        margin: 20px 0 16px;
+        font-size: 20px;
+    }
+}

@@ -1,0 +1,22 @@
+.robotContainer {
+  width: 100%;
+  height: 300px;
+  min-height: 300px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+}
+
+.robotContainer canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .robotContainer {
+    height: 250px;
+    min-height: 250px;
+  }
+}

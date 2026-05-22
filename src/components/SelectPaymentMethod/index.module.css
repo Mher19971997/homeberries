@@ -1,0 +1,72 @@
+.addCard {
+    cursor: pointer;
+    color: #667eea;
+    font-size: 16px !important;
+    line-height: 22px;
+    font-weight: 500;
+    margin-top: 12px;
+    transition: all 0.2s ease;
+    display: inline-block;
+}
+
+.addCard:hover {
+    color: #5568d3;
+    text-decoration: underline;
+}
+
+.btnGroup {
+    width: 100%;
+    padding: 0 30px;
+}
+
+.btnGroupContained {
+    background-color: #481173;
+    text-transform: capitalize;
+    font-weight: 600;
+}
+
+.content {
+    height: 350px;
+    width: 100%;
+}
+
+.cardInfoDateCVV {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.paymetCardBox {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .08);
+    border-radius: 12px;
+    padding: 16px;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+
+.cardInput {
+    border-radius: 8px;
+    /* height: 0.9em; */
+}
+
+
+.cardInfoText {
+    font-size: 14px;
+    line-height: 20px;
+    color: #868695;
+}
+
+.cardUseFoother {
+    margin-top: 20px;
+}
+
+.cardUseFoother .btnGroupOutlined {
+    border-color: #481173;
+    color: #481173;
+    text-transform: capitalize;
+    font-weight: 600;
+    border-radius: 7px;
+    margin: 15px 0;
+}

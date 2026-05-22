@@ -1,0 +1,49 @@
+.body {
+    width: 90%;
+    margin-bottom: 50px;
+}
+
+.container {
+    padding: 28px 0 48px 0;
+    height: 100vh;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.mapBox {
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, .2);
+}
+
+.locatiponBlock {
+    padding: 28px 25px 24px;
+    width: 25%;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.map {
+    width: 75%;
+    height: 75vh;
+}
+
+.detailsPanel {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+    padding: 16px 18px;
+    margin-top: 8px;
+}
+
+@media only screen and (max-width: 1400px) {
+    .body {
+        width: 100%;
+        padding: 0 30px
+    }
+}

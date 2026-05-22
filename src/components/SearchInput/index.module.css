@@ -1,0 +1,92 @@
+.body {
+    position: relative;
+
+}
+
+.autoComplite {
+    position: absolute;
+    top: 100%;
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: white;
+    width: 100%;
+    padding: 8px 0;
+    z-index: 99999999999;
+    border-radius: 0 0 28px 28px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #e8e8f0;
+}
+
+.sectionIcon {
+    color: #667eea;
+    font-size: 18px;
+}
+
+.sectionTitle {
+    font-size: 12px;
+    font-weight: 600;
+    color: #868695;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.noResults {
+    padding: 24px;
+    text-align: center;
+}
+
+.noResultsText {
+    color: #868695;
+    font-size: 14px;
+}
+
+.focusedInput {
+    border-radius: 16px 16px 0 0 !important;
+    color: #9d9da5;
+    background-color: #FFFFFF !important;
+    border: 1px solid transparent !important;
+    padding-left: 16px;
+    padding: 0 25px 0 20px;
+    border-color: transparent !important;
+}
+
+.focusedInputInSelect {
+    border-radius: 16px 16px 0 0 !important;
+    color: #9d9da5;
+    padding-left: 16px;
+    padding: 0 25px 0 20px;
+}
+
+.input {
+    border-radius: 16px !important;
+    color: #9d9da5;
+    border: 1px solid transparent !important;
+    border: 1px solid #999;
+    padding-left: 16px;
+    padding: 0 25px 0 20px;
+    background-color: #FFFFFF !important;
+
+}
+
+@media only screen and (max-width: 1000px) {
+    .input {
+        border-radius: 10px !important;
+        height: 50px;
+        padding: 0 15px 0 15px;
+        color: #9d9da5;
+        background-color: #FFFFFF !important;
+
+    }
+
+    .focusedInput {
+        border-radius: 10px 10px 0 0 !important;
+    }
+}

@@ -1,0 +1,73 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.trigger:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.flagIcon {
+  font-size: 18px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.currencyText {
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.3px;
+}
+
+.popoverPaper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.popover {
+  padding: 16px;
+  background: #fff;
+  min-width: 280px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #242424;
+  margin-bottom: 4px;
+}
+
+.languagesList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+  .trigger {
+    padding: 6px 10px;
+  }
+
+  .flagIcon {
+    font-size: 18px;
+  }
+
+  .currencyText {
+    font-size: 12px;
+  }
+
+  .popover {
+    min-width: 240px;
+    padding: 12px;
+  }
+}

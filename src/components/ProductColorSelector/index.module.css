@@ -1,0 +1,82 @@
+.container {
+  margin: 16px 0;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #242424;
+  margin-bottom: 12px;
+}
+
+.colorsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.colorItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #e8e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.colorItem:hover {
+  border-color: #667eea;
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+.colorItem.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.colorCircle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #e8e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.colorItem.selected .colorCircle {
+  border-color: #667eea;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.colorName {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 500;
+}
+
+.colorItem.selected .colorName {
+  color: #667eea;
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 600px) {
+  .colorsContainer {
+    gap: 8px;
+  }
+
+  .colorItem {
+    padding: 6px 10px;
+  }
+
+  .colorCircle {
+    width: 20px;
+    height: 20px;
+  }
+
+  .colorName {
+    font-size: 12px;
+  }
+}

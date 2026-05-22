@@ -1,0 +1,172 @@
+.body {
+    width: 90%;
+    max-width: 100%;
+    padding-bottom: 300px;
+    overflow-x: hidden;
+}
+
+.container {
+    height: 100%;
+    margin-top: 16px;
+}
+
+.cardWrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: stretch;
+}
+
+.breadcrumb a,
+.breadcrumb p {
+    text-decoration: none;
+    font-size: 16px;
+    color: #242424;
+    border-color: initial;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #868695;
+    border-color: transparent;
+    line-height: 16px;
+}
+
+.breadcrumb a:hover,
+.breadcrumb p:hover {
+    text-decoration: underline;
+}
+
+.filterTitle {
+    font-size: 24px;
+}
+
+.count {
+    text-decoration: none;
+    font-size: 18px;
+    line-height: 22px;
+    color: #242424;
+    border-color: initial;
+    text-decoration: none;
+    background-color: transparent;
+    cursor: pointer;
+    color: #868695;
+    border-color: transparent;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.filterHeader {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.filterBlock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filterPopovers {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    overflow: visible;
+}
+
+.btnGroup {
+    display: flex;
+    align-items: center;
+}
+
+.btnGroup .openBtn {
+    background-color: #FFF;
+    color: #242424;
+    font-size: 14px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8e8f0;
+    position: relative;
+    height: 44px;
+    text-transform: none;
+    transition: all 0.3s ease;
+}
+
+.btnGroup .openBtn:hover {
+    background-color: #f8f8f8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    border-color: #d0d0d8;
+    transform: translateY(-1px);
+}
+
+.filterItemPopover {
+    width: 200px;
+}
+
+.mobileFilters {
+    display: none;
+}
+
+@media only screen and (max-width: 1400px) {
+    .body {
+        width: 100%;
+        padding: 0 30px
+    }
+
+    .container {
+        margin-top: 12px;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .body {
+        padding: 0 10px
+    }
+
+    .container {
+        padding-top: 0;
+        padding-right: 0;
+    }
+
+    .VerticalToggleButtonsLG,
+    .btnGroup .openBtn {
+        display: none;
+    }
+
+    .filterPopovers {
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+    }
+
+    .filterPopovers::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobileFilters {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 32px;
+        margin-top: 16px;
+    }
+
+    .filterTitle {
+        font-size: 18px;
+    }
+
+    .recomendedTitle {
+        display: none;
+    }
+}

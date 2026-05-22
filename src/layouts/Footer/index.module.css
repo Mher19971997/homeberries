@@ -1,0 +1,271 @@
+.footer {
+  background-color: #f8f8f8;
+  width: 100%;
+  margin-top: 0;
+  position: relative;
+  z-index: 0;
+}
+
+.footerContent {
+  margin: 0 auto;
+  padding: 48px 24px 24px;
+}
+
+.gridContainer {
+  margin: 0 !important;
+}
+
+.column {
+  margin-bottom: 32px;
+}
+
+.columnTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #242424;
+  margin-bottom: 16px;
+  line-height: 24px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.link {
+  font-size: 14px;
+  line-height: 20px;
+  color: #868695;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  padding: 4px 0;
+}
+
+.link:hover {
+  color: #667eea;
+}
+
+.dropdownLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.dropdownIcon {
+  color: #868695;
+  padding: 4px;
+  margin-left: 8px;
+}
+
+.subLinks {
+  padding-left: 16px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subLink {
+  font-size: 13px;
+  line-height: 18px;
+  color: #868695;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: block;
+  padding: 2px 0;
+}
+
+.subLink:hover {
+  color: #667eea;
+}
+
+.appSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.appTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #242424;
+  margin-bottom: 8px;
+  line-height: 24px;
+}
+
+.appSubtitle {
+  font-size: 14px;
+  color: #868695;
+  margin-bottom: 16px;
+}
+
+.qrCodeContainer {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auroraOS {
+  font-size: 12px;
+  color: #868695;
+  margin-bottom: 16px;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.socialIcon {
+  text-decoration: none;
+  display: block;
+}
+
+.vkIcon,
+.okIcon,
+.telegramIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+  transition: transform 0.2s ease;
+}
+
+.vkIcon {
+  background-color: #4c75a3;
+}
+
+.okIcon {
+  background-color: #ee8208;
+}
+
+.telegramIcon {
+  background-color: #0088cc;
+}
+
+.socialIcon:hover .vkIcon,
+.socialIcon:hover .okIcon,
+.socialIcon:hover .telegramIcon {
+  transform: scale(1.1);
+}
+
+.copyrightBar {
+  background-color: #f8f8f8;
+  border-top: 1px solid #e8e8f0;
+  padding: 16px 24px;
+  text-align: center;
+}
+
+.copyright {
+  font-size: 14px;
+  color: #868695;
+  margin: 0;
+}
+
+.cookieBanner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #242424;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cookieText {
+  font-size: 14px;
+  color: #ffffff;
+  flex: 1;
+  line-height: 20px;
+}
+
+.cookieButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.cookieButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+@media only screen and (max-width: 960px) {
+  .footerContent {
+    padding: 32px 16px 16px;
+  }
+
+  .column {
+    margin-bottom: 24px;
+  }
+
+  .columnTitle {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .link {
+    font-size: 13px;
+  }
+
+  .appSection {
+    margin-top: 24px;
+  }
+
+  .cookieBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .cookieButton {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .footerContent {
+    padding: 24px 12px 12px;
+  }
+
+  .gridContainer {
+    gap: 16px !important;
+  }
+
+  .column {
+    margin-bottom: 20px;
+  }
+
+  .qrCodeContainer {
+    padding: 8px;
+  }
+}

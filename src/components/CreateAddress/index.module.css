@@ -1,0 +1,233 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  max-width: 280px;
+}
+
+.trigger:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.locationIcon {
+  color: white;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.addressText {
+  color: white;
+  font-weight: 500;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.popoverPaper {
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.popover {
+  padding: 16px;
+  background: #fff;
+  min-width: 320px;
+  max-width: 400px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #242424;
+  margin-bottom: 4px;
+}
+
+.addressesList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.addressItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  background: #f8f8f8;
+}
+
+.addressItem:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: translateX(4px);
+}
+
+.addressItem.selected {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+  border-color: #667eea;
+}
+
+.addressIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.addressContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.addressName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #242424;
+  line-height: 1.4;
+}
+
+.defaultBadge {
+  font-size: 11px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.checkIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.emptyText {
+  text-align: center;
+  color: #868695;
+  font-size: 14px;
+  padding: 24px;
+}
+
+.addButton {
+  border-color: #667eea;
+  color: #667eea;
+  text-transform: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.addButton:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-color: #667eea;
+}
+
+.locatonBlock {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.locatonName {
+  color: white;
+}
+
+.btnGroup {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  width: 100%;
+}
+
+.btnGroup .btnGroupContained {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  text-transform: capitalize;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btnGroup .btnGroupContained:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.btnGroup .btnGroupOutlined {
+  border-color: #667eea;
+  color: #667eea;
+  text-transform: capitalize;
+  font-weight: 600;
+  border-radius: 7px;
+}
+
+.btnGroup .btnGroupOutlined:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border-color: #667eea;
+}
+
+.content {
+  margin-top: 20px;
+  padding: 20px 15px;
+  height: 350px;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 1000px) {
+  .locatonName {
+    display: none;
+  }
+
+  .addressText {
+    display: none;
+  }
+
+  .trigger {
+    max-width: auto;
+    padding: 8px;
+  }
+
+  .popover {
+    min-width: 280px;
+    max-width: 90vw;
+  }
+
+  .content {
+    height: 90%;
+  }
+}

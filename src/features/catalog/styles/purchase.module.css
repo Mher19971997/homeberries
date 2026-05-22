@@ -1,0 +1,358 @@
+.card {
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  background: white;
+  position: sticky;
+  top: 20px;
+  border: 1px solid #e8e8f0;
+  width: 100%;
+  max-width: 100%;
+}
+
+.priceSection {
+  margin-bottom: 20px;
+}
+
+.priceRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.currentPrice {
+  font-size: 32px;
+  font-weight: 700;
+  color: #e91e63;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.oldPricesContainer {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.previousPrice {
+  font-size: 18px;
+  color: #868695;
+  text-decoration: line-through;
+  line-height: 1.2;
+}
+
+.originalPrice {
+  font-size: 16px;
+  color: #c4c4c4;
+  text-decoration: line-through;
+  line-height: 1.2;
+}
+
+.priceBadges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.favoriteButton {
+  color: #868695;
+  transition: all 0.2s ease;
+}
+
+.favoriteButton:hover {
+  color: #ff6b9d;
+  background-color: rgba(255, 107, 157, 0.1);
+}
+
+.priceChip {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  color: #667eea;
+  font-weight: 600;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.quantitySection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.quantityLabel {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 500;
+}
+
+.quantityControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #e8e8f0;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.quantityButton {
+  color: #242424;
+  padding: 4px;
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  transition: all 0.2s ease;
+}
+
+.quantityButton:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.quantityButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.quantityValue {
+  font-size: 16px;
+  font-weight: 600;
+  color: #242424;
+  min-width: 30px;
+  text-align: center;
+}
+
+.actionsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.addToCartButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.addToCartButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: translateY(-2px);
+}
+
+.buyNowButton {
+  border: 2px solid #667eea;
+  color: #667eea;
+  padding: 14px 24px;
+  border-radius: 12px;
+  text-transform: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.buyNowButton:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-color: #764ba2;
+  transform: translateY(-2px);
+}
+
+.deliveryInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.deliveryIcon {
+  color: #667eea;
+  font-size: 20px;
+}
+
+.deliveryText {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 500;
+}
+
+.deliveryInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.deliveryIcon {
+  color: #667eea;
+  font-size: 20px;
+}
+
+.sellerInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  margin-bottom: 12px;
+}
+
+.sellerName {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 500;
+}
+
+.sellerRating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ratingValue {
+  font-size: 14px;
+  color: #ffa500;
+  font-weight: 600;
+}
+
+.installmentInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.installmentInfo:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.installmentIcon {
+  color: #667eea;
+  font-size: 24px;
+}
+
+.installmentDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.installmentAmount {
+  font-size: 14px;
+  color: #242424;
+  font-weight: 600;
+}
+
+.installmentFirst {
+  font-size: 12px;
+  color: #868695;
+}
+
+.installmentArrow {
+  color: #868695;
+  font-size: 16px;
+}
+
+.returnInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.returnText {
+  font-size: 13px;
+  color: #868695;
+}
+
+@media only screen and (max-width: 1200px) {
+  .card {
+    position: relative;
+    top: 0;
+    margin-top: 24px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .card {
+    padding: 0;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .currentPrice {
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  .mobileFixedBar {
+    position: fixed;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    gap: 12px;
+
+    padding: 12px 16px;
+    background: #fff;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+  }
+
+  .mobileBuyNow {
+    flex: 1;
+    border-radius: 14px;
+    height: 48px;
+  }
+
+  .mobileCartButton {
+    flex: 1;
+    border-radius: 14px;
+    height: 48px;
+  }
+
+  .mobileCounter {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: linear-gradient(90deg, #7b2ff7, #9f44ff);
+    color: #fff;
+
+    border-radius: 14px;
+    height: 48px;
+    padding: 0 12px;
+  }
+
+}

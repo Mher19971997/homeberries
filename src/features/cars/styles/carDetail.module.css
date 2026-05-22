@@ -1,0 +1,70 @@
+.body {
+    padding: 24px;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.title {
+    margin-bottom: 16px;
+}
+
+.priceContainer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.price {
+    font-weight: 700;
+    color: #1976d2;
+}
+
+.description {
+    margin-top: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.specs {
+    margin-top: 24px;
+    padding: 16px;
+}
+
+.statistics {
+    margin-top: 24px;
+    padding: 16px;
+}
+
+.sectionTitle {
+    margin-bottom: 12px;
+}
+
+.statItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+
+.equipment {
+    margin-top: 24px;
+    padding: 16px;
+}
+
+.equipmentList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.equipmentChip {
+    font-size: 13px;
+}
+@media (max-width: 768px) {
+  .body {
+    padding: 0;
+    width: 95%;
+  }
+}

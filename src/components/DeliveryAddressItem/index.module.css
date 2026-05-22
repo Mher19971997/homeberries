@@ -1,0 +1,17 @@
+.body {
+    display: flex;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background .3s ease 0s;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.active {
+    background-color: #dddde0;
+}
+
+.body:hover {
+    background-color: #f6f6f9;
+}

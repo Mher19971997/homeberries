@@ -1,0 +1,60 @@
+.body {
+  padding: 24px;
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .body {
+    width: 100%;
+    padding: 16px;
+  }
+}
+
+.breadcrumb {
+  margin-bottom: 24px;
+}
+
+.filterHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+@media (max-width: 768px) {
+  .filterHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+.filterTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .filterTitle {
+    font-size: 20px;
+  }
+}
+
+.count {
+  font-size: 14px;
+  color: #666;
+}
+
+.container {
+  margin-top: 16px;
+}
+
+.cardWrapper {
+  height: 100%;
+  display: flex;
+}

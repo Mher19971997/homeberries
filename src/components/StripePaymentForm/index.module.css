@@ -1,0 +1,21 @@
+.paymentForm {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.paymentForm :global(.StripeElement) {
+  background-color: #fff;
+}
+
+.paymentForm :global(.StripeElement--focus) {
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+}
+
+.paymentForm :global(.StripeElement--invalid) {
+  border-color: #df1b41;
+}
+
+.paymentForm :global(.StripeElement--complete) {
+  border-color: #10b981;
+}

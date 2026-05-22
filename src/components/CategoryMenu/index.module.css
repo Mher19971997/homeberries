@@ -1,0 +1,76 @@
+.categoryMenu {
+  width: 100%;
+  background: white;
+  border-bottom: 1px solid #e8e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.menuContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.menuContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.menuContent {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  min-width: fit-content;
+}
+
+.menuItem {
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+  position: relative;
+}
+
+.menuItem:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-bottom-color: #667eea;
+}
+
+.menuItemText {
+  font-size: 14px;
+  font-weight: 500;
+  color: #242424;
+  transition: color 0.2s ease;
+}
+
+.menuItem:hover .menuItemText {
+  color: #667eea;
+  font-weight: 600;
+}
+
+@media only screen and (max-width: 1200px) {
+  .menuContainer {
+    padding: 0 16px;
+  }
+
+  .menuItem {
+    padding: 14px 16px;
+  }
+
+  .menuItemText {
+    font-size: 13px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .categoryMenu {
+    display: none;
+  }
+}

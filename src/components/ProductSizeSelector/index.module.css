@@ -1,0 +1,90 @@
+.container {
+  margin: 24px 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #242424;
+}
+
+.sizeChartButton {
+  color: #667eea;
+  text-transform: none;
+  font-size: 14px;
+  padding: 4px 8px;
+  min-width: auto;
+  transition: all 0.2s ease;
+}
+
+.sizeChartButton:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.sizeChartButton .rotated {
+  transform: rotate(90deg);
+}
+
+.sizesGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sizeButton {
+  min-width: 60px;
+  height: 40px;
+  border: 1px solid #e8e8f0;
+  border-radius: 8px;
+  color: #242424;
+  font-size: 14px;
+  font-weight: 500;
+  text-transform: none;
+  background: white;
+  transition: all 0.2s ease;
+  padding: 8px 12px;
+}
+
+.sizeButton:hover {
+  border-color: #667eea;
+  background-color: rgba(102, 126, 234, 0.05);
+}
+
+.sizeButton.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  color: #667eea;
+  font-weight: 600;
+}
+
+.sizeButton.unavailable {
+  color: #c4c4c4;
+  background: #f5f5f5;
+  cursor: not-allowed;
+  border-color: #e8e8f0;
+}
+
+.sizeButton.unavailable:hover {
+  border-color: #e8e8f0;
+  background: #f5f5f5;
+}
+
+@media only screen and (max-width: 600px) {
+  .sizesGrid {
+    gap: 6px;
+  }
+
+  .sizeButton {
+    min-width: 50px;
+    height: 36px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+}

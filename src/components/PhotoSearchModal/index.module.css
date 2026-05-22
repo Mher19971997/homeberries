@@ -1,0 +1,135 @@
+.modalContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e8e8f0;
+}
+
+.modalTitle {
+  font-weight: 600;
+  color: #242424;
+}
+
+.closeButton {
+  color: #868695;
+}
+
+.closeButton:hover {
+  background-color: #f6f6f9;
+}
+
+.modalContent {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.uploadArea {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  border: 2px dashed #e8e8f0;
+  border-radius: 12px;
+  background: #fafafa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.uploadArea:hover {
+  border-color: #667eea;
+  background: #f6f6f9;
+}
+
+.uploadIcon {
+  font-size: 64px;
+  color: #868695;
+  margin-bottom: 16px;
+}
+
+.uploadText {
+  color: #868695;
+  font-size: 16px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.uploadButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-transform: none;
+  font-weight: 600;
+  padding: 12px 32px;
+  border-radius: 8px;
+}
+
+.uploadButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+}
+
+.cropperContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cropperActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.searchButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  text-transform: none;
+  font-weight: 600;
+  flex: 1;
+}
+
+.searchButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+}
+
+.searchButton:disabled {
+  background: #e8e8f0;
+  color: #868695;
+}
+
+@media only screen and (max-width: 768px) {
+  .modalContainer {
+    width: 90%;
+    max-height: 85vh;
+  }
+
+  .modalContent {
+    padding: 16px;
+  }
+
+  .uploadArea {
+    padding: 40px 16px;
+  }
+
+  .uploadIcon {
+    font-size: 48px;
+  }
+}

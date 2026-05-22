@@ -1,0 +1,63 @@
+.categoryMultiDropdown {
+  position: relative;
+  width: 100%;
+}
+
+.categoryList {
+  padding: 0;
+}
+
+.categoryItem {
+  padding: 12px 16px !important;
+  border-radius: 8px;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+  color: #242424;
+}
+
+.categoryItem:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.categoryItemHovered {
+  background-color: rgba(102, 126, 234, 0.15) !important;
+  color: #667eea !important;
+  font-weight: 600;
+}
+
+.subCategoryPanel {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  background: white;
+  animation: slideIn 0.2s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.subCategoryHeader {
+  padding: 16px;
+  border-bottom: 1px solid #e8e8f0;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border-radius: 12px 12px 0 0;
+}
+
+.subCategoryItem {
+  padding: 10px 16px !important;
+  transition: all 0.2s ease;
+  color: #242424;
+}
+
+.subCategoryItem:hover {
+  background-color: rgba(102, 126, 234, 0.08);
+  color: #667eea;
+  padding-left: 20px !important;
+}

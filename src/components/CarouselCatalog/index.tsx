@@ -1,0 +1,193 @@
+import React from 'react';
+import Carousel from 'react-material-ui-carousel';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Box, Typography, Button } from '@mui/material';
+import { useRouter } from 'next/router';
+import styles from './index.module.css';
+
+interface BannerItem {
+  id: number;
+  image: string;
+  title?: string;
+  subtitle?: string;
+  buttonText?: string;
+  link?: string;
+}
+
+const banners: BannerItem[] = [
+  {
+    id: 1,
+    image:
+      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=800&fit=crop',
+    title: 'Новая коллекция 2024',
+    subtitle: 'Скидки до 50% на все товары',
+    buttonText: 'Смотреть каталог',
+    link: '/catalog',
+  },
+  {
+    id: 2,
+    image:
+      'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&h=800&fit=crop',
+    title: 'Электроника со скидкой',
+    subtitle: 'Лучшие цены на технику Apple',
+    buttonText: 'Купить сейчас',
+    link: '/catalog/Электроника',
+  },
+  {
+    id: 3,
+    image:
+      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&h=800&fit=crop',
+    title: 'Модная одежда',
+    subtitle: 'Новинки сезона уже в продаже',
+    buttonText: 'Выбрать наряд',
+    link: '/catalog/Женщинам',
+  },
+];
+
+const CarouselCatalog: React.FC = () => {
+  const router = useRouter();
+
+  const handleBannerClick = (link?: string) => {
+    if (link) router.push(link);
+  };
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Carousel
+        animation="fade"
+        duration={600}
+        autoPlay
+        interval={5000}
+        cycleNavigation
+        swipe
+        navButtonsProps={{
+          style: {
+            backgroundColor: 'rgba(255,255,255,0.9)',
+            color: '#667eea',
+            width: 48,
+            height: 48,
+            borderRadius: '50%',
+          },
+        }}
+        indicatorIconButtonProps={{
+          style: {
+            color: 'rgba(255,255,255,0.5)',
+          },
+        }}
+        activeIndicatorIconButtonProps={{
+          style: {
+            color: '#fff',
+          },
+        }}
+        NextIcon={<NavigateNextIcon />}
+        PrevIcon={<ArrowBackIosNewIcon />}
+      >
+        {banners.map((banner) => (
+          <Box
+            key={banner.id}
+            sx={{
+              width: '100%',
+              position: 'relative',
+              overflow: 'hidden',
+              borderRadius: { xs: 2, md: 4 },
+              aspectRatio: { xs: '16/9', md: '21/9' },
+              minHeight: { xs: 300, md: 500 },
+            }}
+          >
+            {/* Image */}
+            <Box
+              component="img"
+              src={banner.image}
+              alt={banner.title}
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+              }}
+            />
+
+            {/* Overlay */}
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                background:
+                  'linear-gradient(135deg, rgba(102,126,234,0.75) 0%, rgba(118,75,162,0.75) 100%)',
+              }}
+            />
+
+            {/* Content */}
+            <Box
+              sx={{
+                position: 'relative',
+                zIndex: 2,
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: { xs: 'center', md: 'flex-start' },
+                textAlign: { xs: 'center', md: 'left' },
+                px: { xs: 3, md: 8 },
+              }}
+            >
+              {banner.title && (
+                <Typography
+                  variant="h3"
+                  sx={{
+                    color: '#fff',
+                    fontWeight: 800,
+                    fontSize: { xs: 28, md: 56 },
+                    mb: 2,
+                  }}
+                >
+                  {banner.title}
+                </Typography>
+              )}
+
+              {banner.subtitle && (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#fff',
+                    mb: 4,
+                    fontSize: { xs: 16, md: 24 },
+                    maxWidth: 600,
+                  }}
+                >
+                  {banner.subtitle}
+                </Typography>
+              )}
+
+              {banner.buttonText && (
+                <Button
+                  variant="contained"
+                  onClick={() => handleBannerClick(banner.link)}
+                  sx={{
+                    backgroundColor: '#fff',
+                    color: '#667eea',
+                    fontWeight: 700,
+                    px: 4,
+                    py: 1.5,
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    '&:hover': {
+                      backgroundColor: '#f2f2f2',
+                    },
+                  }}
+                >
+                  {banner.buttonText}
+                </Button>
+              )}
+            </Box>
+          </Box>
+        ))}
+      </Carousel>
+    </Box>
+  );
+};
+
+export default CarouselCatalog;

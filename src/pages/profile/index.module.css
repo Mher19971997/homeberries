@@ -1,0 +1,174 @@
+.body {
+  width: 90%;
+  margin: 0 auto;
+  padding: 32px 0;
+  min-height: 100vh;
+}
+
+.topNav {
+  display: flex;
+  gap: 32px;
+  padding: 16px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #e8e8f0;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #868695;
+  transition: color 0.2s ease;
+}
+
+.navLink:hover {
+  color: #667eea;
+}
+
+.navLinkActive {
+  color: #667eea !important;
+  font-weight: 600;
+}
+
+.container {
+  padding: 0;
+}
+
+.sidebarCard {
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.userProfileSection {
+  margin-bottom: 16px;
+}
+
+.infoCard {
+  flex: 1;
+  padding: 16px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.sidebarSection {
+  margin-bottom: 16px;
+}
+
+.sectionTitle {
+  color: #242424 !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.businessButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.businessButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.mainCard {
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.mainCard:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.walletButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.walletButton:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.statCard {
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.statCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.serviceButton {
+  border-color: #e8e8f0;
+  color: #242424;
+  text-transform: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.serviceButton:hover {
+  border-color: #667eea;
+  background-color: rgba(102, 126, 234, 0.05);
+  color: #667eea;
+}
+
+@media only screen and (max-width: 1400px) {
+  .body {
+    width: 100%;
+    padding: 24px 20px;
+  }
+
+  .topNav {
+    overflow-x: auto;
+    gap: 20px;
+  }
+
+  .sidebarCard {
+    position: relative;
+    top: 0;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .topNav {
+    gap: 16px;
+    font-size: 14px;
+  }
+
+  .mainCard,
+  .sidebarCard {
+    padding: 16px;
+  }
+
+  .statCard {
+    padding: 16px;
+  }
+}

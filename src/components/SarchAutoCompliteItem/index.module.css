@@ -1,0 +1,31 @@
+.box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.box:hover {
+    background-color: #f6f6f9;
+}
+
+.categoryIcon {
+    color: #667eea;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.catalogIcon {
+    color: #868695;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.itemText {
+    color: #242424;
+    font-size: 14px;
+    line-height: 1.5;
+    flex: 1;
+}

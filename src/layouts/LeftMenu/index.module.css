@@ -1,0 +1,76 @@
+.mainMenu {
+    width: 100vw;
+    height: 100vh;
+    background-color: #2424248a;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 998;
+    overflow: hidden;
+}
+
+.leftMenu {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    /* Start offscreen */
+    width: 300px;
+    height: 100vh;
+    max-height: 100vh;
+    background-color: #fff;
+    transition: left 0.3s;
+    z-index: 1000;
+    padding: 0 0 20px 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.leftMenu.open {
+    left: 0;
+    /* Slide in when open */
+}
+
+.menuContent {
+    position: relative;
+    padding: 0 20px 20px 20px;
+    color: #fff;
+}
+
+.closeBtn {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    width: 34px;
+    height: 34px;
+    right: -40px;
+    background-color: transparent;
+    color: white;
+    font-size: 25px;
+    font-weight: 900;
+    border: 0;
+}
+
+.closeBtnClose {
+    display: none;
+}
+
+.menuItem {
+    margin-top: 12px;
+    font-size: 16px;
+    line-height: 22px;
+    color: #242424;
+    display: block;
+    position: relative;
+    padding: 3px 5px 3px 20px;
+    border-radius: 8px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    cursor: pointer;
+}
+
+.menuItem:hover {
+    background: #9c27b0;
+    color: #fff;
+}

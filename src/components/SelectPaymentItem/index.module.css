@@ -1,0 +1,13 @@
+.body {
+    border-radius: 12px;
+    border: 1px solid #d3d4dd;
+    width: 100%;
+    padding: 11px 16px 13px;
+    min-height: 46px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+
+.body:hover {
+    border-color: #cb11ab;
+}
