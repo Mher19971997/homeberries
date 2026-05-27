@@ -20,12 +20,14 @@ import { useRouter } from 'next/router';
 
 // Импорт хука для анализа речи
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
+import { useTranslation } from 'react-i18next';
 
 interface AiAssistantProps {
   onCatalogSelect?: (catalog: any) => void;
 }
 
 const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
+  const { t } = useTranslation('common');
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -350,11 +352,11 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
           <Paper className={styles.chatContainer}>
             <Box className={styles.chatHeader}>
               <Typography variant="h6" fontWeight="bold">
-                AI Помощник
+                {t('aiAssistant.title')}
               </Typography>
               {isConnected !== null && (
                 <Chip
-                  label={isConnected ? 'Подключено' : 'Не подключено'}
+                  label={isConnected ? `${t('aiAssistant.status.connected')}` : `${t('aiAssistant.status.disconnected')}`}
                   color={isConnected ? 'success' : 'error'}
                   size="small"
                 />
@@ -403,7 +405,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
             {suggestedCatalogs.length > 0 && (
               <Box className={styles.suggestedCatalogs}>
                 <Typography variant="subtitle2" fontWeight="bold" sx={{ mb: 2 }}>
-                  Рекомендуемые товары:
+                  {t('aiAssistant.catalog.recommended')}
                 </Typography>
                 <Grid container spacing={2}>
                   {suggestedCatalogs.map((catalog) => (
@@ -416,7 +418,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
             <Box className={styles.inputContainer}>
               <TextField
                 fullWidth
-                placeholder="Напишите сообщение или используйте голосовой ввод..."
+                placeholder={t('aiAssistant.chat.placeholder')}
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={(e) => {
@@ -475,7 +477,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
             {isSpeaking && (
               <Box sx={{ mb: 2, textAlign: 'center' }}>
                 <Typography variant="body2" color="primary" sx={{ fontWeight: 'bold' }}>
-                  🔊 Говорит...
+                  🔊 {t('aiAssistant.voice.speaking')}
                 </Typography>
                 {currentSpeechText && (
                   <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
@@ -497,7 +499,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
                     setIsSpeaking(false);
                   }
                 }}
-                title={isSoundEnabled ? 'Отключить голос' : 'Включить голос'}
+                title={isSoundEnabled ? `${t('aiAssistant.voice.off')}` : `${t('aiAssistant.voice.on')}`}
                 sx={{
                   width: 56,
                   height: 56,

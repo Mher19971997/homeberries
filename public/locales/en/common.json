@@ -1,0 +1,176 @@
+{
+  "nav": {
+    "home": "Home",
+    "catalog": "Catalog",
+    "basket": "Cart",
+    "favorites": "Favorites",
+    "orders": "My Orders",
+    "profile": "Profile",
+    "delivery": "Delivery",
+    "addresses": "Addresses",
+    "aiAssistant": "AI Assistant",
+    "login": "Sign In"
+  },
+  "language": {
+    "selectTitle": "Select Currency and Language",
+    "rubDescription": "Russian Ruble",
+    "usdDescription": "US Dollar",
+    "amdDescription": "Armenian Dram",
+    "eurDescription": "Euro"
+  },
+  "tabs": {
+    "products": "Products"
+  },
+  "search": {
+    "placeholder": "Search...",
+    "placeholderSpecific": "Search on STYLEBOX",
+    "photoTitle": "Search by Photo",
+    "photo": {
+      "title": "Search by Photo",
+      "uploadText": "Upload an image to search",
+      "chooseFile": "Choose file",
+      "chooseAnother": "Choose another",
+      "searchButton": "Search"
+    }
+  },
+  "carousel": {
+    "banners": {
+      "1": {
+        "title": "New Collection 2024",
+        "subtitle": "Up to 50% off on all items",
+        "button": "View Catalog"
+      },
+      "2": {
+        "title": "Discounted Electronics",
+        "subtitle": "Best prices on Apple products",
+        "button": "Shop Now"
+      },
+      "3": {
+        "title": "Fashion Clothing",
+        "subtitle": "New season arrivals are here",
+        "button": "Choose Outfit"
+      }
+    }
+  },
+  "product": {
+    "addToCart": "Add to cart",
+    "buyNow": "Buy now",
+    "inStock": "In stock",
+    "outOfStock": "Out of stock"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "selectPickupPoint": "Select pickup point"
+  },
+  "address": {
+    "default": "Default",
+    "noSaved": "No saved addresses",
+    "addNew": "Add new address",
+    "deliveryMethod": "Delivery method",
+    "select": "Select"
+  },
+  "catalog": {
+    "title": {
+      "fallback": "You might like this"
+    },
+    "loading": "Loading products...",
+    "loadingMore": "Loading more products...",
+    "empty": "No products found"
+  },
+  "card": {
+    "walletInfo": "with WB Wallet",
+    "rating": {
+      "reviews": {
+        "1": "review",
+        "few": "reviews",
+        "many": "reviews"
+      }
+    },
+    "basket": {
+      "added": "added to cart"
+    }
+  },
+  "aiAssistant": {
+    "title": "AI Assistant",
+    "status": {
+      "connected": "Connected",
+      "disconnected": "Disconnected"
+    },
+    "chat": {
+      "placeholder": "Type a message or use voice input..."
+    },
+    "voice": {
+      "speaking": "Speaking...",
+      "on": "Enable voice",
+      "off": "Disable voice"
+    },
+    "catalog": {
+      "recommended": "Recommended products:"
+    }
+  },
+  "addresses": {
+    "title": "Company store locations",
+    "listTitle": "Store locations",
+    "back": "← Back to list",
+    "company": "Company",
+    "button": "Go to company catalog"
+  },
+  "favorites": {
+    "breadcrumb": {
+      "home": "Home",
+      "title": "Favorites"
+    },
+    "header": {
+      "title": "Favorites"
+    }
+  },
+  "basket": {
+    "title": "Basket",
+    "myData": "My data",
+    "paymentMethod": "Payment method",
+    "total": "Total",
+    "empty": "Basket is empty",
+    "emptyAuthHint": "Log in to save your basket",
+    "selectPayment": "Select payment method",
+    "order": "Place order",
+    "orderMobile": "checkout",
+    "product_one": "item",
+    "product_few": "items",
+    "product_many": "items",
+    "payment": {
+      "selectMethod": "Select payment method",
+      "title": "Order payment",
+      "noAmount": "Payment amount is not specified",
+      "secureInfo": "Your card data is securely protected by Stripe"
+    },
+    "delivery": {
+      "title": "Delivery to pickup point"
+    }
+  },
+  "profile": {
+    "discount": "WB discount",
+    "paymentOnDelivery": "Cash on delivery",
+    "upTo": "up to",
+    "logout": "Log out",
+    "menu": {
+      "purchases": "Purchases",
+      "favorites": "Favorites",
+      "brands": "Favorite brands",
+      "orders": "Orders",
+      "certificates": "Your certificates",
+      "wallet": "WB Bank",
+      "paymentMethods": "Payment methods"
+    },
+    "chat": {
+      "title": "Chats",
+      "description": "With support, sellers and couriers",
+      "reviews": "Reviews & questions",
+      "business": "Shop as a business"
+    }
+  }
+}

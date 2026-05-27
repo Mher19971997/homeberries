@@ -4,6 +4,7 @@ import styles from './index.module.css';
 import CustomModal from '../CustomModal';
 import StripePaymentForm from '../StripePaymentForm';
 import PaymentIcons from '../PaymentIcons';
+import { useTranslation } from 'react-i18next';
 
 interface SelectPaymentMethodProps {
   amount?: number;
@@ -24,8 +25,9 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
   open: externalOpen,
   onClose: externalOnClose,
 }) => {
+  const { t } = useTranslation('common');
   const [internalOpen, setInternalOpen] = React.useState<boolean>(false);
-  
+
   // Используем внешний open если передан, иначе внутренний state
   const openModal = externalOpen !== undefined ? externalOpen : internalOpen;
 
@@ -36,7 +38,7 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
       setInternalOpen(false);
     }
   };
-  
+
   const handlePaymentSuccess = (result: any) => {
     onPaymentSuccess?.(result);
     handleClose();
@@ -54,13 +56,13 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
           className={styles.addCard}
           onClick={() => setInternalOpen(true)}
         >
-          Выбрать способ оплаты
+          {t('basket.payment.selectMethod')}
         </Typography>
       )}
       <CustomModal
         width={'500px'}
         open={openModal}
-        title={'Оплата заказа'}
+        title={t('basket.payment.title')}
         handleClose={handleClose}
       >
         <Box className={styles.content}>
@@ -74,11 +76,11 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
             />
           ) : (
             <Typography color="text.secondary" textAlign="center">
-              Сумма для оплаты не указана
+              {t('basket.payment.noAmount')}
             </Typography>
           )}
           <Typography className={styles.cardInfoText} sx={{ mt: 2, textAlign: 'center' }}>
-            Данные карты надежно защищены через Stripe
+            {t('basket.payment.secureInfo')}
           </Typography>
         </Box>
       </CustomModal>

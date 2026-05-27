@@ -1,0 +1,176 @@
+{
+  "nav": {
+    "home": "Գլխավոր",
+    "catalog": "Կատալոգ",
+    "basket": "Զամբյուղ",
+    "favorites": "Ընտրվածներ",
+    "orders": "Իմ պատվերները",
+    "profile": "Պրոֆիլ",
+    "delivery": "Առաքում",
+    "addresses": "Հասցեներ",
+    "aiAssistant": "AI Օգնական",
+    "login": "Մուտք գործել"
+  },
+  "language": {
+    "selectTitle": "Ընտրեք արժույթը և լեզուն",
+    "rubDescription": "Ռուսական ռուբլի",
+    "usdDescription": "ԱՄՆ դոլար",
+    "amdDescription": "Հայկական դրամ",
+    "eurDescription": "Եվրո"
+  },
+  "tabs": {
+    "products": "Ապրանքներ"
+  },
+  "search": {
+    "placeholder": "Փնտրել...",
+    "placeholderSpecific": "Փնտրել STYLEBOX-ում",
+    "photoTitle": "Որոնում լուսանկարով",
+    "photo": {
+      "title": "Որոնում լուսանկարով",
+      "uploadText": "Վերբեռնեք պատկեր որոնման համար",
+      "chooseFile": "Ընտրել ֆայլ",
+      "chooseAnother": "Ընտրել ուրիշ",
+      "searchButton": "Փնտրել"
+    }
+  },
+  "carousel": {
+    "banners": {
+      "1": {
+        "title": "Նոր հավաքածու 2024",
+        "subtitle": "Մինչև 50% զեղչ բոլոր ապրանքների վրա",
+        "button": "Դիտել կատալոգը"
+      },
+      "2": {
+        "title": "Էլեկտրոնիկա զեղչով",
+        "subtitle": "Լավագույն գները Apple-ի տեխնիկայի վրա",
+        "button": "Գնել հիմա"
+      },
+      "3": {
+        "title": "Նորաձև հագուստ",
+        "subtitle": "Սեզոնի նորույթները արդեն վաճառքում են",
+        "button": "Ընտրել հագուստ"
+      }
+    }
+  },
+  "product": {
+    "addToCart": "Ավելացնել զամբյուղ",
+    "buyNow": "Գնել հիմա",
+    "inStock": "Առկա է",
+    "outOfStock": "Առկա չէ"
+  },
+  "common": {
+    "loading": "Բեռնում...",
+    "error": "Սխալ",
+    "save": "Պահպանել",
+    "cancel": "Չեղարկել",
+    "delete": "Ջնջել",
+    "edit": "Խմբագրել",
+    "selectPickupPoint": "Ընտրեք թողարկման կետը"
+  },
+  "address": {
+    "default": "Լռելյայն",
+    "noSaved": "Պահված հասցեներ չկան",
+    "addNew": "Ավելացնել նոր հասցե",
+    "deliveryMethod": "Առաքման եղանակ",
+    "select": "Ընտրել"
+  },
+  "catalog": {
+    "title": {
+      "fallback": "Հնարավոր է ձեզ դուր գա"
+    },
+    "loading": "Ապրանքների բեռնում...",
+    "loadingMore": "Լրացուցիչ ապրանքների բեռնում...",
+    "empty": "Ապրանքներ չեն գտնվել"
+  },
+  "card": {
+    "walletInfo": "WB դրամապանակով",
+    "rating": {
+      "reviews": {
+        "1": "գնահատում",
+        "few": "գնահատումներ",
+        "many": "գնահատումներ"
+      }
+    },
+    "basket": {
+      "added": "ավելացվել է զամբյուղ"
+    }
+  },
+  "aiAssistant": {
+    "title": "AI օգնական",
+    "status": {
+      "connected": "Միացված է",
+      "disconnected": "Միացված չէ"
+    },
+    "chat": {
+      "placeholder": "Գրեք հաղորդագրություն կամ օգտագործեք ձայնային մուտք..."
+    },
+    "voice": {
+      "speaking": "Խոսում է...",
+      "on": "Միացնել ձայնը",
+      "off": "Անջատել ձայնը"
+    },
+    "catalog": {
+      "recommended": "Առաջարկվող ապրանքներ:"
+    }
+  },
+  "addresses": {
+    "title": "Ընկերությունների խանութների հասցեներ",
+    "listTitle": "Խանութների հասցեներ",
+    "back": "← Վերադառնալ ցանկին",
+    "company": "Ընկերություն",
+    "button": "Անցնել ընկերության կատալոգ"
+  },
+  "favorites": {
+    "breadcrumb": {
+      "home": "Գլխավոր",
+      "title": "Ընտրվածներ"
+    },
+    "header": {
+      "title": "Ընտրվածներ"
+    }
+  },
+  "basket": {
+    "title": "Զամբյուղ",
+    "myData": "Իմ տվյալները",
+    "paymentMethod": "Վճարման եղանակ",
+    "total": "Ընդհանուր",
+    "empty": "Զամբյուղը դատարկ է",
+    "emptyAuthHint": "Մուտք գործեք՝ զամբյուղը պահպանելու համար",
+    "selectPayment": "Ընտրել վճարման եղանակը",
+    "order": "Պատվիրել",
+    "orderMobile": "պատվերի ձևավորում",
+    "product_one": "ապրանք",
+    "product_few": "ապրանք",
+    "product_many": "ապրանք",
+    "payment": {
+      "selectMethod": "Ընտրել վճարման եղանակ",
+      "title": "Պատվերի վճարում",
+      "noAmount": "Վճարման գումարը նշված չէ",
+      "secureInfo": "Քարտի տվյալները ապահով պաշտպանված են Stripe-ի միջոցով"
+    },
+    "delivery": {
+      "title": "Առաքում ստացման կետ"
+    }
+  },
+  "profile": {
+    "discount": "WB զեղչ",
+    "paymentOnDelivery": "Վճարում ստանալիս",
+    "upTo": "մինչև",
+    "logout": "Ելք",
+    "menu": {
+      "purchases": "Գնումներ",
+      "favorites": "Ընտրյալներ",
+      "brands": "Սիրված բրենդներ",
+      "orders": "Պատվերներ",
+      "certificates": "Ձեր վկայականները",
+      "wallet": "WB Բանկ",
+      "paymentMethods": "Վճարման եղանակներ"
+    },
+    "chat": {
+      "title": "Չատեր",
+      "description": "Աջակցության, վաճառողների և առաքիչների հետ",
+      "reviews": "Կարծիքներ և հարցեր",
+      "business": "Գնեք որպես բիզնես"
+    }
+  }
+}

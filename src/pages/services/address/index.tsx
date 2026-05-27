@@ -16,8 +16,10 @@ import {
   useQuery
 } from 'react-query';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'react-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export default function Address({}: InferGetStaticPropsType<
+export default function Address({ }: InferGetStaticPropsType<
   typeof getStaticProps
 >) {
   const router = useRouter();
@@ -29,6 +31,7 @@ export default function Address({}: InferGetStaticPropsType<
 
   const companyAddresses = companyAddressesResponse?.data || [];
 
+  const { t } = useTranslation('common');
   const [selectedAddress, setSelectedAddress] = React.useState<CompanyAddressData | null>(null);
   const [markers, setMarkers] = React.useState<any>([]);
   const [selected, setSelected] = React.useState<any>(null);
@@ -142,13 +145,13 @@ export default function Address({}: InferGetStaticPropsType<
     <Box className={styles.body}>
       <Box className={styles.container}>
         <Typography variant='h4' fontWeight={'bold'} className={styles.title}>
-          Адреса магазинов компаний
+          {t('addresses.title')}
         </Typography>
         <Box className={styles.mapBox}>
           <Box className={styles.locatiponBlock}>
             {!selectedAddress && (
               <>
-                <Typography className={styles.listTitle}>Адреса магазинов</Typography>
+                <Typography className={styles.listTitle}>{t('addresses.listTitle')}</Typography>
                 {companyAddresses.map((item: CompanyAddressData, index: number) => (
                   <CompanyAddressItem
                     key={item.uuid || index}
@@ -176,10 +179,10 @@ export default function Address({}: InferGetStaticPropsType<
                     );
                   }}
                 >
-                  ← Назад к списку
+                  {t('addresses.back')}
                 </Typography>
                 <Typography variant='h6' fontWeight='bold' mb={1}>
-                  {selectedAddress.company?.name || 'Компания'}
+                  {selectedAddress.company?.name || `${t('addresses.company')}`}
                 </Typography>
                 <Typography variant='subtitle2' color='text.secondary' mb={2}>
                   {selectedAddress.address}
@@ -196,7 +199,7 @@ export default function Address({}: InferGetStaticPropsType<
                     onClick={() => handleCompanyClick(selectedAddress.companyUuid!)}
                     sx={{ mt: 2 }}
                   >
-                    Перейти к каталогам компании
+                    {t('addresses.button')}
                   </Button>
                 )}
               </Box>
@@ -227,7 +230,7 @@ export default function Address({}: InferGetStaticPropsType<
   );
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }: { locale: string }) {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery('getCompanyAddressesPublic', () =>
@@ -236,7 +239,8 @@ export async function getStaticProps() {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient)
+      dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
     }
   };
 }

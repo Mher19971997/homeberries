@@ -10,10 +10,12 @@ import qs from 'qs';
 import DeliveryAddressItemForModal from '../DeliveryAddressItemForModal';
 import { useCookies } from 'react-cookie';
 import { useQuery } from 'react-query';
+import { useTranslation } from 'react-i18next';
 
-interface CreateAddressProps {}
+interface CreateAddressProps { }
 
 const CreateAddress: React.FC<CreateAddressProps> = () => {
+  const { t } = useTranslation('common');
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const [selectedAddress, setSelectedAddress] = React.useState<any>(null);
@@ -55,7 +57,7 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
   const id = open ? 'address-popover' : undefined;
 
   const currentAddress = selectedAddress || deliveryAdress?.data?.find((item: any) => item.isDefault === true);
-  const displayAddress = currentAddress?.address || 'Выберите пункт выдачи';
+  const displayAddress = currentAddress?.address || `${t('common.selectPickupPoint')}`;
 
   return (
     <Box>
@@ -86,18 +88,18 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
         PaperProps={{
           className: styles.popoverPaper
         }}
+        disableScrollLock={true}
       >
         <Box className={styles.popover}>
-          <Typography className={styles.title}>Выберите пункт выдачи</Typography>
+          <Typography className={styles.title}>{t('common.selectPickupPoint')}</Typography>
           <Divider sx={{ my: 1.5 }} />
           <Box className={styles.addressesList}>
             {deliveryAdress?.data?.length > 0 ? (
               deliveryAdress.data.map((item: any, index: number) => (
                 <Box
                   key={index}
-                  className={`${styles.addressItem} ${
-                    selectedAddress?.uuid === item.uuid ? styles.selected : ''
-                  }`}
+                  className={`${styles.addressItem} ${selectedAddress?.uuid === item.uuid ? styles.selected : ''
+                    }`}
                   onClick={() => handleAddressSelect(item)}
                 >
                   <Box className={styles.addressIcon}>
@@ -109,7 +111,7 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
                     </Typography>
                     {item.isDefault && (
                       <Typography className={styles.defaultBadge}>
-                        По умолчанию
+                        {t('address.default')}
                       </Typography>
                     )}
                   </Box>
@@ -122,7 +124,7 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
               ))
             ) : (
               <Typography className={styles.emptyText}>
-                Нет сохраненных адресов
+                {t('address.noSaved')}
               </Typography>
             )}
           </Box>
@@ -136,7 +138,7 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
               setOpenModal(true);
             }}
           >
-            Добавить новый адрес
+            {t('address.addNew')}
           </Button>
         </Box>
       </Popover>
@@ -144,7 +146,7 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
       <CustomModal
         width={'50%'}
         open={openModal}
-        title={'Способ доставки'}
+        title={t('address.deliveryMethod')}
         handleClose={handleClose}
       >
         <Box className={styles.content}>
@@ -154,10 +156,10 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
         </Box>
         <Box className={styles.btnGroup}>
           <Button variant='contained' className={styles.btnGroupContained}>
-            Выбрать
+            {t('address.select')}
           </Button>
           <Button variant='outlined' className={styles.btnGroupOutlined}>
-            Добавить новый адрес
+            {t('address.addNew')}
           </Button>
         </Box>
       </CustomModal>

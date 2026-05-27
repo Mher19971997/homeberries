@@ -11,8 +11,10 @@ import '/node_modules/flag-icons/css/flag-icons.min.css';
 import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
 import { CookiesProvider } from 'react-cookie';
 import { FavoritesProvider } from '@homeberris/context/favoritesContext';
+import { appWithTranslation } from 'next-i18next';
 
-export default function App({ Component, pageProps }: AppProps) {
+// export default function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   const queryClient = React.useRef<any | null>(new QueryClient());
 
   return (
@@ -29,3 +31,5 @@ export default function App({ Component, pageProps }: AppProps) {
     </QueryClientProvider>
   );
 }
+
+export default appWithTranslation(App)

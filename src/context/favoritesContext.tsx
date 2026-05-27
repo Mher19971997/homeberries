@@ -13,6 +13,7 @@ const STORAGE_KEY = 'hb_favorites';
 
 export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CatalogItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     try {
@@ -23,16 +24,18 @@ export const FavoritesProvider: React.FC<{ children: ReactNode }> = ({ children 
     } catch {
       // ignore
     }
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    if (!loaded) return;
     try {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
       // ignore
     }
-  }, [items]);
+  }, [items, loaded]);
 
   const isFavorite = (uuid: string) => items.some((i) => i.uuid === uuid);
 

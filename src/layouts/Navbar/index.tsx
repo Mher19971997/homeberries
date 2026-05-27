@@ -31,15 +31,19 @@ import qs from 'qs';
 import { useCookies } from 'react-cookie';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import { getBasketCount } from '@homeberris/utils/indexedDB';
+import { useAuth } from '@homeberris/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
+  const { t } = useTranslation('common');
   const ref = React.useRef<HTMLDivElement | null>(null);
   const isHovering = useHover(ref);
   const router = useRouter();
   const [cookies] = useCookies(['token']);
   const { items: favorites } = useFavorites();
 
-  const [isAuth, setIsAuth] = React.useState(false);
+  // const [isAuth, setIsAuth] = React.useState(false);
+  const isAuth = useAuth();
   const [openMenu, setOpenMenu] = React.useState<boolean>(false);
   const [profileAnchorEl, setProfileAnchorEl] = React.useState<HTMLElement | null>(null);
   const profileRef = React.useRef<HTMLDivElement>(null);
@@ -105,9 +109,9 @@ const Navbar = () => {
   // Получаем количество товаров в корзине
   const basketCount = isAuth ? (basket?.meta?.count || 0) : localBasketCount;
 
-  React.useEffect(() => {
-    setIsAuth(checkToken());
-  }, []);
+  // React.useEffect(() => {
+  //   setIsAuth(checkToken());
+  // }, []);
 
   return (
     <Box className={styles.navbar}>
@@ -143,33 +147,33 @@ const Navbar = () => {
         </Box>
         <Box display={'flex'} alignItems={'center'} gap={2}>
           <NavbarItem
-            label={'AI Помощник'}
+            label={t('nav.aiAssistant')}
             Icon={<SmartToyIcon sx={{ color: 'white' }} />}
             to={'/ai-assistant'}
           />
           <NavbarItem
-            label={'Адреса'}
+            label={t('nav.addresses')}
             Icon={<LocationOnIcon sx={{ color: 'white' }} />}
             to={'/services/address'}
           />
           {/* Избранное - показываем всегда */}
           <NavbarItem
             bageCount={favorites.length > 0 ? favorites.length : undefined}
-            label={'Избранное'}
+            label={t('nav.favorites')}
             Icon={<FavoriteIcon sx={{ color: 'white' }} />}
             to='/favorites'
           />
           {/* Корзина - показываем всегда */}
           <NavbarItem
             bageCount={basketCount > 0 ? basketCount : undefined}
-            label={'Корзина'}
+            label={t('nav.basket')}
             Icon={<ShoppingBasketIcon sx={{ color: 'white' }} />}
             to='/basket'
           />
           {(!isAuth && (
             <>
               <NavbarItem
-                label={'Войти'}
+                label={t('nav.login')}
                 Icon={<Person2Icon sx={{ color: 'white' }} />}
                 to='/security/login'
               />
@@ -177,7 +181,7 @@ const Navbar = () => {
           )) || (
               <>
                 <NavbarItem
-                  label={'Доставка'}
+                  label={t('nav.delivery')}
                   Icon={<LocalShippingIcon sx={{ color: 'white' }} />}
                   to='/myorders/delivery'
                 />
@@ -195,7 +199,7 @@ const Navbar = () => {
                   <Typography
                     sx={{ fontSize: '14px', color: router.pathname === '/profile' ? '#FFFFFF' : 'rgba(255,255,255,.6)' }}
                   >
-                    Профиль
+                    {t('nav.profile')}
                   </Typography>
                 </Box>
                 {profileAnchorEl && (

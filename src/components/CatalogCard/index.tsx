@@ -16,6 +16,7 @@ import { useCookies } from 'react-cookie';
 import { checkToken } from '@homeberris/utils/auth';
 import { addToBasket } from '@homeberris/utils/indexedDB';
 import { useFavorites } from '@homeberris/context/favoritesContext';
+import { useTranslation } from 'react-i18next';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -30,6 +31,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
   sortPanelOne,
   onNavigate
 }) => {
+  const { t } = useTranslation('common');
   const queryClient = useQueryClient();
   const ref = React.useRef<HTMLDivElement | null>(null);
   const isHovering = useHover(ref);
@@ -113,6 +115,16 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
     toggleFavorite(catalog);
   };
 
+  const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
+    if (isAuth && cookies.token) {
+      mutate(catalog.uuid);
+    } else {
+      addToLocalBasket();
+    }
+  };
+
   return (
     <Box
       component="div"
@@ -122,7 +134,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
       <PositionedSnackbar
         open={openSuccess}
         handleClose={() => setOpenSuccess(false)}
-        message="добавлен в корзину"
+        message={t('card.basket.added')}
       />
 
       <Box onClick={onNavigate} className={styles.cardContent}>
@@ -146,7 +158,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
           </IconButton>
           <CardSlider
             images={
-                catalog?.images?.length > 0
+              catalog?.images?.length > 0
                 ? catalog.images.map(({ image }: any) => ({
                   imgPath: process.env.NEXT_PUBLIC_BASE_URL + image
                 }))
@@ -170,7 +182,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
 
           {/* Информация о WB Кошельке */}
           <Typography className={styles.walletInfo}>
-            с WB Кошельком
+            {t('card.walletInfo')}
           </Typography>
 
           {/* Название товара */}
@@ -183,7 +195,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
             <StarIcon className={styles.starIcon} />
             <Typography className={styles.rating}>{cardData.rating}</Typography>
             <Typography className={styles.reviewsCount}>
-              {cardData.reviewsCount} {cardData.reviewsCount === 1 ? 'оценка' : cardData.reviewsCount < 5 ? 'оценки' : 'оценок'}
+              {cardData.reviewsCount} {cardData.reviewsCount === 1 ? `${t('card.rating.reviews.1')}` : cardData.reviewsCount < 5 ? `${t('card.rating.reviews.few')}` : `${t('card.rating.reviews.many')}`}
             </Typography>
           </Box>
         </Box>
@@ -195,14 +207,15 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
           variant="contained"
           fullWidth
           className={styles.basketButton}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isAuth && cookies.token) {
-              mutate(catalog.uuid);
-            } else {
-              addToLocalBasket();
-            }
-          }}
+          // onClick={(e) => {
+          //   e.stopPropagation();
+          //   if (isAuth && cookies.token) {
+          //     mutate(catalog.uuid);
+          //   } else {
+          //     addToLocalBasket();
+          //   }
+          // }}
+          onClick={handleAddToBasket}
           startIcon={<ShoppingCartOutlinedIcon />}
         >
           {cardData.deliveryDateStr}

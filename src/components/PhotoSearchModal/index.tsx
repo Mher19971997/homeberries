@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import dynamic from "next/dynamic";
 import styles from "./index.module.css";
+import { useTranslation } from "react-i18next";
 
 // -------------- Динамический импорт Cropper --------------
 const Cropper = dynamic(
@@ -38,9 +39,11 @@ type CropperClass = any; // тип, полученный из динамичес
 interface PhotoSearchModalProps {
   open: boolean;
   onClose: () => void;
+  onSearch: (file: File) => void | Promise<void>;
 }
 
 export default function PhotoSearchModal({ open, onClose }: PhotoSearchModalProps) {
+  const { t } = useTranslation('common');
   const [imageSrc, setImageSrc] = useState<string>("");
   const [croppedImage, setCroppedImage] = useState<File | null>(null);
   const [isClient, setIsClient] = useState(false);
@@ -98,12 +101,12 @@ export default function PhotoSearchModal({ open, onClose }: PhotoSearchModalProp
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={open} onClose={handleClose} disableScrollLock>
       <Box className={styles.modalContainer}>
         {/* Header */}
         <Box className={styles.modalHeader}>
           <Typography variant="h6" className={styles.modalTitle}>
-            Поиск по фото
+            {t('search.photo.title')}
           </Typography>
           <IconButton onClick={handleClose} className={styles.closeButton}>
             <CloseIcon />
@@ -124,14 +127,14 @@ export default function PhotoSearchModal({ open, onClose }: PhotoSearchModalProp
               />
               <CloudUploadIcon className={styles.uploadIcon} />
               <Typography className={styles.uploadText}>
-                Загрузите изображение для поиска
+                {t('search.photo.uploadText')}
               </Typography>
               <Button
                 variant="contained"
                 onClick={openFileDialog}
                 className={styles.uploadButton}
               >
-                Выбрать файл
+                {t('search.photo.chooseFile')}
               </Button>
             </Box>
           )}
@@ -166,7 +169,7 @@ export default function PhotoSearchModal({ open, onClose }: PhotoSearchModalProp
                     setCropperReady(false);
                   }}
                 >
-                  Выбрать другое
+                  {t('search.photo.chooseAnother')}
                 </Button>
                 <Button
                   variant="contained"
@@ -174,7 +177,7 @@ export default function PhotoSearchModal({ open, onClose }: PhotoSearchModalProp
                   disabled={!croppedImage}
                   className={styles.searchButton}
                 >
-                  Найти
+                  {t('search.photo.searchButton')}
                 </Button>
               </Box>
             </Box>

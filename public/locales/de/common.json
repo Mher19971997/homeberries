@@ -1,0 +1,176 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "catalog": "Katalog",
+    "basket": "Warenkorb",
+    "favorites": "Favoriten",
+    "orders": "Meine Bestellungen",
+    "profile": "Profil",
+    "delivery": "Lieferung",
+    "addresses": "Adressen",
+    "aiAssistant": "KI-Assistent",
+    "login": "Einloggen"
+  },
+  "language": {
+    "selectTitle": "Währung und Sprache auswählen",
+    "rubDescription": "Russischer Rubel",
+    "usdDescription": "US-Dollar",
+    "amdDescription": "Armenischer Dram",
+    "eurDescription": "Euro"
+  },
+  "tabs": {
+    "products": "Produkte"
+  },
+  "search": {
+    "placeholder": "Suche...",
+    "placeholderSpecific": "Suchen auf STYLEBOX",
+    "photoTitle": "Suche per Foto",
+    "photo": {
+      "title": "Suche per Foto",
+      "uploadText": "Bild zum Suchen hochladen",
+      "chooseFile": "Datei wählen",
+      "chooseAnother": "Andere wählen",
+      "searchButton": "Suchen"
+    }
+  },
+  "carousel": {
+    "banners": {
+      "1": {
+        "title": "Neue Kollektion 2024",
+        "subtitle": "Bis zu 50% Rabatt auf alle Produkte",
+        "button": "Katalog ansehen"
+      },
+      "2": {
+        "title": "Elektronik im Angebot",
+        "subtitle": "Beste Preise für Apple-Produkte",
+        "button": "Jetzt kaufen"
+      },
+      "3": {
+        "title": "Modische Kleidung",
+        "subtitle": "Neue Saisonkollektion ist da",
+        "button": "Outfit wählen"
+      }
+    }
+  },
+  "product": {
+    "addToCart": "In den Warenkorb",
+    "buyNow": "Jetzt kaufen",
+    "inStock": "Auf Lager",
+    "outOfStock": "Nicht lieferbar"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "selectPickupPoint": "Abholpunkt auswählen"
+  },
+  "address": {
+    "default": "Standard",
+    "noSaved": "Keine gespeicherten Adressen",
+    "addNew": "Neue Adresse hinzufügen",
+    "deliveryMethod": "Liefermethode",
+    "select": "Auswählen"
+  },
+  "catalog": {
+    "title": {
+      "fallback": "Das könnte Ihnen gefallen"
+    },
+    "loading": "Produkte werden geladen...",
+    "loadingMore": "Weitere Produkte werden geladen...",
+    "empty": "Keine Produkte gefunden"
+  },
+  "card": {
+    "walletInfo": "mit WB Wallet",
+    "rating": {
+      "reviews": {
+        "1": "Bewertung",
+        "few": "Bewertungen",
+        "many": "Bewertungen"
+      }
+    },
+    "basket": {
+      "added": "zum Warenkorb hinzugefügt"
+    }
+  },
+  "aiAssistant": {
+    "title": "KI-Assistent",
+    "status": {
+      "connected": "Verbunden",
+      "disconnected": "Nicht verbunden"
+    },
+    "chat": {
+      "placeholder": "Nachricht eingeben oder Sprache verwenden..."
+    },
+    "voice": {
+      "speaking": "Spricht...",
+      "on": "Sprache aktivieren",
+      "off": "Sprache deaktivieren"
+    },
+    "catalog": {
+      "recommended": "Empfohlene Produkte:"
+    }
+  },
+  "addresses": {
+    "title": "Standorte der Unternehmensgeschäfte",
+    "listTitle": "Geschäftsstandorte",
+    "back": "← Zurück zur Liste",
+    "company": "Unternehmen",
+    "button": "Zum Firmenkatalog"
+  },
+  "favorites": {
+    "breadcrumb": {
+      "home": "Startseite",
+      "title": "Favoriten"
+    },
+    "header": {
+      "title": "Favoriten"
+    }
+  },
+  "basket": {
+    "title": "Warenkorb",
+    "myData": "Meine Daten",
+    "paymentMethod": "Zahlungsmethode",
+    "total": "Gesamt",
+    "empty": "Warenkorb ist leer",
+    "emptyAuthHint": "Melden Sie sich an, um Ihren Warenkorb zu speichern",
+    "selectPayment": "Zahlungsmethode auswählen",
+    "order": "Bestellen",
+    "orderMobile": "zur Bestellung",
+    "product_one": "Artikel",
+    "product_few": "Artikel",
+    "product_many": "Artikel",
+    "payment": {
+      "selectMethod": "Zahlungsmethode auswählen",
+      "title": "Zahlung der Bestellung",
+      "noAmount": "Zahlungsbetrag ist nicht angegeben",
+      "secureInfo": "Ihre Kartendaten sind sicher durch Stripe geschützt"
+    },
+    "delivery": {
+      "title": "Lieferung zur Abholstation"
+    }
+  },
+  "profile": {
+    "discount": "WB Rabatt",
+    "paymentOnDelivery": "Zahlung bei Lieferung",
+    "upTo": "bis zu",
+    "logout": "Abmelden",
+    "menu": {
+      "purchases": "Einkäufe",
+      "favorites": "Favoriten",
+      "brands": "Lieblingsmarken",
+      "orders": "Bestellungen",
+      "certificates": "Ihre Gutscheine",
+      "wallet": "WB Bank",
+      "paymentMethods": "Zahlungsmethoden"
+    },
+    "chat": {
+      "title": "Chats",
+      "description": "Mit Support, Verkäufern und Kurieren",
+      "reviews": "Bewertungen & Fragen",
+      "business": "Als Unternehmen einkaufen"
+    }
+  }
+}

@@ -39,12 +39,16 @@ import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import * as qs from 'qs';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { TopNav } from '@homeberris/features/myorders/delivery';
+import { useFavorites } from '@homeberris/context/favoritesContext';
+import { pluralizeItems } from '@homeberris/utils/formatPlural';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Profile({ }: InferGetStaticPropsType<
   typeof getServerSideProps
 >) {
   const [cookies] = useCookies(['token']);
   const router = useRouter();
+  const { items } = useFavorites();
 
   // 🔐 Проверка токена
   useEffect(() => {
@@ -268,7 +272,7 @@ export default function Profile({ }: InferGetStaticPropsType<
                       Избранное
                     </Typography>
                     <Typography variant="h6" fontWeight={600}>
-                      36 товаров
+                      {pluralizeItems(items.length)}
                     </Typography>
                   </Box>
                   <FavoriteIcon sx={{ fontSize: 40, color: '#667eea' }} />
@@ -381,7 +385,7 @@ export default function Profile({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps({ req }: any) {
+export async function getServerSideProps({ req, locale }: any) {
   const queryClient = new QueryClient();
   const token = getTokenFromCookie(req);
 
@@ -391,7 +395,8 @@ export async function getServerSideProps({ req }: any) {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient)
+      dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
     }
   };
 }

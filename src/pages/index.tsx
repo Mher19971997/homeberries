@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import * as qs from 'qs';
 import { Box, Grid, Typography } from '@mui/material';
-import { InferGetStaticPropsType } from 'next';
+import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from '@homeberris/pages/index.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
@@ -9,12 +9,15 @@ import CarouselCatalog from '@homeberris/components/CarouselCatalog';
 import { QueryClient, dehydrate, useInfiniteQuery } from 'react-query';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'react-i18next';
 
 const ITEMS_PER_PAGE = 20;
 
 export default function Home({ }: InferGetStaticPropsType<
   typeof getServerSideProps
 >) {
+  const { t } = useTranslation('common');
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategoryItem | null>(null);
 
@@ -107,11 +110,11 @@ export default function Home({ }: InferGetStaticPropsType<
           ? selectedSubCategory
             ? `${selectedSubCategory.name}`
             : `${selectedCategory.name}`
-          : 'Возможно, вам понравится'}
+          : `${t('catalog.title.fallback')}`}
       </Typography>
       {isLoading ? (
         <Box display="flex" justifyContent="center" p={4}>
-          <Typography>Загрузка товаров...</Typography>
+          <Typography>{t('catalog.loading')}</Typography>
         </Box>
       ) : (
         <>
@@ -123,14 +126,14 @@ export default function Home({ }: InferGetStaticPropsType<
             ) : (
               <Box p={4} width="100%">
                 <Typography variant="body1" color="text.secondary" textAlign="center">
-                  Товары не найдены
+                  {t('catalog.empty')}
                 </Typography>
               </Box>
             )}
           </Grid>
           {isFetchingNextPage && (
             <Box display="flex" justifyContent="center" p={4}>
-              <Typography>Загрузка дополнительных товаров...</Typography>
+              <Typography>{t('catalog.loadingMore')}</Typography>
             </Box>
           )}
         </>
@@ -139,7 +142,28 @@ export default function Home({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps() {
+// export async function getServerSideProps() {
+//   const queryClient = new QueryClient();
+//   await queryClient.prefetchQuery(['getAllCatalogs', null, null], () =>
+//     getAllCatalogs(
+//       qs.stringify({
+//         queryMeta: {
+//           paginate: true,
+//           limit: ITEMS_PER_PAGE,
+//           page: 1
+//         }
+//       })
+//     )
+//   );
+
+//   return {
+//     props: {
+//       dehydratedState: dehydrate(queryClient)
+//     }
+//   };
+// }
+
+export async function getServerSideProps({ locale }: { locale: string }) {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery(['getAllCatalogs', null, null], () =>
     getAllCatalogs(
@@ -155,7 +179,8 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient)
+      dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale ?? 'ru', ['common', 'catalog']))
     }
   };
 }

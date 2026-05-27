@@ -4,6 +4,7 @@ import CategoryMultiDropdown from '@homeberris/components/CategoryMultiDropdown'
 import CarMenuDropdown from '@homeberris/components/CarMenuDropdown';
 import { Box, IconButton, Tabs, Tab } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   isOpen: boolean;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const LeftMenu: React.FC<Props> = ({ isOpen, closeMenu, openLeftMenu }) => {
+  const { t } = useTranslation('common');
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -40,8 +42,8 @@ const LeftMenu: React.FC<Props> = ({ isOpen, closeMenu, openLeftMenu }) => {
                 },
               }}
             >
-              <Tab label="Товары" />
-              <Tab label="Автомобили" />
+              <Tab label={t('tabs.products')} />
+              {/* <Tab label="Автомобили" /> */}
             </Tabs>
             <IconButton
               className={styles.closeBtn}

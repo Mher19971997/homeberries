@@ -1,0 +1,176 @@
+{
+  "nav": {
+    "home": "Главная",
+    "catalog": "Каталог",
+    "basket": "Корзина",
+    "favorites": "Избранное",
+    "orders": "Мои заказы",
+    "profile": "Профиль",
+    "delivery": "Доставка",
+    "addresses": "Адреса",
+    "aiAssistant": "AI Помощник",
+    "login": "Войти"
+  },
+  "language": {
+    "selectTitle": "Выберите валюту и язык",
+    "rubDescription": "Российский рубль",
+    "usdDescription": "US Dollar",
+    "amdDescription": "Армянский драм",
+    "eurDescription": "Euro"
+  },
+  "tabs": {
+    "products": "Товары"
+  },
+  "search": {
+    "placeholder": "Поиск...",
+    "placeholderSpecific": "Поиск на STYLEBOX",
+    "photoTitle": "Поиск по фото",
+    "photo": {
+      "title": "Поиск по фото",
+      "uploadText": "Загрузите изображение для поиска",
+      "chooseFile": "Выбрать файл",
+      "chooseAnother": "Выбрать другое",
+      "searchButton": "Найти"
+    }
+  },
+  "carousel": {
+    "banners": {
+      "1": {
+        "title": "Новая коллекция 2024",
+        "subtitle": "Скидки до 50% на все товары",
+        "button": "Смотреть каталог"
+      },
+      "2": {
+        "title": "Электроника со скидкой",
+        "subtitle": "Лучшие цены на технику Apple",
+        "button": "Купить сейчас"
+      },
+      "3": {
+        "title": "Модная одежда",
+        "subtitle": "Новинки сезона уже в продаже",
+        "button": "Выбрать наряд"
+      }
+    }
+  },
+  "product": {
+    "addToCart": "Добавить в корзину",
+    "buyNow": "Купить сейчас",
+    "inStock": "В наличии",
+    "outOfStock": "Нет в наличии"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "selectPickupPoint": "Выберите пункт выдачи"
+  },
+  "address": {
+    "default": "По умолчанию",
+    "noSaved": "Нет сохраненных адресов",
+    "addNew": "Добавить новый адрес",
+    "deliveryMethod": "Способ доставки",
+    "select": "Выбрать"
+  },
+  "catalog": {
+    "title": {
+      "fallback": "Возможно, вам понравится"
+    },
+    "loading": "Загрузка товаров...",
+    "loadingMore": "Загрузка дополнительных товаров...",
+    "empty": "Товары не найдены"
+  },
+  "card": {
+    "walletInfo": "с WB Кошельком",
+    "rating": {
+      "reviews": {
+        "1": "оценка",
+        "few": "оценки",
+        "many": "оценок"
+      }
+    },
+    "basket": {
+      "added": "добавлен в корзину"
+    }
+  },
+  "aiAssistant": {
+    "title": "AI Помощник",
+    "status": {
+      "connected": "Подключено",
+      "disconnected": "Не подключено"
+    },
+    "chat": {
+      "placeholder": "Напишите сообщение или используйте голосовой ввод..."
+    },
+    "voice": {
+      "speaking": "Говорит...",
+      "on": "Включить голос",
+      "off": "Отключить голос"
+    },
+    "catalog": {
+      "recommended": "Рекомендуемые товары:"
+    }
+  },
+  "addresses": {
+    "title": "Адреса магазинов компаний",
+    "listTitle": "Адреса магазинов",
+    "back": "← Назад к списку",
+    "company": "Компания",
+    "button": "Перейти к каталогам компании"
+  },
+  "favorites": {
+    "breadcrumb": {
+      "home": "Главная",
+      "title": "Избранное"
+    },
+    "header": {
+      "title": "Избранное"
+    }
+  },
+  "basket": {
+    "title": "Корзина",
+    "myData": "Мои данные",
+    "paymentMethod": "Способ оплаты",
+    "total": "Итого",
+    "empty": "Корзина пуста",
+    "emptyAuthHint": "Войдите, чтобы сохранить корзину",
+    "selectPayment": "Выбрать способ оплаты",
+    "order": "Заказать",
+    "orderMobile": "оформлению заказа",
+    "product_one": "товар",
+    "product_few": "товара",
+    "product_many": "товаров",
+    "payment": {
+      "selectMethod": "Выбрать способ оплаты",
+      "title": "Оплата заказа",
+      "noAmount": "Сумма для оплаты не указана",
+      "secureInfo": "Данные карты надежно защищены через Stripe"
+    },
+    "delivery": {
+      "title": "Доставка в пункт выдачи"
+    }
+  },
+  "profile": {
+    "discount": "WB скидка",
+    "paymentOnDelivery": "Оплата при получении",
+    "upTo": "до",
+    "logout": "Выйти",
+    "menu": {
+      "purchases": "Покупки",
+      "favorites": "Избранное",
+      "brands": "Любимые бренды",
+      "orders": "Заказы",
+      "certificates": "Ваши сертификаты",
+      "wallet": "WB Банк",
+      "paymentMethods": "Способы оплаты"
+    },
+    "chat": {
+      "title": "Чаты",
+      "description": "С поддержкой, продавцами и курьерами",
+      "reviews": "Отзывы и вопросы",
+      "business": "Покупайте как бизнес"
+    }
+  }
+}

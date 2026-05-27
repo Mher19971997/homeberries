@@ -15,17 +15,19 @@ import SarchAutoCompliteItem from '../SarchAutoCompliteItem';
 import { useQuery } from 'react-query';
 import { searchCatalog } from '@homeberris/http/catalogApi';
 import { searchCategories } from '@homeberris/http/categoryApi';
-import { searchCars } from '@homeberris/http/carApi';
+// import { searchCars } from '@homeberris/http/carApi';
 import qs from 'qs';
 import { useDebounce } from '@homeberris/hooks/useDebounce';
 import PhotoSearchModal from '../PhotoSearchModal';
 import { useRouter } from 'next/router';
 import FolderIcon from '@mui/icons-material/Folder';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import { useTranslation } from 'react-i18next';
 
 interface SearchInputProps {}
 
 const SearchInput: React.FC<SearchInputProps> = () => {
+  const { t } = useTranslation('common');
   const [focused, setFocused] = React.useState(false);
   const [checkSearch, setCheckSearch] = React.useState(false);
   const [photoSearchOpen, setPhotoSearchOpen] = React.useState(false);
@@ -75,13 +77,13 @@ const SearchInput: React.FC<SearchInputProps> = () => {
   );
 
   // Поиск по автомобилям
-  const { data: filterCars } = useQuery(
-    ['searchCars', debaunceSearch],
-    () => searchCars(debaunceSearch),
-    {
-      enabled: !!debaunceSearch && debaunceSearch.length > 0,
-    }
-  );
+  // const { data: filterCars } = useQuery(
+  //   ['searchCars', debaunceSearch],
+  //   () => searchCars(debaunceSearch),
+  //   {
+  //     enabled: !!debaunceSearch && debaunceSearch.length > 0,
+  //   }
+  // );
 
   const handlePhotoSearch = async (imageFile: File) => {
     const formData = new FormData();
@@ -98,8 +100,8 @@ const SearchInput: React.FC<SearchInputProps> = () => {
 
   const hasResults = 
     (filterCatalogs && (filterCatalogs as any).data && (filterCatalogs as any).data.length > 0) ||
-    (filterCategories?.data && filterCategories.data.length > 0) ||
-    (filterCars && (filterCars as any).data && (filterCars as any).data.length > 0);
+    (filterCategories?.data && filterCategories.data.length > 0)
+    // (filterCars && (filterCars as any).data && (filterCars as any).data.length > 0);
 
   return (
     <Box className={styles.body}>
@@ -124,13 +126,13 @@ const SearchInput: React.FC<SearchInputProps> = () => {
         }
         required
         fullWidth
-        placeholder={'Поиск на STYLEBOX'}
+        placeholder={`${t('search.placeholderSpecific')}`}
         endAdornment={
           <InputAdornment position='end'>
-            <Tooltip title='Поиск по фото'>
+            <Tooltip title={`${t('search.photoTitle')}`}>
               <IconButton 
                 edge='end'
-                onClick={(e) => {
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                   e.stopPropagation();
                   setPhotoSearchOpen(true);
                 }}
@@ -208,7 +210,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
             </>
           )}
 
-          {filterCars && (filterCars as any).data && (filterCars as any).data.length > 0 && (
+          {/* {filterCars && (filterCars as any).data && (filterCars as any).data.length > 0 && (
             <>
               <Box className={styles.sectionHeader}>
                 <InventoryIcon className={styles.sectionIcon} />
@@ -227,7 +229,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
                 />
               ))}
             </>
-          )}
+          )} */}
 
           {!hasResults && debaunceSearch.length > 0 && (
             <Box className={styles.noResults}>

@@ -5,6 +5,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Box, Typography, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface BannerItem {
   id: number;
@@ -15,38 +16,39 @@ interface BannerItem {
   link?: string;
 }
 
-const banners: BannerItem[] = [
-  {
-    id: 1,
-    image:
-      'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=800&fit=crop',
-    title: 'Новая коллекция 2024',
-    subtitle: 'Скидки до 50% на все товары',
-    buttonText: 'Смотреть каталог',
-    link: '/catalog',
-  },
-  {
-    id: 2,
-    image:
-      'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&h=800&fit=crop',
-    title: 'Электроника со скидкой',
-    subtitle: 'Лучшие цены на технику Apple',
-    buttonText: 'Купить сейчас',
-    link: '/catalog/Электроника',
-  },
-  {
-    id: 3,
-    image:
-      'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&h=800&fit=crop',
-    title: 'Модная одежда',
-    subtitle: 'Новинки сезона уже в продаже',
-    buttonText: 'Выбрать наряд',
-    link: '/catalog/Женщинам',
-  },
-];
-
 const CarouselCatalog: React.FC = () => {
   const router = useRouter();
+  const { t } = useTranslation('common');
+
+  const banners: BannerItem[] = [
+    {
+      id: 1,
+      image:
+        'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&h=800&fit=crop',
+      title: `${t('carousel.banners.1.title')}`,
+      subtitle: `${t('carousel.banners.1.subtitle')}`,
+      buttonText: `${t('carousel.banners.1.button')}`,
+      link: '/catalog',
+    },
+    {
+      id: 2,
+      image:
+        'https://images.unsplash.com/photo-1445205170230-053b83016050?w=1920&h=800&fit=crop',
+      title: `${t('carousel.banners.2.title')}`,
+      subtitle: `${t('carousel.banners.2.subtitle')}`,
+      buttonText: `${t('carousel.banners.2.button')}`,
+      link: '/catalog/Электроника',
+    },
+    {
+      id: 3,
+      image:
+        'https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?w=1920&h=800&fit=crop',
+      title: `${t('carousel.banners.3.title')}`,
+      subtitle: `${t('carousel.banners.3.subtitle')}`,
+      buttonText: `${t('carousel.banners.3.button')}`,
+      link: '/catalog/Женщинам',
+    },
+  ];
 
   const handleBannerClick = (link?: string) => {
     if (link) router.push(link);

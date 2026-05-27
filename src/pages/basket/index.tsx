@@ -35,10 +35,14 @@ import { getTokenFromCookie, checkToken } from '@homeberris/utils/auth';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/router';
 import { getBasketItems, removeFromBasket, updateBasketItemQuantity, clearBasket } from '@homeberris/utils/indexedDB';
+import { useAuth } from '@homeberris/hooks/useAuth';
+import { useTranslation } from 'react-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Basket({ }: InferGetStaticPropsType<
   typeof getServerSideProps
 >) {
+  const { t } = useTranslation('common');
   const queryClient = useQueryClient();
   const router = useRouter();
   const mainRef = React.useRef<any>(null); //represents main section
@@ -86,7 +90,9 @@ export default function Basket({ }: InferGetStaticPropsType<
     }
   };
   const [cookies] = useCookies(['token']);
-  const isAuth = checkToken();
+  // const isAuth = checkToken();
+  const isAuth = useAuth();
+
   const [localBaskets, setLocalBaskets] = React.useState<any[]>([]);
 
   const { data: user } = useQuery<User>('getProfile', () => getProfile(cookies.token), {
@@ -195,7 +201,8 @@ export default function Basket({ }: InferGetStaticPropsType<
       currency: 'RUB',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(price).replace('₽', '₽');
+      // }).format(price).replace('₽', '₽');
+    }).format(price);
   };
 
   const handleAccordionChange = (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -255,8 +262,8 @@ export default function Basket({ }: InferGetStaticPropsType<
           <Grid item xs={12}>
             <Card className={styles.cardBlock}>
               <Badge badgeContent={currentBaskets?.meta?.count || 0}>
-                <Typography variant='h5' fontWeight={'bold'}>
-                  Корзина
+                <Typography variant='h5' fontWeight={'bold'} component="div">
+                  {t('basket.title')}
                 </Typography>
               </Badge>
               <Accordion
@@ -298,8 +305,8 @@ export default function Basket({ }: InferGetStaticPropsType<
                       onClick={(e) => e.stopPropagation()}
                       sx={{ padding: '4px' }}
                     />
-                    <Typography sx={{ fontWeight: 600, fontSize: '16px' }}>
-                      {totalItems} {totalItems === 1 ? 'товар' : totalItems < 5 ? 'товара' : 'товаров'}
+                    <Typography component="div" sx={{ fontWeight: 600, fontSize: '16px' }}>
+                      {totalItems} {totalItems === 1 ? `${t('basket.product_one')}` : totalItems < 5 ? `${t('basket.product_few')}` : `${t('basket.product_many')}`}
                     </Typography>
                   </Box>
                 </AccordionSummary>
@@ -338,12 +345,12 @@ export default function Basket({ }: InferGetStaticPropsType<
                     )
                   ) : (
                     <Box sx={{ padding: '20px', textAlign: 'center' }}>
-                      <Typography color="text.secondary">
-                        Корзина пуста
+                      <Typography component="div" color="text.secondary">
+                        {t('basket.empty')}
                       </Typography>
                       {!isAuth && (
-                        <Typography color="text.secondary" sx={{ mt: 2, fontSize: '14px' }}>
-                          Войдите, чтобы сохранить корзину
+                        <Typography component="div" color="text.secondary" sx={{ mt: 2, fontSize: '14px' }}>
+                          {t('basket.emptyAuthHint')}
                         </Typography>
                       )}
                     </Box>
@@ -362,13 +369,13 @@ export default function Basket({ }: InferGetStaticPropsType<
         >
           <Grid item xs={12} className={styles.mobileHidden}>
             <Card className={`${styles.cardBlock}`}>
-              <Typography>Мои данные</Typography>
+              <Typography component="div">{t('basket.myData')}</Typography>
             </Card>
           </Grid>
           <Grid item xs={12} container spacing={2}>
             <Grid item lg={6} md={6} xs={12}>
               <Card className={styles.cardBlock}>
-                <Typography className={styles.cardTitle}>Способ оплаты</Typography>
+                <Typography component="div" className={styles.cardTitle}>{t('basket.paymentMethod')}</Typography>
                 <SelectPaymentMethod
                   amount={totalSum * 100} // конвертируем в копейки
                   onPaymentSuccess={handlePaymentSuccess}
@@ -381,10 +388,10 @@ export default function Basket({ }: InferGetStaticPropsType<
             </Grid>
             <Grid item lg={6} md={6} xs={12} className={styles.mobileHidden}>
               <Card className={styles.cardBlock}>
-                <Typography className={styles.cardTitle}>Мои данные</Typography>
+                <Typography component="div" className={styles.cardTitle}>{t('basket.myData')}</Typography>
                 <Box className={styles.userProfileInfo}>
                   <ContactMailIcon className={styles.emailIcon} />
-                  <Typography className={styles.emailText}>{user?.email || 'Не указан'}</Typography>
+                  <Typography component="div" className={styles.emailText}>{user?.email || 'Не указан'}</Typography>
                 </Box>
               </Card>
             </Grid>
@@ -397,16 +404,17 @@ export default function Basket({ }: InferGetStaticPropsType<
           <OrderDeliveryAdress
             deliveryAdress={deliveryAdress?.data?.[0] || {}}
           />
-          <Typography
+          <Typography component="div"
             className={styles.paymentMethodScrollBtn}
             onClick={() => handleScroll(mainRef.current)}
           >
-            Выбрать способ оплаты
+            {t('basket.selectPayment')}
           </Typography>
           <Box className={`${styles.priceBlock} ${styles.mobileHidden}`} >
-            <Typography className={styles.totalLabel}>Итого</Typography>
-            <Typography className={styles.totalPrice}>
-              {formatPrice(totalSum)} ₽
+            <Typography component="div" className={styles.totalLabel}>{t('basket.total')}</Typography>
+            <Typography component="div" className={styles.totalPrice}>
+              {/* {formatPrice(totalSum)} ₽ */}
+              {formatPrice(totalSum)}
             </Typography>
           </Box>
           <Box className={`${styles.btnGroup} ${styles.mobileHidden}`}>
@@ -417,15 +425,16 @@ export default function Basket({ }: InferGetStaticPropsType<
               disabled={totalItems === 0}
               onClick={handleOrderClick}
             >
-              Заказать
+              {t('basket.order')}
             </Button>
           </Box>
         </Card>
       </Box>
       <Box className={styles.orderBoxMobile}>
         <Box>
-          <Typography>{totalItems} {totalItems === 1 ? 'товар' : totalItems < 5 ? 'товара' : 'товаров'}</Typography>
-          <Typography className={styles.orderPrice}>{formatPrice(totalSum)} ₽</Typography>
+          <Typography component="div">{totalItems} {totalItems === 1 ? `${t('basket.product_one')}` : totalItems < 5 ? `${t('basket.product_few')}` : `${t('basket.product_many')}`}</Typography>
+          {/* <Typography className={styles.orderPrice}>{formatPrice(totalSum)} ₽</Typography> */}
+          <Typography component="div" className={styles.orderPrice}>{formatPrice(totalSum)} </Typography>
         </Box>
         <Box className={styles.btnGroup}>
           <Button
@@ -433,7 +442,7 @@ export default function Basket({ }: InferGetStaticPropsType<
             className={styles.btnGroupContained}
             onClick={() => handleScroll(orderRef.current)}
           >
-            оформлению заказа
+            {t('basket.orderMobile')}
           </Button>
         </Box>
       </Box>
@@ -451,7 +460,7 @@ export default function Basket({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps({ req }: any) {
+export async function getServerSideProps({ req, locale }: any) {
   const queryClient = new QueryClient();
   const token = getTokenFromCookie(req);
 
@@ -477,7 +486,8 @@ export async function getServerSideProps({ req }: any) {
 
   return {
     props: {
-      dehydratedState: dehydrate(queryClient)
+      dehydratedState: dehydrate(queryClient),
+      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
     }
   };
 }

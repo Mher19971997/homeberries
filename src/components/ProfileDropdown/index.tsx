@@ -15,7 +15,7 @@ import {
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import { removeToken } from '@homeberris/utils/auth';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getProfile } from '@homeberris/http/userApi';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -30,6 +30,7 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface ProfileDropdownProps {
   anchorEl: HTMLElement | null;
@@ -42,9 +43,11 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   open,
   onClose
 }) => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [cookies] = useCookies(['token']);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  // const queryClient = useQueryClient();
 
   const { data: user } = useQuery('getProfile', () => getProfile(cookies.token), {
     enabled: open && !!cookies.token
@@ -76,6 +79,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
   const handleLogout = () => {
     removeToken();
+    // queryClient.clear();
     onClose();
     router.push('/');
   };
@@ -83,7 +87,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   const menuItems = [
     {
       icon: <ShoppingBagIcon />,
-      label: 'Покупки',
+      label: `${t('profile.menu.purchases')}`,
       onClick: () => {
         router.push('/myorders/delivery');
         onClose();
@@ -91,7 +95,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <FavoriteIcon />,
-      label: 'Избранное',
+      label: `${t('profile.menu.favorites')}`,
       onClick: () => {
         router.push('/favorites');
         onClose();
@@ -99,7 +103,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <LocalOfferIcon />,
-      label: 'Любимые бренды',
+      label: `${t('profile.menu.brands')}`,
       onClick: () => {
         router.push('/profile?tab=brands');
         onClose();
@@ -107,7 +111,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <CardGiftcardIcon />,
-      label: 'Заказы',
+      label: `${t('profile.menu.orders')}`,
       onClick: () => {
         router.push('/myorders/delivery');
         onClose();
@@ -115,7 +119,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <CardGiftcardIcon />,
-      label: 'Ваши сертификаты',
+      label: `${t('profile.menu.certificates')}`,
       onClick: () => {
         router.push('/profile?tab=certificates');
         onClose();
@@ -123,7 +127,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <AccountBalanceWalletIcon />,
-      label: 'WB Банк',
+      label: `${t('profile.menu.wallet')}`,
       balance: '0 ₽',
       onClick: () => {
         router.push('/profile?tab=bank');
@@ -132,7 +136,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <CreditCardIcon />,
-      label: 'Способы оплаты',
+      label: `${t('profile.menu.paymentMethods')}`,
       onClick: () => {
         router.push('/profile?tab=payment');
         onClose();
@@ -143,8 +147,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
   const chatItems = [
     {
       icon: <ChatBubbleOutlineIcon />,
-      label: 'Чаты',
-      description: 'С поддержкой, продавцами и курьерами',
+      label: `${t('profile.chat.title')}`,
+      description: `${t('profile.chat.description')}`,
       onClick: () => {
         router.push('/profile?tab=chats');
         onClose();
@@ -152,7 +156,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <RateReviewIcon />,
-      label: 'Отзывы и вопросы',
+      label: `${t('profile.chat.reviews')}`,
       onClick: () => {
         router.push('/profile?tab=reviews');
         onClose();
@@ -160,7 +164,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
     },
     {
       icon: <BusinessIcon />,
-      label: 'Покупайте как бизнес',
+      label: `${t('profile.chat.business')}`,
       onClick: () => {
         router.push('/profile?tab=business');
         onClose();
@@ -200,20 +204,30 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       {/* User Profile Section */}
       <Box className={styles.userSection}>
         <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
-          <Avatar sx={{ width: 48, height: 48, bgcolor: '#667eea' }}>
+          <Avatar sx={{ width: 48, height: 48, bgcolor: '#667eea', flexShrink: 0 }}>
             {user?.email?.[0]?.toUpperCase() || 'U'}
           </Avatar>
-          <Box flex={1}>
+          <Box flex={1} sx={{ minWidth: 0 }}>
             <Typography
               variant="subtitle1"
               fontWeight={600}
-              sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 0.5,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                width: '100%'
+              }}
             >
-              {user?.email?.split('@')[0] || 'Пользователь'}
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {user?.email?.split('@')[0] || 'Пользователь'}
+              </span>              
               <ArrowForwardIosIcon sx={{ fontSize: 14, color: '#868695' }} />
             </Typography>
           </Box>
-          <Badge badgeContent={2} color="error">
+          <Badge badgeContent={2} color="error" sx={{ mr: 1, flexShrink: 0 }}>
             <NotificationsNoneIcon sx={{ color: '#868695' }} />
           </Badge>
         </Box>
@@ -222,18 +236,18 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
         <Box display="flex" gap={1.5} sx={{ mb: 2 }}>
           <Box className={styles.infoCard}>
             <Typography variant="caption" color="text.secondary">
-              WB скидка
+              {t('profile.discount')}
             </Typography>
             <Typography variant="body2" fontWeight={600}>
-              до 40%
+              {t('profile.upTo')} 40%
             </Typography>
           </Box>
           <Box className={styles.infoCard}>
             <Typography variant="caption" color="text.secondary">
-              Оплата при получении
+              {t('profile.paymentOnDelivery')}
             </Typography>
             <Typography variant="body2" fontWeight={600}>
-              до 196 000 ₽
+              {t('profile.upTo')} 196 000 ₽
             </Typography>
           </Box>
         </Box>
@@ -275,10 +289,10 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
           variant="caption"
           sx={{ color: '#868695', fontWeight: 600, textTransform: 'uppercase' }}
         >
-          Чаты
+          {t('profile.chat.title')}
         </Typography>
         <Typography variant="caption" sx={{ color: '#868695', display: 'block', mt: 0.5 }}>
-          С поддержкой, продавцами и курьерами
+          {t('profile.chat.description')}
         </Typography>
       </Box>
 
@@ -316,7 +330,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Выйти"
+              primary={t('profile.logout')}
               primaryTypographyProps={{
                 fontSize: '14px',
                 fontWeight: 400
