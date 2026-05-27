@@ -1,0 +1,250 @@
+.wrapper {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+}
+
+.card {
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.cardPS5 {
+  background: #ffffff;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  height: 328px;
+}
+
+.imgPS5 {
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  object-position: left center;
+  flex-shrink: 0;
+  display: block;
+}
+
+.cardTextPS5 {
+  flex: 1;
+  padding: 40px 40px 40px 24px;
+}
+
+.bottomRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 272px;
+}
+
+.cardAirpods {
+  background: #ededed;
+  padding: 0 24px 0 0;
+  align-items: center;
+}
+
+.imgAirpods {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.cardVision {
+  background: #353535;
+  padding: 0 24px 0 0;
+  align-items: center;
+}
+
+.imgVision {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.cardAirpods>div,
+.cardVision>div {
+  flex: 1;
+  padding-left: 8px;
+}
+
+.cardMac {
+  background: #f2f2f2;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 0 56px;
+  height: 600px;
+  overflow: hidden;
+}
+
+.macText {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 45%;
+  z-index: 2;
+}
+
+.imgMacContainer {
+  width: 55%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.imgMac {
+  max-height: 95%;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.titleLg {
+  font-family: 'Inter', sans-serif;
+  font-size: 40px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0 0 12px;
+  line-height: 1.1;
+}
+
+.titleMac {
+  font-family: 'Inter', sans-serif;
+  font-size: 64px;
+  font-weight: 100;
+  color: #000000;
+  margin: 0;
+  line-height: 0.95;
+  letter-spacing: -1px;
+}
+
+.titleMac strong {
+  font-weight: 500;
+}
+
+.titleSm {
+  font-family: 'Inter', sans-serif;
+  font-size: 29px;
+  font-weight: 300;
+  color: #000000;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.titleSm strong {
+  font-weight: 600;
+}
+
+.titleSmLight {
+  font-family: 'Inter', sans-serif;
+  font-size: 29px;
+  font-weight: 300;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.titleSmLight strong {
+  font-weight: 600;
+}
+
+.desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #909090;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.shopBtn {
+  display: inline-block;
+  padding: 16px 56px;
+  border: 1px solid #000000;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  width: fit-content;
+  margin-top: 8px;
+}
+
+.shopBtn:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cardMac {
+    flex-direction: column;
+    padding: 40px 40px 0;
+    height: auto;
+    min-height: 500px;
+  }
+
+  .macText {
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .imgMacContainer {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .imgMac {
+    height: 300px;
+  }
+
+  .cardPS5,
+  .bottomRow {
+    height: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .bottomRow {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .cardPS5 {
+    flex-direction: column-reverse;
+    padding: 32px;
+    height: auto;
+  }
+
+  .imgPS5 {
+    width: 80%;
+    height: auto;
+  }
+
+  .cardTextPS5 {
+    padding: 0 0 24px 0;
+  }
+}

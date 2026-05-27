@@ -1,0 +1,123 @@
+.section {
+  width: 100%;
+  background-color: #fafafa; /* Светлый фон как на скрине */
+  padding: 80px 0;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 160px; /* Боковые отступы, чтобы контент стоял по сетке баннеров */
+  box-sizing: border-box;
+}
+
+/* --- ШАПКА БЛОКА --- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 500;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.arrows {
+  display: flex;
+  gap: 16px;
+}
+
+.arrowBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.arrowBtn:hover {
+  opacity: 0.6;
+}
+
+/* --- СЕТКА КАТЕГОРИЙ --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* Ровно 6 колонок в ряд */
+  gap: 32px; /* Расстояние между карточками */
+}
+
+.card {
+  background: #ededed; /* Мягкий серый фон карточки */
+  border-radius: 15px; /* Скругление углов */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1; /* Делает карточки идеально квадратными */
+  padding: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  background-color: #e2e2e2; /* Эффект при наведении */
+}
+
+.iconWrapper {
+  color: #000000;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Стилизуем иконки внутри контейнера */
+.iconWrapper svg {
+  width: 48px;  /* Размер иконок как на макете */
+  height: 48px;
+  stroke-width: 1.2px; /* Тонкие аккуратные линии */
+}
+
+.cardName {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* --- АДАПТИВНОСТЬ --- */
+@media (max-width: 1200px) {
+  .container {
+    padding: 0 40px;
+  }
+  .grid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 в ряд на планшетах */
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 в ряд на мобилках */
+  }
+  .title {
+    font-size: 20px;
+  }
+}

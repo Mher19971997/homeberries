@@ -11,6 +11,8 @@ import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
+import SmallerBanners from '@homeberris/components/SmallerBanners';
+import BrowseByCategory from '@homeberris/components/BrowseByCategory';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -101,6 +103,8 @@ export default function Home({ }: InferGetStaticPropsType<
   return (
     <Box className={styles.body}>
       <CarouselCatalog />
+      <SmallerBanners />
+      <BrowseByCategory />
       <Typography
         variant="h5"
         fontWeight="bold"
