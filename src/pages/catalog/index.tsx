@@ -1,7 +1,7 @@
-import React from 'react';
+﻿import React from 'react';
 import * as qs from 'qs';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import {
   Grid,
   Box,
@@ -13,7 +13,7 @@ import {
 import { getAllCatalogs, searchCatalog } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
 
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { ListResult } from '@homeberris/types/filter';
 
 // styles
@@ -21,16 +21,15 @@ import styles from '@homeberris/pages/catalog/[category]/index.module.css';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 
 export default function SearchCatalog() {
-  const router = useRouter();
-  const { search } = router.query;
-  const searchQuery = typeof search === 'string' ? search : '';
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams?.get('search') ?? '';
 
   const { data: catalogs, isLoading } = useQuery<{
     data: CatalogItem[];
     meta: ListResult;
-  }>(
-    ['searchCatalogs', searchQuery],
-    () =>
+  }>({
+    queryKey: ['searchCatalogs', searchQuery],
+    queryFn: () =>
       searchQuery
         ? searchCatalog(
           qs.stringify({
@@ -52,10 +51,8 @@ export default function SearchCatalog() {
             }
           })
         ),
-    {
-      enabled: router.isReady
-    }
-  );
+    enabled: true,
+  });
 
   return (
     <Box className={styles.body}>

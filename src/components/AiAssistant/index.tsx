@@ -16,7 +16,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import { chat, checkHealth, ChatMessage } from '@homeberris/http/aiApi';
 import styles from './index.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Импорт хука для анализа речи
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';

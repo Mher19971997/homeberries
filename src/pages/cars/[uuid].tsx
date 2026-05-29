@@ -1,8 +1,8 @@
 import { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { Box, Grid, CircularProgress, Typography } from '@mui/material';
 import { CarAiDialog, CarEquipment, CarGallery, CarInfo, CarSimilar, CarSpecs, CarStatistics, useCarDetail } from '@homeberris/features/cars';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
-
 
 const Loading = () => (
   <Box className={styles.body}>
@@ -16,9 +16,11 @@ const NotFound = () => (
   </Box>
 );
 
-
 export default function CarDetailPage() {
-  const { car, statistics, similarCars, isLoading, router } = useCarDetail();
+  const router = useRouter();
+  const params = useParams();
+  const uuid = typeof params?.uuid === 'string' ? params.uuid : '';
+  const { car, statistics, similarCars, isLoading } = useCarDetail(uuid);
   const [aiOpen, setAiOpen] = useState(false);
 
   const openAiDialog = () => setAiOpen(true);
@@ -40,7 +42,7 @@ export default function CarDetailPage() {
           <CarStatistics car={car} statistics={statistics} />
         </Grid>
       </Grid>
-      <CarSimilar similarCars={similarCars} router={router} />
+      <CarSimilar similarCars={similarCars} router={router as any} />
       <CarAiDialog open={aiOpen} onClose={closeAiDialog} car={car} />
     </Box>
   );

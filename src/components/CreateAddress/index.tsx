@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Box, Button, Typography, Popover, Divider } from '@mui/material';
 import CustomModal from '@homeberris/components/CustomModal';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
@@ -9,7 +9,7 @@ import { getDeliveryAddressApi } from '@homeberris/http/deliveryAddressApi';
 import qs from 'qs';
 import DeliveryAddressItemForModal from '../DeliveryAddressItemForModal';
 import { useCookies } from 'react-cookie';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 interface CreateAddressProps { }
@@ -24,24 +24,10 @@ const CreateAddress: React.FC<CreateAddressProps> = () => {
   const handleClose = () => setOpenModal(false);
   const handlePopoverClose = () => setAnchorEl(null);
 
-  const { data: deliveryAdress } = useQuery(
-    ['getDeliveryAddressIsDefault', cookies.token],
-    () =>
-      getDeliveryAddressApi(
-        qs.stringify({
-          isDefault: true
-        }),
-        cookies.token
-      ),
-    {
-      onSuccess: (data) => {
-        const defaultAddress = data?.data?.find((item: any) => item.isDefault === true);
-        if (defaultAddress) {
-          setSelectedAddress(defaultAddress);
-        }
-      }
-    }
-  );
+  const { data: deliveryAdress } = useQuery({
+    queryKey: ['getDeliveryAddressIsDefault', cookies.token],
+    queryFn: () => getDeliveryAddressApi(qs.stringify({ isDefault: true }), cookies.token),
+  });
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

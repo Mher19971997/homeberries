@@ -1,1 +1,1 @@
-export * from './carDetail.module.css';
+export { default } from './carDetail.module.css';

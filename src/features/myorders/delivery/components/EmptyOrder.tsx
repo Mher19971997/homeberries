@@ -1,7 +1,7 @@
 import { Box, Button, Card, Typography } from '@mui/material';
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export const EmptyOrder = ({ tabValue }: { tabValue: number }) => {
     const router = useRouter();

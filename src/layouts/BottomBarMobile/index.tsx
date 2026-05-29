@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import styles from './index.module.css';
 import { Badge, Box } from '@mui/material';
@@ -6,10 +7,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 
 import { getAllBaskets } from '@homeberris/http/basketApi';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import qs from 'qs';
 import { useCookies } from 'react-cookie';
 
@@ -17,11 +18,12 @@ interface BottomBarMobileProps { }
 
 const BottomBarMobile: React.FC<BottomBarMobileProps> = ({ }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [cookies] = useCookies(['token']);
 
-  const { isLoading, data: basket } = useQuery(
-    ['basketCount', cookies.token],
-    () =>
+  const { isLoading, data: basket } = useQuery({
+    queryKey: ['basketCount', cookies.token],
+    queryFn: () =>
       getAllBaskets(
         qs.stringify({
           queryMeta: {
@@ -29,15 +31,15 @@ const BottomBarMobile: React.FC<BottomBarMobileProps> = ({ }) => {
           }
         }),
         cookies.token
-      )
-  );
+      ),
+  });
 
   const bottomBarData = [
     {
       id: 1,
       icon: (
         <HomeIcon
-          style={{ color: (router.pathname === '/' && '#667eea') || '#868695' }}
+          style={{ color: (pathname === '/' && '#667eea') || '#868695' }}
         />
       ),
       onClick: () => router.push('/')
@@ -59,7 +61,7 @@ const BottomBarMobile: React.FC<BottomBarMobileProps> = ({ }) => {
         <Badge badgeContent={basket?.meta?.count} color='secondary'>
           <ShoppingCartOutlinedIcon
             style={{
-              color: (router.pathname === '/basket' && '#667eea') || '#868695'
+              color: (pathname === '/basket' && '#667eea') || '#868695'
             }}
           />
         </Badge>
@@ -71,7 +73,7 @@ const BottomBarMobile: React.FC<BottomBarMobileProps> = ({ }) => {
       icon: (
         <PersonIcon
           style={{
-            color: (router.pathname === '/profile' && '#667eea') || '#868695'
+            color: (pathname === '/profile' && '#667eea') || '#868695'
           }}
         />
       ),

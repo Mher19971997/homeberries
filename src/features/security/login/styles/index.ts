@@ -1,2 +1,1 @@
-export * from './index.module.css';
-
+export { default } from './index.module.css';

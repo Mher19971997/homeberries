@@ -1,3 +1,5 @@
+﻿'use client';
+
 import React from 'react';
 import {
   Box,
@@ -12,14 +14,14 @@ import ICamera from '../Icons/ICamera';
 import ISearch from '../Icons/ISearch';
 import styles from '@homeberris/components/SearchInput/index.module.css';
 import SarchAutoCompliteItem from '../SarchAutoCompliteItem';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { searchCatalog } from '@homeberris/http/catalogApi';
 import { searchCategories } from '@homeberris/http/categoryApi';
 // import { searchCars } from '@homeberris/http/carApi';
 import qs from 'qs';
 import { useDebounce } from '@homeberris/hooks/useDebounce';
 import PhotoSearchModal from '../PhotoSearchModal';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import FolderIcon from '@mui/icons-material/Folder';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { useTranslation } from 'react-i18next';
@@ -47,9 +49,9 @@ const SearchInput: React.FC<SearchInputProps> = () => {
   const debaunceSearch = useDebounce(catalogName, 300);
 
   // Поиск по каталогу
-  const { data: filterCatalogs } = useQuery(
-    ['searchCatalog', debaunceSearch],
-    () =>
+  const { data: filterCatalogs } = useQuery({
+    queryKey: ['searchCatalog', debaunceSearch],
+    queryFn: () =>
       searchCatalog(
         qs.stringify({
           filterMeta: {
@@ -62,19 +64,15 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           }
         })
       ),
-    {
-      enabled: !!debaunceSearch && debaunceSearch.length > 0
-    }
-  );
+    enabled: !!debaunceSearch && debaunceSearch.length > 0
+  });
 
   // Поиск по категориям
-  const { data: filterCategories } = useQuery(
-    ['searchCategories', debaunceSearch],
-    () => searchCategories(debaunceSearch),
-    {
-      enabled: !!debaunceSearch && debaunceSearch.length > 0
-    }
-  );
+  const { data: filterCategories } = useQuery({
+    queryKey: ['searchCategories', debaunceSearch],
+    queryFn: () => searchCategories(debaunceSearch),
+    enabled: !!debaunceSearch && debaunceSearch.length > 0
+  });
 
   // Поиск по автомобилям
   // const { data: filterCars } = useQuery(

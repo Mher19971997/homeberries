@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
     getCars,
     getCarMenu,
@@ -8,34 +7,26 @@ import {
 } from '@homeberris/http/carApi';
 import { checkToken } from '@homeberris/utils/auth';
 
-export const useCarsCatalog = () => {
-    const router = useRouter();
-    const { brand, model, subModel } = router.query;
-
-    const brandId = typeof brand === 'string' ? brand : undefined;
-    const modelId = typeof model === 'string' ? model : undefined;
-    const subModelId = typeof subModel === 'string' ? subModel : undefined;
-
+export const useCarsCatalog = (brandId?: string, modelId?: string, subModelId?: string) => {
     const isAuth = checkToken();
 
-    const { data: carMenu } = useQuery<CarMenuBrand[]>(
-        'getCarMenu',
-        getCarMenu
-    );
+    const { data: carMenu } = useQuery<CarMenuBrand[]>({
+        queryKey: ['getCarMenu'],
+        queryFn: getCarMenu,
+    });
 
-    const { data: carsData, isLoading } = useQuery(
-        ['getCars', brandId, modelId, subModelId],
-        () =>
+    const { data: carsData, isLoading } = useQuery({
+        queryKey: ['getCars', brandId, modelId, subModelId],
+        queryFn: () =>
             getCars({
                 brand_id: brandId,
                 model_id: modelId,
                 sub_model_id: subModelId,
                 is_available: true,
             }),
-        { enabled: router.isReady }
-    );
+    });
 
-    const cars: Car[] = carsData?.data || [];
+    const cars: Car[] = (carsData as any)?.data || [];
 
     const currentBrand = carMenu?.find((b) => b.uuid === brandId);
     const currentModel = currentBrand?.models.find(
@@ -43,7 +34,6 @@ export const useCarsCatalog = () => {
     );
 
     return {
-        router,
         brandId,
         modelId,
         subModelId,

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useRef, useEffect } from 'react';
 import {
   Box,
@@ -12,10 +14,10 @@ import {
   Badge,
   Avatar
 } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { removeToken } from '@homeberris/utils/auth';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { getProfile } from '@homeberris/http/userApi';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -38,23 +40,19 @@ interface ProfileDropdownProps {
   onClose: () => void;
 }
 
-const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
-  anchorEl,
-  open,
-  onClose
-}) => {
+function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): React.JSX.Element | null {
   const { t } = useTranslation('common');
   const router = useRouter();
   const [cookies] = useCookies(['token']);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // const queryClient = useQueryClient();
 
-  const { data: user } = useQuery('getProfile', () => getProfile(cookies.token), {
+  const { data: user } = useQuery({
+    queryKey: ['getProfile'],
+    queryFn: () => getProfile(cookies.token),
     enabled: open && !!cookies.token
   });
 
   useEffect(() => {
-    // Проверяем, что мы на клиенте
     if (typeof window === 'undefined') return;
 
     const handleClickOutside = (event: MouseEvent) => {
@@ -79,7 +77,6 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
 
   const handleLogout = () => {
     removeToken();
-    // queryClient.clear();
     onClose();
     router.push('/');
   };
@@ -205,7 +202,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       <Box className={styles.userSection}>
         <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
           <Avatar sx={{ width: 48, height: 48, bgcolor: '#667eea', flexShrink: 0 }}>
-            {user?.email?.[0]?.toUpperCase() || 'U'}
+            {(user as any)?.email?.[0]?.toUpperCase() || 'U'}
           </Avatar>
           <Box flex={1} sx={{ minWidth: 0 }}>
             <Typography
@@ -222,8 +219,8 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               }}
             >
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {user?.email?.split('@')[0] || 'Пользователь'}
-              </span>              
+                {(user as any)?.email?.split('@')[0] || 'Пользователь'}
+              </span>
               <ArrowForwardIosIcon sx={{ fontSize: 14, color: '#868695' }} />
             </Typography>
           </Box>
@@ -265,7 +262,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
-                secondary={item.balance}
+                secondary={(item as any).balance}
                 primaryTypographyProps={{
                   fontSize: '14px',
                   fontWeight: 400
@@ -305,7 +302,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
               </ListItemIcon>
               <ListItemText
                 primary={item.label}
-                secondary={item.description}
+                secondary={(item as any).description}
                 primaryTypographyProps={{
                   fontSize: '14px',
                   fontWeight: 400
@@ -341,6 +338,6 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({
       </List>
     </Paper>
   );
-};
+}
 
 export default ProfileDropdown;

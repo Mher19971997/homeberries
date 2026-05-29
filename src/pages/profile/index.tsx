@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
 import {
   Box,
   Avatar,
@@ -16,12 +16,11 @@ import {
   ListItemText,
 } from '@mui/material';
 import styles from '@homeberris/pages/profile/index.module.css';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import { getProfile } from '@homeberris/http/userApi';
-import { InferGetStaticPropsType } from 'next';
 import { getTokenFromCookie } from '@homeberris/utils/auth';
 import { User } from '@homeberris/types/user';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -41,11 +40,8 @@ import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItem
 import { TopNav } from '@homeberris/features/myorders/delivery';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import { pluralizeItems } from '@homeberris/utils/formatPlural';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export default function Profile({ }: InferGetStaticPropsType<
-  typeof getServerSideProps
->) {
+export default function Profile() {
   const [cookies] = useCookies(['token']);
   const router = useRouter();
   const { items } = useFavorites();
@@ -56,14 +52,18 @@ export default function Profile({ }: InferGetStaticPropsType<
       router.replace('/security/login');
     }
   }, [cookies.token, router]);
-  const { data: user } = useQuery<User>('getProfile', () => getProfile(cookies.token));
+  const { data: user } = useQuery<User>({
+    queryKey: ['getProfile'],
+    queryFn: () => getProfile(cookies.token),
+    enabled: !!cookies.token,
+  });
 
   // Получаем недавно просмотренные товары (заглушка)
-  const { data: recentCatalogs } = useQuery(
-    'recentCatalogs',
-    () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 } })),
-    { enabled: !!cookies.token }
-  );
+  const { data: recentCatalogs } = useQuery({
+    queryKey: ['recentCatalogs'],
+    queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 } })),
+    enabled: !!cookies.token,
+  });
 
   return (
     <Box className={styles.body}>
@@ -385,18 +385,3 @@ export default function Profile({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps({ req, locale }: any) {
-  const queryClient = new QueryClient();
-  const token = getTokenFromCookie(req);
-
-  if (token) {
-    await queryClient.prefetchQuery('getProfile', () => getProfile(token));
-  }
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
-    }
-  };
-}

@@ -9,7 +9,6 @@ import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItem
 import dynamic from 'next/dynamic';
 import { pluralizeItems } from '@homeberris/utils/formatPlural';
 import { useTranslation } from 'react-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const FavoritesPage: React.FC = () => {
   const { t } = useTranslation('common');
@@ -50,7 +49,6 @@ export default dynamic(() => Promise.resolve(FavoritesPage), { ssr: false });
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
     },
   };
 }

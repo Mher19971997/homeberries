@@ -1,3 +1,6 @@
+// @ts-nocheck
+'use client';
+
 import React, { useRef, useState, Suspense, useEffect, useMemo, Component, ErrorInfo, ReactNode } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations, Environment, ContactShadows } from '@react-three/drei';

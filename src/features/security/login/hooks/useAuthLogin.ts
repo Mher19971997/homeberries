@@ -1,7 +1,7 @@
 import { useToast } from '@homeberris/hooks/useToast';
 import { login } from '@homeberris/http/authApi';
 import { setToken } from '@homeberris/utils/auth';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const useAuthLogin = () => {

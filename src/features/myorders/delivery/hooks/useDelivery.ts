@@ -1,7 +1,7 @@
-import { useMemo, useState, useCallback, useEffect } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+﻿import { useMemo, useState, useCallback, useEffect } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import * as qs from 'qs';
 import { getAllOrders, OrderItem } from '@homeberris/http/orderApi';
 import { getPaymentIntent } from '@homeberris/http/paymentApi';
@@ -27,30 +27,28 @@ export const useDelivery = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [orderToPay, setOrderToPay] = useState<OrderItem | null>(null);
 
-  const { paymentSuccess, paymentIntentId } = router.query;
+  const searchParams = useSearchParams();
+  const paymentSuccess = searchParams?.get('paymentSuccess');
+  const paymentIntentId = searchParams?.get('paymentIntentId');
   const isPaymentSuccess =
     paymentSuccess === 'true' && Boolean(paymentIntentId);
 
-  const { data: orders, isLoading } = useQuery(
-    ['getAllOrders'],
-    () =>
+  const { data: orders, isLoading } = useQuery({
+    queryKey: ['getAllOrders'],
+    queryFn: () =>
       getAllOrders(
         qs.stringify({ queryMeta: { paginate: true } }),
         cookies.token
       ),
-    {
-      enabled: !!cookies.token,
-      refetchOnWindowFocus: false
-    }
-  );
+    enabled: !!cookies.token,
+    refetchOnWindowFocus: false,
+  });
 
-  const { data: paymentInfo } = useQuery(
-    ['getPaymentIntent', paymentIntentId],
-    () => getPaymentIntent(paymentIntentId as string),
-    {
-      enabled: Boolean(paymentIntentId && cookies.token)
-    }
-  );
+  const { data: paymentInfo } = useQuery({
+    queryKey: ['getPaymentIntent', paymentIntentId],
+    queryFn: () => getPaymentIntent(paymentIntentId as string),
+    enabled: Boolean(paymentIntentId && cookies.token),
+  });
 
   const recentOrders = useMemo(() => {
     if (!orders?.data) return [];
@@ -132,9 +130,7 @@ export const useDelivery = () => {
     if (!isPaymentSuccess) return;
 
     const timer = setTimeout(() => {
-      router.replace('/myorders/delivery', undefined, {
-        shallow: true
-      });
+      router.replace('/myorders/delivery');
     }, 8000);
 
     return () => clearTimeout(timer);

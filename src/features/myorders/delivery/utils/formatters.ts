@@ -1,5 +1,5 @@
 import { OrderItem } from "@homeberris/http/orderApi";
-import EmtpImg from 'public/images/cardEmpty.png';
+import EmtpImg from '@homeberris/assets/cardEmpty.png';
 
 const getStatusColor = (status: string) => {
     switch (status?.toLowerCase()) {

@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback } from 'react';
+﻿import React, { useEffect, useCallback } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
-import { useInfiniteQuery } from 'react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import qs from 'qs';
 import { UUID } from 'crypto';
 import styles from './index.module.css';
@@ -61,20 +61,19 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({
     hasNextPage,
     isFetchingNextPage,
     isLoading
-  } = useInfiniteQuery(
-    ['getSimilarCatalogs', currentCatalogUuid, categoryUuid, subCategoryUuid],
-    ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam)),
-    {
-      getNextPageParam: (lastPage) => {
-        const { meta } = lastPage;
-        const totalPages = Math.ceil(meta.count / ITEMS_PER_PAGE);
-        const currentPage = meta.page || 1;
-        return currentPage < totalPages ? currentPage + 1 : undefined;
-      },
-      enabled: !!(categoryUuid || subCategoryUuid),
-      refetchOnWindowFocus: false
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: ['getSimilarCatalogs', currentCatalogUuid, categoryUuid, subCategoryUuid],
+    queryFn: ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam as number)),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any) => {
+      const { meta } = lastPage;
+      const totalPages = Math.ceil(meta.count / ITEMS_PER_PAGE);
+      const currentPage = meta.page || 1;
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    enabled: !!(categoryUuid || subCategoryUuid),
+    refetchOnWindowFocus: false,
+  });
 
   // Объединяем все страницы в один массив и фильтруем текущий товар
   const allProducts = data?.pages?.flatMap(page => page?.data || []) || [];

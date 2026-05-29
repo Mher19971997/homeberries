@@ -1,6 +1,5 @@
-import React from 'react';
+﻿import React from 'react';
 import * as qs from 'qs';
-import { InferGetStaticPropsType } from 'next';
 import { Box, Typography, Button } from '@mui/material';
 import GoogleMapComponent from '@homeberris/components/GoogleMapComponent';
 import {
@@ -10,24 +9,19 @@ import CompanyAddressItem from '@homeberris/components/CompanyAddressItem';
 import styles from '@homeberris/pages/services/address/index.module.css';
 import { CompanyAddressData } from '@homeberris/http/companyAddressApi';
 import { useLoadScript } from '@react-google-maps/api';
-import {
-  QueryClient,
-  dehydrate,
-  useQuery
-} from 'react-query';
-import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export default function Address({ }: InferGetStaticPropsType<
-  typeof getStaticProps
->) {
+export default function AddressPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
-  const { data: companyAddressesResponse } = useQuery<{ data: CompanyAddressData[] }>(
-    'getCompanyAddressesPublic',
-    () => getCompanyAddressesPublic()
-  );
+  const { data: companyAddressesResponse } = useQuery<{ data: CompanyAddressData[] }>({
+    queryKey: ['getCompanyAddressesPublic'],
+    queryFn: () => getCompanyAddressesPublic(),
+  });
 
   const companyAddresses = companyAddressesResponse?.data || [];
 
@@ -41,7 +35,7 @@ export default function Address({ }: InferGetStaticPropsType<
     libraries: ['places']
   });
 
-  const mapRef = React.useRef<any>();
+  const mapRef = React.useRef<any>(null);
 
   // Инициализация маркеров из адресов компаний
   React.useEffect(() => {
@@ -81,12 +75,11 @@ export default function Address({ }: InferGetStaticPropsType<
     []
   );
 
+  const idFromQuery = searchParams?.get('id');
+
   // Если есть id в query, автоматически выбираем этот пункт и фокусируем карту
   React.useEffect(() => {
-    if (!companyAddresses.length || !router.isReady) return;
-
-    const idFromQuery = router.query.id as string | undefined;
-    if (!idFromQuery) return;
+    if (!companyAddresses.length || !idFromQuery) return;
 
     const found = companyAddresses.find((item) => item.uuid === idFromQuery);
     if (found) {
@@ -97,21 +90,13 @@ export default function Address({ }: InferGetStaticPropsType<
         // ignore
       }
     }
-  }, [companyAddresses, router.isReady, router.query.id, panTo]);
+  }, [companyAddresses, idFromQuery, panTo]);
 
   const handleSelect = async (address: CompanyAddressData) => {
     try {
       panTo({ lat: address.latitude, lng: address.longitude });
-      // пишем id выбранного пункта в url, чтобы можно было открыть напрямую
       if (address.uuid) {
-        router.push(
-          {
-            pathname: router.pathname,
-            query: { ...router.query, id: address.uuid }
-          },
-          undefined,
-          { shallow: true }
-        );
+        router.push(`${pathname}?id=${address.uuid}`);
       }
     } catch (error) {
       console.log('😱 Error: ', error);
@@ -128,14 +113,7 @@ export default function Address({ }: InferGetStaticPropsType<
       setSelectedAddress(address);
       panTo({ lat: address.latitude, lng: address.longitude });
       if (address.uuid) {
-        router.push(
-          {
-            pathname: router.pathname,
-            query: { ...router.query, id: address.uuid }
-          },
-          undefined,
-          { shallow: true }
-        );
+        router.push(`${pathname}?id=${address.uuid}`);
       }
     }
     setSelected(marker);
@@ -171,12 +149,7 @@ export default function Address({ }: InferGetStaticPropsType<
                   sx={{ cursor: 'pointer', mb: 1 }}
                   onClick={() => {
                     setSelectedAddress(null);
-                    const { id, ...rest } = router.query;
-                    router.push(
-                      { pathname: router.pathname, query: { ...rest } },
-                      undefined,
-                      { shallow: true }
-                    );
+                    router.push(pathname ?? '/services/address');
                   }}
                 >
                   {t('addresses.back')}
@@ -230,17 +203,3 @@ export default function Address({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getStaticProps({ locale }: { locale: string }) {
-  const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery('getCompanyAddressesPublic', () =>
-    getCompanyAddressesPublic()
-  );
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
-    }
-  };
-}

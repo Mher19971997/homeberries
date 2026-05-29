@@ -1,87 +1,48 @@
+'use client';
+
 import { getCatalogByUud } from '@homeberris/http/catalogApi';
-import { InferGetStaticPropsType } from 'next';
 import React from 'react';
 import { Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import * as qs from 'qs';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
-import { useRouter } from 'next/router';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import ProductPageContent from '@homeberris/components/ProductPageContent';
 
-// Helper function to check if string is UUID
 const isUUID = (str: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(str);
 };
 
-// Helper function to check if string is UUID (for server-side)
-const isUUIDServer = (str: string): boolean => {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(str);
-};
+export default function Catalog() {
+  const params = useParams();
+  const categoryName = typeof params?.category === 'string' ? decodeURIComponent(params.category) : '';
+  const subCategoryName = typeof params?.slug === 'string' ? decodeURIComponent(params.slug) : '';
+  const catalogUuid = typeof params?.product === 'string' ? params.product : '';
 
-export default function Catalog({ 
-  catalog: propCatalog,
-  categoryName: propCategoryName,
-  subCategoryName: propSubCategoryName
-}: InferGetStaticPropsType<typeof getServerSideProps>) {
-  const route = useRouter();
-  const { category, slug, product } = route.query;
-  
-  const categoryName = propCategoryName || (typeof category === 'string' ? decodeURIComponent(category) : '');
-  const subCategoryName = propSubCategoryName || (typeof slug === 'string' ? decodeURIComponent(slug) : '');
-  const catalogUuid = typeof product === 'string' ? product : '';
+  const { toast, hideToast } = useToast();
 
-  const { toast, showError, hideToast } = useToast();
-  
-  const { data: catalog, isLoading } = useQuery<CatalogItem | null>(
-    ['getCatalogByUud', catalogUuid],
-    () => {
-      return getCatalogByUud(
+  const { data: catalog, isLoading } = useQuery<CatalogItem | null>({
+    queryKey: ['getCatalogByUud', catalogUuid],
+    queryFn: () =>
+      getCatalogByUud(
         catalogUuid,
         qs.stringify({
           includeMeta: [
-            {
-              association: 'category'
-            },
-            {
-              association: 'subCategorie'
-            },
-            {
-              association: 'images'
-            },
-            {
-              association: 'groupOption',
-              include: [
-                {
-                  association: 'options'
-                }
-              ]
-            },
-            {
-              association: 'comments'
-            },
-            {
-              association: 'brand'
-            }
+            { association: 'category' },
+            { association: 'subCategorie' },
+            { association: 'images' },
+            { association: 'groupOption', include: [{ association: 'options' }] },
+            { association: 'comments' },
+            { association: 'brand' }
           ]
         })
-      );
-    },
-    {
-      enabled: !!catalogUuid && isUUID(catalogUuid),
-      retry: 1,
-      initialData: propCatalog as CatalogItem | null,
-      onError: (err: any) => {
-        const errorMessage = err?.response?.data?.message || 'Ошибка при загрузке товара';
-        showError(errorMessage);
-      }
-    }
-  );
-
-  const finalCatalog: CatalogItem | undefined = (catalog as CatalogItem | null) || (propCatalog as CatalogItem | null) || undefined;
+      ),
+    enabled: !!catalogUuid && isUUID(catalogUuid),
+    retry: 1,
+  });
 
   if (isLoading) {
     return (
@@ -91,7 +52,7 @@ export default function Catalog({
     );
   }
 
-  if (!isLoading && !finalCatalog) {
+  if (!catalog) {
     return (
       <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '50vh', p: 3 }}>
         <Box textAlign="center">
@@ -105,8 +66,8 @@ export default function Catalog({
 
   return (
     <>
-      <ProductPageContent 
-        catalog={finalCatalog} 
+      <ProductPageContent
+        catalog={catalog}
         categoryName={categoryName}
         subCategoryName={subCategoryName}
       />
@@ -118,83 +79,4 @@ export default function Catalog({
       />
     </>
   );
-}
-
-export async function getServerSideProps({
-  params
-}: {
-  params: { category: string; slug: string; product: string };
-}) {
-  const queryClient = new QueryClient();
-
-  try {
-    if (!params?.product || !params?.category || !params?.slug) {
-      return {
-        notFound: true,
-      };
-    }
-
-    // Декодируем параметры
-    const decodedProduct = decodeURIComponent(params.product);
-    const decodedCategory = decodeURIComponent(params.category);
-    const decodedSlug = decodeURIComponent(params.slug);
-
-    // Проверяем, что product - это UUID
-    if (!isUUIDServer(decodedProduct)) {
-      return {
-        notFound: true,
-      };
-    }
-
-    await queryClient.prefetchQuery(
-      ['getCatalogByUud', params.product],
-      () =>
-        getCatalogByUud(
-          params.product,
-          qs.stringify({
-            includeMeta: [
-              {
-                association: 'category'
-              },
-              {
-                association: 'subCategorie'
-              },
-              {
-                association: 'images'
-              },
-              {
-                association: 'groupOption',
-                include: [
-                  {
-                    association: 'options'
-                  }
-                ]
-              },
-              {
-                association: 'comments'
-              },
-              {
-                association: 'brand'
-              }
-            ]
-          })
-        )
-    );
-
-    const catalog = await queryClient.getQueryData(['getCatalogByUud', params.product]);
-
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-        catalog: catalog || null,
-        categoryName: decodedCategory,
-        subCategoryName: decodedSlug
-      }
-    };
-  } catch (error) {
-    console.error('getServerSideProps error:', error);
-    return {
-      notFound: true,
-    };
-  }
 }

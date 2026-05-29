@@ -10,7 +10,7 @@ import {
   CircularProgress
 } from '@mui/material';
 import { ExpandMore, ChevronRight } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import {
   CarMenuBrand,
   CarMenuModel

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { checkToken } from '@homeberris/utils/auth';
 import { LoginForm } from '@homeberris/features/security/login';
 

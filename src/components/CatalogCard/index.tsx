@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
+﻿import React, { useMemo } from 'react';
 import { useHover } from '@homeberris/hooks/useHover';
 import { Box, Button, IconButton, Typography, Chip } from '@mui/material';
-import EmtpImg from 'public/images/cardEmpty.png';
+import EmtpImg from '@homeberris/assets/cardEmpty.png';
 import CardSlider from '@homeberris/components/CardSlider';
 import PositionedSnackbar from '@homeberris/components/PositionedSnackbar';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { insertBasket } from '@homeberris/http/basketApi';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import StarIcon from '@mui/icons-material/Star';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -42,21 +42,19 @@ const CatalogCard: React.FC<CatalogCardProps> = ({
   const isAuth = checkToken();
 
   // Добавление в корзину для авторизованных пользователей
-  const { mutate, isError } = useMutation(
-    (catalogUuid: string) => insertBasket({ catalogUuid }, cookies.token),
-    {
-      onSuccess: (response, formData) => {
-        queryClient.invalidateQueries('basketCount');
-        queryClient.invalidateQueries('getAllBaskets');
-        setCheckCreatedBasket(true);
-        setOpenSuccess(true);
-      },
-      onError: (error) => {
-        setCheckCreatedBasket(false);
-        console.log(error);
-      }
-    }
-  );
+  const { mutate, isError } = useMutation({
+    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid }, cookies.token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['basketCount'] });
+      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      setCheckCreatedBasket(true);
+      setOpenSuccess(true);
+    },
+    onError: (error) => {
+      setCheckCreatedBasket(false);
+      console.log(error);
+    },
+  });
 
   // Добавление в корзину для неавторизованных пользователей (IndexedDB)
   const addToLocalBasket = React.useCallback(async () => {

@@ -1,9 +1,10 @@
+'use client';
 import React from 'react';
 import Slider from 'react-slick';
 import { Box } from '@mui/material';
 import { v4 } from 'uuid';
 import styles from '@homeberris/components/CardSlider/index.module.css';
-import Image from 'next/image';
+import EmtpImg from '@homeberris/assets/cardEmpty.png';
 
 interface CardSliderProps {
   images: CardSliderImage[];
@@ -22,7 +23,6 @@ const CardSlider: React.FC<CardSliderProps> = ({
 }) => {
   const settings = {
     className: 'center',
-    // autoplay: true,
     centerMode: true,
     infinite: true,
     centerPadding: '0px',
@@ -36,26 +36,22 @@ const CardSlider: React.FC<CardSliderProps> = ({
       <Slider {...settings}>
         {images.map((item: CardSliderImage) => (
           <Box key={v4()} className={styles.imageItem}>
-            <Image
+            <img
               src={item.imgPath}
-              width={280}
-              height={280}
-              style={{ 
-                borderRadius: 0, 
-                overflow: 'hidden',
-                objectFit: 'contain',
-                objectPosition: 'center',
+              alt=''
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = EmtpImg.src;
+              }}
+              style={{
                 width: '100%',
                 height: '100%',
                 minHeight: '280px',
-                backgroundColor: '#fff'
+                objectFit: 'contain',
+                objectPosition: 'center',
+                backgroundColor: '#fff',
+                display: 'block'
               }}
-              alt=''
-              quality={90}
-              priority={false}
-              unoptimized={false}
             />
-            {/* <img src={item.imgPath} className={styles.imageItem} alt='' /> */}
           </Box>
         ))}
       </Slider>

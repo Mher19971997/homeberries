@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router';
+﻿import { useRouter } from 'next/navigation';
 import { checkToken } from '@homeberris/utils/auth';
 import { useIsMobile } from '@homeberris/hooks/useIsMobile';
 import { getMenuTree } from '@homeberris/http/categoryApi';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { CategoryItem } from '@homeberris/types/catalog';
 import {  useState } from 'react';
 import { getCarMenu } from '@homeberris/http/carApi';
@@ -13,8 +13,8 @@ export const useMobileSearch = () => {
     const isMobile = useIsMobile();
     const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
 
-    const { data: menuTree, isLoading: isLoadingCategories } = useQuery('getMenuTree', getMenuTree);
-    const { data: brands, isLoading: isLoadingCarBrand } = useQuery('getCarMenu', getCarMenu);
+    const { data: menuTree, isLoading: isLoadingCategories } = useQuery({ queryKey: ['getMenuTree'], queryFn: getMenuTree });
+    const { data: brands, isLoading: isLoadingCarBrand } = useQuery({ queryKey: ['getCarMenu'], queryFn: getCarMenu });
 
     const handleCategoryClick = (category: CategoryItem) => {
         router.push(`/catalog/${category.name}`);

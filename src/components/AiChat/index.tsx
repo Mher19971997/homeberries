@@ -23,7 +23,7 @@ const AiChat = ({ car }: Props) => {
 
         const newMessages = [
             ...messages,
-            { role: 'user', text: input },
+            { role: 'user' as const, text: input },
         ];
 
         setMessages(newMessages);

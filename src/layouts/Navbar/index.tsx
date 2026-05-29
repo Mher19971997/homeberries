@@ -1,12 +1,13 @@
+'use client';
 import React from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Box, Typography, InputBase, Badge, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useFavorites } from '@homeberris/context/favoritesContext';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import { useAuth } from '@homeberris/hooks/useAuth';
 import { getAllBaskets } from '@homeberris/http/basketApi';
@@ -22,11 +23,11 @@ const Navbar = () => {
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
 
   // Получение корзины для авторизованных
-  const { data: basket } = useQuery(
-    ['basketCount', cookies.token],
-    () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
-    { enabled: !!isAuth && !!cookies.token }
-  );
+  const { data: basket } = useQuery({
+    queryKey: ['basketCount', cookies.token],
+    queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
+    enabled: !!isAuth && !!cookies.token,
+  });
 
   // Корзина для неавторизованных
   React.useEffect(() => {
@@ -97,8 +98,8 @@ export default Navbar;
 
 
 // import React from 'react';
-// import { useQuery } from 'react-query';
-// import { useRouter } from 'next/router';
+// import { useQuery } from '@tanstack/react-query';
+// import { useRouter } from 'next/navigation';
 // import { Box, Typography } from '@mui/material';
 // import { useHover } from '@homeberris/hooks/useHover';
 // import { checkToken } from '@homeberris/utils/auth';

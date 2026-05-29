@@ -1,8 +1,7 @@
 import React from 'react';
 import * as qs from 'qs';
 import Link from 'next/link';
-import { InferGetStaticPropsType } from 'next';
-import { useRouter } from 'next/router';
+import { useRouter, useParams } from 'next/navigation';
 import {
   Grid,
   Box,
@@ -32,17 +31,17 @@ import GridViewIcon from '@mui/icons-material/GridView';
 
 // styles
 import styles from '@homeberris/pages/catalog/[category]/index.module.css';
-import { QueryClient, dehydrate, useQuery } from 'react-query';
+import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
 import FilterMenu from '@homeberris/layouts/FilterMenu';
 import TuneIcon from '@mui/icons-material/Tune';
 import { ListResult } from '@homeberris/types/filter';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
-export default function Catalog({ }: InferGetStaticPropsType<
-  typeof getServerSideProps
->) {
+
+export default function CatalogPage() {
 
   const router = useRouter();
-  const { category } = router.query;
+  const params = useParams();
+  const category = params?.category;
   const categoryName = typeof category === 'string' ? decodeURIComponent(category) : '';
 
   // Формируем путь для breadcrumbs на основе текущего маршрута
@@ -62,20 +61,18 @@ export default function Catalog({ }: InferGetStaticPropsType<
   const baseMaxPrice = 100000000;
 
   // Получаем дерево меню для отображения подкатегорий
-  const { data: menuTree } = useQuery('getMenuTree', getMenuTree);
+  const { data: menuTree } = useQuery({ queryKey: ['getMenuTree'], queryFn: getMenuTree });
   const categories = menuTree || [];
   const categoryData = categories.find((c: CategoryItem) => c.name === categoryName);
   const categoryUuid = categoryData?.uuid;
   const subCategories = categoryData?.subCategories || [];
 
   // Получаем бренды для категории
-  const { data: brandsData } = useQuery(
-    ['getBrandsByCategory', categoryUuid],
-    () => getBrandsByCategory(categoryUuid || ''),
-    {
-      enabled: !!categoryUuid
-    }
-  );
+  const { data: brandsData } = useQuery({
+    queryKey: ['getBrandsByCategory', categoryUuid],
+    queryFn: () => getBrandsByCategory(categoryUuid || ''),
+    enabled: !!categoryUuid,
+  });
   const brands = brandsData?.data || [];
 
   const buildQuery = () => {
@@ -136,13 +133,11 @@ export default function Catalog({ }: InferGetStaticPropsType<
   const { data: catalogs } = useQuery<{
     data: CatalogItem[];
     meta: ListResult;
-  }>(
-    ['getAllCatalogsByCategory', categoryName, sortBy, priceRange, selectedBrands, currentPage],
-    () => getAllCatalogs(buildQuery()),
-    {
-      enabled: !!categoryName
-    }
-  );
+  }>({
+    queryKey: ['getAllCatalogsByCategory', categoryName, sortBy, priceRange, selectedBrands, currentPage],
+    queryFn: () => getAllCatalogs(buildQuery()),
+    enabled: !!categoryName,
+  });
 
   // Сбрасываем страницу при изменении фильтров
   React.useEffect(() => {
@@ -401,47 +396,3 @@ export default function Catalog({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps({
-  params
-}: {
-  params: { category: string };
-}) {
-  const queryClient = new QueryClient();
-
-  try {
-    // Всегда пытаемся получить данные, даже если их нет
-    // Не возвращаем 404, чтобы страница открывалась с фильтрами
-    await queryClient.prefetchQuery(
-      ['getAllCatalogsByCategory', params.category],
-      () =>
-        getAllCatalogs(
-          qs.stringify({
-            includeMeta: [
-              {
-                association: 'category',
-                where: {
-                  name: params.category
-                }
-              }
-            ],
-            queryMeta: {
-              paginate: true
-            }
-          })
-        ),
-      {
-        retry: false
-      }
-    );
-  } catch (error) {
-    // Игнорируем ошибки - страница все равно откроется
-    console.log('Error prefetching catalogs:', error);
-  }
-
-  // Всегда возвращаем страницу, даже если нет продуктов
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient)
-    }
-  };
-}

@@ -9,7 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import { ExpandMore, ChevronRight } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 
 interface Props {
@@ -43,7 +43,7 @@ const MobileCatalogMenu: React.FC<Props> = ({
     level = 0
   ) => {
     return subCategories.map((sub: SubCategoryItem) => {
-      const hasChildren = sub?.children?.length > 0;
+      const hasChildren = (sub?.children?.length ?? 0) > 0;
       const isOpen = openItems.includes(sub.uuid);
 
       return (
@@ -93,7 +93,7 @@ const MobileCatalogMenu: React.FC<Props> = ({
   return (
     <List>
       {categories.map((category: CategoryItem) => {
-        const hasSub = category.subCategories?.length > 0;
+        const hasSub = (category.subCategories?.length ?? 0) > 0;
         const isOpen = openItems.includes(category.uuid);
 
         return (

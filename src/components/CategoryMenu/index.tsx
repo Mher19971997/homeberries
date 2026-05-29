@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem } from '@homeberris/types/category';
 import styles from './index.module.css';
@@ -17,7 +17,7 @@ const CategoryMenu: React.FC = () => {
   const {
     data: categoriesData,
     isLoading
-  } = useQuery('getCategories', getCategories);
+  } = useQuery({ queryKey: ['getCategories'], queryFn: getCategories });
 
   const categories = categoriesData?.data || [];
 

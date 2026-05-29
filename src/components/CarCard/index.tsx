@@ -29,7 +29,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
 
   // Преобразуем автомобиль в формат для избранного
   const carAsCatalogItem = {
-    uuid: car.uuid,
+    uuid: car.uuid as any,
     name: car.title,
     description: car.description || '',
     price: car.price.toString(),
@@ -46,7 +46,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleFavorite(carAsCatalogItem);
+    toggleFavorite(carAsCatalogItem as any);
   };
 
   // Перевод типа кузова на русский

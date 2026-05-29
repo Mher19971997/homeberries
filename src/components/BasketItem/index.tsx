@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
+'use client';
+
+import React from 'react';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { Box, Checkbox, IconButton, Typography } from '@mui/material';
 import styles from '@homeberris/components/BasketItem/index.module.css';
 import Image from 'next/image';
 import AnimatedNumber from 'react-animated-number';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   decrementBasketCatalog,
   incrementBasketCatalog,
@@ -36,57 +38,47 @@ const BasketItem: React.FC<BasketItemProps> = ({
   const queryClient = useQueryClient();
   const [cookies] = useCookies(['token']);
   const { toast, showSuccess, showError, hideToast } = useToast();
-  const isMobile = useIsMobile()
+  const isMobile = useIsMobile();
 
-  const increment = useMutation(
-    (uuid: any) => incrementBasketCatalog(uuid, cookies.token),
-    {
-      onSuccess: (response, formData) => {
-        queryClient.invalidateQueries('getAllBaskets');
-        showSuccess('Количество товара увеличено');
-      },
-      onError: (error: any) => {
-        const errorMessage = error?.response?.data?.message || 'Ошибка при изменении количества';
-        showError(errorMessage);
-      }
-    }
-  );
+  const increment = useMutation({
+    mutationFn: (uuid: any) => incrementBasketCatalog(uuid, cookies.token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      showSuccess('Количество товара увеличено');
+    },
+    onError: (error: any) => {
+      showError(error?.response?.data?.message || 'Ошибка при изменении количества');
+    },
+  });
 
-  const decrement = useMutation(
-    (uuid: any) => decrementBasketCatalog(uuid, cookies.token),
-    {
-      onSuccess: (response, formData) => {
-        queryClient.invalidateQueries('getAllBaskets');
-        showSuccess('Количество товара уменьшено');
-      },
-      onError: (error: any) => {
-        const errorMessage = error?.response?.data?.message || 'Ошибка при изменении количества';
-        showError(errorMessage);
-      }
-    }
-  );
+  const decrement = useMutation({
+    mutationFn: (uuid: any) => decrementBasketCatalog(uuid, cookies.token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      showSuccess('Количество товара уменьшено');
+    },
+    onError: (error: any) => {
+      showError(error?.response?.data?.message || 'Ошибка при изменении количества');
+    },
+  });
 
-  const remove = useMutation(
-    (uuid: any) => removeBasketCatalog(uuid, cookies.token),
-    {
-      onSuccess: (response, formData) => {
-        queryClient.invalidateQueries('getAllBaskets');
-        showSuccess('Товар удален из корзины');
-      },
-      onError: (error: any) => {
-        const errorMessage = error?.response?.data?.message || 'Ошибка при удалении товара';
-        showError(errorMessage);
-      }
-    }
-  );
+  const remove = useMutation({
+    mutationFn: (uuid: any) => removeBasketCatalog(uuid, cookies.token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      showSuccess('Товар удален из корзины');
+    },
+    onError: (error: any) => {
+      showError(error?.response?.data?.message || 'Ошибка при удалении товара');
+    },
+  });
 
-  // Обработчики для локальной корзины (IndexedDB)
   const handleIncrement = async () => {
     if (isLocal && onUpdateQuantity && basket.uuid) {
       try {
         await onUpdateQuantity(basket.uuid, (basket.quantity || 1) + 1);
         showSuccess('Количество товара увеличено');
-      } catch (error) {
+      } catch {
         showError('Ошибка при изменении количества');
       }
     } else if (!isLocal) {
@@ -100,7 +92,7 @@ const BasketItem: React.FC<BasketItemProps> = ({
       try {
         await onUpdateQuantity(basket.uuid, newQuantity);
         showSuccess('Количество товара уменьшено');
-      } catch (error) {
+      } catch {
         showError('Ошибка при изменении количества');
       }
     } else if (!isLocal) {
@@ -113,127 +105,54 @@ const BasketItem: React.FC<BasketItemProps> = ({
       try {
         await onRemove(basket.uuid);
         showSuccess('Товар удален из корзины');
-      } catch (error) {
+      } catch {
         showError('Ошибка при удалении товара');
       }
     } else if (!isLocal) {
-      remove.mutate(basket.uuid);
+      remove.mutate(basket?.uuid);
     }
   };
 
-  useEffect(() => { }, [basket]);
-
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (onSelectChange && basket.uuid) {
-      onSelectChange(basket.uuid, event.target.checked);
-    }
-  };
+  const imgSrc = basket?.catalog?.images?.[0]?.imgPath || '/images/cardEmpty.png';
 
   return (
-    <Box className={styles.body}>
-      <Checkbox
-        className={styles.checkbox}
-        checked={selected}
-        onChange={handleCheckboxChange}
-      />
-      <Box className={styles.cardBlockLeft}>
-        <Box>
-          <Box className={styles.imageContainer}>
-            <Image
-              src={
-                process.env.NEXT_PUBLIC_BASE_URL +
-                basket?.catalog?.images?.[0]?.image
-              }
-              alt={basket?.catalog?.name || ''}
-              width={120}
-              height={160}
-              className={styles.productImage}
-            />
-          </Box>
-          <Box className={styles.quantityBoxMobile}>
-            <Box className={styles.quantityMobile}>
-              <button
-                className={styles.quantityBtn}
-                onClick={handleDecrement}
-              >
-                -
-              </button>
-              <Typography>{basket.quantity || 1}</Typography>
-              <button
-                className={styles.quantityBtn}
-                onClick={handleIncrement}
-              >
-                +
-              </button>
-            </Box>
-
-            {/* <DeleteOutlineOutlinedIcon/> */}
-          </Box>
-        </Box>
-        <Box>
-          <Typography className={styles.priceMobile}>
-            {basket?.catalog?.price && (
-              <AnimatedNumber
-                value={(basket.quantity || 1) * Number(basket?.catalog?.price)}
-                duration={400}
-                formatValue={(n: any) => n.toFixed(0)}
-                frameStyle={(percentage: number) =>
-                  percentage > 20 && percentage < 80 ? { opacity: 0.5 } : {}
-                }
-              />
-            )}{' '}
-            драм
-          </Typography>
-          <Typography className={styles.basketItemName}>
-            {basket?.catalog?.name}
-          </Typography>
-        </Box>
+    <Box className={styles.basketItem}>
+      <Toast {...toast} onClose={hideToast} />
+      {onSelectChange && basket.uuid && (
+        <Checkbox
+          checked={selected}
+          onChange={(e) => onSelectChange(basket.uuid!, e.target.checked)}
+          sx={{ alignSelf: 'flex-start', mt: 1 }}
+        />
+      )}
+      <Box className={styles.imageBox}>
+        <Image
+          src={imgSrc.startsWith('http') ? imgSrc : '/images/cardEmpty.png'}
+          alt={basket?.catalog?.name || ''}
+          width={isMobile ? 80 : 100}
+          height={isMobile ? 80 : 100}
+          style={{ objectFit: 'contain' }}
+        />
       </Box>
-      <Box className={styles.quantityBox}>
-        <button
-          className={styles.quantityBtn}
-          onClick={handleDecrement}
-        >
-          -
-        </button>
-        <Typography>{basket.quantity || 1}</Typography>
-        <button
-          className={styles.quantityBtn}
-          onClick={handleIncrement}
-        >
-          +
-        </button>
-      </Box>
-      <Box className={styles.deleteBtnMobile}>
-        <IconButton onClick={handleRemove}>
-          <DeleteOutlinedIcon />
-        </IconButton>
-      </Box>
-      <Box className={styles.priceBlockLG}>
+      <Box className={styles.infoBox}>
+        <Typography className={styles.name}>{basket?.catalog?.name}</Typography>
         <Typography className={styles.price}>
-          {basket?.catalog?.price && (
-            <AnimatedNumber
-              value={(basket.quantity || 1) * Number(basket?.catalog?.price)}
-              duration={400}
-              formatValue={(n: any) => n.toFixed(0)}
-              frameStyle={(percentage: number) =>
-                percentage > 20 && percentage < 80 ? { opacity: 0.5 } : {}
-              }
-            />
-          )}
-          драм
+          {Number(basket?.catalog?.price || 0).toLocaleString('ru-RU')} ₽
         </Typography>
-        <IconButton onClick={handleRemove}>
-          <DeleteOutlinedIcon />
-        </IconButton>
+        <Box className={styles.quantityBox}>
+          <IconButton size="small" onClick={handleDecrement}>−</IconButton>
+          <AnimatedNumber
+            value={basket?.quantity || 1}
+            style={{ fontSize: 16, fontWeight: 600, minWidth: 24, textAlign: 'center' }}
+            duration={200}
+            formatValue={(n: number) => Math.round(n).toString()}
+          />
+          <IconButton size="small" onClick={handleIncrement}>+</IconButton>
+        </Box>
       </Box>
-
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        type={toast.type}
-        onClose={hideToast}
-      />
+      <IconButton className={styles.removeBtn} onClick={handleRemove}>
+        <DeleteOutlinedIcon />
+      </IconButton>
     </Box>
   );
 };

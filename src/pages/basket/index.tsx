@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import { InferGetStaticPropsType } from 'next';
+﻿import React, { useEffect } from 'react';
 import {
   Accordion,
   AccordionDetails,
@@ -16,7 +15,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { BasketDataItem } from '@homeberris/types/basket';
 
 // http
-import { QueryClient, dehydrate, useQuery, useQueryClient } from 'react-query';
+import { QueryClient, dehydrate, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAllBaskets } from '@homeberris/http/basketApi';
 import qs from 'qs';
 
@@ -33,15 +32,12 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import { User } from '@homeberris/types/user';
 import { getTokenFromCookie, checkToken } from '@homeberris/utils/auth';
 import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { getBasketItems, removeFromBasket, updateBasketItemQuantity, clearBasket } from '@homeberris/utils/indexedDB';
 import { useAuth } from '@homeberris/hooks/useAuth';
 import { useTranslation } from 'react-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export default function Basket({ }: InferGetStaticPropsType<
-  typeof getServerSideProps
->) {
+export default function BasketPage() {
   const { t } = useTranslation('common');
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -95,19 +91,17 @@ export default function Basket({ }: InferGetStaticPropsType<
 
   const [localBaskets, setLocalBaskets] = React.useState<any[]>([]);
 
-  const { data: user } = useQuery<User>('getProfile', () => getProfile(cookies.token), {
-    enabled: !!isAuth && !!cookies.token
+  const { data: user } = useQuery<User>({
+    queryKey: ['getProfile'],
+    queryFn: () => getProfile(cookies.token),
+    enabled: !!isAuth && !!cookies.token,
   });
 
-  const { data: baskets } = useQuery('getAllBaskets', () =>
-    getAllBaskets(
-      qs.stringify({ queryMeta: { paginate: true } }),
-      cookies.token
-    ),
-    {
-      enabled: !!isAuth && !!cookies.token
-    }
-  );
+  const { data: baskets } = useQuery({
+    queryKey: ['getAllBaskets'],
+    queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
+    enabled: !!isAuth && !!cookies.token,
+  });
 
   // Загружаем корзину из IndexedDB для неавторизованных пользователей
   React.useEffect(() => {
@@ -154,20 +148,14 @@ export default function Basket({ }: InferGetStaticPropsType<
     }
   }, [currentBaskets?.data]);
 
-  const { data: deliveryAdress } = useQuery('getDeliveryAddressIsDefault', () =>
-    getDeliveryAddressApi(
-      qs.stringify({
-        isDefault: true,
-        attributeMeta: {
-          exclude: ['lng', 'lat', 'userUuid', 'updatedAt', 'deletedAt']
-        }
-      }),
+  const { data: deliveryAdress } = useQuery({
+    queryKey: ['getDeliveryAddressIsDefault'],
+    queryFn: () => getDeliveryAddressApi(
+      qs.stringify({ isDefault: true, attributeMeta: { exclude: ['lng', 'lat', 'userUuid', 'updatedAt', 'deletedAt'] } }),
       cookies.token
     ),
-    {
-      enabled: !!isAuth && !!cookies.token
-    }
-  );
+    enabled: !!isAuth && !!cookies.token,
+  });
 
   // Вычисляем общую сумму только для выбранных товаров
   const totalSum = React.useMemo(() => {
@@ -219,11 +207,11 @@ export default function Basket({ }: InferGetStaticPropsType<
     setShowPaymentModal(false);
 
     // Обновляем данные
-    await queryClient.invalidateQueries('getAllBaskets');
+    await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
 
     // Ждем немного, чтобы заказ успел создаться через webhook, затем обновляем и перенаправляем
     setTimeout(async () => {
-      await queryClient.invalidateQueries('getAllOrders');
+      await queryClient.invalidateQueries({ queryKey: ['getAllOrders'] });
       // Передаем paymentIntentId в URL для отображения информации о платеже
       const paymentIntentId = result?.paymentIntentId || '';
       router.push(`/myorders/delivery?paymentSuccess=true&paymentIntentId=${paymentIntentId}`);
@@ -460,34 +448,3 @@ export default function Basket({ }: InferGetStaticPropsType<
   );
 }
 
-export async function getServerSideProps({ req, locale }: any) {
-  const queryClient = new QueryClient();
-  const token = getTokenFromCookie(req);
-
-  await queryClient.prefetchQuery('getAllBaskets', () =>
-    getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), token)
-  );
-
-  if (token) {
-    await queryClient.prefetchQuery('getProfile', () => getProfile(token));
-  }
-
-  await queryClient.prefetchQuery('getDeliveryAddressIsDefault', () =>
-    getDeliveryAddressApi(
-      qs.stringify({
-        isDefault: true,
-        attributeMeta: {
-          exclude: ['lng', 'lat', 'userUuid', 'updatedAt', 'deletedAt']
-        }
-      }),
-      token || ''
-    )
-  );
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
-    }
-  };
-}

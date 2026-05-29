@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { useMutation } from 'react-query';
+﻿import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import { Box, Breadcrumbs, Typography, Alert, Grid, Link as MuiLink } from '@mui/material';
 import Link from 'next/link';
@@ -29,7 +29,8 @@ export default function CreateCarPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const { mutate, isLoading } = useMutation((data: FormData) => createCar(data), {
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: (data: FormData) => createCar(data),
     onSuccess: () => {
       setSuccess(true);
       setTimeout(() => router.push('/cars'), 2000);

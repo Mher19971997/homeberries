@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
     getCarByUuid,
     getCarStatistics,
@@ -7,41 +6,29 @@ import {
     Car,
 } from '@homeberris/http/carApi';
 
-export const useCarDetail = () => {
-    const router = useRouter();
-    const { uuid } = router.query;
+export const useCarDetail = (carUuid: string) => {
+    const { data: car, isLoading } = useQuery<Car>({
+        queryKey: ['getCar', carUuid],
+        queryFn: () => getCarByUuid(carUuid),
+        enabled: !!carUuid,
+    });
 
-    const carUuid = typeof uuid === 'string' ? uuid : '';
+    const { data: statistics } = useQuery({
+        queryKey: ['carStatistics', carUuid],
+        queryFn: () => getCarStatistics(carUuid),
+        enabled: !!car && !!carUuid,
+    });
 
-    const { data: car, isLoading } = useQuery<Car>(
-        ['getCar', carUuid],
-        () => getCarByUuid(carUuid),
-        {
-            enabled: !!carUuid && router.isReady,
-        }
-    );
-
-    const { data: statistics } = useQuery(
-        ['carStatistics', carUuid],
-        () => getCarStatistics(carUuid),
-        {
-            enabled: !!car && !!carUuid,
-        }
-    );
-
-    const { data: similarCars } = useQuery(
-        ['similarCars', carUuid],
-        () => getSimilarCars(carUuid, 6),
-        {
-            enabled: !!car && !!carUuid,
-        }
-    );
+    const { data: similarCars } = useQuery({
+        queryKey: ['similarCars', carUuid],
+        queryFn: () => getSimilarCars(carUuid, 6),
+        enabled: !!car && !!carUuid,
+    });
 
     return {
         car,
         statistics,
         similarCars,
         isLoading,
-        router,
     };
 };

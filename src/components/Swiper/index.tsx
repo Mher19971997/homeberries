@@ -1,11 +1,14 @@
+'use client';
+
 import React, { useRef, useEffect } from 'react';
-import Swiper, { Navigation } from 'swiper';
-import 'swiper/swiper-bundle.min.css';
+import Swiper from 'swiper';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 interface CustomSwiperProps {
   children: React.ReactNode;
 }
-Swiper.use([Navigation]);
 
 const CustomSwiper: React.FC<CustomSwiperProps> = ({ children }) => {
   const swiperRef = useRef<HTMLDivElement | null>(null);
@@ -13,7 +16,7 @@ const CustomSwiper: React.FC<CustomSwiperProps> = ({ children }) => {
   useEffect(() => {
     if (swiperRef.current) {
       new Swiper(swiperRef.current, {
-        // Swiper configuration options
+        modules: [Navigation],
         slidesPerView: 3,
         navigation: {
           nextEl: '.swiper-button-next',

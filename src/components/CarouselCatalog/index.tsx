@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const CarouselCatalog: React.FC = () => {
   const router = useRouter();
@@ -148,7 +148,7 @@ export default CarouselCatalog;
 // import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 // import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 // import { Box, Typography, Button } from '@mui/material';
-// import { useRouter } from 'next/router';
+// import { useRouter } from 'next/navigation';
 // import styles from './index.module.css';
 // import { useTranslation } from 'react-i18next';
 

@@ -13,7 +13,7 @@ export const useRealAudioAnalysis = (isSpeaking: boolean) => {
   const [audioData, setAudioData] = useState<AudioAnalysisResult>({ volume: 0, frequency: 0 });
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const dataArrayRef = useRef<Uint8Array | null>(null);
+  const dataArrayRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const sourceRef = useRef<MediaStreamAudioSourceNode | null>(null);
@@ -160,7 +160,7 @@ export const useRealAudioAnalysis = (isSpeaking: boolean) => {
  */
 export const useTextBasedAnalysis = (isSpeaking: boolean, speechText?: string) => {
   const [audioData, setAudioData] = useState<AudioAnalysisResult>({ volume: 0, frequency: 0 });
-  const intervalRef = useRef<number | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const charIndexRef = useRef<number>(0);
   const timeRef = useRef<number>(0);
 
@@ -249,7 +249,7 @@ export const useTextBasedAnalysis = (isSpeaking: boolean, speechText?: string) =
  */
 export const useSpeechPatternAnalysis = (isSpeaking: boolean) => {
   const [audioData, setAudioData] = useState<AudioAnalysisResult>({ volume: 0, frequency: 0 });
-  const intervalRef = useRef<number | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const timeRef = useRef<number>(0);
 
   useEffect(() => {

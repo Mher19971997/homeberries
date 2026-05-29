@@ -4,7 +4,7 @@ import styles from '@homeberris/components/SarchAutoCompliteItem/index.module.cs
 import SearchIcon from '@mui/icons-material/Search';
 import FolderIcon from '@mui/icons-material/Folder';
 import InventoryIcon from '@mui/icons-material/Inventory';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 interface SarchAutoCompliteItemProps {
   name: string;

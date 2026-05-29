@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Grid } from '@mui/material';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/pages/catalog/[category]/index.module.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ catalog, sortPanelOne = false }) => {
     const router = useRouter();

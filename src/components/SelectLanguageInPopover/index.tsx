@@ -5,7 +5,7 @@ import SelectLanguageItem from '../SelectLanguageItem';
 import styles from '@homeberris/components/SelectLanguageInPopover/index.module.css';
 import { Box, Divider } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 interface SelectLanguageInPopoverProps { }
@@ -24,6 +24,9 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
 ) => {
   const { } = props as SelectLanguageInPopoverProps;
   const router = useRouter();
+  const params = useParams();
+  const pathname = usePathname();
+  const currentLocale = (params?.locale as string) ?? 'ru';
   const { t } = useTranslation('common');
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
@@ -34,7 +37,7 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
   { id: 4, currency: 'EUR', flagIconName: 'fi-eu', description: `${t('language.eurDescription')}`, language: 'Deutsch', locale: 'de' },
 ]; 
   const currentLanguage =
-    languages.find((l) => l.locale === router.locale) ?? languages[0];
+    languages.find((l) => l.locale === currentLocale) ?? languages[0];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -45,7 +48,8 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
   };
 
   const handleLanguageSelect = (option: SelectlanguageItem) => {
-    router.push(router.asPath, router.asPath, { locale: option.locale });
+    const newPath = pathname?.replace(`/${currentLocale}`, `/${option.locale}`) ?? `/${option.locale}`;
+    router.push(newPath);
     handleClose();
   };
 
@@ -128,7 +132,7 @@ export default SelectLanguageInPopover;
 // import styles from '@homeberris/components/SelectLanguageInPopover/index.module.css';
 // import { Box, Divider } from '@mui/material';
 // import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/router';
+// import { useRouter } from 'next/navigation';
 // import { useTranslation } from 'react-i18next';
 
 // interface SelectLanguageInPopoverProps { }

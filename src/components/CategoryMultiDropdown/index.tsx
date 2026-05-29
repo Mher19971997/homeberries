@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,8 +10,8 @@ import {
   CircularProgress,
   Grid
 } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { getMenuTree } from '@homeberris/http/categoryApi';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
@@ -45,7 +45,7 @@ const CategoryMultiDropdown: React.FC<CategoryMultiDropdownProps> = ({
   const {
     data: menuTree,
     isLoading: isLoadingCategories
-  } = useQuery('getMenuTree', getMenuTree);
+  } = useQuery({ queryKey: ['getMenuTree'], queryFn: getMenuTree });
 
   const categories = menuTree || [];
 

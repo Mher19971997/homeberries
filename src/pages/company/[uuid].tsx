@@ -1,14 +1,11 @@
 import { Box, Typography, Grid } from "@mui/material";
-import { InferGetServerSidePropsType } from "next";
-import { dehydrate, QueryClient } from "react-query";
-import { getCompany } from "@homeberris/features/company/api/companyApi";
 import { useCompany } from "@homeberris/features/company/hooks/useCompany";
 import { CompanyHeader } from "@homeberris/features/company/components/CompanyHeader";
 import { CompanyAddress } from "@homeberris/features/company/components/CompanyAddress";
 import { CompanyCatalog } from "@homeberris/features/company/components/CompanyCatalog";
 import { useRouter } from "next/router";
 
-export default function CompanyPage({ }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function CompanyPage() {
   const router = useRouter();
   const { uuid } = router.query;
 
@@ -50,19 +47,4 @@ export default function CompanyPage({ }: InferGetServerSidePropsType<typeof getS
       )}
     </Box>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  const { uuid } = context.params;
-  const queryClient = new QueryClient();
-
-  if (uuid) {
-    await queryClient.prefetchQuery(["getCompany", uuid], () => getCompany(uuid));
-  }
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
 }

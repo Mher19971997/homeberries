@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { getCategories, getSubCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import styles from './index.module.css';
@@ -42,19 +42,17 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
     data: categoriesData,
     isLoading: isLoadingCategories,
     error: categoriesError
-  } = useQuery('getCategories', getCategories);
+  } = useQuery({ queryKey: ['getCategories'], queryFn: getCategories });
 
   // Загрузка подкатегорий для выбранной категории
   const {
     data: subCategoriesData,
     isLoading: isLoadingSubCategories
-  } = useQuery(
-    ['getSubCategories', selectedCategory],
-    () => getSubCategories(selectedCategory || undefined),
-    {
-      enabled: !!selectedCategory
-    }
-  );
+  } = useQuery({
+    queryKey: ['getSubCategories', selectedCategory],
+    queryFn: () => getSubCategories(selectedCategory || undefined),
+    enabled: !!selectedCategory,
+  });
 
   const categories = categoriesData?.data || [];
   const subCategories = subCategoriesData?.data || [];

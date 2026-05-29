@@ -1,24 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+﻿import React, { useState, useEffect, useCallback } from 'react';
 import * as qs from 'qs';
 import { Box, Grid, Typography } from '@mui/material';
-import { GetStaticProps, InferGetStaticPropsType } from 'next';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from '@homeberris/pages/index.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CarouselCatalog from '@homeberris/components/CarouselCatalog';
-import { QueryClient, dehydrate, useInfiniteQuery } from 'react-query';
+import { QueryClient, dehydrate, useInfiniteQuery } from '@tanstack/react-query';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
 import SmallerBanners from '@homeberris/components/SmallerBanners';
 import BrowseByCategory from '@homeberris/components/BrowseByCategory';
 
 const ITEMS_PER_PAGE = 20;
 
-export default function Home({ }: InferGetStaticPropsType<
-  typeof getServerSideProps
->) {
+export default function Home() {
   const { t } = useTranslation('common');
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategoryItem | null>(null);
@@ -65,20 +61,19 @@ export default function Home({ }: InferGetStaticPropsType<
     hasNextPage,
     isFetchingNextPage,
     isLoading
-  } = useInfiniteQuery(
-    ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid],
-    ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam)),
-    {
-      getNextPageParam: (lastPage) => {
-        const { meta } = lastPage;
-        const totalPages = Math.ceil(meta.count / ITEMS_PER_PAGE);
-        const currentPage = meta.page || 1;
-        return currentPage < totalPages ? currentPage + 1 : undefined;
-      },
-      enabled: true,
-      refetchOnWindowFocus: false
-    }
-  );
+  } = useInfiniteQuery({
+    queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid],
+    queryFn: ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam as number)),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage: any) => {
+      const { meta } = lastPage;
+      const totalPages = Math.ceil(meta.count / ITEMS_PER_PAGE);
+      const currentPage = meta.page || 1;
+      return currentPage < totalPages ? currentPage + 1 : undefined;
+    },
+    enabled: true,
+    refetchOnWindowFocus: false,
+  });
 
   // Объединяем все страницы в один массив
   const catalogs = data?.pages?.flatMap(page => page?.data || []) || [];
@@ -167,24 +162,3 @@ export default function Home({ }: InferGetStaticPropsType<
 //   };
 // }
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchQuery(['getAllCatalogs', null, null], () =>
-    getAllCatalogs(
-      qs.stringify({
-        queryMeta: {
-          paginate: true,
-          limit: ITEMS_PER_PAGE,
-          page: 1
-        }
-      })
-    )
-  );
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-      ...(await serverSideTranslations(locale ?? 'ru', ['common', 'catalog']))
-    }
-  };
-}

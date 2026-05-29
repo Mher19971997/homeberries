@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -13,11 +13,11 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import { useCookies } from 'react-cookie';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createComment } from '@homeberris/http/commentApi';
 import { UUID } from 'crypto';
 import { checkToken } from '@homeberris/utils/auth';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import styles from './index.module.css';
@@ -42,28 +42,25 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
 
   const isAuthenticated = checkToken();
 
-  const mutation = useMutation(
-    (data: { text: string; catalogUuid: UUID; image?: File }) =>
+  const mutation = useMutation({
+    mutationFn: (data: { text: string; catalogUuid: UUID; image?: File }) =>
       createComment(data, cookies.token),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['getCatalogByUud', catalogUuid]);
-        setText('');
-        setRating(5);
-        setSelectedImage(null);
-        setImagePreview(null);
-        setIsExpanded(false);
-        setIsSubmitting(false);
-        showSuccess('Отзыв успешно добавлен!');
-        onSuccess?.();
-      },
-      onError: (error: any) => {
-        const errorMessage = error?.response?.data?.message || 'Ошибка при добавлении отзыва';
-        showError(errorMessage);
-        setIsSubmitting(false);
-      }
-    }
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getCatalogByUud', catalogUuid] });
+      setText('');
+      setRating(5);
+      setSelectedImage(null);
+      setImagePreview(null);
+      setIsExpanded(false);
+      setIsSubmitting(false);
+      showSuccess('Отзыв успешно добавлен!');
+      onSuccess?.();
+    },
+    onError: (error: any) => {
+      showError(error?.response?.data?.message || 'Ошибка при добавлении отзыва');
+      setIsSubmitting(false);
+    },
+  });
 
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

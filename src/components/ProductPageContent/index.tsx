@@ -13,7 +13,7 @@ import { QRCodeSVG } from 'qrcode.react';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { useRouter } from 'next/router';
+import { useRouter, useParams, usePathname } from 'next/navigation';
 import { UUID } from 'crypto';
 import {
   CommentItem,
@@ -41,6 +41,8 @@ export default function ProductPageContent({
     ReactImageGallery & Readonly<ReactImageGalleryProps>
   >(null);
   const route = useRouter();
+  const routeParams = useParams();
+  const routePathname = usePathname();
   const isMobile = useIsMobile()
   const [openModal, setOpenModal] = React.useState(false);
   const [openSidebar, setOpenSidebar] = React.useState(false);
@@ -108,9 +110,8 @@ export default function ProductPageContent({
   const finalSubCategoryName = subCategoryName || catalog?.subCategorie?.name || '';
 
   // Получаем параметры из роутера для формирования правильных путей
-  const { category, slug } = route.query;
-  const decodedCategory = typeof category === 'string' ? decodeURIComponent(category) : finalCategoryName;
-  const decodedSlug = typeof slug === 'string' ? decodeURIComponent(slug) : finalSubCategoryName;
+  const decodedCategory = typeof routeParams?.category === 'string' ? decodeURIComponent(routeParams.category) : finalCategoryName;
+  const decodedSlug = typeof routeParams?.slug === 'string' ? decodeURIComponent(routeParams.slug) : finalSubCategoryName;
 
   // Формируем путь для категории
   const categoryPath = decodedCategory ? `/catalog/${encodeURIComponent(decodedCategory)}` : '/catalog';
@@ -158,7 +159,7 @@ export default function ProductPageContent({
             <QrCode2Icon />
           </Button>
           <ShareButton
-            shareUrl={process.env.NEXT_PUBLIC_BASE_URL_MAIN + route.asPath}
+            shareUrl={(process.env.NEXT_PUBLIC_BASE_URL_MAIN ?? '') + (routePathname ?? '')}
           />
         </Box>
       </Box>
@@ -338,7 +339,7 @@ export default function ProductPageContent({
             }}
           >
             <QRCodeSVG
-              value={process.env.NEXT_PUBLIC_BASE_URL_MAIN + route.asPath}
+              value={(process.env.NEXT_PUBLIC_BASE_URL_MAIN ?? '') + (routePathname ?? '')}
               size={260}
               level="H"
               includeMargin={true}

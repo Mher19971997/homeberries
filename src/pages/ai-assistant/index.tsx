@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Typography } from '@mui/material';
 import AiAssistant from '@homeberris/components/AiAssistant';
 import styles from './index.module.css';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'react-i18next';
 
 export default function AiAssistantPage() {
@@ -21,10 +20,3 @@ export default function AiAssistantPage() {
   );
 }
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'ru', ['common'])),
-    },
-  };
-}

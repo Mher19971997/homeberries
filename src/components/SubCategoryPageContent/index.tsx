@@ -1,7 +1,9 @@
+﻿'use client';
+
 import React from 'react';
 import * as qs from 'qs';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { useRouter, useParams } from 'next/navigation';
 import {
   Grid,
   Box,
@@ -30,7 +32,7 @@ import { CircularProgress } from '@mui/material';
 
 // styles
 import styles from '@homeberris/pages/catalog/[category]/index.module.css';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import FilterMenu from '@homeberris/layouts/FilterMenu';
 import TuneIcon from '@mui/icons-material/Tune';
 import { ListResult } from '@homeberris/types/filter';
@@ -51,7 +53,9 @@ export default function SubCategoryPageContent({
   categoryData
 }: SubCategoryPageContentProps) {
   const router = useRouter();
-  const { category, slug } = router.query;
+  const params = useParams();
+  const category = params?.category as string | undefined;
+  const slug = params?.slug as string | undefined;
   
   // Формируем пути для breadcrumbs на основе query параметров
   const decodedCategory = typeof category === 'string' ? decodeURIComponent(category) : categoryName;
@@ -142,13 +146,11 @@ export default function SubCategoryPageContent({
   const { data: catalogs } = useQuery<{
     data: CatalogItem[];
     meta: ListResult;
-  }>(
-    ['getAllCatalogsBySubCategory', categoryName, subCategoryName, subCategoryUuid || null, sortBy, priceRange, selectedBrands, currentPage],
-    () => getAllCatalogs(buildQuery()),
-    {
-      enabled: !!categoryName && !!subCategoryName
-    }
-  );
+  }>({
+    queryKey: ['getAllCatalogsBySubCategory', categoryName, subCategoryName, subCategoryUuid || null, sortBy, priceRange, selectedBrands, currentPage],
+    queryFn: () => getAllCatalogs(buildQuery()),
+    enabled: !!categoryName && !!subCategoryName,
+  });
 
   // Сбрасываем страницу при изменении фильтров
   React.useEffect(() => {
@@ -156,14 +158,12 @@ export default function SubCategoryPageContent({
   }, [sortBy, priceRange, selectedBrands]);
 
   // Получаем бренды через API для подкатегории (если есть UUID)
-  const { data: brandsData } = useQuery(
-    ['getBrandsBySubCategory', subCategoryUuid],
-    () => getBrandsBySubCategory(subCategoryUuid || ''),
-    {
-      enabled: !!subCategoryUuid,
-      retry: false
-    }
-  );
+  const { data: brandsData } = useQuery({
+    queryKey: ['getBrandsBySubCategory', subCategoryUuid],
+    queryFn: () => getBrandsBySubCategory(subCategoryUuid || ''),
+    enabled: !!subCategoryUuid,
+    retry: false,
+  });
 
   // Получаем бренды из загруженных товаров
   const brandsFromCatalogs = React.useMemo(() => {

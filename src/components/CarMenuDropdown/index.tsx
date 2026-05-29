@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,8 +10,8 @@ import {
   CircularProgress,
   Grid
 } from '@mui/material';
-import { useRouter } from 'next/router';
-import { useQuery } from 'react-query';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { getCarMenu, CarMenuBrand, CarMenuModel, CarMenuSubModel } from '@homeberris/http/carApi';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styles from './index.module.css';
@@ -48,11 +48,11 @@ const CarMenuDropdown: React.FC<CarMenuDropdownProps> = ({
   const {
     data: carMenu,
     isLoading: isLoadingMenu
-  } = useQuery('getCarMenu', getCarMenu);
+  } = useQuery({ queryKey: ['getCarMenu'], queryFn: getCarMenu });
 
   const brands = carMenu || [];
 
-  const handleBrandMouseEnter = (brand: CarMenuBrand, event: React.MouseEvent<HTMLDivElement>) => {
+  const handleBrandMouseEnter = (brand: CarMenuBrand, event: React.MouseEvent<HTMLElement>) => {
     if (!isClient) return;
 
     if (hoverTimeoutRef.current) {
@@ -72,7 +72,7 @@ const CarMenuDropdown: React.FC<CarMenuDropdownProps> = ({
     }
   };
 
-  const handleBrandMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleBrandMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
     if (!isClient) return;
 
     const relatedTarget = event.relatedTarget as HTMLElement;
@@ -91,7 +91,7 @@ const CarMenuDropdown: React.FC<CarMenuDropdownProps> = ({
     }, 150);
   };
 
-  const handleModelMouseEnter = (model: CarMenuModel, event: React.MouseEvent<HTMLDivElement>) => {
+  const handleModelMouseEnter = (model: CarMenuModel, event: React.MouseEvent<HTMLElement>) => {
     if (!isClient) return;
 
     if (hoverTimeoutRef.current) {
@@ -110,7 +110,7 @@ const CarMenuDropdown: React.FC<CarMenuDropdownProps> = ({
     }
   };
 
-  const handleModelMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleModelMouseLeave = (event: React.MouseEvent<HTMLElement>) => {
     if (!isClient) return;
 
     const relatedTarget = event.relatedTarget as HTMLElement;
@@ -294,7 +294,7 @@ const CarMenuDropdown: React.FC<CarMenuDropdownProps> = ({
               <ListItem key={subModel.uuid} disablePadding>
                 <ListItemButton
                   className={styles.subModelItem}
-                  onClick={() => handleSubModelClick(subModel, currentBrand, currentModel)}
+                  onClick={() => handleSubModelClick(subModel, currentBrand!, currentModel)}
                 >
                   <ListItemText
                     primary={subModel.name}
