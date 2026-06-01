@@ -64,7 +64,8 @@
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center;  
+  background-color: unset !important;
 }
 
 .imageWrap > * {
@@ -79,6 +80,7 @@
   width: 160px !important;
   height: 160px !important;
   object-fit: contain;
+  object-position: top !important;
 }
 
 /* ── Body ── */

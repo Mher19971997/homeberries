@@ -65,7 +65,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     }).format(num || 0);
   };
 
-  const images =
+  const images =  
     catalog?.images?.length > 0
       ? catalog.images.map(({ image }: any) => ({
           imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,

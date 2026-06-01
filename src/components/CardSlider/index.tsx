@@ -21,11 +21,11 @@ const CardSlider: React.FC<CardSliderProps> = ({
   images,
   dots = false,
   slidesToShow = 1,
-  imgHeight = 280,
+  imgHeight = 160,
 }) => {
   const h = typeof imgHeight === 'number' ? `${imgHeight}px` : imgHeight;
 
-  const isCustomSize = imgHeight !== 280;
+  const isCustomSize = imgHeight !== 160;
 
   const settings = {
     className: isCustomSize ? '' : 'center',
