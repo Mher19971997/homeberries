@@ -8,7 +8,9 @@ export default function BigSummerSale() {
     <Box className={styles.saleBanner}>
       <Box className={styles.overlayContent}>
         <Typography component="h2" className={styles.mainTitle}>
-          Big Summer <span className={styles.boldText}>Sale</span>
+          <span className={styles.thinText}>Big Summer</span>
+          {' '}
+          <span className={styles.boldText}>Sale</span>
         </Typography>
 
         <Typography className={styles.subtitle}>

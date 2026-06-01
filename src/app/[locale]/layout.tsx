@@ -12,12 +12,13 @@ import 'slick-carousel/slick/slick-theme.css';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
 import 'flag-icons/css/flag-icons.min.css';
 import styles from '@homeberris/styles/Home.module.css';
+import Footer from '@homeberris/layouts/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'StyleBox - Премиальный интернет-магазин модной одежды и обуви',
-  description: 'StyleBox - Премиальный интернет-магазин',
+  title: 'Cyber',
+  description: 'Cyber - Премиальный интернет-магазин',
 };
 
 const locales = ['ru', 'en', 'hy', 'de'];
@@ -44,6 +45,7 @@ export default async function LocaleLayout({
             <Navbar />
             <section className={styles.sectionTwo}>{children}</section>
             {/* <BottomBarMobile /> */}
+            <Footer/>
           </main>
         </Providers>
       </body>

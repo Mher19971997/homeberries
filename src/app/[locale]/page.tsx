@@ -142,13 +142,13 @@ export default function Home() {
               catalogs.map((catalog, index) => (
                 <Grid
                   item
-                  xs={12}
+                  xs={6}
                   sm={6}
                   md={4}
                   lg={3}
                   key={catalog?.uuid || index}
                 >
-                  <FavoriteItem catalog={catalog} />
+                  <CatalogCard catalog={catalog} /> 
                 </Grid>
               ))
             ) : (
@@ -184,7 +184,7 @@ export default function Home() {
           <Grid container columnSpacing={2} rowSpacing={2} justifyContent="flex-start">
             {discountCatalogs.length > 0 ? (
               discountCatalogs.map((catalog, index) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={`discount-${catalog?.uuid || index}`}>
+                <Grid item xs={6} sm={6} md={4} lg={3} key={`discount-${catalog?.uuid || index}`}>
                   <CatalogCard catalog={catalog} />
                 </Grid>
               ))

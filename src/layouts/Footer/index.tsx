@@ -17,21 +17,6 @@ export default function Footer() {
           <Typography className={styles.description}>
             We are a residential interior design firm located in Portland. Our boutique-studio offers more than
           </Typography>
-          
-          <Box className={styles.socialWrapper}>
-            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
-              <TwitterIcon style={{ fontSize: 18 }} />
-            </a>
-            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
-              <FacebookIcon style={{ fontSize: 18 }} />
-            </a>
-            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
-              <MusicNoteIcon style={{ fontSize: 18 }} />
-            </a>
-            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
-              <InstagramIcon style={{ fontSize: 18 }} />
-            </a>
-          </Box>
         </Box>
 
         <Box className={styles.linksColumn}>
@@ -56,6 +41,22 @@ export default function Footer() {
             <Link href="#" className={styles.footerLink}>Frequently asked questions</Link>
             <Link href="#" className={styles.footerLink}>Terms of use of the site</Link>
           </Box>
+        </Box>
+
+        {/* Social icons always at the bottom */}
+        <Box className={styles.socialWrapper}>
+          <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+            <TwitterIcon className={styles.socialIcon} />
+          </a>
+          <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+            <FacebookIcon className={styles.socialIcon} />
+          </a>
+          <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+            <MusicNoteIcon className={styles.socialIcon} />
+          </a>
+          <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+            <InstagramIcon className={styles.socialIcon} />
+          </a>
         </Box>
 
       </Box>

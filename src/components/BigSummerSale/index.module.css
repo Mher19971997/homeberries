@@ -1,11 +1,11 @@
 .saleBanner {
   position: relative;
-  width: 100%;
-  max-width: 1440px;
+  width: 100vw;
   height: 448px;
-  background-image: url('/images/BigSummerSale.png'); 
+  background-image: url('/images/BigSummerSale.png');
   background-position: center;
   background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,13 +19,13 @@
   align-items: center;
   text-align: center;
   z-index: 2;
-  padding: 0 24px;
+  width: 100%;
+  max-width: 1440px;
 }
 
 .mainTitle {
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: -apple-system, "Inter", "Regular" !important;
   font-size: 72px !important;
-  font-weight: 100 !important;
   color: #ffffff !important;
   line-height: 100% !important;
   margin: 0 0 12px 0 !important;
@@ -33,12 +33,18 @@
   text-align: center;
 }
 
+.thinText {
+  font-weight: 50 !important;
+  display: inline;
+}
+
 .boldText {
   font-weight: 500 !important;
+  display: inline;
 }
 
 .subtitle {
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: -apple-system, "Inter", "Regular" !important;
   font-size: 16px !important;
   font-weight: 400 !important;
   color: #787878 !important;
@@ -46,12 +52,11 @@
   max-width: 500px;
   line-height: 200% !important;
   text-align: center;
-
 }
 
 .shopButton {
   text-transform: none !important;
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   padding: 16px 56px !important;
@@ -64,31 +69,63 @@
 
 .shopButton:hover {
   background-color: #ffffff !important;
-  color: #000000 !important; 
+  color: #000000 !important;
 }
 
 @media (max-width: 768px) {
   .saleBanner {
-    height: 360px;
+    height: 480px;
+    background-image: url('/images/BigSummerSaleMobile.png');
+    background-position: center;
+    align-items: center;
+    padding: 0 16px;
   }
+
+  .overlayContent {
+    width: 343px !important;
+    max-width: 100%;
+  }
+
   .mainTitle {
     font-size: 48px !important;
+    line-height: 72px !important;
+    letter-spacing: -0.01em !important;
+    margin-bottom: 0px !important;
   }
+
+  .thinText {
+    font-weight: 100 !important;
+    display: block;
+  }
+
+  .boldText {
+    font-weight: 300 !important;
+    display: block;
+  }
+
   .subtitle {
-    font-size: 14px !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 32px !important;
+    color: #787878 !important;
+    max-width: 343px !important;
+    margin-top: 14px !important;
     margin-bottom: 24px !important;
+    text-align: center;
   }
+
   .shopButton {
     padding: 12px 40px !important;
     font-size: 14px !important;
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: 1px solid #ffffff !important;
+    width: auto;
   }
 }
 
 @media (max-width: 480px) {
   .saleBanner {
-    height: 300px;
-  }
-  .mainTitle {
-    font-size: 36px !important;
+    height: 560px;
   }
 }
