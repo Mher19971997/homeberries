@@ -71,8 +71,7 @@ export default function Home() {
           display: 'flex',
           gap: '32px',
           marginBottom: '32px',
-          paddingLeft: '36px',
-          maxWidth: '1280px',
+          maxWidth: '1120px',
           height: '32px',
           margin: '56px auto 32px auto'
         }}
@@ -129,7 +128,7 @@ export default function Home() {
           <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
         </Box>
       ) : (
-        <Box sx={{ width: '100%', maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
+        <Box sx={{ width: '100%', maxWidth: '1120px', margin: '0 auto', padding: '0 0' }}>
           <Grid
             className={styles.container}
             container
@@ -161,7 +160,7 @@ export default function Home() {
         </Box>
       )}
       <ProductGridBanners />
-      <Box sx={{ width: '100%', maxWidth: '1280px', margin: '56px auto 80px auto', padding: '0 16px' }}>
+      <Box sx={{ width: '100%', maxWidth: '1120px', margin: '56px auto 80px auto', padding: '0 16px' }}>
         <Typography
           sx={{
             fontSize: '24px',
