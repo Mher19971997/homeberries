@@ -1,0 +1,140 @@
+.wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.accordion {
+  border-top: 1px solid #B5B5B5;
+}
+
+.accordion:first-child {
+  border-top: none;
+}
+
+.accordionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 0;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #B5B5B5;
+}
+
+.accordionHeader:not(.accordionHeaderOpen) {
+  border-bottom: none;
+}
+
+.accordionTitle {
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.03em;
+  color: #242424;
+  margin: 0;
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.accordionBody {
+  padding: 23px 0;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #F5F5F5;
+  border-radius: 8px;
+  padding: 6px 8px;
+  margin-bottom: 10px;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  color: #242424;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #aaa;
+}
+
+.brandList {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.brandList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.brandList::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 2px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.checkbox:checked {
+  background: #000000;
+  border-color: #000000;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 2px;
+  height: 5px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
+}
+
+.checkboxLabel {
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+}
+
+.emptyText {
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  color: #999;
+}

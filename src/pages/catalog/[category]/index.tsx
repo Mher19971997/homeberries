@@ -1,7 +1,7 @@
 import React from "react";
 import * as qs from "qs";
 import Link from "next/link";
-import { ChevronSepIcon, PaginationLeft, PaginationRight } from "@homeberris/assets/icons/catalog";
+import { ChevronSepIcon, PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
 import { useParams } from "next/navigation";
 
 import { getAllCatalogs } from "@homeberris/http/catalogApi";
@@ -12,6 +12,7 @@ import { CategoryItem } from "@homeberris/types/category";
 
 import SidebarFilters from "@homeberris/components/SidebarFilters";
 import StaticProductCard from "@homeberris/components/StaticProductCard";
+import MobileFilterDrawer from "@homeberris/components/MobileFilterDrawer";
 
 import { useQuery } from "@tanstack/react-query";
 import { ListResult } from "@homeberris/types/filter";
@@ -29,6 +30,7 @@ export default function CatalogPage() {
     ? `/catalog/${encodeURIComponent(categoryName)}`
     : "/catalog";
 
+  const [showDrawer, setShowDrawer] = React.useState(false);
   const [sortBy, setSortBy] = React.useState("rating");
   const [priceRange, setPriceRange] = React.useState<{
     min: number;
@@ -101,6 +103,17 @@ export default function CatalogPage() {
 
   return (
     <div className={styles.body}>
+      <MobileFilterDrawer
+        open={showDrawer}
+        onClose={() => setShowDrawer(false)}
+        brands={brands}
+        selectedBrands={selectedBrands}
+        priceRange={priceRange}
+        onApply={(brands, price) => {
+          setSelectedBrands(brands);
+          setPriceRange(price);
+        }}
+      />
       {/* Breadcrumb */}
       <nav className={styles.breadcrumb} aria-label="breadcrumb">
         <Link href="/" className={styles.breadcrumbLink}>
@@ -134,6 +147,13 @@ export default function CatalogPage() {
         <div className={styles.content}>
           {/* Шапка */}
           <div className={styles.contentHeader}>
+            <button
+              className={styles.filterToggleBtn}
+              onClick={() => setShowDrawer(true)}
+            >
+              <FilterIcon />
+              Filters
+            </button>
             <p className={styles.selectedCount}>
               Selected Products: <strong>{catalogs?.meta?.count || 0}</strong>
             </p>

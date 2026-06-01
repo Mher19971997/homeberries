@@ -122,3 +122,81 @@
 .buyBtn:hover {
   background: #000;
 }
+
+@media only screen and (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    max-width: 100%;
+    min-width: 0;
+    min-height: 360px;
+    padding: 16px 12px;
+  }
+
+  .image {
+    max-height: 150px;
+  }
+
+  .name {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .buyBtn {
+    max-width: 100%;
+    font-size: 13px;
+    padding: 10px 0;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .card {
+    min-height: 300px;
+    padding: 12px 8px;
+    gap: 10px;
+  }
+
+  .image {
+    max-height: 120px;
+  }
+
+  .name {
+    font-size: 12px;
+    line-height: 17px;
+  }
+
+  .price {
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .buyBtn {
+    font-size: 12px;
+    padding: 8px 0;
+    border-radius: 6px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .card {
+    max-width: 100%;
+    min-height: 260px;
+  }
+}
