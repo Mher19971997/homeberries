@@ -31,7 +31,7 @@ const MainContainer = ({ children, title }: MainContainerProps) => {
         {/* <CategoryMenu /> */}
         <section className={styles.sectionTwo}>{children}</section>
         {/* <Footer /> */}
-        <BottomBarMobile />
+        {/* <BottomBarMobile /> */}
       </main>
     </React.Fragment>
   );

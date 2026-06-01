@@ -16,7 +16,7 @@
 
 .logo {
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 700 !important;
   color: #000000;
   cursor: pointer;
   letter-spacing: 0.5px;
@@ -111,20 +111,25 @@
   height: 22px;
 }
 
-/* Responsive */
-@media only screen and (max-width: 1400px) {
-  .navbarInner {
-    padding: 16px 80px;
-  }
+.burgerBtn {
+  display: none !important;
+}
+
+.burgerBtn svg {
+  color: #000000;
+  width: 24px;
+  height: 24px;
 }
 
 @media only screen and (max-width: 1200px) {
   .navbarInner {
     padding: 16px 40px;
   }
+
   .searchBox {
     width: 25%;
   }
+
   .navLinks {
     gap: 20px;
   }
@@ -134,16 +139,29 @@
   .navbarInner {
     padding: 16px 24px;
   }
+
   .searchBox {
     display: none;
   }
+
   .navLinks {
     display: none;
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .navbarInner {
-    padding: 12px 16px;
+    padding: 24px 16px;
+    height: 88px;
+    align-items: center;
+  }
+
+  .navActions {
+    display: none !important;
+  }
+
+  .burgerBtn {
+    display: flex !important;
+    padding: 0;
   }
 }

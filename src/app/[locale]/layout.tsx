@@ -41,7 +41,7 @@ export default async function LocaleLayout({
           <main className={styles.main}>
             <Navbar />
             <section className={styles.sectionTwo}>{children}</section>
-            <BottomBarMobile />
+            {/* <BottomBarMobile /> */}
           </main>
         </Providers>
       </body>

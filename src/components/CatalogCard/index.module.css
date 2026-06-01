@@ -1,4 +1,128 @@
-.sortPanelOne {
+.cardBody {
+  background: #f3f3f3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 22px 22px 24px;
+  /* width: 300px;  */
+  width: 100%;
+  min-width: 0;
+  min-width: 260px;
+  gap: 0;
+  overflow: hidden;
+}
+
+.sortPanelOne { width: 100%; }
+
+.favoriteButton {
+  position: absolute !important;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  padding: 0 !important;
+  background: transparent !important;
+  width: 32px;
+  height: 32px;
+}
+
+.imageContainer {
+  width: 100%;
+  height: 230px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 18px;
+  background: unset !important;
+  overflow: hidden;
+}
+
+.imageContainer img {
+  max-height: 220px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  background: unset !important;
+  background-color: transparent !important;
+}
+
+.imageContainer :global(.MuiPaper-root),
+.imageContainer :global(div),
+.imageContainer :global(picture),
+.imageContainer :global(figure) {
+  background: unset !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+
+.contentBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  flex: 1;
+  min-width: 0;
+}
+
+.catalogName {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #000 !important;
+  text-align: center;
+  line-height: 1.35 !important;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  word-break: normal;
+  overflow-wrap: break-word;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.price {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  color: #000 !important;
+  text-align: center;
+  margin: 4px 0 0 !important;
+}
+
+.basketButton {
+  background-color: #000 !important;
+  color: #fff !important;
+  text-transform: none !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  padding: 14px 0 !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  width: 100%;
+  margin-top: 20px !important;
+  letter-spacing: 0.1px !important;
+}
+
+.basketButton:hover { 
+  background-color: #1a1a1a !important; 
+}
+
+
+
+
+
+/* .sortPanelOne {
   width: 320px !important;
   height: 100%;
   max-height: 520px;
@@ -246,4 +370,4 @@
   .price {
     font-size: 16px;
   }
-}
+} */

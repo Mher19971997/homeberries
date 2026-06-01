@@ -1,11 +1,12 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, InputBase, Badge, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import MenuIcon from '@mui/icons-material/Menu';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import { useQuery } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
@@ -21,6 +22,7 @@ const Navbar = () => {
   const [cookies] = useCookies(['token']);
   const { items: favorites } = useFavorites();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Получение корзины для авторизованных
   const { data: basket } = useQuery({
@@ -38,57 +40,65 @@ const Navbar = () => {
 
   const basketCount = isAuth ? (basket?.meta?.count || 0) : localBasketCount;
 
-return (
-  <Box className={styles.navbar}>
-    <Box className={styles.navbarInner}>
+  return (
+    <Box className={styles.navbar}>
+      <Box className={styles.navbarInner}>
 
-      {/* Лого */}
-      <Typography className={styles.logo} onClick={() => router.push('/')}>
-        cyber
-      </Typography>
+        {/* Лого */}
+        <Typography className={styles.logo} onClick={() => router.push('/')}>
+          cyber
+        </Typography>
 
-      {/* Поиск */}
-      <Box className={styles.searchBox}>
-        <SearchIcon className={styles.searchIcon} />
-        <InputBase
-          placeholder="Search"
-          className={styles.searchInput}
-        />
-      </Box>
+        {/* Поиск */}
+        <Box className={styles.searchBox}>
+          <SearchIcon className={styles.searchIcon} />
+          <InputBase
+            placeholder="Search"
+            className={styles.searchInput}
+          />
+        </Box>
 
-      {/* Навигация */}
-      <Box className={styles.navLinks}>
-        {['Home', 'About', 'Contact Us', 'Blog'].map((item) => (
-          <Typography
-            key={item}
-            onClick={() => router.push('/')}
-            className={`${styles.navLink} ${item === 'Home' ? styles.navLinkActive : ''}`}
-          >
-            {item}
-          </Typography>
-        ))}
-      </Box>
+        {/* Навигация */}
+        <Box className={styles.navLinks}>
+          {['Home', 'About', 'Contact Us', 'Blog'].map((item) => (
+            <Typography
+              key={item}
+              onClick={() => router.push('/')}
+              className={`${styles.navLink} ${item === 'Home' ? styles.navLinkActive : ''}`}
+            >
+              {item}
+            </Typography>
+          ))}
+        </Box>
 
-      {/* Иконки */}
-      <Box className={styles.navActions}>
-        <IconButton className={styles.iconBtn} onClick={() => router.push('/favorites')}>
-          <Badge badgeContent={favorites.length > 0 ? favorites.length : undefined} color="error">
-            <FavoriteBorderIcon />
-          </Badge>
+        <Box className={styles.navActions}>
+          <IconButton className={styles.iconBtn} onClick={() => router.push('/favorites')}>
+            <Badge badgeContent={favorites.length > 0 ? favorites.length : undefined} color="error">
+              <FavoriteBorderIcon />
+            </Badge>
+          </IconButton>
+          <IconButton className={styles.iconBtn} onClick={() => router.push('/basket')}>
+            <Badge badgeContent={basketCount > 0 ? basketCount : undefined} color="error">
+              <ShoppingBagOutlinedIcon />
+            </Badge>
+          </IconButton>
+          <IconButton className={styles.iconBtn} onClick={() => router.push(isAuth ? '/profile' : '/security/login')}>
+            <PersonOutlineIcon />
+          </IconButton>
+        </Box>
+
+        {/* Кнопка Бургера (Мобильная) */}
+        <IconButton
+          className={styles.burgerBtn}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="menu"
+        >
+          <MenuIcon />
         </IconButton>
-        <IconButton className={styles.iconBtn} onClick={() => router.push('/basket')}>
-          <Badge badgeContent={basketCount > 0 ? basketCount : undefined} color="error">
-            <ShoppingBagOutlinedIcon />
-          </Badge>
-        </IconButton>
-        <IconButton className={styles.iconBtn} onClick={() => router.push(isAuth ? '/profile' : '/security/login')}>
-          <PersonOutlineIcon />
-        </IconButton>
-      </Box>
 
+      </Box>
     </Box>
-  </Box>
-);
+  );
 };
 
 export default Navbar;

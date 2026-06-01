@@ -1,0 +1,134 @@
+.gridContainer {
+  display: flex;
+  width: 100%;
+  /* max-width: 1440px;  */
+  height: 640px;
+  margin: 56px auto;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.gridCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; 
+  padding: 56px 32px;      
+  box-sizing: border-box;
+  height: 100%;
+}
+
+.popularGridCard {
+  background-color: #ffffff;
+}
+
+.ipadGridCard {
+  background-color: #f9f9f9;
+}
+
+.samsungGridCard {
+  background-color: #eaeaea;
+}
+
+.macbookGridCard {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+.imageBox {
+  width: 100%;
+  flex: 1; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px; 
+}
+
+.productImg {
+  max-height: 85%; 
+  max-width: 90%;
+  object-fit: contain;
+}
+
+.infoBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+}
+
+.bannerTitle {
+  font-family: -apple-system, "Inter", sans-serif !important;
+  font-size: 34px !important;      
+  font-weight: 300 !important;
+  line-height: 1.2 !important;
+  color: #000000 !important;
+  margin: 0 !important;
+}
+
+.macbookGridCard .bannerTitle {
+  color: #ffffff !important;
+}
+
+.bannerDescription {
+  font-family: -apple-system, "Inter", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  color: #909090 !important;         
+  margin: 0 !important;
+  max-width: 280px;                 
+}
+
+.macbookGridCard .bannerDescription {
+  color: #a4a4a4 !important;
+}
+
+.actionButton {
+  text-transform: none !important;
+  font-family: -apple-system, "Inter", sans-serif !important;
+  font-size: 14px ;
+  font-weight: 500 ;
+  padding: 16px 48px !important;   
+  border-radius: 6px;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease !important;
+  margin-top: 8px !important;
+}
+
+.actionButton:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+.macbookGridCard .actionButton {
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important;
+}
+
+.macbookGridCard .actionButton:hover {
+  background-color: #ffffff !important;
+  color: #2c2c2c !important;
+}
+
+@media (max-width: 1024px) {
+  .gridContainer {
+    height: auto;
+    flex-wrap: wrap;
+  }
+  .gridCard {
+    flex: calc(50% - 0px);
+    height: 500px;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .gridCard {
+    flex: 100%;
+    height: 480px;
+  }
+}

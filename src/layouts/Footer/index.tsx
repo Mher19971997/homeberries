@@ -1,213 +1,279 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  Grid,
-  Link,
-  Collapse,
-  IconButton
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import { useQRCode } from 'next-qrcode';
-import styles from '@homeberris/layouts/Footer/index.module.css';
+import { Box, Typography, Link } from '@mui/material';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import MusicNoteIcon from '@mui/icons-material/MusicNote'; 
+import styles from './index.module.css';
 
-const Footer = () => {
-  const { Canvas } = useQRCode();
-  const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
-
-  const handleToggle = (key: string) => {
-    setExpandedItems((prev) => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
-  };
-
-  const buyersLinks = [
-    { label: 'Частые вопросы', href: '/faq' },
-    { label: 'Покупать как бизнес', href: '/business' },
-    { label: 'Доставка по клику из пункта выдачи', href: '/delivery' },
-    {
-      label: 'Юридическая информация',
-      href: '/legal',
-      hasDropdown: true,
-      subItems: [
-        { label: 'Как обрабатываем ваши персональные данные', href: '/privacy' },
-        { label: 'Гид по безопасности', href: '/security' }
-      ]
-    }
-  ];
-
-  const sellersLinks = [
-    { label: 'Продавать товары', href: '/sell' },
-    { label: 'Открыть пункт выдачи', href: '/pickup-point' },
-    { label: 'Предложить помещение', href: '/premises' },
-    {
-      label: 'Развозить грузы',
-      href: '/cargo',
-      hasDropdown: true,
-      subItems: [
-        { label: 'Доставлять заказы', href: '/deliver-orders' }
-      ]
-    }
-  ];
-
-  const projectsLinks = [
-    { label: 'WB Guru', href: '/wb-guru' },
-    { label: 'WB Stream', href: '/wb-stream' },
-    { label: 'WB Track', href: '/wb-track' }
-  ];
-
-  const companyLinks = [
-    { label: 'О нас', href: '/about' },
-    { label: 'Пресс-служба', href: '/press' },
-    { label: 'Контакты', href: '/contacts' },
-    { label: 'Вакансии', href: '/careers' },
-    { label: 'Сообщить о мошенничестве', href: '/fraud' },
-    { label: 'Социальные сети', href: '/social' }
-  ];
-
-  const renderLinkColumn = (
-    title: string,
-    links: Array<{
-      label: string;
-      href: string;
-      hasDropdown?: boolean;
-      subItems?: Array<{ label: string; href: string }>;
-    }>
-  ) => (
-    <Box className={styles.column}>
-      <Typography variant="h6" className={styles.columnTitle}>
-        {title}
-      </Typography>
-      <Box className={styles.linksContainer}>
-        {links.map((link, index) => (
-          <React.Fragment key={index}>
-            {link.hasDropdown ? (
-              <Box>
-                <Box
-                  className={styles.dropdownLink}
-                  onClick={() => handleToggle(`${title}-${index}`)}
-                >
-                  <Link href={link.href} className={styles.link}>
-                    {link.label}
-                  </Link>
-                  <IconButton
-                    size="small"
-                    className={styles.dropdownIcon}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleToggle(`${title}-${index}`);
-                    }}
-                  >
-                    {expandedItems[`${title}-${index}`] ? (
-                      <ExpandLessIcon fontSize="small" />
-                    ) : (
-                      <ExpandMoreIcon fontSize="small" />
-                    )}
-                  </IconButton>
-                </Box>
-                {link.subItems && (
-                  <Collapse in={expandedItems[`${title}-${index}`]}>
-                    <Box className={styles.subLinks}>
-                      {link.subItems.map((subItem, subIndex) => (
-                        <Link
-                          key={subIndex}
-                          href={subItem.href}
-                          className={styles.subLink}
-                        >
-                          {subItem.label}
-                        </Link>
-                      ))}
-                    </Box>
-                  </Collapse>
-                )}
-              </Box>
-            ) : (
-              <Link href={link.href} className={styles.link}>
-                {link.label}
-              </Link>
-            )}
-          </React.Fragment>
-        ))}
-      </Box>
-    </Box>
-  );
-
+export default function Footer() {
   return (
-    <Box className={styles.footer}>
+    <Box component="footer" className={styles.footerContainer}>
       <Box className={styles.footerContent}>
-        <Grid container spacing={4} className={styles.gridContainer}>
-          {/* Navigation Columns */}
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={4}>
-              <Grid item xs={6} sm={3}>
-                {renderLinkColumn('Покупателям', buyersLinks)}
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                {renderLinkColumn('Продавцам и партнёрам', sellersLinks)}
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                {renderLinkColumn('Наши проекты', projectsLinks)}
-              </Grid>
-              <Grid item xs={6} sm={3}>
-                {renderLinkColumn('Компания', companyLinks)}
-              </Grid>
-            </Grid>
-          </Grid>
+        
+        <Box className={styles.brandColumn}>
+          <Typography className={styles.logo}>
+            cyber
+          </Typography>
+          <Typography className={styles.description}>
+            We are a residential interior design firm located in Portland. Our boutique-studio offers more than
+          </Typography>
+          
+          <Box className={styles.socialWrapper}>
+            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+              <TwitterIcon style={{ fontSize: 18 }} />
+            </a>
+            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+              <FacebookIcon style={{ fontSize: 18 }} />
+            </a>
+            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+              <MusicNoteIcon style={{ fontSize: 18 }} />
+            </a>
+            <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
+              <InstagramIcon style={{ fontSize: 18 }} />
+            </a>
+          </Box>
+        </Box>
 
-          {/* Mobile App Section */}
-          <Grid item xs={12} md={4}>
-            <Box className={styles.appSection}>
-              <Typography variant="h6" className={styles.appTitle}>
-                Приложение
-              </Typography>
-              <Typography variant="body2" className={styles.appSubtitle}>
-                Android и iOS
-              </Typography>
-              <Box className={styles.qrCodeContainer}>
-                <Canvas
-                  text={process.env.NEXT_PUBLIC_BASE_URL_MAIN || 'https://homeberries.com'}
-                  options={{
-                    errorCorrectionLevel: 'M',
-                    margin: 2,
-                    scale: 4,
-                    width: 120,
-                    color: {
-                      dark: '#000000',
-                      light: '#FFFFFF'
-                    }
-                  }}
-                />
-              </Box>
-              <Typography variant="caption" className={styles.auroraOS}>
-                ОС Аврора
-              </Typography>
-              <Box className={styles.socialIcons}>
-                <Link href="https://vk.com" target="_blank" className={styles.socialIcon}>
-                  <Box className={styles.vkIcon}>VK</Box>
-                </Link>
-                <Link href="https://ok.ru" target="_blank" className={styles.socialIcon}>
-                  <Box className={styles.okIcon}>OK</Box>
-                </Link>
-                <Link href="https://t.me" target="_blank" className={styles.socialIcon}>
-                  <Box className={styles.telegramIcon}>TG</Box>
-                </Link>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
+        <Box className={styles.linksColumn}>
+          <Typography className={styles.columnTitle}>Services</Typography>
+          <Box className={styles.linksList}>
+            <Link href="#" className={styles.footerLink}>Bonus program</Link>
+            <Link href="#" className={styles.footerLink}>Gift cards</Link>
+            <Link href="#" className={styles.footerLink}>Credit and payment</Link>
+            <Link href="#" className={styles.footerLink}>Service contracts</Link>
+            <Link href="#" className={styles.footerLink}>Non-cash account</Link>
+            <Link href="#" className={styles.footerLink}>Payment</Link>
+          </Box>
+        </Box>
+
+        <Box className={styles.linksColumn}>
+          <Typography className={styles.columnTitle}>Assistance to the buyer</Typography>
+          <Box className={styles.linksList}>
+            <Link href="#" className={styles.footerLink}>Find an order</Link>
+            <Link href="#" className={styles.footerLink}>Terms of delivery</Link>
+            <Link href="#" className={styles.footerLink}>Exchange and return of goods</Link>
+            <Link href="#" className={styles.footerLink}>Guarantee</Link>
+            <Link href="#" className={styles.footerLink}>Frequently asked questions</Link>
+            <Link href="#" className={styles.footerLink}>Terms of use of the site</Link>
+          </Box>
+        </Box>
+
       </Box>
-
-      {/* Copyright Bar */}
-      <Box className={styles.copyrightBar}>
-        <Typography variant="body2" className={styles.copyright}>
-          © StyleBox 2024-2026. Все права защищены.
-        </Typography>
-      </Box>
-
     </Box>
   );
-};
+}
 
-export default Footer;
+
+// import React, { useState } from 'react';
+// import {
+//   Box,
+//   Typography,
+//   Grid,
+//   Link,
+//   Collapse,
+//   IconButton
+// } from '@mui/material';
+// import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+// import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+// import { useQRCode } from 'next-qrcode';
+// import styles from '@homeberris/layouts/Footer/index.module.css';
+
+// const Footer = () => {
+//   const { Canvas } = useQRCode();
+//   const [expandedItems, setExpandedItems] = useState<{ [key: string]: boolean }>({});
+
+//   const handleToggle = (key: string) => {
+//     setExpandedItems((prev) => ({
+//       ...prev,
+//       [key]: !prev[key]
+//     }));
+//   };
+
+//   const buyersLinks = [
+//     { label: 'Частые вопросы', href: '/faq' },
+//     { label: 'Покупать как бизнес', href: '/business' },
+//     { label: 'Доставка по клику из пункта выдачи', href: '/delivery' },
+//     {
+//       label: 'Юридическая информация',
+//       href: '/legal',
+//       hasDropdown: true,
+//       subItems: [
+//         { label: 'Как обрабатываем ваши персональные данные', href: '/privacy' },
+//         { label: 'Гид по безопасности', href: '/security' }
+//       ]
+//     }
+//   ];
+
+//   const sellersLinks = [
+//     { label: 'Продавать товары', href: '/sell' },
+//     { label: 'Открыть пункт выдачи', href: '/pickup-point' },
+//     { label: 'Предложить помещение', href: '/premises' },
+//     {
+//       label: 'Развозить грузы',
+//       href: '/cargo',
+//       hasDropdown: true,
+//       subItems: [
+//         { label: 'Доставлять заказы', href: '/deliver-orders' }
+//       ]
+//     }
+//   ];
+
+//   const projectsLinks = [
+//     { label: 'WB Guru', href: '/wb-guru' },
+//     { label: 'WB Stream', href: '/wb-stream' },
+//     { label: 'WB Track', href: '/wb-track' }
+//   ];
+
+//   const companyLinks = [
+//     { label: 'О нас', href: '/about' },
+//     { label: 'Пресс-служба', href: '/press' },
+//     { label: 'Контакты', href: '/contacts' },
+//     { label: 'Вакансии', href: '/careers' },
+//     { label: 'Сообщить о мошенничестве', href: '/fraud' },
+//     { label: 'Социальные сети', href: '/social' }
+//   ];
+
+//   const renderLinkColumn = (
+//     title: string,
+//     links: Array<{
+//       label: string;
+//       href: string;
+//       hasDropdown?: boolean;
+//       subItems?: Array<{ label: string; href: string }>;
+//     }>
+//   ) => (
+//     <Box className={styles.column}>
+//       <Typography variant="h6" className={styles.columnTitle}>
+//         {title}
+//       </Typography>
+//       <Box className={styles.linksContainer}>
+//         {links.map((link, index) => (
+//           <React.Fragment key={index}>
+//             {link.hasDropdown ? (
+//               <Box>
+//                 <Box
+//                   className={styles.dropdownLink}
+//                   onClick={() => handleToggle(`${title}-${index}`)}
+//                 >
+//                   <Link href={link.href} className={styles.link}>
+//                     {link.label}
+//                   </Link>
+//                   <IconButton
+//                     size="small"
+//                     className={styles.dropdownIcon}
+//                     onClick={(e) => {
+//                       e.preventDefault();
+//                       handleToggle(`${title}-${index}`);
+//                     }}
+//                   >
+//                     {expandedItems[`${title}-${index}`] ? (
+//                       <ExpandLessIcon fontSize="small" />
+//                     ) : (
+//                       <ExpandMoreIcon fontSize="small" />
+//                     )}
+//                   </IconButton>
+//                 </Box>
+//                 {link.subItems && (
+//                   <Collapse in={expandedItems[`${title}-${index}`]}>
+//                     <Box className={styles.subLinks}>
+//                       {link.subItems.map((subItem, subIndex) => (
+//                         <Link
+//                           key={subIndex}
+//                           href={subItem.href}
+//                           className={styles.subLink}
+//                         >
+//                           {subItem.label}
+//                         </Link>
+//                       ))}
+//                     </Box>
+//                   </Collapse>
+//                 )}
+//               </Box>
+//             ) : (
+//               <Link href={link.href} className={styles.link}>
+//                 {link.label}
+//               </Link>
+//             )}
+//           </React.Fragment>
+//         ))}
+//       </Box>
+//     </Box>
+//   );
+
+//   return (
+//     <Box className={styles.footer}>
+//       <Box className={styles.footerContent}>
+//         <Grid container spacing={4} className={styles.gridContainer}>
+//           {/* Navigation Columns */}
+//           <Grid item xs={12} md={8}>
+//             <Grid container spacing={4}>
+//               <Grid item xs={6} sm={3}>
+//                 {renderLinkColumn('Покупателям', buyersLinks)}
+//               </Grid>
+//               <Grid item xs={6} sm={3}>
+//                 {renderLinkColumn('Продавцам и партнёрам', sellersLinks)}
+//               </Grid>
+//               <Grid item xs={6} sm={3}>
+//                 {renderLinkColumn('Наши проекты', projectsLinks)}
+//               </Grid>
+//               <Grid item xs={6} sm={3}>
+//                 {renderLinkColumn('Компания', companyLinks)}
+//               </Grid>
+//             </Grid>
+//           </Grid>
+
+//           {/* Mobile App Section */}
+//           <Grid item xs={12} md={4}>
+//             <Box className={styles.appSection}>
+//               <Typography variant="h6" className={styles.appTitle}>
+//                 Приложение
+//               </Typography>
+//               <Typography variant="body2" className={styles.appSubtitle}>
+//                 Android и iOS
+//               </Typography>
+//               <Box className={styles.qrCodeContainer}>
+//                 <Canvas
+//                   text={process.env.NEXT_PUBLIC_BASE_URL_MAIN || 'https://homeberries.com'}
+//                   options={{
+//                     errorCorrectionLevel: 'M',
+//                     margin: 2,
+//                     scale: 4,
+//                     width: 120,
+//                     color: {
+//                       dark: '#000000',
+//                       light: '#FFFFFF'
+//                     }
+//                   }}
+//                 />
+//               </Box>
+//               <Typography variant="caption" className={styles.auroraOS}>
+//                 ОС Аврора
+//               </Typography>
+//               <Box className={styles.socialIcons}>
+//                 <Link href="https://vk.com" target="_blank" className={styles.socialIcon}>
+//                   <Box className={styles.vkIcon}>VK</Box>
+//                 </Link>
+//                 <Link href="https://ok.ru" target="_blank" className={styles.socialIcon}>
+//                   <Box className={styles.okIcon}>OK</Box>
+//                 </Link>
+//                 <Link href="https://t.me" target="_blank" className={styles.socialIcon}>
+//                   <Box className={styles.telegramIcon}>TG</Box>
+//                 </Link>
+//               </Box>
+//             </Box>
+//           </Grid>
+//         </Grid>
+//       </Box>
+
+//       {/* Copyright Bar */}
+//       <Box className={styles.copyrightBar}>
+//         <Typography variant="body2" className={styles.copyright}>
+//           © StyleBox 2024-2026. Все права защищены.
+//         </Typography>
+//       </Box>
+
+//     </Box>
+//   );
+// };
+
+// export default Footer;
