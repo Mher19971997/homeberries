@@ -1,4 +1,4 @@
-import { $authHost, $host } from '@homeberris/http/index';
+import { $host } from '@homeberris/http/index';
 
 export interface CompanyAddressData {
   uuid?: string;
@@ -28,44 +28,23 @@ const getCompanyAddresses = async (query: string, token: string) => {
 };
 
 const createCompanyAddress = async (formData: CompanyAddressData, token?: string) => {
-  $host.interceptors.request.use(
-    config => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    error => {
-      return Promise.reject(error);
-    }
-  );
-  const { data } = await $host.post('/api/v1/companyAddress', formData);
+  const { data } = await $host.post('/api/v1/companyAddress', formData, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   return data;
 };
 
 const updateCompanyAddress = async (uuid: string, formData: Partial<CompanyAddressData>, token?: string) => {
-  $host.interceptors.request.use(
-    config => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    error => {
-      return Promise.reject(error);
-    }
-  );
-  const { data } = await $host.patch(`/api/v1/companyAddress/${uuid}`, formData);
+  const { data } = await $host.patch(`/api/v1/companyAddress/${uuid}`, formData, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   return data;
 };
 
 const deleteCompanyAddress = async (uuid: string, token?: string) => {
-  $host.interceptors.request.use(
-    config => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    error => {
-      return Promise.reject(error);
-    }
-  );
-  const { data } = await $host.delete(`/api/v1/companyAddress/${uuid}`);
+  const { data } = await $host.delete(`/api/v1/companyAddress/${uuid}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   return data;
 };
 

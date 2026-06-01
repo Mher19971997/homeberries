@@ -11,16 +11,9 @@ const getDeliveryAddressApi = async (query: string, token: string) => {
 };
 
 const createDeliveryAddress = async (formData: deliveryAddressData, token?: string) => {
-  $host.interceptors.request.use(
-    config => {
-      config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    error => {
-      return Promise.reject(error);
-    }
-  );
-  const { data } = await $host.post('/api/v1/deliveryAddress', formData);
+  const { data } = await $host.post('/api/v1/deliveryAddress', formData, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
   return data;
 };
 

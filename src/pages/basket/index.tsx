@@ -95,12 +95,14 @@ export default function BasketPage() {
     queryKey: ['getProfile'],
     queryFn: () => getProfile(cookies.token),
     enabled: !!isAuth && !!cookies.token,
+    retry: false,
   });
 
   const { data: baskets } = useQuery({
     queryKey: ['getAllBaskets'],
     queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
     enabled: !!isAuth && !!cookies.token,
+    retry: false,
   });
 
   // Загружаем корзину из IndexedDB для неавторизованных пользователей
@@ -155,6 +157,7 @@ export default function BasketPage() {
       cookies.token
     ),
     enabled: !!isAuth && !!cookies.token,
+    retry: false,
   });
 
   // Вычисляем общую сумму только для выбранных товаров

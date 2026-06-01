@@ -18,16 +18,7 @@ import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import { useIsMobile } from '@homeberris/hooks/useIsMobile';
 
-interface BasketItemProps {
-  basket: BasketDataItem;
-  isLocal?: boolean;
-  onRemove?: (uuid: string) => Promise<void>;
-  onUpdateQuantity?: (uuid: string, quantity: number) => Promise<void>;
-  selected?: boolean;
-  onSelectChange?: (uuid: string, selected: boolean) => void;
-}
-
-const BasketItem: React.FC<BasketItemProps> = ({
+const BasketItem: React.FC<any> = ({
   basket,
   isLocal = false,
   onRemove,
@@ -36,80 +27,70 @@ const BasketItem: React.FC<BasketItemProps> = ({
   onSelectChange
 }) => {
   const queryClient = useQueryClient();
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(['token', 'accessToken', 'jwt']);
   const { toast, showSuccess, showError, hideToast } = useToast();
   const isMobile = useIsMobile();
 
+  const token = React.useMemo(() => {
+    const raw = (
+      cookies.token ||
+      cookies.accessToken ||
+      cookies.jwt ||
+      (typeof window !== 'undefined' ? localStorage.getItem('token') : '') ||
+      ''
+    ).trim();
+    return raw.split('.').length === 3 ? raw : '';
+  }, [cookies]);
+
   const increment = useMutation({
-    mutationFn: (uuid: any) => incrementBasketCatalog(uuid, cookies.token),
+    mutationFn: (uuid: string) => incrementBasketCatalog(uuid, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
-      showSuccess('Количество товара увеличено');
+      showSuccess('Количество увеличено');
     },
-    onError: (error: any) => {
-      showError(error?.response?.data?.message || 'Ошибка при изменении количества');
-    },
+    onError: (err: any) => showError(err?.response?.data?.message || 'Ошибка'),
   });
 
   const decrement = useMutation({
-    mutationFn: (uuid: any) => decrementBasketCatalog(uuid, cookies.token),
+    mutationFn: (uuid: string) => decrementBasketCatalog(uuid, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
-      showSuccess('Количество товара уменьшено');
+      showSuccess('Количество уменьшено');
     },
-    onError: (error: any) => {
-      showError(error?.response?.data?.message || 'Ошибка при изменении количества');
-    },
+    onError: (err: any) => showError(err?.response?.data?.message || 'Ошибка'),
   });
 
   const remove = useMutation({
-    mutationFn: (uuid: any) => removeBasketCatalog(uuid, cookies.token),
+    mutationFn: (uuid: string) => removeBasketCatalog(uuid, token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
-      showSuccess('Товар удален из корзины');
+      showSuccess('Товар удалён');
     },
-    onError: (error: any) => {
-      showError(error?.response?.data?.message || 'Ошибка при удалении товара');
-    },
+    onError: (err: any) => showError(err?.response?.data?.message || 'Ошибка'),
   });
 
-  const handleIncrement = async () => {
-    if (isLocal && onUpdateQuantity && basket.uuid) {
-      try {
-        await onUpdateQuantity(basket.uuid, (basket.quantity || 1) + 1);
-        showSuccess('Количество товара увеличено');
-      } catch {
-        showError('Ошибка при изменении количества');
-      }
-    } else if (!isLocal) {
-      increment.mutate(basket?.catalogUuid);
+  const handleIncrement = () => {
+    if (isLocal && onUpdateQuantity) {
+      onUpdateQuantity(basket.uuid!, (basket.quantity || 1) + 1);
+    } else {
+      increment.mutate(basket.catalogUuid || basket.uuid);
     }
   };
 
-  const handleDecrement = async () => {
-    if (isLocal && onUpdateQuantity && basket.uuid) {
-      const newQuantity = Math.max(1, (basket.quantity || 1) - 1);
-      try {
-        await onUpdateQuantity(basket.uuid, newQuantity);
-        showSuccess('Количество товара уменьшено');
-      } catch {
-        showError('Ошибка при изменении количества');
-      }
-    } else if (!isLocal) {
-      decrement.mutate(basket?.catalogUuid);
+  const handleDecrement = () => {
+    if (isLocal && onUpdateQuantity) {
+      const newQ = Math.max(1, (basket.quantity || 1) - 1);
+      onUpdateQuantity(basket.uuid!, newQ);
+    } else {
+      decrement.mutate(basket.catalogUuid || basket.uuid);
     }
   };
 
-  const handleRemove = async () => {
-    if (isLocal && onRemove && basket.uuid) {
-      try {
-        await onRemove(basket.uuid);
-        showSuccess('Товар удален из корзины');
-      } catch {
-        showError('Ошибка при удалении товара');
-      }
-    } else if (!isLocal) {
-      remove.mutate(basket?.uuid);
+  const handleRemove = () => {
+    if (isLocal && onRemove) {
+      onRemove(basket.uuid!);
+    } else {
+      remove.mutate(basket.uuid);
     }
   };
 
@@ -118,39 +99,29 @@ const BasketItem: React.FC<BasketItemProps> = ({
   return (
     <Box className={styles.basketItem}>
       <Toast {...toast} onClose={hideToast} />
+
       {onSelectChange && basket.uuid && (
-        <Checkbox
-          checked={selected}
-          onChange={(e) => onSelectChange(basket.uuid!, e.target.checked)}
-          sx={{ alignSelf: 'flex-start', mt: 1 }}
-        />
+        <Checkbox checked={selected} onChange={(e) => onSelectChange(basket.uuid!, e.target.checked)} />
       )}
+
       <Box className={styles.imageBox}>
-        <Image
-          src={imgSrc.startsWith('http') ? imgSrc : '/images/cardEmpty.png'}
-          alt={basket?.catalog?.name || ''}
-          width={isMobile ? 80 : 100}
-          height={isMobile ? 80 : 100}
-          style={{ objectFit: 'contain' }}
-        />
+        <Image src={imgSrc} alt={basket?.catalog?.name || ''} width={100} height={100} style={{ objectFit: 'contain' }} />
       </Box>
+
       <Box className={styles.infoBox}>
         <Typography className={styles.name}>{basket?.catalog?.name}</Typography>
         <Typography className={styles.price}>
           {Number(basket?.catalog?.price || 0).toLocaleString('ru-RU')} ₽
         </Typography>
+
         <Box className={styles.quantityBox}>
-          <IconButton size="small" onClick={handleDecrement}>−</IconButton>
-          <AnimatedNumber
-            value={basket?.quantity || 1}
-            style={{ fontSize: 16, fontWeight: 600, minWidth: 24, textAlign: 'center' }}
-            duration={200}
-            formatValue={(n: number) => Math.round(n).toString()}
-          />
-          <IconButton size="small" onClick={handleIncrement}>+</IconButton>
+          <IconButton onClick={handleDecrement}>−</IconButton>
+          <AnimatedNumber value={basket?.quantity || 1} duration={200} formatValue={(n: number) => n.toString()} />
+          <IconButton onClick={handleIncrement}>+</IconButton>
         </Box>
       </Box>
-      <IconButton className={styles.removeBtn} onClick={handleRemove}>
+
+      <IconButton onClick={handleRemove}>
         <DeleteOutlinedIcon />
       </IconButton>
     </Box>

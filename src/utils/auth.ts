@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 // Проверка наличия токена в cookies (клиент)
 export const checkToken = (): boolean => {
   const token = Cookies.get('token');
-  return !!token;
+  return !!token && token.split('.').length === 3;
 };
 
 // Получение токена из cookies (клиент)
