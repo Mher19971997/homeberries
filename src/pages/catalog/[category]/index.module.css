@@ -1,7 +1,7 @@
 .body {
   width: 100%;
   max-width: 1120px;
-  padding-bottom: 300px;
+  padding-bottom: 56px;
   overflow-x: hidden;
   margin: 0 auto;
 }
@@ -62,6 +62,8 @@
   color: #242424;
   cursor: pointer;
   outline: none;
+  max-width: 256px;
+  width: 100%;
 }
 
 .sortSelect:focus {
@@ -74,6 +76,16 @@
   justify-content: center;
   gap: 8px;
   margin: 32px 0;
+  /* width: 32; */
+  /* height: 32; */
+  border-radius: 5px;
+  padding-top: 4px;
+  padding-right: 12px;
+  padding-bottom: 4px;
+  padding-left: 12px;
+  gap: 8px;
+  angle: 0 deg;
+  opacity: 1;
 }
 
 .pageBtn {
@@ -88,7 +100,12 @@
   cursor: pointer;
   transition: all 0.2s;
 }
-
+.pageBtn:nth-child(1) {
+    border: none;
+}
+.pageBtn:last-child{
+    border: none;
+}
 .pageBtn:hover:not(:disabled) {
   border-color: #242424;
 }
@@ -102,6 +119,17 @@
   background: #242424;
   color: #fff;
   border-color: #242424;
+}
+
+.pageDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  font-size: 14px;
+  color: #868695;
+  user-select: none;
 }
 
 .filterTitle {
@@ -217,7 +245,6 @@
   padding: 12px 16px;
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .selectedCount {

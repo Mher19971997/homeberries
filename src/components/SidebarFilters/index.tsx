@@ -13,6 +13,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchIcon from '@mui/icons-material/Search';
 import { BrandItem } from '@homeberris/types/brand';
+import { SearchIconNotMUI } from '@homeberris/assets/icons/catalog';
 
 interface SidebarFiltersProps {
   brands: BrandItem[];
@@ -39,17 +40,17 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange 
 
       {/* Brand */}
       <Accordion defaultExpanded disableGutters elevation={0} sx={{ '&:before': { display: 'none' } }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 2, py: 1.5, borderBottom: '1px solid #f0f0f0' }}>
-          <Typography sx={{ fontWeight: 600, fontSize: '14px' }}>Brand</Typography>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0, py: 1.5, borderBottom: '1px solid #B5B5B5' }}>
+          <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '18px', lineHeight: '24px', letterSpacing: '0.03em' }}>Brand</Typography>
         </AccordionSummary>
-        <AccordionDetails sx={{ px: 2, py: 1.5 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, border: '1px solid #e0e0e0', borderRadius: '8px', px: 1.5, py: 0.5, mb: 1.5 }}>
-            <SearchIcon sx={{ fontSize: 16, color: '#999' }} />
+        <AccordionDetails sx={{ px: 0, py: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, border: 'none', borderRadius: '8px', px: 1, py: 0.5, mb: 1,background:'#F5F5F5' }}>
+            <SearchIconNotMUI/>
             <InputBase
               placeholder="Search"
               value={brandSearch}
               onChange={(e) => setBrandSearch(e.target.value)}
-              sx={{ fontSize: '13px', flex: 1 }}
+              sx={{ fontSize: '14px', flex: 1}}
             />
           </Box>
           <Box sx={{ maxHeight: 220, overflowY: 'auto', '&::-webkit-scrollbar': { width: 4 }, '&::-webkit-scrollbar-thumb': { bgcolor: '#e0e0e0', borderRadius: 2 } }}>
@@ -72,14 +73,14 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange 
         </AccordionDetails>
       </Accordion>
 
-      <Divider />
+      {/* <Divider /> */}
 
-      {['Battery capacity', 'Screen type', 'Screen diagonal', 'Protection class', 'Built-in memory'].map((label) => (
-        <Accordion key={label} disableGutters elevation={0} sx={{ '&:before': { display: 'none' }, borderTop: '1px solid #f0f0f0' }}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 2, py: 1.2 }}>
-            <Typography sx={{ fontSize: '14px', color: '#333' }}>{label}</Typography>
+      {['Battery capacity', 'Screen type', 'Screen diagonal', 'Protection class', 'Built-in memory'].map((label, index) => (
+        <Accordion key={label} disableGutters elevation={0} sx={{ '&:before': { display: 'none' }, borderTop: index === 0 ? 'none' : '1px solid #B5B5B5' }}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ px: 0, py: 1.2 }}>
+            <Typography sx={{ fontFamily: 'Inter', fontWeight: 500, fontSize: '18px', lineHeight: '24px', letterSpacing: '0.03em', color: '#333' }}>{label}</Typography>
           </AccordionSummary>
-          <AccordionDetails sx={{ px: 2, py: 1 }}>
+          <AccordionDetails sx={{ px: 0, py: 1 }}>
             <Typography sx={{ fontSize: '13px', color: '#999' }}>Нет данных</Typography>
           </AccordionDetails>
         </Accordion>

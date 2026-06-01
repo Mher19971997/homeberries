@@ -10,6 +10,7 @@ interface CardSliderProps {
   images: CardSliderImage[];
   dots?: boolean;
   slidesToShow?: number;
+  imgHeight?: number | string;
 }
 
 interface CardSliderImage {
@@ -19,37 +20,55 @@ interface CardSliderImage {
 const CardSlider: React.FC<CardSliderProps> = ({
   images,
   dots = false,
-  slidesToShow = 1
+  slidesToShow = 1,
+  imgHeight = 280,
 }) => {
+  const h = typeof imgHeight === 'number' ? `${imgHeight}px` : imgHeight;
+
+  const isCustomSize = imgHeight !== 280;
+
   const settings = {
-    className: 'center',
-    centerMode: true,
+    className: isCustomSize ? '' : 'center',
+    centerMode: !isCustomSize,
     infinite: true,
     centerPadding: '0px',
     slidesToShow: slidesToShow,
     speed: 500,
-    dots: dots
+    dots: dots,
+    arrows: false,
   };
 
   return (
-    <Box className={styles.container}>
+    <Box
+      className={styles.container}
+      style={{ minHeight: h, height: h }}
+      sx={{
+        '& .slick-list': { height: `${h} !important`, minHeight: `${h} !important` },
+        '& .slick-track': { height: `${h} !important`, minHeight: `${h} !important` },
+        '& .slick-slide > div': { height: h },
+      }}
+    >
       <Slider {...settings}>
         {images.map((item: CardSliderImage) => (
-          <Box key={v4()} className={styles.imageItem}>
+          <Box
+            key={v4()}
+            className={styles.imageItem}
+            style={{ height: h, minHeight: h, maxHeight: h }}
+          >
             <img
               src={item.imgPath}
-              alt=''
+              alt=""
               onError={(e) => {
                 (e.target as HTMLImageElement).src = EmtpImg.src;
               }}
               style={{
                 width: '100%',
-                height: '100%',
-                minHeight: '280px',
+                height: h,
+                minHeight: 'unset',
                 objectFit: 'contain',
                 objectPosition: 'center',
-                backgroundColor: '#fff',
-                display: 'block'
+                backgroundColor: 'transparent',
+                display: 'block',
               }}
             />
           </Box>

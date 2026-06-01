@@ -1,373 +1,160 @@
-.cardBody {
-  background: #f3f3f3;
+.card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  background: #F6F6F6;
+  border-radius: 16px;
+  overflow: hidden;
   position: relative;
   cursor: pointer;
-  border-radius: 12px;
-  padding: 22px 22px 24px;
-  /* width: 300px;  */
   width: 100%;
-  min-width: 0;
-  min-width: 260px;
-  gap: 0;
-  overflow: hidden;
-}
-
-.sortPanelOne { width: 100%; }
-
-.favoriteButton {
-  position: absolute !important;
-  top: 14px;
-  right: 14px;
-  z-index: 10;
-  padding: 0 !important;
-  background: transparent !important;
-  width: 32px;
-  height: 32px;
-}
-
-.imageContainer {
-  width: 100%;
-  height: 230px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 18px;
-  background: unset !important;
-  overflow: hidden;
-}
-
-.imageContainer img {
-  max-height: 220px;
-  width: auto;
-  max-width: 100%;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  background: unset !important;
-  background-color: transparent !important;
-}
-
-.imageContainer :global(.MuiPaper-root),
-.imageContainer :global(div),
-.imageContainer :global(picture),
-.imageContainer :global(figure) {
-  background: unset !important;
-  background-color: transparent !important;
-  box-shadow: none !important;
-}
-
-
-.contentBlock {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  margin-top: 22px;
-  flex: 1;
-  min-width: 0;
-}
-
-.catalogName {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  color: #000 !important;
-  text-align: center;
-  line-height: 1.35 !important;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  word-break: normal;
-  overflow-wrap: break-word;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.price {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-size: 28px !important;
-  font-weight: 700 !important;
-  color: #000 !important;
-  text-align: center;
-  margin: 4px 0 0 !important;
-}
-
-.basketButton {
-  background-color: #000 !important;
-  color: #fff !important;
-  text-transform: none !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  padding: 14px 0 !important;
-  border-radius: 14px !important;
-  box-shadow: none !important;
-  width: 100%;
-  margin-top: 20px !important;
-  letter-spacing: 0.1px !important;
-}
-
-.basketButton:hover { 
-  background-color: #1a1a1a !important; 
-}
-
-
-
-
-
-/* .sortPanelOne {
-  width: 320px !important;
+  max-width: 266px;
+  min-height: 432px;
   height: 100%;
-  max-height: 520px;
+  padding: 24px 16px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-.cardBody {
-  position: relative;
-  height: 100%;
-  max-height: 600px;
-  width: 280px;
-  z-index: 1;
-  cursor: pointer;
-  background-color: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-}
-
-.cardBody:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.cardContent {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.imageContainer {
-  width: 100%;
-  height: 280px;
-  min-height: 280px;
-  max-height: 280px;
-  overflow: hidden;
-  position: relative;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-.discountBadge {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  background: #ff3333;
-  color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 700;
-  z-index: 2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.favoriteButton {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(4px);
-  padding: 4px;
-  transition: all 0.2s ease;
-}
-
-.favoriteButton:hover {
-  background: rgba(0, 0, 0, 0.5);
-  transform: scale(1.1);
-}
-
-.cardInfo {
-  padding: 16px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 140px;
-}
-
-.priceContainer {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.price {
-  color: #667eea;
-  font-size: 20px;
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.oldPrice {
-  color: #868695;
-  font-size: 14px;
-  text-decoration: line-through;
-  font-weight: 400;
-}
-
-.walletInfo {
-  font-size: 11px;
-  color: #868695;
-  margin-top: -4px;
-}
-
-.catalogName {
-  font-size: 14px;
-  color: #242424;
-  line-height: 1.5;
-  min-height: 3.2em;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 6px;
-  font-weight: 400;
-}
-
-.ratingContainer {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-.starIcon {
-  color: #ffc107;
-  font-size: 16px !important;
-}
-
-.rating {
-  font-size: 13px;
-  font-weight: 600;
-  color: #242424;
-}
-
-.reviewsCount {
-  font-size: 12px;
-  color: #868695;
-}
-
-.basketButtonContainer {
-  padding: 0 12px 12px;
-  margin-top: auto;
-}
-
-.basketButton {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-  color: white !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-  font-size: 14px !important;
-  padding: 10px 16px !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
-  transition: all 0.3s ease !important;
-}
-
-.basketButton:hover {
-  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%) !important;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4) !important;
+.card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform: translateY(-2px);
 }
 
-.basketButton .MuiSvgIcon-root {
-  font-size: 18px;
+/* ── Inner wrapper ── */
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  position: relative;
 }
 
-@media only screen and (max-width: 1200px) {
-  .cardBody {
-    width: 100%;
-    max-width: 260px;
-  }
-
-  .imageContainer {
-    height: 260px;
-    min-height: 260px;
-    max-height: 260px;
-  }
+/* ── Favourite ── */
+.favoriteRow {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 8px;
+  
 }
 
-@media only screen and (max-width: 1000px) {
-  .cardBody {
-    width: 100%;
-    max-width: 100%;
+.favoriteButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  width: 29px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* ── Image ── */
+.imageWrap {
+  width: 160px;
+  height: 160px;
+  min-width: 160px;
+  min-height: 160px;
+  max-width: 160px;
+  max-height: 160px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageWrap > * {
+  width: 160px !important;
+  height: 160px !important;
+  max-width: 160px !important;
+  max-height: 160px !important;
+  overflow: hidden;
+}
+
+.imageWrap img {
+  width: 160px !important;
+  height: 160px !important;
+  object-fit: contain;
+}
+
+/* ── Body ── */
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  flex: 1;
+}
+
+/* ── Name ── */
+.name {
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: center;
+  color: #111111;
+  margin: 0;
+  width: 100%;
+  min-height: 48px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
+/* ── Price ── */
+.price {
+  font-family: Inter, sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: 0.03em;
+  text-align: center;
+  color: #111111;
+  margin: 0;
+}
+
+/* ── Button ── */
+.buyBtn {
+  font-family: Inter, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0;
+  text-align: center;
+  color: #ffffff;
+  background: #111111;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 0;
+  max-width: 188px;
+  width: 100%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.buyBtn:hover {
+  background: #333333;
+}
+
+@media (max-width: 768px) {
+  .imageWrap {
+    width: 120px;
+    height: 120px;
   }
 
-  .imageContainer {
-    height: 240px;
-    min-height: 240px;
-    max-height: 240px;
-  }
-
-  .catalogName {
-    height: 2.8em;
-    font-size: 13px;
+  .imageWrap img {
+    width: 120px;
+    height: 120px;
   }
 
   .price {
-    font-size: 18px;
-  }
-
-  .oldPrice {
-    font-size: 13px;
-  }
-
-  .basketButton {
-    font-size: 13px !important;
-    padding: 10px 14px !important;
+    font-size: 20px;
   }
 }
-
-@media only screen and (max-width: 600px) {
-  .cardBody {
-    width: 100%;
-  }
-
-  .imageContainer {
-    height: 220px;
-    min-height: 220px;
-    max-height: 220px;
-  }
-
-  .cardInfo {
-    padding: 12px;
-    min-height: 120px;
-  }
-
-  .catalogName {
-    font-size: 12px;
-    min-height: 2.6em;
-  }
-
-  .price {
-    font-size: 16px;
-  }
-} */
