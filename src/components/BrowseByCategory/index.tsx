@@ -1,5 +1,6 @@
 import React from 'react';
 import { Inter } from 'next/font/google';
+import { useRouter } from 'next/navigation';
 import styles from './index.module.css';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '500'] });
@@ -79,6 +80,12 @@ const categories: Category[] = [
 ];
 
 const BrowseByCategory: React.FC = () => {
+  const router = useRouter();
+
+  const handleCategoryClick = (name: string) => {
+    router.push(`/catalog/${encodeURIComponent(name)}`);
+  };
+
   return (
     <section className={`${styles.section} ${inter.className}`}>
       <div className={styles.container}>
@@ -103,7 +110,12 @@ const BrowseByCategory: React.FC = () => {
         {/* Сетка с карточками */}
         <div className={styles.grid}>
           {categories.map((category) => (
-            <div key={category.id} className={styles.card}>
+            <div
+              key={category.id}
+              className={styles.card}
+              onClick={() => handleCategoryClick(category.name)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className={styles.iconWrapper}>{category.icon}</div>
               <span className={styles.cardName}>{category.name}</span>
             </div>
