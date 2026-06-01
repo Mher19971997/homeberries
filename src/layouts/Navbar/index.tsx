@@ -2,10 +2,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, InputBase, Badge, IconButton } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import { useQuery } from '@tanstack/react-query';
@@ -15,6 +11,7 @@ import { getAllBaskets } from '@homeberris/http/basketApi';
 import { getBasketCount } from '@homeberris/utils/indexedDB';
 import qs from 'qs';
 import styles from './index.module.css'
+import { CartIcon, FavoriteIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
 
 const Navbar = () => {
   const router = useRouter();
@@ -74,16 +71,16 @@ const Navbar = () => {
         <Box className={styles.navActions}>
           <IconButton className={styles.iconBtn} onClick={() => router.push('/favorites')}>
             <Badge badgeContent={favorites.length > 0 ? favorites.length : undefined} color="error">
-              <FavoriteBorderIcon />
+              <FavoriteIcon />
             </Badge>
           </IconButton>
           <IconButton className={styles.iconBtn} onClick={() => router.push('/basket')}>
             <Badge badgeContent={basketCount > 0 ? basketCount : undefined} color="error">
-              <ShoppingBagOutlinedIcon />
+              <CartIcon />
             </Badge>
           </IconButton>
           <IconButton className={styles.iconBtn} onClick={() => router.push(isAuth ? '/profile' : '/security/login')}>
-            <PersonOutlineIcon />
+            <UserIcon />
           </IconButton>
         </Box>
 

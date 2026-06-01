@@ -29,6 +29,13 @@
   justify-content: flex-start;
   padding: 0;
   height: 328px;
+  display: flex;
+  gap: 16px;
+}
+
+.imgPS5Container {
+  height: 100%;
+  display: block;
 }
 
 .imgPS5 {
@@ -36,13 +43,12 @@
   width: auto;
   object-fit: cover;
   object-position: left center;
-  flex-shrink: 0;
   display: block;
 }
 
 .cardTextPS5 {
   flex: 1;
-  padding: 40px 40px 40px 24px;
+  padding: 40px 40px 40px 0px;
 }
 
 .bottomRow {
@@ -53,34 +59,41 @@
 
 .cardAirpods {
   background: #ededed;
-  padding: 0 24px 0 0;
+  padding: 0 32px 0 0; 
   align-items: center;
+  display: flex;
+  gap: 24px;
 }
 
-.imgAirpods {
+.imgAirpodsContainer,
+.imgVisionContainer {
   height: 100%;
-  width: auto;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.cardVision {
-  background: #353535;
-  padding: 0 24px 0 0;
+  display: flex;
   align-items: center;
+  flex-shrink: 0; 
 }
 
+.imgAirpods,
 .imgVision {
   height: 100%;
   width: auto;
   object-fit: contain;
-  flex-shrink: 0;
 }
 
-.cardAirpods>div,
-.cardVision>div {
+.cardVision {
+  background: #353535;
+  padding: 0 32px 0 0; 
+  align-items: center;
+  display: flex;
+  gap: 24px;
+}
+
+.cardTextCenter {
   flex: 1;
-  padding-left: 8px;
+  padding-left: 0; 
+  display: flex;
+  flex-direction: column;
+  gap: 8px; 
 }
 
 .cardMac {
@@ -110,15 +123,20 @@
   position: relative;
 }
 
+.imgMacContainer picture {
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+
 .imgMac {
   max-height: 95%;
   width: auto;
   object-fit: contain;
-  display: block;
+  display: inline-block;
 }
 
 .titleLg {
-  font-family: 'Inter', sans-serif;
   font-size: 40px;
   font-weight: 500;
   color: #000000;
@@ -127,7 +145,6 @@
 }
 
 .titleMac {
-  font-family: 'Inter', sans-serif;
   font-size: 64px;
   font-weight: 100;
   color: #000000;
@@ -140,34 +157,28 @@
   font-weight: 500;
 }
 
-.titleSm {
-  font-family: 'Inter', sans-serif;
+.titleSm,
+.titleSmLight {
   font-size: 29px;
   font-weight: 300;
-  color: #000000;
   margin: 0;
   line-height: 1.1;
 }
 
-.titleSm strong {
-  font-weight: 600;
+.titleSm {
+  color: #000000;
 }
 
 .titleSmLight {
-  font-family: 'Inter', sans-serif;
-  font-size: 29px;
-  font-weight: 300;
   color: #ffffff;
-  margin: 0;
-  line-height: 1.1;
 }
 
+.titleSm strong,
 .titleSmLight strong {
   font-weight: 600;
 }
 
 .desc {
-  font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: #909090;
   line-height: 1.4;
@@ -179,7 +190,6 @@
   padding: 16px 56px;
   border: 1px solid #000000;
   background: transparent;
-  font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
   color: #000000;
@@ -195,56 +205,116 @@
   color: #ffffff;
 }
 
+.brDesktop {
+  display: inline;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
   }
 
   .cardMac {
-    flex-direction: column;
-    padding: 40px 40px 0;
+    flex-direction: column-reverse;
+    padding: 40px;
     height: auto;
     min-height: 500px;
+    justify-content: center;
+    gap: 32px;
   }
 
   .macText {
     width: 100%;
-    margin-bottom: 24px;
+    margin-bottom: 0;
+    align-items: center;
+    text-align: center;
   }
 
   .imgMacContainer {
     width: 100%;
+    height: auto;
     justify-content: center;
+    align-items: center;
+  }
+
+  .imgMacContainer picture {
+    text-align: center;
   }
 
   .imgMac {
-    height: 300px;
-  }
-
-  .cardPS5,
-  .bottomRow {
     height: auto;
+    max-height: 300px;
+    width: 80%;
+    margin: 0 auto;
   }
 }
 
 @media (max-width: 600px) {
+  .brDesktop {
+    display: none;
+  }
+
   .bottomRow {
     grid-template-columns: 1fr;
     height: auto;
   }
 
-  .cardPS5 {
-    flex-direction: column-reverse;
-    padding: 32px;
+  .cardAirpods,
+  .cardVision {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
     height: auto;
+  }
+
+  .imgAirpodsContainer,
+  .imgVisionContainer {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .imgAirpods,
+  .imgVision {
+    width: 70%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .cardTextCenter {
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cardPS5 {
+    flex-direction: column;
+    padding: 40px 24px;
+    height: auto;
+    text-align: center;
+  }
+
+  .imgPS5Container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 24px;
   }
 
   .imgPS5 {
-    width: 80%;
+    width: 70%;
     height: auto;
+    margin: 0 auto;
   }
 
   .cardTextPS5 {
-    padding: 0 0 24px 0;
+    padding: 0;
+  }
+
+  .cardMac {
+    padding: 40px 24px;
   }
 }

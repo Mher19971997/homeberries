@@ -15,7 +15,6 @@ import SmallerBanners from '@homeberris/components/SmallerBanners';
 import BrowseByCategory from '@homeberris/components/BrowseByCategory';
 import ProductGridBanners from '@homeberris/components/ProductGridBanners';
 import CatalogCard from '@homeberris/components/CatalogCard';
-import Footer from '@homeberris/layouts/Footer';
 import BigSummerSale from '@homeberris/components/BigSummerSale';
 
 const ITEMS_LIMIT = 8;
@@ -197,7 +196,6 @@ export default function Home() {
         )}
       </Box>
       <BigSummerSale />
-      <Footer />
     </Box>
   );
 }

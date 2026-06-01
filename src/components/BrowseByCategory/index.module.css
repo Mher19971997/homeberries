@@ -1,6 +1,6 @@
 .section {
   width: 100%;
-  background-color: #fafafa; /* Светлый фон как на скрине */
+  background-color: #fafafa;
   padding: 80px 0;
   box-sizing: border-box;
 }
@@ -9,11 +9,10 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 160px; /* Боковые отступы, чтобы контент стоял по сетке баннеров */
+  padding: 0 160px;
   box-sizing: border-box;
 }
 
-/* --- ШАПКА БЛОКА --- */
 .header {
   display: flex;
   justify-content: space-between;
@@ -50,28 +49,27 @@
   opacity: 0.6;
 }
 
-/* --- СЕТКА КАТЕГОРИЙ --- */
 .grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* Ровно 6 колонок в ряд */
-  gap: 32px; /* Расстояние между карточками */
+  grid-template-columns: repeat(6, 1fr);
+  gap: 32px;
 }
 
 .card {
-  background: #ededed; /* Мягкий серый фон карточки */
-  border-radius: 15px; /* Скругление углов */
+  background: #ededed;
+  border-radius: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 1 / 1; /* Делает карточки идеально квадратными */
+  aspect-ratio: 1 / 1;
   padding: 24px;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .card:hover {
-  background-color: #e2e2e2; /* Эффект при наведении */
+  background-color: #e2e2e2;
 }
 
 .iconWrapper {
@@ -82,11 +80,10 @@
   justify-content: center;
 }
 
-/* Стилизуем иконки внутри контейнера */
 .iconWrapper svg {
-  width: 48px;  /* Размер иконок как на макете */
+  width: 48px;
   height: 48px;
-  stroke-width: 1.2px; /* Тонкие аккуратные линии */
+  stroke-width: 1.2px;
 }
 
 .cardName {
@@ -97,11 +94,11 @@
   white-space: nowrap;
 }
 
-/* --- АДАПТИВНОСТЬ --- */
 @media (max-width: 1200px) {
   .container {
     padding: 0 40px;
   }
+
   .grid {
     gap: 16px;
   }
@@ -109,14 +106,15 @@
 
 @media (max-width: 900px) {
   .grid {
-    grid-template-columns: repeat(3, 1fr); /* 3 в ряд на планшетах */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 480px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 в ряд на мобилках */
+    grid-template-columns: repeat(2, 1fr);
   }
+
   .title {
     font-size: 20px;
   }

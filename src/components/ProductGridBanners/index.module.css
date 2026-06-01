@@ -1,19 +1,24 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
 .gridContainer {
   display: flex;
   width: 100%;
-  /* max-width: 1440px;  */
   height: 640px;
-  margin: 56px auto;
+  margin: 56px auto 24px auto;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 .gridCard {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end; 
-  padding: 56px 32px;      
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 56px 32px;
   box-sizing: border-box;
   height: 100%;
 }
@@ -37,34 +42,33 @@
 
 .imageBox {
   width: 100%;
-  flex: 1; 
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px; 
+  margin-bottom: 24px;
 }
 
 .productImg {
-  max-height: 85%; 
+  max-height: 240px;
   max-width: 90%;
   object-fit: contain;
 }
 
 .infoBox {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
+  display: grid;
+  grid-template-rows: 85px 110px auto;
+  align-items: start;
+  gap: 0px;
   width: 100%;
 }
 
 .bannerTitle {
   font-family: -apple-system, "Inter", sans-serif !important;
-  font-size: 34px !important;      
+  font-size: 34px !important;
   font-weight: 300 !important;
   line-height: 1.2 !important;
   color: #000000 !important;
-  margin: 0 !important;
+  margin: 0 0 16px 0 !important;
 }
 
 .macbookGridCard .bannerTitle {
@@ -76,9 +80,9 @@
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
-  color: #909090 !important;         
-  margin: 0 !important;
-  max-width: 280px;                 
+  color: #909090 !important;
+  margin: 0 0 24px 0 !important;
+  max-width: 280px;
 }
 
 .macbookGridCard .bannerDescription {
@@ -88,15 +92,18 @@
 .actionButton {
   text-transform: none !important;
   font-family: -apple-system, "Inter", sans-serif !important;
-  font-size: 14px ;
-  font-weight: 500 ;
-  padding: 16px 48px !important;   
+  font-size: 14px;
+  font-weight: 500;
+  padding: 16px 0 !important;
+  width: 100%;
+  max-width: 180px;
+  text-align: center;
   border-radius: 6px;
   border: 1px solid #000000 !important;
   color: #000000 !important;
   background-color: transparent !important;
   transition: all 0.2s ease !important;
-  margin-top: 8px !important;
+  align-self: end;
 }
 
 .actionButton:hover {
@@ -114,21 +121,170 @@
   color: #2c2c2c !important;
 }
 
-@media (max-width: 1024px) {
+.paginationDots {
+  display: none;
+}
+
+
+@media (max-width: 1100px) and (min-width: 601px) {
   .gridContainer {
     height: auto;
     flex-wrap: wrap;
+    margin: 56px auto;
   }
+
   .gridCard {
-    flex: calc(50% - 0px);
-    height: 500px;
-    padding: 40px 24px;
+    flex: 0 0 50%;
+    height: 580px;
+    padding: 40px;
+    grid-template-rows: 200px auto;
+  }
+
+  .imageBox {
+    margin-bottom: 24px;
+  }
+
+  .productImg {
+    max-height: 100%;
+    max-width: 80%;
+  }
+
+  .infoBox {
+    grid-template-rows: 75px 95px auto;
+  }
+
+  .bannerTitle {
+    font-size: 28px !important;
+  }
+
+  .bannerDescription {
+    max-width: 100%;
+    font-size: 14px !important;
+  }
+
+  .actionButton {
+    padding: 12px 0 !important;
+    max-width: 160px;
   }
 }
 
 @media (max-width: 600px) {
+  .wrapper {
+    background-color: var(--dynamic-bg) !important;
+    margin-top: 64px !important;
+  }
+
+  .gridContainer {
+    margin: 0 auto;
+    height: 540px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .gridContainer::-webkit-scrollbar {
+    display: none;
+  }
+
   .gridCard {
-    flex: 100%;
-    height: 480px;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background-color: transparent !important;
+  }
+
+  .darkTheme .bannerTitle {
+    color: #ffffff !important;
+  }
+
+  .darkTheme .bannerDescription {
+    color: #a4a4a4 !important;
+  }
+
+  .darkTheme .actionButton {
+    border: 1px solid #ffffff !important;
+    color: #ffffff !important;
+  }
+
+  .darkTheme .actionButton:hover {
+    background-color: #ffffff !important;
+    color: #2c2c2c !important;
+  }
+
+  .imageBox {
+    max-height: 240px;
+    margin-bottom: 16px;
+  }
+
+  .productImg {
+    max-height: 100%;
+    max-width: 85%;
+  }
+
+  .infoBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .bannerTitle {
+    font-size: 32px !important;
+    color: #000000 !important;
+    margin: 0 !important;
+  }
+
+  .bannerDescription {
+    max-width: 310px;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    color: #909090 !important;
+    margin: 0 !important;
+  }
+
+  .actionButton {
+    width: 100%;
+    max-width: 220px;
+    padding: 14px 0 !important;
+    margin-top: 12px !important;
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    align-self: center !important;
+  }
+
+  .paginationDots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 32px;
+    margin-top: 24px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .activeDot {
+    background-color: #000000;
+  }
+
+  .darkTheme .dot {
+    background-color: #555555;
+  }
+
+  .darkTheme .activeDot {
+    background-color: #ffffff;
   }
 }

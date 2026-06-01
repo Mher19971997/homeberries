@@ -21,12 +21,16 @@ const SmallerBanners: React.FC = () => {
         
         <div className={styles.leftCol}>
           
+          {/* PlayStation 5 */}
           <div className={`${styles.card} ${styles.cardPS5}`}>
-            <img
-              className={styles.imgPS5}
-              src="/images/PlayStation.png" 
-              alt="Playstation 5"
-            />
+            <picture className={styles.imgPS5Container}>
+              <source media="(max-width: 600px)" srcSet="/images/PlayStationMobile.png" />
+              <img
+                className={styles.imgPS5}
+                src="/images/PlayStation.png" 
+                alt="Playstation 5"
+              />
+            </picture>
             <div className={styles.cardTextPS5}>
               <h3 className={styles.titleLg}>Playstation 5</h3>
               <p className={styles.desc}>
@@ -37,32 +41,37 @@ const SmallerBanners: React.FC = () => {
 
           <div className={styles.bottomRow}>
             
+            {/* AirPods Max */}
             <div className={`${styles.card} ${styles.cardAirpods}`}>
-              <img 
-                className={styles.imgAirpods} 
-                src="/images/AppleAirPodsMax.png" 
-                alt="AirPods Max" 
-              />
-              <div>
+              <picture className={styles.imgAirpodsContainer}>
+                <source media="(max-width: 600px)" srcSet="/images/AppleAirPodsMaxMobile.png" />
+                <img 
+                  className={styles.imgAirpods} 
+                  src="/images/AppleAirPodsMax.png" 
+                  alt="AirPods Max" 
+                />
+              </picture>
+              <div className={styles.cardTextCenter}>
                 <h3 className={styles.titleSm}>
-                  Apple <br />
-                  AirPods <br />
-                  <strong>Max</strong>
+                  Apple <br className={styles.brDesktop} /> AirPods <strong>Max</strong>
                 </h3>
                 <p className={styles.desc}>Computational audio. Listen, it's powerful</p>
               </div>
             </div>
 
+            {/* Vision Pro */}
             <div className={`${styles.card} ${styles.cardVision}`}>
-              <img 
-                className={styles.imgVision} 
-                src="/images/AppleVisionPro.png" 
-                alt="Vision Pro" 
-              />
-              <div>
+              <picture className={styles.imgVisionContainer}>
+                <source media="(max-width: 600px)" srcSet="/images/AppleVisionProMobile.png" />
+                <img 
+                  className={styles.imgVision} 
+                  src="/images/AppleVisionPro.png" 
+                  alt="Vision Pro" 
+                />
+              </picture>
+              <div className={styles.cardTextCenter}>
                 <h3 className={styles.titleSmLight}>
-                  Apple <br />
-                  Vision <strong>Pro</strong>
+                  Apple <br className={styles.brDesktop} /> Vision <strong>Pro</strong>
                 </h3>
                 <p className={styles.desc}>An immersive way to experience entertainment</p>
               </div>
@@ -71,8 +80,8 @@ const SmallerBanners: React.FC = () => {
           </div>
         </div>
 
+        {/* MacBook Air */}
         <div className={`${styles.card} ${styles.cardMac}`}>
-          
           <div className={styles.macText}>
             <h2 className={styles.titleMac}>
               Macbook <br />
@@ -90,13 +99,15 @@ const SmallerBanners: React.FC = () => {
           </div>
 
           <div className={styles.imgMacContainer}>
-            <img
-              className={styles.imgMac}
-              src="/images/MacBookPro14.png"
-              alt="Macbook Air"
-            />
+            <picture>
+              <source media="(max-width: 900px)" srcSet="/images/MacBookPro.png" />
+              <img
+                className={styles.imgMac}
+                src="/images/MacBookPro14.png"
+                alt="Macbook Air"
+              />
+            </picture>
           </div>
-
         </div>
 
       </div>

@@ -1,9 +1,6 @@
 import { Box, Typography, Link } from '@mui/material';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import MusicNoteIcon from '@mui/icons-material/MusicNote'; 
 import styles from './index.module.css';
+import { FacebookIcon, InstagramIcon, TikTokIcon, TwitterIcon } from '@homeberris/assets/icons/footer';
 
 export default function Footer() {
   return (
@@ -52,7 +49,7 @@ export default function Footer() {
             <FacebookIcon className={styles.socialIcon} />
           </a>
           <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
-            <MusicNoteIcon className={styles.socialIcon} />
+            <TikTokIcon className={styles.socialIcon} />
           </a>
           <a href="#" className={styles.socialLink} target="_blank" rel="noreferrer">
             <InstagramIcon className={styles.socialIcon} />
