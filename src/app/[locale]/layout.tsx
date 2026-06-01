@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import Providers from '@homeberris/app/providers';
 import Navbar from '@homeberris/layouts/Navbar';
 import BottomBarMobile from '@homeberris/layouts/BottomBarMobile';
+import Preloader from '@homeberris/components/Preloader';
 import '@homeberris/styles/globals.css';
 import '@homeberris/styles/cropper.css';
 import 'slick-carousel/slick/slick.css';
@@ -38,6 +39,7 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={inter.className}>
         <Providers>
+          <Preloader />
           <main className={styles.main}>
             <Navbar />
             <section className={styles.sectionTwo}>{children}</section>

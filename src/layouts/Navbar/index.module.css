@@ -1,17 +1,19 @@
 .navbar {
-  width: 100%;
+  width: 100%;  
   background-color: #ffffff;
   border-bottom: 1px solid #b5b5b5;
   box-sizing: border-box;
 }
 
 .navbarInner {
+  max-width: 1120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 160px;
   gap: 24px;
   box-sizing: border-box;
+  margin: 0 auto;
+  padding: 16px;
 }
 
 .logo {

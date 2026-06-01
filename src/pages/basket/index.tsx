@@ -253,7 +253,7 @@ export default function BasketPage() {
           <Grid item xs={12}>
             <Card className={styles.cardBlock}>
               <Badge badgeContent={currentBaskets?.meta?.count || 0}>
-                <Typography variant='h5' fontWeight={'bold'} component="div">
+                <Typography variant='h5' fontWeight={'bold'} component="div" suppressHydrationWarning>
                   {t('basket.title')}
                 </Typography>
               </Badge>
@@ -360,13 +360,13 @@ export default function BasketPage() {
         >
           <Grid item xs={12} className={styles.mobileHidden}>
             <Card className={`${styles.cardBlock}`}>
-              <Typography component="div">{t('basket.myData')}</Typography>
+              <Typography component="div" suppressHydrationWarning>{t('basket.myData')}</Typography>
             </Card>
           </Grid>
           <Grid item xs={12} container spacing={2}>
             <Grid item lg={6} md={6} xs={12}>
               <Card className={styles.cardBlock}>
-                <Typography component="div" className={styles.cardTitle}>{t('basket.paymentMethod')}</Typography>
+                <Typography component="div" className={styles.cardTitle} suppressHydrationWarning>{t('basket.paymentMethod')}</Typography>
                 <SelectPaymentMethod
                   amount={totalSum * 100} // конвертируем в копейки
                   onPaymentSuccess={handlePaymentSuccess}
@@ -379,7 +379,7 @@ export default function BasketPage() {
             </Grid>
             <Grid item lg={6} md={6} xs={12} className={styles.mobileHidden}>
               <Card className={styles.cardBlock}>
-                <Typography component="div" className={styles.cardTitle}>{t('basket.myData')}</Typography>
+                <Typography component="div" className={styles.cardTitle} suppressHydrationWarning>{t('basket.myData')}</Typography>
                 <Box className={styles.userProfileInfo}>
                   <ContactMailIcon className={styles.emailIcon} />
                   <Typography component="div" className={styles.emailText}>{user?.email || 'Не указан'}</Typography>
@@ -402,7 +402,7 @@ export default function BasketPage() {
             {t('basket.selectPayment')}
           </Typography>
           <Box className={`${styles.priceBlock} ${styles.mobileHidden}`} >
-            <Typography component="div" className={styles.totalLabel}>{t('basket.total')}</Typography>
+            <Typography component="div" className={styles.totalLabel} suppressHydrationWarning>{t('basket.total')}</Typography>
             <Typography component="div" className={styles.totalPrice}>
               {/* {formatPrice(totalSum)} ₽ */}
               {formatPrice(totalSum)}

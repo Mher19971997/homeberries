@@ -127,7 +127,7 @@ export default function Home() {
 
       {isLoading ? (
         <Box display="flex" justifyContent="center" p={4}>
-          <Typography>{t('catalog.loading')}</Typography>
+          <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
         </Box>
       ) : (
         <Box sx={{ width: '100%', maxWidth: '1280px', margin: '0 auto', padding: '0 16px' }}>
@@ -178,7 +178,7 @@ export default function Home() {
 
         {isDiscountLoading ? (
           <Box display="flex" justifyContent="center" p={4}>
-            <Typography>{t('catalog.loading')}</Typography>
+            <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
           </Box>
         ) : (
           <Grid container columnSpacing={2} rowSpacing={2} justifyContent="flex-start">
@@ -284,7 +284,7 @@ export default function Home() {
 //       </Typography>
 //       {isLoading ? (
 //         <Box display="flex" justifyContent="center" p={4}>
-//           <Typography>{t('catalog.loading')}</Typography>
+//           <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
 //         </Box>
 //       ) : (
 //         <>
