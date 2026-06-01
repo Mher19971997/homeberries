@@ -106,26 +106,25 @@
 
 .imageItem {
     width: 100% !important;
-    height: 280px !important;
-    min-height: 280px !important;
-    max-height: 280px !important;
+    /* height: 280px !important; */
+    /* min-height: 280px !important; */
+    /* max-height: 280px !important; */
     border-radius: 0;
     overflow: hidden;
     display: flex !important;
     align-items: center;
     justify-content: center;
-    padding: 16px;
+    padding: unset;
     margin: 0;
     position: relative;
     box-sizing: border-box;
-    background-color: #fff;
 }
 
 .imageItem img,
 .imageItem span {
     width: 100% !important;
     height: 100% !important;
-    min-height: 280px !important;
+    /* min-height: 280px !important; */
     object-fit: contain;
     object-position: center;
     display: block;

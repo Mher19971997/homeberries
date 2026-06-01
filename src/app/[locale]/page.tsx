@@ -86,7 +86,7 @@ export default function Home() {
             color: activeTab === 'new' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'new' ? '2px solid #000000' : '2px solid transparent',
             paddingBottom: '6px',
-            fontFamily: '-apple-system, "Inter", sans-serif',
+            fontFamily: 'var(--font-inter)',
             transition: 'all 0.2s ease'
           }}
         >
@@ -101,7 +101,7 @@ export default function Home() {
             color: activeTab === 'bestseller' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'bestseller' ? '2px solid #000000' : '2px solid transparent',
             paddingBottom: '6px',
-            fontFamily: '-apple-system, "Inter", sans-serif',
+            fontFamily: 'var(--font-inter)',
             transition: 'all 0.2s ease'
           }}
         >
@@ -116,7 +116,7 @@ export default function Home() {
             color: activeTab === 'featured' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'featured' ? '2px solid #000000' : '2px solid transparent',
             paddingBottom: '6px',
-            fontFamily: '-apple-system, "Inter", sans-serif',
+            fontFamily: 'var(--font-inter)',
             transition: 'all 0.2s ease'
           }}
         >
@@ -168,7 +168,7 @@ export default function Home() {
             fontWeight: 500,
             color: '#000000',
             marginBottom: '32px',
-            fontFamily: '-apple-system, "Inter", sans-serif',
+            fontFamily: 'var(--font-inter)',
             textAlign: 'left'
           }}
         >

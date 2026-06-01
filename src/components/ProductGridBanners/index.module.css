@@ -63,7 +63,7 @@
 }
 
 .bannerTitle {
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: var(--font-inter) !important;
   font-size: 34px !important;
   font-weight: 300 !important;
   line-height: 1.2 !important;
@@ -76,7 +76,7 @@
 }
 
 .bannerDescription {
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: var(--font-inter) !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
@@ -91,7 +91,7 @@
 
 .actionButton {
   text-transform: none !important;
-  font-family: -apple-system, "Inter", sans-serif !important;
+  font-family: var(--font-inter) !important;
   font-size: 14px;
   font-weight: 500;
   padding: 16px 0 !important;

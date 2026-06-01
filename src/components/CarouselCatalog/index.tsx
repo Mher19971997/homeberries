@@ -12,14 +12,15 @@ const CarouselCatalog: React.FC = () => {
         backgroundColor: '#211c24',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: { xs: 400, md: 630 },
+        minHeight: { xs: 500, md: 630 },
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'stretch', md: 'center' },
         m: 0,
         p: 0,
       }}
     >
-      {/* Текст (слева) */}
+      {/* Текст */}
       <Box
         sx={{
           position: 'relative',
@@ -30,6 +31,8 @@ const CarouselCatalog: React.FC = () => {
           justifyContent: 'center',
           alignItems: { xs: 'center', md: 'flex-start' },
           textAlign: { xs: 'center', md: 'left' },
+          pt: { xs: 6, md: 0 },
+          pb: { xs: 3, md: 0 },
           pl: { xs: 3, md: 20 },
           pr: { xs: 3, md: 0 },
         }}
@@ -49,8 +52,10 @@ const CarouselCatalog: React.FC = () => {
         <Box
           sx={{
             display: 'flex',
-            flexWrap: 'wrap',
+            // На мобилках (xs) выстраиваем в колонку, на десктопе (md) — в строку
+            flexDirection: { xs: 'column', md: 'row' },
             justifyContent: { xs: 'center', md: 'flex-start' },
+            alignItems: { xs: 'center', md: 'baseline' }, // Выравниваем по базовой линии шрифта на десктопе
             mb: 2,
           }}
         >
@@ -65,7 +70,7 @@ const CarouselCatalog: React.FC = () => {
               fontFamily: 'sans-serif',
             }}
           >
-            IPhone 14{' '}
+            IPhone 14
           </Typography>
           <Typography
             variant="h1"
@@ -75,7 +80,10 @@ const CarouselCatalog: React.FC = () => {
               fontSize: { xs: 48, md: 84 },
               letterSpacing: '-1px',
               lineHeight: 1,
+              // На мобилках отступ слева не нужен, так как элемент под текстом. На десктопе возвращаем 8px (md: 1)
               ml: { xs: 0, md: 1 },
+              // Добавим небольшой отступ сверху на мобилках, чтобы буквы не слипались при переносе строки
+              mt: { xs: 1, md: 0 },
             }}
           >
             Pro
@@ -118,20 +126,23 @@ const CarouselCatalog: React.FC = () => {
         </Button>
       </Box>
 
-      {/* Картинка (справа) */}
+      {/* Картинка */}
       <Box
         component="img"
         src="/images/IphoneImage.png"
         alt="IPhone 14 Pro"
         sx={{
-          position: 'absolute',
-          right: { xs: '0px', md: '40px' },
-          bottom: '-5px',
-          height: { xs: '65%', md: '95%' },
-          maxHeight: '600px',
+          display: 'block',
+          position: { xs: 'relative', md: 'absolute' },
+          right: { md: '40px' },
+          bottom: { md: '-5px' },
+          alignSelf: { xs: 'center' },
+          height: { xs: '260px', sm: '320px', md: '95%' },
+          maxHeight: { md: '600px' },
           objectFit: 'contain',
           zIndex: 1,
-          display: { xs: 'none', sm: 'block' },
+          mt: { xs: 0 },
+          mb: { xs: '-5px' },
         }}
       />
     </Box>
@@ -139,7 +150,6 @@ const CarouselCatalog: React.FC = () => {
 };
 
 export default CarouselCatalog;
-
 
 
 // import React from 'react';
