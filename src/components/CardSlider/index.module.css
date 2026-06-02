@@ -12,6 +12,20 @@
     border-radius: 0;
 }
 
+.container :global(.slick-list) {
+    height: var(--h) !important;
+    min-height: var(--h) !important;
+}
+
+.container :global(.slick-track) {
+    height: var(--h) !important;
+    min-height: var(--h) !important;
+}
+
+.container :global(.slick-slide > div) {
+    height: var(--h);
+}
+
 .slick-next:before,
 .slick-prev:before {
     color: #000;
@@ -106,9 +120,6 @@
 
 .imageItem {
     width: 100% !important;
-    /* height: 280px !important; */
-    /* min-height: 280px !important; */
-    /* max-height: 280px !important; */
     border-radius: 0;
     overflow: hidden;
     display: flex !important;
@@ -134,9 +145,7 @@
 @media only screen and (max-width: 1200px) {
     .imageItem {
         width: 100% !important;
-        height: 260px !important;
-        min-height: 260px !important;
-        max-height: 260px !important;
+
     }
     
     .container {
@@ -157,9 +166,7 @@
 @media only screen and (max-width: 1000px) {
     .imageItem {
         width: 100% !important;
-        height: 240px !important;
-        min-height: 240px !important;
-        max-height: 240px !important;
+
     }
     
     .container {
@@ -180,9 +187,7 @@
 @media only screen and (max-width: 600px) {
     .imageItem {
         width: 100% !important;
-        height: 220px !important;
-        min-height: 220px !important;
-        max-height: 220px !important;
+
     }
     
     .container {

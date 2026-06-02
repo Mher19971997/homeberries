@@ -2,13 +2,11 @@
 
 import React from 'react';
 import EmtpImg from '@homeberris/assets/cardEmpty.png';
-import CardSlider from '@homeberris/components/CardSlider';
+
 import PositionedSnackbar from '@homeberris/components/PositionedSnackbar';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { insertBasket } from '@homeberris/http/basketApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useCookies } from 'react-cookie';
 import { checkToken } from '@homeberris/utils/auth';
 import { addToBasket } from '@homeberris/utils/indexedDB';
@@ -65,12 +63,10 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     }).format(num || 0);
   };
 
-  const images =  
+  const imgSrc =
     catalog?.images?.length > 0
-      ? catalog.images.map(({ image }: any) => ({
-          imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
-        }))
-      : [{ imgPath: EmtpImg.src }];
+      ? process.env.NEXT_PUBLIC_BASE_URL + catalog.images[0].image
+      : EmtpImg.src;
 
   return (
     <div className={styles.card} onClick={onNavigate}>
@@ -91,7 +87,11 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
         </div>
 
         <div className={styles.imageWrap}>
-          <CardSlider images={images} imgHeight={160} />
+          <img
+            src={imgSrc}
+            alt={catalog?.name}
+            onError={(e) => { (e.target as HTMLImageElement).src = EmtpImg.src; }}
+          />
         </div>
 
         <div className={styles.body}>

@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Slider from 'react-slick';
-import { Box } from '@mui/material';
+
 import { v4 } from 'uuid';
 import styles from '@homeberris/components/CardSlider/index.module.css';
 import EmtpImg from '@homeberris/assets/cardEmpty.png';
@@ -39,18 +39,13 @@ const CardSlider: React.FC<CardSliderProps> = ({
   };
 
   return (
-    <Box
+    <div
       className={styles.container}
-      style={{ minHeight: h, height: h }}
-      sx={{
-        '& .slick-list': { height: `${h} !important`, minHeight: `${h} !important` },
-        '& .slick-track': { height: `${h} !important`, minHeight: `${h} !important` },
-        '& .slick-slide > div': { height: h },
-      }}
+      style={{ '--h': h, minHeight: h, height: h } as React.CSSProperties}
     >
       <Slider {...settings}>
         {images.map((item: CardSliderImage) => (
-          <Box
+          <div
             key={v4()}
             className={styles.imageItem}
             style={{ height: h, minHeight: h, maxHeight: h }}
@@ -71,10 +66,10 @@ const CardSlider: React.FC<CardSliderProps> = ({
                 display: 'block',
               }}
             />
-          </Box>
+          </div>
         ))}
       </Slider>
-    </Box>
+    </div>
   );
 };
 

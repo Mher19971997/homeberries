@@ -8,9 +8,8 @@
 
 .container {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 0 160px;
   box-sizing: border-box;
 }
 
@@ -53,7 +52,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 32px;
+  gap: 26px;
 }
 
 .card {
@@ -66,7 +65,12 @@
   aspect-ratio: 1 / 1;
   padding: 24px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  max-width: 160px;
+  width: 100%;
+  max-height: 128px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .card:hover {
@@ -101,8 +105,12 @@
   }
 
   .grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 16px;
+  }
+  .card {
+    aspect-ratio: unset;
+    padding: 12px;
   }
 }
 
@@ -110,6 +118,14 @@
   .grid {
     grid-template-columns: repeat(3, 1fr);
     padding: 5px;
+    justify-items: center;
+  }
+  .card {
+    aspect-ratio: unset;
+    padding: 8px;
+  }
+  .cardName{
+    font-size: 14px;
   }
 }
 

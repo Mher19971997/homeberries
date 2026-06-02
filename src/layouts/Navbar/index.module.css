@@ -1,8 +1,17 @@
 .navbar {
-  width: 100%;  
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
   background-color: #ffffff;
   border-bottom: 1px solid #b5b5b5;
   box-sizing: border-box;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.navbarScrolled {
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  border-bottom-color: transparent;
 }
 
 .navbarInner {
@@ -10,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 56px;
   box-sizing: border-box;
   margin: 0 auto;
   padding: 16px;
@@ -60,16 +69,20 @@
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 52px;
   flex-shrink: 0;
 }
 
 .navLink {
-  font-size: 14px;
-  font-weight: 400;
   color: #9a9a9a;
   cursor: pointer;
   text-decoration: none;
+  font-family: var(--font-inter) !important;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
   transition: color 0.2s;
 }
 
@@ -93,8 +106,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   background: none;
   border: none;
   cursor: pointer;
@@ -113,14 +126,188 @@
   height: 22px;
 }
 
+.badgeWrapper {
+  position: relative;
+  display: inline-flex;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: #d32f2f;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  min-width: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-sizing: border-box;
+  animation: badgePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes badgePop {
+  0% { transform: scale(0.4); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .burgerBtn {
-  display: none !important;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 25px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: #080341;
+  flex-shrink: 0;
 }
 
 .burgerBtn svg {
   color: #000000;
   width: 24px;
   height: 24px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlayVisible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+}
+
+.drawerOpen {
+  transform: translateX(0);
+}
+
+.drawerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+
+.drawerLogo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000000;
+  letter-spacing: 0.5px;
+}
+
+.closeBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 0;
+  color: #000;
+  transition: background 0.2s;
+}
+
+.closeBtn:hover {
+  background: #f5f5f5;
+}
+
+.drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.drawerNavLink {
+  font-size: 16px;
+  font-weight: 500;
+  color: #9a9a9a;
+  cursor: pointer;
+  padding: 12px 8px;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.drawerNavLink:hover {
+  color: #000000;
+  background: #f5f5f5;
+}
+
+.drawerNavLinkActive {
+  color: #000000;
+  font-weight: 600;
+}
+
+.drawerActions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-top: 1px solid #e5e5e5;
+  padding-top: 20px;
+}
+
+.drawerIconBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px 8px;
+  border-radius: 8px;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.drawerIconBtn:hover {
+  background: #f5f5f5;
+}
+
+.drawerIconBtn svg {
+  width: 22px;
+  height: 22px;
+  color: #000;
+  flex-shrink: 0;
+}
+
+.drawerIconLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: #000000;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -137,9 +324,17 @@
   }
 }
 
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 480px) {
+  .drawer {
+    width: 100vw;
+    box-shadow: none;
+  }
+}
+
+@media only screen and (max-width: 992px) {
   .navbarInner {
     padding: 16px 24px;
+    gap: 24px;
   }
 
   .searchBox {
@@ -149,21 +344,12 @@
   .navLinks {
     display: none;
   }
-}
-
-@media only screen and (max-width: 768px) {
-  .navbarInner {
-    padding: 24px 16px;
-    height: 88px;
-    align-items: center;
-  }
 
   .navActions {
-    display: none !important;
+    display: none;
   }
 
   .burgerBtn {
-    display: flex !important;
-    padding: 0;
+    display: flex;
   }
 }

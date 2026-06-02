@@ -1,3 +1,199 @@
+.banner {
+  width: 100%;
+  background-color: #211c24;
+  overflow: hidden;
+  min-height: 630px;
+  margin: 0;
+  padding: 0;
+}
+
+.bannerContainer {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+  min-height: 630px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+}
+
+.textBlock {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  /* width: 50%; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  padding: 0;
+}
+
+.proText {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  font-style: Semi Bold;
+  font-size: 25px;
+  leading-trim: NONE;
+  line-height: 32px;
+  letter-spacing: 0%;
+  font-family: var(--font-inter);
+  margin-bottom: 8px;
+}
+
+.titleRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.titleLight {
+  color: #fff;
+  font-family: var(--font-inter);
+  font-weight: 100;
+  font-style: Thin;
+  font-size: 96px;
+  line-height: 72px;
+  letter-spacing: -1%;
+}
+
+.titleBold {
+  color: #fff;
+  font-weight: 600;
+  font-size: 96px;
+  letter-spacing: -1px;
+  line-height: 1;
+  font-family: sans-serif;
+  margin-left: 28px;
+  font-family: var(--font-inter);
+}
+
+.description {
+  color: #717171;
+  margin-bottom: 24px;
+  font-size: 17px;
+  font-weight: 400;
+  max-width: 714px;
+  line-height: 1.4;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 18px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.shopBtn {
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 16px 56px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  background: transparent;
+  cursor: pointer;
+  font-family: Inter;
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.shopBtn:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.bannerImg {
+  display: block;
+  position: absolute;
+  right: 16px;
+  bottom: -5px;
+  height: 95%;
+  max-height: 600px;
+  object-fit: contain;
+  z-index: 1;
+}
+@media (max-width: 1536px) {
+  .titleLight,
+  .titleBold {
+    font-size: 70px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .titleLight,
+  .titleBold {
+    font-size: 56px;
+  }
+  .description {
+    max-width: 480px;
+  }
+}
+
+@media (max-width: 992px) {
+  .titleLight,
+  .titleBold {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 899px) {
+  .banner {
+    min-height: 500px;
+  }
+
+  .bannerContainer {
+    min-height: 710px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .textBlock {
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    padding: 88px 0 0;
+  }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .titleLight {
+    font-size: 48px;
+    line-height: 1;
+  }
+
+  .titleBold {
+    font-size: 48px;
+    margin-left: 0;
+    margin-top: 8px;
+  }
+
+  .bannerImg {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    align-self: center;
+    width: 100%;
+    max-width: 343px;
+    height: auto;
+    max-height: none;
+    /* margin-top: 60px; */
+    margin-bottom: -140px;
+  }
+}
+
 .carouselContainer {
   width: 100%;
   margin-bottom: 48px;
@@ -35,7 +231,9 @@
   color: white;
   font-weight: 800;
   margin-bottom: 20px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+  text-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3);
   animation: fadeInUp 0.6s ease-out 0.2s both;
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -92,7 +290,8 @@
 }
 
 @keyframes gradientShift {
-  0%, 100% {
+  0%,
+  100% {
     background-position: 0% 50%;
   }
   50% {
@@ -135,5 +334,48 @@
 
   .bannerSubtitle {
     font-size: 16px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 375px) {
+  .proText {
+    font-family: var(--font-inter);
+    font-weight: 600;
+    font-style: Semi Bold;
+    font-size: 25px;
+    leading-trim: NONE;
+    line-height: 32px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+  .titleLight,
+  .titleBold {
+    font-family: var(--font-inter);
+    font-style: Thin;
+    font-size: 72px;
+    leading-trim: NONE;
+    line-height: 72px;
+    letter-spacing: -1%;
+    text-align: center;
+  }
+  .description {
+    font-family: var(--font-inter);
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 19px;
+    leading-trim: NONE;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: center;
+  }
+  .shopBtn {
+    font-family: var(--font-inter);
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    leading-trim: NONE;
+    line-height: 24px;
+    letter-spacing: 0%;
+    text-align: center;
   }
 }

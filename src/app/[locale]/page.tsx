@@ -2,14 +2,12 @@
 
 import { useState } from 'react';
 import * as qs from 'qs';
-import { Box, Grid, Typography } from '@mui/material';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from '@homeberris/pages/index.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CarouselCatalog from '@homeberris/components/CarouselCatalog';
 import { useQuery } from '@tanstack/react-query';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
-import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { useTranslation } from 'react-i18next';
 import SmallerBanners from '@homeberris/components/SmallerBanners';
 import BrowseByCategory from '@homeberris/components/BrowseByCategory';
@@ -62,249 +60,109 @@ export default function Home() {
   const discountCatalogs: CatalogItem[] = (discountData?.data || []).slice(0, 4);
 
   return (
-    <Box className={styles.body}>
+    <div className={styles.body}>
       <CarouselCatalog />
       <SmallerBanners />
       <BrowseByCategory />
-      <Box
-        sx={{
+      <div
+        style={{
           display: 'flex',
           gap: '32px',
-          marginBottom: '32px',
           maxWidth: '1120px',
           height: '32px',
-          margin: '56px auto 32px auto'
+          margin: '56px auto 32px auto',
+          padding: '0 16px',
         }}
       >
-        <Typography
+        <span
           onClick={() => setActiveTab('new')}
-          sx={{
-            fontSize: '18px',
-            fontWeight: 500,
-            cursor: 'pointer',
+          className={styles.tabItem}
+          style={{
             color: activeTab === 'new' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'new' ? '2px solid #000000' : '2px solid transparent',
-            paddingBottom: '6px',
-            fontFamily: 'var(--font-inter)',
-            transition: 'all 0.2s ease'
           }}
         >
           New Arrival
-        </Typography>
-        <Typography
+        </span>
+        <span
           onClick={() => setActiveTab('bestseller')}
-          sx={{
-            fontSize: '18px',
-            fontWeight: 500,
-            cursor: 'pointer',
+          className={styles.tabItem}
+          style={{
             color: activeTab === 'bestseller' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'bestseller' ? '2px solid #000000' : '2px solid transparent',
-            paddingBottom: '6px',
-            fontFamily: 'var(--font-inter)',
-            transition: 'all 0.2s ease'
           }}
         >
           Bestseller
-        </Typography>
-        <Typography
+        </span>
+        <span
           onClick={() => setActiveTab('featured')}
-          sx={{
-            fontSize: '18px',
-            fontWeight: 500,
-            cursor: 'pointer',
+          className={styles.tabItem}
+          style={{
             color: activeTab === 'featured' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'featured' ? '2px solid #000000' : '2px solid transparent',
-            paddingBottom: '6px',
-            fontFamily: 'var(--font-inter)',
-            transition: 'all 0.2s ease'
           }}
         >
           Featured Products
-        </Typography>
-      </Box>
+        </span>
+      </div>
 
       {isLoading ? (
-        <Box display="flex" justifyContent="center" p={4}>
-          <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
-        </Box>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
+          <span suppressHydrationWarning>{t('catalog.loading')}</span>
+        </div>
       ) : (
-        <Box sx={{ width: '100%', maxWidth: '1120px', margin: '0 auto', padding: '0 0' }}>
-          <Grid
-            className={styles.container}
-            container
-            columnSpacing={2}
-            rowSpacing={2}
-            justifyContent="flex-start"
-          >
+        <div className={styles.catalogWrapper}>
+          <div className={styles.catalogGrid}>
             {catalogs.length > 0 ? (
               catalogs.map((catalog, index) => (
-                <Grid
-                  item
-                  xs={6}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  key={catalog?.uuid || index}
-                >
-                  <CatalogCard catalog={catalog} /> 
-                </Grid>
+                <div className={styles.catalogItem} key={catalog?.uuid || index}>
+                  <CatalogCard catalog={catalog} />
+                </div>
               ))
             ) : (
-              <Box p={4} width="100%">
-                <Typography textAlign="center">
-                  {t('catalog.empty')}
-                </Typography>
-              </Box>
+              <div style={{ padding: '32px', width: '100%' }}>
+                <p style={{ textAlign: 'center' }}>{t('catalog.empty')}</p>
+              </div>
             )}
-          </Grid>
-        </Box>
+          </div>
+        </div>
       )}
       <ProductGridBanners />
-      <Box sx={{ width: '100%', maxWidth: '1120px', margin: '56px auto 80px auto', padding: '0 16px' }}>
-        <Typography
-          sx={{
+      <div style={{ width: '100%', maxWidth: '1120px', margin: '56px auto 80px auto', padding: '0 16px' }}>
+        <p
+          style={{
             fontSize: '24px',
             fontWeight: 500,
             color: '#000000',
             marginBottom: '32px',
             fontFamily: 'var(--font-inter)',
-            textAlign: 'left'
+            textAlign: 'left',
           }}
         >
           Discounts up to -50%
-        </Typography>
+        </p>
 
         {isDiscountLoading ? (
-          <Box display="flex" justifyContent="center" p={4}>
-            <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
-          </Box>
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
+            <span suppressHydrationWarning>{t('catalog.loading')}</span>
+          </div>
         ) : (
-          <Grid container columnSpacing={2} rowSpacing={2} justifyContent="flex-start">
+          <div className={styles.catalogGrid}>
             {discountCatalogs.length > 0 ? (
               discountCatalogs.map((catalog, index) => (
-                <Grid item xs={6} sm={6} md={4} lg={3} key={`discount-${catalog?.uuid || index}`}>
+                <div className={styles.catalogItem} key={`discount-${catalog?.uuid || index}`}>
                   <CatalogCard catalog={catalog} />
-                </Grid>
+                </div>
               ))
             ) : (
-              <Box p={4} width="100%">
-                <Typography textAlign="center">{t('catalog.empty')}</Typography>
-              </Box>
+              <div style={{ padding: '32px', width: '100%' }}>
+                <p style={{ textAlign: 'center' }}>{t('catalog.empty')}</p>
+              </div>
             )}
-          </Grid>
+          </div>
         )}
-      </Box>
+      </div>
       <BigSummerSale />
-    </Box>
+    </div>
   );
 }
-
-
-
-
-
-
-
-// 'use client';
-
-// import React, { useState, useEffect, useCallback } from 'react';
-// import * as qs from 'qs';
-// import { Box, Grid, Typography } from '@mui/material';
-// import { getAllCatalogs } from '@homeberris/http/catalogApi';
-// import styles from '@homeberris/pages/index.module.css';
-// import { CatalogItem } from '@homeberris/types/catalog';
-// import CarouselCatalog from '@homeberris/components/CarouselCatalog';
-// import { useInfiniteQuery } from '@tanstack/react-query';
-// import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
-// import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
-// import { useTranslation } from 'react-i18next';
-// import SmallerBanners from '@homeberris/components/SmallerBanners';
-// import BrowseByCategory from '@homeberris/components/BrowseByCategory';
-
-// const ITEMS_PER_PAGE = 20;
-
-// export default function Home() {
-//   const { t } = useTranslation('common');
-//   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null);
-//   const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategoryItem | null>(null);
-
-//   const buildQuery = (page: number = 1) => {
-//     const filters: any = {
-//       queryMeta: { paginate: true, limit: ITEMS_PER_PAGE, page },
-//     };
-//     if (selectedCategory) {
-//       filters.includeMeta = [{ association: 'category', where: { uuid: selectedCategory.uuid } }];
-//     }
-//     if (selectedSubCategory) {
-//       if (!filters.includeMeta) filters.includeMeta = [];
-//       filters.includeMeta.push({ association: 'subCategorie', where: { uuid: selectedSubCategory.uuid } });
-//     }
-//     return qs.stringify(filters);
-//   };
-
-//   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-//     queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid],
-//     queryFn: ({ pageParam }) => getAllCatalogs(buildQuery(pageParam as number)),
-//     initialPageParam: 1,
-//     getNextPageParam: (lastPage: any) => {
-//       const { meta } = lastPage;
-//       const totalPages = Math.ceil(meta.count / ITEMS_PER_PAGE);
-//       const currentPage = meta.page || 1;
-//       return currentPage < totalPages ? currentPage + 1 : undefined;
-//     },
-//   });
-
-//   const catalogs = data?.pages?.flatMap((page: any) => page?.data || []) || [];
-
-//   const handleScroll = useCallback(() => {
-//     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 1000) {
-//       if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-//     }
-//   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
-//   useEffect(() => {
-//     window.addEventListener('scroll', handleScroll);
-//     return () => window.removeEventListener('scroll', handleScroll);
-//   }, [handleScroll]);
-
-//   return (
-//     <Box className={styles.body}>
-//       <CarouselCatalog />
-//       <SmallerBanners />
-//       <BrowseByCategory />
-//       <Typography variant="h5" fontWeight="bold" className={styles.recomendedTitle}>
-//         {selectedCategory
-//           ? selectedSubCategory
-//             ? `${selectedSubCategory.name}`
-//             : `${selectedCategory.name}`
-//           : `${t('catalog.title.fallback')}`}
-//       </Typography>
-//       {isLoading ? (
-//         <Box display="flex" justifyContent="center" p={4}>
-//           <Typography suppressHydrationWarning>{t('catalog.loading')}</Typography>
-//         </Box>
-//       ) : (
-//         <>
-//           <Grid className={styles.container} container spacing={2.5}>
-//             {catalogs && catalogs.length > 0 ? (
-//               catalogs.map((catalog: CatalogItem, index: number) => (
-//                 <FavoriteItem key={catalog?.uuid || index} catalog={catalog} />
-//               ))
-//             ) : (
-//               <Box p={4} width="100%">
-//                 <Typography variant="body1" color="text.secondary" textAlign="center">
-//                   {t('catalog.empty')}
-//                 </Typography>
-//               </Box>
-//             )}
-//           </Grid>
-//           {isFetchingNextPage && (
-//             <Box display="flex" justifyContent="center" p={4}>
-//               <Typography>{t('catalog.loadingMore')}</Typography>
-//             </Box>
-//           )}
-//         </>
-//       )}
-//     </Box>
-//   );
-// }
