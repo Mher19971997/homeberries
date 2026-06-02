@@ -1,4 +1,307 @@
-.body {
+.page {
+    display: flex;
+    gap: 48px;
+    max-width: 1280px;
+    margin: 56px auto;
+    padding: 0 40px;
+    align-items: flex-start;
+    box-sizing: border-box;
+}
+
+.left {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.title {
+    font-family: var(--font-inter);
+    font-size: 24px;
+    font-weight: 600;
+    color: #000;
+    margin: 0 0 32px;
+}
+
+.itemsList {
+    display: flex;
+    flex-direction: column;
+}
+
+.emptyText {
+    color: #545454;
+    font-size: 16px;
+    padding: 24px 0;
+}
+
+.right {
+    width: 470px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 24px;
+}
+
+.summaryCard {
+    background: #fff;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    padding: 56px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-sizing: border-box;
+    /* min-width: 536px; */
+    width: 100%;
+}
+
+.summaryTitle {
+    font-family: var(--font-inter);
+    font-size: 20px;
+    font-weight: 700;
+    color: #111111;
+    margin: 0 0 32px;
+}
+
+.field {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.fieldLabel {
+    display: block;
+    font-family: var(--font-inter);
+    font-size: 14px;
+    font-weight: 500;
+    color: #545454;
+    margin-bottom: 8px;
+}
+
+.input {
+    width: 100%;
+    height: 56px;
+    border: 1px solid #d2d2d2;
+    border-radius: 7px;
+    padding: 16px;
+    font-size: 14px;
+    font-family: var(--font-inter);
+    color: #000000;
+    background: #fff;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.input::placeholder {
+    color: #aaa;
+}
+
+.inputWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.inputWithBtn {
+    width: 100%;
+    height: 48px;
+    border: 1px solid #d2d2d2;
+    border-radius: 7px;
+    padding: 0 80px 0 16px;
+    font-size: 14px;
+    color: #000;
+    background: #fff;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.inputWithBtn::placeholder {
+    color: #aaa;
+}
+
+.applyBtn {
+    background-color: #fff;
+    position: absolute;
+    right: 16px;
+    height: 34px;
+    padding: 0 16px;
+    border: 1px solid;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.summaryRowsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 8px;
+    padding-top: 8px;
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rowLabelBold {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: var(--font-inter);
+    color: #000;
+    letter-spacing: 3%;
+}
+
+.bold {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    letter-spacing: 3%;
+}
+
+.rowLabelValue {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    color: #545454;
+}
+
+.rowValue {
+    font-family: var(--font-inter);
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+}
+
+.totalPrice {
+    font-family: var(--font-inter);
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+}
+
+.checkoutBtn {
+    width: 100%;
+    height: 56px;
+    margin-top: 56px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.checkoutBtn:hover {
+    background: #222;
+}
+
+
+@media (max-width: 1140px) {
+    .page {
+        gap: 32px;
+        padding: 0 32px;
+    }
+
+    .right {
+        width: 400px;
+    }
+}
+
+@media (max-width: 960px) {
+    .page {
+        flex-direction: column;
+        align-items: stretch;
+        margin: 24px auto;
+        gap: 40px;
+        padding: 0 24px;
+    }
+
+    .right {
+        width: 100%;
+        position: static;
+    }
+
+    .summaryCard {
+        width: 100%;
+        padding: 40px 32px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page {
+        padding: 0 20px;
+        margin: 20px auto;
+        gap: 32px;
+    }
+
+    .title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .summaryCard {
+        padding: 32px 24px;
+    }
+
+    .checkoutBtn {
+        margin-top: 36px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page {
+        padding: 0 16px;
+        margin: 16px auto;
+        gap: 24px;
+    }
+
+    .title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .summaryCard {
+        border-radius: 8px;
+        padding: 56px 16px;
+    }
+
+    .summaryRowsContainer {
+        padding: 24px 16px;
+        border-radius: 8px;
+    }
+
+    .input,
+    .inputWithBtn {
+        height: 64px;
+        font-size: 13px;
+    }
+
+    .applyBtn {
+        height: 32px;
+        font-size: 13px;
+    }
+
+    .checkoutBtn {
+        height: 48px;
+        font-size: 14px;
+        margin-top: 28px;
+    }
+
+    .rowLabelBold,
+    .rowLabelValue,
+    .rowValue,
+    .bold {
+        font-size: 14px;
+    }
+}
+
+
+
+
+/* .body {
     width: 90%;
     margin-bottom: 50px;
     display: flex;
@@ -160,7 +463,6 @@
     }
 
     .rightBox {
-        /* display: none; */
         width: 100%;
     }
 
@@ -199,4 +501,4 @@
         padding: 15px;
     }
     
-}
+} */

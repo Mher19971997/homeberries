@@ -311,7 +311,7 @@
 
 @media (min-width: 320px) and (max-width: 375px) {
   .card {
-    width: 163px;
+    width: 163px !important;
     min-height: 352px;
     padding: 16px 12px 12px;
     border-radius: 8px;
