@@ -91,6 +91,7 @@ export default function BasketPage() {
 
 
   return (
+    <>
     <div className={styles.page}>
       <div className={styles.left}>
         <h1 className={styles.title}>Shopping Cart</h1>
@@ -175,14 +176,15 @@ export default function BasketPage() {
         </div>
       </div>
 
-      <SelectPaymentMethod
-        amount={total * 100}
-        open={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
-        onPaymentSuccess={handlePaymentSuccess}
-        onPaymentError={handlePaymentError}
-      />
     </div>
+    <SelectPaymentMethod
+      amount={total * 100}
+      open={showPaymentModal}
+      onClose={() => setShowPaymentModal(false)}
+      onPaymentSuccess={handlePaymentSuccess}
+      onPaymentError={handlePaymentError}
+    />
+    </>
   );
 }
 

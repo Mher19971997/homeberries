@@ -1,15 +1,14 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
 import CatalogCard from '@homeberris/components/CatalogCard';
-import styles from '@homeberris/pages/catalog/[category]/index.module.css';
+import styles from './FavoriteItems.module.css';
 import { useRouter } from 'next/navigation';
 
 const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ catalog, sortPanelOne = false }) => {
     const router = useRouter();
 
     return (
-        <Grid item lg={2} md={4} sm={4} xs={6} xl={2} key={catalog.uuid}>
-            <Box className={styles.cardWrapper}>
+        <div className={styles.item} key={catalog.uuid}>
+            <div className={styles.cardWrapper}>
                 <CatalogCard
                     catalogsPage={true}
                     sortPanelOne={sortPanelOne}
@@ -30,8 +29,8 @@ const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ cata
                         }
                     }}
                 />
-            </Box>
-        </Grid>
+            </div>
+        </div>
     );
 };
 
@@ -44,11 +43,11 @@ export default FavoriteItem;
 // import Link from 'next/link'; // Используем Link вместо useRouter
 
 // const FavoriteItem: React.FC<{ catalog: any; sortPanelOne?: boolean }> = React.memo(({ catalog, sortPanelOne = false }) => {
-    
+
 //     // Формируем правильный URL для карточки заранее
 //     const categoryName = catalog.category?.name || 'Каталог';
 //     const subCategoryName = catalog.subCategorie?.name;
-    
+
 //     const cardUrl = subCategoryName
 //         ? `/catalog/${encodeURIComponent(categoryName)}/${encodeURIComponent(subCategoryName)}/${catalog.uuid}`
 //         : `/catalog/${encodeURIComponent(categoryName)}/${catalog.uuid}`;

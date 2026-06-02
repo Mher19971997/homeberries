@@ -1,17 +1,18 @@
 .page {
     display: flex;
     gap: 48px;
-    max-width: 1280px;
+    width: 100%;
+    max-width: 1120px;
     margin: 56px auto;
-    padding: 0 40px;
+    padding: 0 16px;
     align-items: flex-start;
     box-sizing: border-box;
+    justify-content: space-between;
 }
 
 .left {
-    flex: 1;
+    flex: 0 0 536px;
     min-width: 0;
-    width: 100%;
 }
 
 .title {
@@ -19,7 +20,7 @@
     font-size: 24px;
     font-weight: 600;
     color: #000;
-    margin: 0 0 32px;
+    margin: 0 0 40px;
 }
 
 .itemsList {
@@ -34,8 +35,7 @@
 }
 
 .right {
-    width: 470px;
-    flex-shrink: 0;
+    flex: 0 0 470px;
     position: sticky;
     top: 24px;
 }
@@ -58,11 +58,11 @@
     font-size: 20px;
     font-weight: 700;
     color: #111111;
-    margin: 0 0 32px;
+    margin: 0 0 40px;
 }
 
 .field {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     width: 100%;
 }
 
@@ -105,12 +105,13 @@
     height: 48px;
     border: 1px solid #d2d2d2;
     border-radius: 7px;
-    padding: 0 80px 0 16px;
+    padding: 0 16px 0 16px;
     font-size: 14px;
     color: #000;
     background: #fff;
     box-sizing: border-box;
     outline: none;
+    min-height: 56px;
 }
 
 .inputWithBtn::placeholder {
@@ -121,19 +122,21 @@
     background-color: #fff;
     position: absolute;
     right: 16px;
-    height: 34px;
+    min-height: 32px;
     padding: 0 16px;
     border: 1px solid;
     border-radius: 6px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
+    max-width: 76px;
+    width: 100%;
 }
 
 .summaryRowsContainer {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
     margin-top: 8px;
     padding-top: 8px;
 }
@@ -198,7 +201,21 @@
     background: #222;
 }
 
-
+@media (max-width: 1280px) {
+    .page{
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .right,.left{
+        width: 100%;
+        flex: 0;
+    }
+    .item{
+        max-width: 100% ; 
+        width: 100%;
+    }
+}
 @media (max-width: 1140px) {
     .page {
         gap: 32px;
@@ -266,6 +283,7 @@
     .summaryCard {
         border-radius: 8px;
         padding: 56px 16px;
+        margin-bottom: 40px;
     }
 
     .summaryRowsContainer {
@@ -275,7 +293,7 @@
 
     .input,
     .inputWithBtn {
-        height: 64px;
+        height: 56px;
         font-size: 13px;
     }
 

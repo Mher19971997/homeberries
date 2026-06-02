@@ -1,11 +1,12 @@
 .item {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 15px;
     padding: 24px 0;
-    border-bottom: 0.5px solid #a3a3a3;
+    border-bottom: 1px solid #a3a3a3;
     width: 100%;
     box-sizing: border-box;
+    max-width: 536px;
 }
 
 .item:last-child {
@@ -13,14 +14,17 @@
 }
 
 .image {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
     flex-shrink: 0;
     border-radius: 4px;
 }
 
 .info {
+    min-height: 80px;
+    max-height: 90px;
+    max-width: 191px;
     flex: 1;
     min-width: 0;
 }
@@ -30,7 +34,7 @@
     font-size: 15px;
     font-weight: 500;
     color: #000;
-    margin: 0 0 6px;
+    margin: 0 0 8px;
     line-height: 1.4;
 }
 
@@ -80,7 +84,7 @@
     height: 32px;
     border: 0.5px solid #d9d9d9;
     border-radius: 4px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 500;
     font-family: var(--font-inter);
     color: #000;
@@ -92,7 +96,7 @@
     font-weight: 500;
     color: #000;
     margin: 0;
-    min-width: 80px;
+    /* min-width: 80px; */
     text-align: right;
 }
 
@@ -112,7 +116,16 @@
 .removeBtn:hover {
     color: #000;
 }
-
+@media (max-width: 1280px) {
+    .info{
+        max-width: 100%;
+        width: 100%;
+    }
+    .item{
+        width: unset;
+        max-width: unset;
+    }
+}
 @media (max-width: 600px) {
     .item {
         display: grid;
@@ -255,17 +268,14 @@
 
 @media (max-width: 380px) {
     .item {
-        grid-template-columns: 70px 1fr;
-        column-gap: 12px;
-        /* padding: 16px; */
-        gap: 40px
+        grid-template-columns: 90px 1fr;
+        gap: unset;
+        column-gap: 10px;
     }
-
-    /* .image {
+    .image {
         width: 90px;
         height: 90px;
-    } */
-
+    }
     .name {
         font-size: 16px;
         margin-bottom: 4px;

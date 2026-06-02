@@ -1,14 +1,7 @@
-﻿import React from 'react';
+import React from 'react';
 import * as qs from 'qs';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import {
-  Grid,
-  Box,
-  Breadcrumbs,
-  Typography,
-  Link as MuiLink
-} from '@mui/material';
 
 import { getAllCatalogs, searchCatalog } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
@@ -16,8 +9,7 @@ import { CatalogItem } from '@homeberris/types/catalog';
 import { useQuery } from '@tanstack/react-query';
 import { ListResult } from '@homeberris/types/filter';
 
-// styles
-import styles from '@homeberris/pages/catalog/[category]/index.module.css';
+import styles from './index.module.css';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 
 export default function SearchCatalog() {
@@ -55,46 +47,41 @@ export default function SearchCatalog() {
   });
 
   return (
-    <Box className={styles.body}>
-      <Breadcrumbs aria-label="breadcrumb" className={styles.breadcrumb}>
-        <MuiLink component={Link} color="inherit" href="/">
+    <div className={styles.body}>
+      <nav aria-label="breadcrumb" className={styles.breadcrumb}>
+        <Link className={styles.breadcrumbLink} href="/">
           Главная
-        </MuiLink>
-        <Typography color="text.primary">
+        </Link>
+        <span className={styles.breadcrumbSep}>/</span>
+        <span className={styles.breadcrumbCurrent}>
           {searchQuery ? `Поиск: ${searchQuery}` : 'Каталог'}
-        </Typography>
-      </Breadcrumbs>
-      <Box className={styles.filterHeader}>
-        <Typography className={styles.filterTitle}>
+        </span>
+      </nav>
+      <div className={styles.filterHeader}>
+        <p className={styles.filterTitle}>
           {searchQuery ? `Результаты поиска: "${searchQuery}"` : 'Все товары'}
-        </Typography>
-        <Typography className={styles.count}>
+        </p>
+        <p className={styles.count}>
           {catalogs?.meta?.count || 0} товаров
-        </Typography>
-      </Box>
-      <Grid className={styles.container} container spacing={2.5}>
+        </p>
+      </div>
+      <div className={styles.container}>
         {isLoading ? (
-          <Grid item xs={12}>
-            <Box display="flex" justifyContent="center" alignItems="center" p={4}>
-              <Typography variant="h6" color="text.secondary">
-                Загрузка...
-              </Typography>
-            </Box>
-          </Grid>
+          <div className={styles.loadingBox}>
+            <p className={styles.loadingText}>Загрузка...</p>
+          </div>
         ) : catalogs?.data && catalogs.data.length > 0 ? (
           catalogs.data.map((catalog: CatalogItem) => (
             <FavoriteItem catalog={catalog} />
           ))
         ) : (
-          <Grid item xs={12}>
-            <Box display="flex" justifyContent="center" alignItems="center" p={4}>
-              <Typography variant="h6" color="text.secondary">
-                {searchQuery ? `По запросу "${searchQuery}" ничего не найдено` : 'Товары не найдены'}
-              </Typography>
-            </Box>
-          </Grid>
+          <div className={styles.emptyBox}>
+            <p className={styles.emptyText}>
+              {searchQuery ? `По запросу "${searchQuery}" ничего не найдено` : 'Товары не найдены'}
+            </p>
+          </div>
         )}
-      </Grid>
-    </Box>
+      </div>
+    </div>
   );
 }
