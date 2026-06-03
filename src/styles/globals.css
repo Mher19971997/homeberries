@@ -75,8 +75,64 @@ body {
   padding: 13px;
 }
 
+.image-gallery-slide-wrapper {
+  width: 413px !important;
+}
+
+.image-gallery-slide .image-gallery-image {
+  width: 413px !important;
+  height: 516px !important;
+  object-fit: contain;
+}
+
+.image-gallery-content.left {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.image-gallery-thumbnails-wrapper.left {
+  width: 74px !important;
+  min-width: 74px !important;
+  max-width: 74px !important;
+  max-height: 444px;
+  background: transparent !important;
+}
+
+.image-gallery-thumbnails-wrapper.left .image-gallery-thumbnails {
+  width: 74px !important;
+  max-height: 444px;
+  overflow: hidden;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.image-gallery-thumbnails-container {
+  width: 100% !important;
+  max-width: 75px !important;
+}
+
+.image-gallery-thumbnail {
+  width: 74px !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin-bottom: 24px !important;
+  display: block;
+}
+
+.image-gallery-thumbnail:last-child {
+  margin-bottom: 0 !important;
+}
+
 .image-gallery-thumbnail .image-gallery-thumbnail-image {
   border-radius: 10px;
+  width: 100%;
+  max-width: 75px;
+  height: 93px;
+  object-fit: cover;
+  display: block;
 }
 
 .image-gallery-thumbnail.active,
@@ -84,6 +140,7 @@ body {
 .image-gallery-thumbnail:hover {
   border: 2px solid #667eea !important;
   border-radius: 10px;
+  background: transparent !important;
 }
 
 .image-gallery-left-nav .image-gallery-svg,
@@ -96,4 +153,15 @@ body {
 }
 .css-10botns-MuiInputBase-input-MuiFilledInput-input{
   height: 0.9em;
+}
+.image-gallery-thumbnails{
+  max-width: 75px !important;
+  width: 100% !important;
+}
+
+.image-gallery-content{
+  /* margin-top: -128px; */
+}
+.image-gallery-slides{
+  margin-top: -47px !important;
 }

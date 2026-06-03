@@ -10,7 +10,7 @@
   cursor: pointer;
   width: 100%;
   max-width: 100%;
-  min-height: 420px;
+  min-height: 432px;
   height: 100%;
   padding: 20px 16px 16px;
   transition:
@@ -39,7 +39,7 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-bottom: 4px;
+  margin-bottom: 13px;
 }
 
 .favoriteButton {
@@ -57,12 +57,12 @@
 
 /* ── Image ── */
 .imageWrap {
-  width: 150px;
-  height: 150px;
-  min-width: 150px;
-  min-height: 150px;
-  max-width: 150px;
-  max-height: 150px;
+  width: 160px;
+  height: 160px;
+  min-width: 160px;
+  min-height: 160px;
+  max-width: 160px;
+  max-height: 160px;
   overflow: hidden;
   margin-bottom: 16px;
   flex-shrink: 0;
@@ -73,16 +73,16 @@
 }
 
 .imageWrap > * {
-  width: 150px !important;
-  height: 150px !important;
-  max-width: 150px !important;
-  max-height: 150px !important;
+  width: 160px !important;
+  height: 160px !important;
+  max-width: 160px !important;
+  max-height: 160px !important;
   overflow: hidden;
 }
 
 .imageWrap img {
-  width: 150px !important;
-  height: 150px !important;
+  width: 160px !important;
+  height: 160px !important;
   object-fit: contain;
   object-position: center !important;
 }
@@ -101,7 +101,7 @@
 .name {
   font-family: Inter, sans-serif;
   font-weight: 500;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 22px;
   letter-spacing: 0;
   text-align: center;
@@ -152,6 +152,7 @@
   transition: background 0.2s ease;
   margin-top: 24px;
   min-height: 48px;
+  max-width: 188px;
 }
 
 .buyBtn:hover {

@@ -27,6 +27,11 @@
     max-width: 191px;
     flex: 1;
     min-width: 0;
+    transition: max-height 0.3s ease;
+}
+
+.info:has(.name:hover) {
+    max-height: 300px;
 }
 
 .name {
@@ -36,6 +41,15 @@
     color: #000;
     margin: 0 0 8px;
     line-height: 1.4;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    max-height: calc(1.4em * 2);
+}
+
+.name:hover {
+    max-height: 300px;
 }
 
 .sku {

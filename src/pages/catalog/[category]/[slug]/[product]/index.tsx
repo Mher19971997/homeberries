@@ -2,7 +2,6 @@
 
 import { getCatalogByUud } from '@homeberris/http/catalogApi';
 import React from 'react';
-import { Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
@@ -10,6 +9,7 @@ import * as qs from 'qs';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import ProductPageContent from '@homeberris/components/ProductPageContent';
+import styles from './index.module.css';
 
 const isUUID = (str: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -46,21 +46,19 @@ export default function Catalog() {
 
   if (isLoading) {
     return (
-      <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '50vh', p: 3 }}>
-        <CircularProgress />
-      </Grid>
+      <div className={styles.loadingContainer}>
+        <div className={styles.spinner} />
+      </div>
     );
   }
 
   if (!catalog) {
     return (
-      <Grid container justifyContent="center" alignItems="center" sx={{ minHeight: '50vh', p: 3 }}>
-        <Box textAlign="center">
-          <Typography color="error" variant="h6" gutterBottom>
-            Продукт не найден
-          </Typography>
-        </Box>
-      </Grid>
+      <div className={styles.loadingContainer}>
+        <div style={{ textAlign: 'center' }}>
+          <p className={styles.notFoundText}>Продукт не найден</p>
+        </div>
+      </div>
     );
   }
 

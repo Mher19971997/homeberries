@@ -35,6 +35,13 @@ const Navbar = () => {
   React.useEffect(() => {
     if (!isAuth) {
       getBasketCount().then(setLocalBasketCount).catch(() => setLocalBasketCount(0));
+
+      const handleBasketUpdated = () => {
+        getBasketCount().then(setLocalBasketCount).catch(() => setLocalBasketCount(0));
+      };
+
+      window.addEventListener('basketUpdated', handleBasketUpdated);
+      return () => window.removeEventListener('basketUpdated', handleBasketUpdated);
     }
   }, [isAuth]);
 

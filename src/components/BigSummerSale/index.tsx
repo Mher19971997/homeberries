@@ -1,8 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import styles from './index.module.css';
 
 export default function BigSummerSale() {
+  const router = useRouter();
+
   return (
     <div className={styles.saleBanner}>
       <div className={styles.overlayContent}>
@@ -16,7 +19,7 @@ export default function BigSummerSale() {
           Commodo fames vitae vitae leo mauris in. Eu consequat.
         </p>
 
-        <button className={styles.shopButton}>
+        <button className={styles.shopButton} onClick={() => router.push('/en/catalog')}>
           Shop Now
         </button>
       </div>

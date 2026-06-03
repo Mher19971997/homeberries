@@ -72,7 +72,7 @@ export default function SearchCatalog() {
           </div>
         ) : catalogs?.data && catalogs.data.length > 0 ? (
           catalogs.data.map((catalog: CatalogItem) => (
-            <FavoriteItem catalog={catalog} />
+            <FavoriteItem key={catalog.uuid} catalog={catalog} />
           ))
         ) : (
           <div className={styles.emptyBox}>

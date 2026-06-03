@@ -78,6 +78,7 @@ export default function Home() {
           onClick={() => setActiveTab('new')}
           className={styles.tabItem}
           style={{
+            cursor:'pointer',
             color: activeTab === 'new' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'new' ? '2px solid #000000' : '2px solid transparent',
           }}
@@ -88,6 +89,7 @@ export default function Home() {
           onClick={() => setActiveTab('bestseller')}
           className={styles.tabItem}
           style={{
+            cursor:'pointer',
             color: activeTab === 'bestseller' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'bestseller' ? '2px solid #000000' : '2px solid transparent',
           }}
@@ -98,6 +100,7 @@ export default function Home() {
           onClick={() => setActiveTab('featured')}
           className={styles.tabItem}
           style={{
+            cursor:'pointer',
             color: activeTab === 'featured' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'featured' ? '2px solid #000000' : '2px solid transparent',
           }}

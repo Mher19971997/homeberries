@@ -53,7 +53,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 26px;
+  gap: 29px;
 }
 
 .card {

@@ -1,12 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
-import { Box, Breadcrumbs, Grid, Typography, Link as MuiLink } from '@mui/material';
+import dynamic from 'next/dynamic';
 
 import { useFavorites } from '@homeberris/context/favoritesContext';
-import styles from '@homeberris/pages/catalog/[category]/index.module.css';
+import styles from './index.module.css';
 import EmptyFavorite from '@homeberris/features/favorites/components/EmptyFavorite';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
-import dynamic from 'next/dynamic';
 import { pluralizeItems } from '@homeberris/utils/formatPlural';
 import { useTranslation } from 'react-i18next';
 
@@ -23,32 +22,37 @@ const FavoritesPage: React.FC = () => {
   };
 
   return (
-    <Box className={styles.body}>
-      <Breadcrumbs aria-label="breadcrumb" className={styles.breadcrumb}>
-        <MuiLink component={Link} color="inherit" href="/">
+    <div className={styles.body}>
+      <nav className={styles.breadcrumb} aria-label="breadcrumb">
+        <Link href="/" className={styles.breadcrumbLink}>
           {t('favorites.breadcrumb.home')}
-        </MuiLink>
-        <Typography color="text.primary">{t('favorites.breadcrumb.title')}</Typography>
-      </Breadcrumbs>
+        </Link>
+        <span className={styles.breadcrumbSep}>/</span>
+        <span className={styles.breadcrumbActive}>
+          {t('favorites.breadcrumb.title')}
+        </span>
+      </nav>
 
-      <Box className={styles.filterHeader}>
-        <Typography className={styles.filterTitle}>{t('favorites.header.title')}</Typography>
-        <Typography className={styles.count}>{pluralizeItems(items?.length || 0)}</Typography>
-      </Box>
+      <div className={styles.filterHeader}>
+        <p className={styles.filterTitle}>{t('favorites.header.title')}</p>
+        <p className={styles.count}>{pluralizeItems(items?.length || 0)}</p>
+      </div>
 
-      <Grid container spacing={2.5} className={styles.container}>
-        {renderFavorites()}
-      </Grid>
-    </Box>
+      {items?.length ? (
+        <div className={styles.grid}>
+          {renderFavorites()}
+        </div>
+      ) : (
+        <EmptyFavorite />
+      )}
+    </div>
   );
 };
 
-// export default FavoritesPage;
 export default dynamic(() => Promise.resolve(FavoritesPage), { ssr: false });
 
 export async function getStaticProps({ locale }: { locale: string }) {
   return {
-    props: {
-    },
+    props: {},
   };
 }

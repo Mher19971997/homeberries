@@ -1,0 +1,57 @@
+.specsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.specCard {
+  border: none;
+  border-radius: 7px;
+  min-height: 64px;
+  max-width: 168px;
+  width: 100%;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.specIcon {
+  flex-shrink: 0;
+  color: #868695;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+.specText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.specLabel {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 16px;
+  letter-spacing: 0%;
+  color: #4E4E4E;
+
+}
+
+.specValue {
+  font-family: Inter;
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 16px;
+  letter-spacing: 0%;
+  color: #4E4E4E;
+}

@@ -78,7 +78,6 @@
   .tabItem {
     font-size: 12px;
     font-weight: 500;
-    cursor: pointer;
     padding-bottom: 6px;
     font-family: var(--font-inter);
     transition: all 0.2s ease;
