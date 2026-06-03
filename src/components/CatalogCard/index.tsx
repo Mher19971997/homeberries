@@ -65,7 +65,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
 
   const imgSrc =
     catalog?.images?.length > 0
-      ? process.env.NEXT_PUBLIC_BASE_URL + catalog.images[0].image
+      ? process.env.NEXT_PUBLIC_BASE_URL! + catalog.images[0].image
       : EmtpImg.src;
 
   return (

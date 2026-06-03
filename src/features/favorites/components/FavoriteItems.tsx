@@ -10,7 +10,7 @@ const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ cata
         <div className={styles.item} key={catalog.uuid}>
             <div className={styles.cardWrapper}>
                 <CatalogCard
-                    catalogsPage={true}
+                    // catalogsPage={true}
                     sortPanelOne={sortPanelOne}
                     catalog={catalog}
                     onNavigate={() => {

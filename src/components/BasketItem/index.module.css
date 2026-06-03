@@ -205,7 +205,6 @@
         font-weight: 600;
         margin: 0;
         text-align: right;
-        /* margin-left: auto; */
         margin-right: 16px;
     }
 
@@ -282,14 +281,11 @@
 
 @media (max-width: 380px) {
     .item {
-        grid-template-columns: 90px 1fr;
-        gap: unset;
-        column-gap: 10px;
+        grid-template-columns: 70px 1fr;
+        column-gap: 12px;
+        gap: 40px
     }
-    .image {
-        width: 90px;
-        height: 90px;
-    }
+
     .name {
         font-size: 16px;
         margin-bottom: 4px;
@@ -310,9 +306,7 @@
 
 
 
-
-
-/* .body {
+/*.body {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;

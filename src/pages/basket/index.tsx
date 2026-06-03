@@ -18,6 +18,7 @@ import {
   updateBasketItemQuantity,
 } from '@homeberris/utils/indexedDB';
 import SelectPaymentMethod from '@homeberris/components/SelectPaymentMethod';
+import CheckoutFlow from '@homeberris/components/CheckoutFlow';
 
 export default function BasketPage() {
   const { t } = useTranslation('common');
@@ -67,9 +68,11 @@ export default function BasketPage() {
   const total = subtotal + tax + SHIPPING;
 
   const handleCheckout = () => {
-    if (!isAuth) { router.push('/security/login'); return; }
-    if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
-    setShowPaymentModal(true);
+    // if (!isAuth) { router.push('/security/login'); return; }
+    // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
+    // setShowPaymentModal(true);
+      console.log('checkout clicked');
+    router.push(`/order`);
   };
 
   const handlePaymentSuccess = async (result: any) => {
@@ -176,6 +179,13 @@ export default function BasketPage() {
         </div>
       </div>
 
+      {/* <SelectPaymentMethod
+        amount={total * 100}
+        open={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+        onPaymentSuccess={handlePaymentSuccess}
+        onPaymentError={handlePaymentError}
+      /> */}
     </div>
     <SelectPaymentMethod
       amount={total * 100}
