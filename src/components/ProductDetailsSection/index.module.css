@@ -1,7 +1,7 @@
 .section {
   width: 100%;
   background-color: #fafafa;
-  padding: 80px 0 0 0;
+  padding: 80px 0 80px 0;
 }
 
 .inner {
@@ -89,7 +89,9 @@
 }
 
 .viewMoreBtn {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin: 32px auto 0;
   background: none;
   border: 1px solid #d5d5d5;

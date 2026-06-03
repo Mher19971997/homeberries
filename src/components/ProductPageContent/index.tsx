@@ -29,6 +29,7 @@ import styles from "./index.module.css";
 import { useProductPurchase } from "@homeberris/features/catalog/hooks/useProductPurchase";
 import ProductSpecsGrid from "@homeberris/components/ProductSpecsGrid";
 import ProductDetailsSection from "@homeberris/components/ProductDetailsSection";
+import ProductReviewsSection from "@homeberris/components/ProductReviewsSection";
 
 interface ProductPageContentProps {
   catalog: CatalogItem | undefined;
@@ -451,6 +452,9 @@ export default function ProductPageContent({
 
       {/* Details section */}
       <ProductDetailsSection />
+
+      {/* Reviews section */}
+      <ProductReviewsSection />
 
       {/* Комментарии */}
       {catalog?.comments && catalog.comments.length > 0 && (

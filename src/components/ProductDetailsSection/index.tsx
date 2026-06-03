@@ -1,4 +1,5 @@
 import React from "react";
+import { ChevronDownIcon } from "@homeberris/assets/icons/reviews";
 import styles from "./index.module.css";
 
 const staticDescription =
@@ -89,7 +90,10 @@ export default function ProductDetailsSection() {
         </div>
 
         <button className={styles.viewMoreBtn} onClick={() => setShowAll((p) => !p)}>
-          {showAll ? "View Less ↑" : "View More ↓"}
+          {showAll ? "View Less" : "View More"}
+          <ChevronDownIcon
+            style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+          />
         </button>
       </div>
     </section>

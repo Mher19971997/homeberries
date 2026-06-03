@@ -1,5 +1,4 @@
 ﻿import React, { useEffect, useCallback } from 'react';
-import { Box, Typography, Grid } from '@mui/material';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
@@ -104,27 +103,27 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({
   }
 
   return (
-    <Box className={styles.container}>
-      <Typography className={styles.title}>Смотрите также</Typography>
+    <div className={styles.container}>
+      <p className={styles.title}>Смотрите также</p>
       {isLoading ? (
-        <Box className={styles.loadingContainer}>
-          <Typography>Загрузка похожих товаров...</Typography>
-        </Box>
+        <div className={styles.loadingContainer}>
+          <p>Загрузка похожих товаров...</p>
+        </div>
       ) : (
         <>
-          <Grid container spacing={2.5} className={styles.productsGrid}>
+          <div className={styles.productsGrid}>
             {similarProducts.map((product: CatalogItem) => (
               <FavoriteItem catalog={product} />
             ))}
-          </Grid>
+          </div>
           {isFetchingNextPage && (
-            <Box display="flex" justifyContent="center" p={4}>
-              <Typography>Загрузка дополнительных товаров...</Typography>
-            </Box>
+            <div className={styles.loadingMore}>
+              <p>Загрузка дополнительных товаров...</p>
+            </div>
           )}
         </>
       )}
-    </Box>
+    </div>
   );
 };
 
