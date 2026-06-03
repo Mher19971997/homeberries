@@ -1,0 +1,214 @@
+.section {
+  width: 100%;
+  background-color: #fafafa;
+  padding: 80px 0 0 0;
+}
+
+.inner {
+  background-color: #ffffff;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 48px;
+  border-radius: 8px;
+}
+
+.title {
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 24px;
+  leading-trim: NONE;
+  line-height: 32px;
+  letter-spacing: 0%;
+  margin-bottom: 32px;
+}
+
+.description {
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 14px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+  color: #9d9d9d;
+  margin-bottom: 32px;
+  text-align: justify;
+}
+
+.specsTable {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.groupTitle {
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 20px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+  margin-bottom: 16px;
+}
+
+.specRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 8px 0;
+  border-bottom: 1px solid #CDCDCD;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.specGroup:last-child .specRow:last-child {
+  border-bottom: none;
+}
+
+
+.specLabel {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 16px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.specValue {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-style: Regular;
+  font-size: 15px;
+  leading-trim: NONE;
+  line-height: 24px;
+  letter-spacing: 0%;
+}
+
+.viewMoreBtn {
+  display: block;
+  margin: 32px auto 0;
+  background: none;
+  border: 1px solid #d5d5d5;
+  border-radius: 8px;
+  padding: 12px 48px;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #242424;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.viewMoreBtn:hover {
+  border-color: #242424;
+  background: #f5f5f5;
+}
+
+/* ─── Responsive ─────────────────────────────────────── */
+@media only screen and (max-width: 1280px) {
+  .inner {
+    max-width: 100%;
+    margin: 0 32px;
+    padding: 32px 36px;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .inner {
+    margin: 0 24px;
+    padding: 28px 28px;
+  }
+
+  .specLabel {
+    min-width: 140px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .section {
+    margin-top: 32px;
+    padding: 32px 0;
+  }
+
+  .inner {
+    margin: 0 16px;
+    padding: 24px 20px;
+    border-radius: 12px;
+  }
+
+  .title {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .specLabel {
+    min-width: 120px;
+    font-size: 13px;
+  }
+
+  .specValue {
+    font-size: 13px;
+  }
+
+  .groupTitle {
+    font-size: 15px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .section {
+    margin-top: 24px;
+    padding: 24px 0;
+  }
+
+  .inner {
+    margin: 0 12px;
+    padding: 48px 24px;
+    border-radius: 10px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .specRow {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+  }
+
+  .specLabel {
+    min-width: unset;
+    font-size: 12px;
+  }
+
+  .specValue {
+    font-size: 13px;
+    text-align: left;
+  }
+
+  .viewMoreBtn {
+    padding: 10px 32px;
+    font-size: 13px;
+  }
+}
+
+
+@media (min-width: 321px) and (max-width: 375px) {
+  .specRow{
+    display: flex;
+    flex-direction: row !important;
+  }
+  .description{
+    text-align: start;
+  }
+  .specRow{
+    padding-bottom: 8px;
+  }
+}

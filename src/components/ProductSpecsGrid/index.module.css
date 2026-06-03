@@ -42,7 +42,7 @@
   line-height: 16px;
   letter-spacing: 0%;
   color: #4E4E4E;
-
+  opacity: 0.8;
 }
 
 .specValue {
@@ -54,4 +54,17 @@
   line-height: 16px;
   letter-spacing: 0%;
   color: #4E4E4E;
+}
+
+
+@media (min-width: 320px) and (max-width: 375px) {
+  .specsGrid{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .specLabel{
+    font-size: 12px;
+  }
+  .specValue{
+    font-size: 13px !important;
+  }
 }
