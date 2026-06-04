@@ -30,6 +30,15 @@ import { useProductPurchase } from "@homeberris/features/catalog/hooks/useProduc
 import ProductSpecsGrid from "@homeberris/components/ProductSpecsGrid";
 import ProductDetailsSection from "@homeberris/components/ProductDetailsSection";
 import ProductReviewsSection from "@homeberris/components/ProductReviewsSection";
+import ProductColorSelector from "../ProductColorSelector";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { checkToken } from "@homeberris/utils/auth";
+import { useFavorites } from "@homeberris/context/favoritesContext";
+import { useCookies } from "react-cookie";
+import { insertBasket } from "@homeberris/http/basketApi";
+import { addToBasket } from "@homeberris/utils/indexedDB";
+
+
 
 interface ProductPageContentProps {
   catalog: CatalogItem | undefined;
@@ -37,36 +46,74 @@ interface ProductPageContentProps {
   subCategoryName?: string;
 }
 
-export default function ProductPageContent({
-  catalog,
-  categoryName,
-  subCategoryName,
-}: ProductPageContentProps) {
-  const route = useRouter();
-  const routeParams = useParams();
-  const routePathname = usePathname();
-  const [showFullDesc, setShowFullDesc] = React.useState(false);
-  const [selectedStorage, setSelectedStorage] = React.useState<string | null>(
-    null,
-  );
-  const [selectedColor, setSelectedColor] = React.useState<string | null>(null);
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const [animState, setAnimState] = React.useState<
+
+
+
+
+  interface CatalogCardProps {
+  catalog: CatalogItem;
+  sortPanelOne?: boolean;
+  onNavigate?: () => void;
+}
+
+  export default function ProductPageContent({
+    catalog,
+    categoryName,
+    subCategoryName,
+  }: ProductPageContentProps) {
+    const route = useRouter();
+    const routeParams = useParams();
+    const routePathname = usePathname();
+    const [showFullDesc, setShowFullDesc] = React.useState(false);
+    const [selectedStorage, setSelectedStorage] = React.useState<string | null>(
+      null,
+    );
+    const [selectedColor, setSelectedColor] = React.useState<string | null>(null);
+    const [activeIndex, setActiveIndex] = React.useState(0);
+    const [animState, setAnimState] = React.useState<
     "exitLeft" | "exitRight" | "enterRight" | "enterLeft" | null
-  >(null);
-  const dragStartX = React.useRef<number | null>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
+    >(null);
+    const dragStartX = React.useRef<number | null>(null);
+    const [isDragging, setIsDragging] = React.useState(false);
+    
+    const changeImage = (nextIndex: number, dir: "left" | "right") => {
+      if (nextIndex === activeIndex) return;
+      setAnimState(dir === "left" ? "exitLeft" : "exitRight");
+      setTimeout(() => {
+        setActiveIndex(nextIndex);
+        setAnimState(dir === "left" ? "enterRight" : "enterLeft");
+        setTimeout(() => setAnimState(null), 350);
+      }, 250);
+    };
 
-  const changeImage = (nextIndex: number, dir: "left" | "right") => {
-    if (nextIndex === activeIndex) return;
-    setAnimState(dir === "left" ? "exitLeft" : "exitRight");
-    setTimeout(() => {
-      setActiveIndex(nextIndex);
-      setAnimState(dir === "left" ? "enterRight" : "enterLeft");
-      setTimeout(() => setAnimState(null), 350);
-    }, 250);
-  };
+  const queryClient = useQueryClient();
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [cookies] = useCookies(['token']);
+  const { isFavorite, toggleFavorite } = useFavorites();
 
+  
+  const isAuth = checkToken();
+  const { mutate } = useMutation({
+    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid }, cookies.token),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['basketCount'] });
+      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      setOpenSuccess(true);
+    },
+    onError: (error) => console.error(error),
+  });
+
+    const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (isAuth && cookies.token) {
+        mutate(catalog!.uuid) ;
+      } else {
+        addToBasket(catalog, 1)
+          .then(() => setOpenSuccess(true))
+          .catch((err) => console.error(err));
+      }
+    };
+    
   const handleDragStart = (x: number) => {
     dragStartX.current = x;
     setIsDragging(true);
@@ -82,15 +129,15 @@ export default function ProductPageContent({
   };
 
   const {
-    isFavorite,
     setIsFavorite,
     isInCart,
     handleAddToCart,
+    handleBuyNow,
     formatPrice: formatPriceHook,
   } = useProductPurchase({
     catalog: catalog!,
-    onAddToBasket: () => {},
-    onBuyNow: () => {},
+    onAddToBasket: () => { },
+    onBuyNow: () => { },
   });
 
   const [openModal, setOpenModal] = React.useState(false);
@@ -188,11 +235,20 @@ export default function ProductPageContent({
   const images =
     catalog?.images && catalog.images.length > 0
       ? catalog.images.map(({ image }: any) => {
-          const imagePath = image.startsWith("/") ? image : "/" + image;
-          return baseUrl + imagePath;
-        })
+        const imagePath = image.startsWith("/") ? image : "/" + image;
+        return baseUrl + imagePath;
+      })
       : [];
 
+        const router = useRouter()
+        const handleCheckout = () => {
+    // if (!isAuth) { router.push('/security/login'); return; }
+    // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
+    // setShowPaymentModal(true);
+      console.log('checkout clicked');
+    route.push(`/order`);
+  };
+      
   return (
     <div className={styles.body}>
       <div className={styles.contantHeader}>
@@ -315,12 +371,20 @@ export default function ProductPageContent({
                 colorOptions && colorOptions.length > 0
                   ? colorOptions.map((o: OptionsItem) => o.value)
                   : staticColors;
+              const safeColorOptions = colorOptions ?? [];
               return (
                 <div className={styles.colorSelector}>
                   <span className={styles.colorSelectorLabel}>
                     Select color :
                   </span>
-                  {colors.map((color: string, i: number) => (
+                  <ProductColorSelector
+                    options={safeColorOptions}
+                    onColorSelect={(color) => {
+                      setSelectedColor(color.name);
+                    }}
+                  />
+
+                  {/* {colors.map((color: string, i: number) => (
                     <button
                       key={i}
                       className={`${styles.colorDot} ${selectedColor === color ? styles.colorDotActive : ""}`}
@@ -328,7 +392,7 @@ export default function ProductPageContent({
                       onClick={() => setSelectedColor(color)}
                       title={color}
                     />
-                  ))}
+                  ))} */}
                 </div>
               );
             })()}
@@ -401,11 +465,11 @@ export default function ProductPageContent({
             <div className={styles.actionButtons}>
               <button
                 className={styles.btnWishlist}
-                onClick={() => setIsFavorite((p: boolean) => !p)}
+                onClick={handleAddToBasket}
               >
                 Add to Wishlist
               </button>
-              <button className={styles.btnCart} onClick={handleAddToCart}>
+              <button className={styles.btnCart} onClick={handleCheckout }>
                 {isInCart ? "In Cart ✓" : "Add to Card"}
               </button>
             </div>

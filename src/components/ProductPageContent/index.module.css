@@ -599,8 +599,8 @@
   }
 }
 
-/* ── 1024px ── */
-@media only screen and (max-width: 1024px) {
+/* ── 1024px ── aaaaaaaaaaaaaa*/
+@media only screen and (max-width: 1124px) {
   .contantHeader {
     padding: 0 24px;
     margin-bottom: 48px;
@@ -631,7 +631,7 @@
 
   .productTitle {
     font-size: 26px;
-    line-height: 34px;
+    line-height: 38px;
   }
 
   .currentPrice {

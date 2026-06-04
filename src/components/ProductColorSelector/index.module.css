@@ -1,4 +1,61 @@
-.container {
+.colorsContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.colorDot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  outline: none;
+}
+
+.colorDot:hover {
+  transform: scale(1.08);
+}
+
+.white {
+  box-shadow: inset 0 0 0 1px #d0d0d0;
+}
+
+button.colorDotActive {
+  border: 2px solid #242424;
+}
+
+button.colorDotActive.white {
+  border: 2px solid #242424;
+  box-shadow: inset 0 0 0 2px #ffffff, inset 0 0 0 3px #d0d0d0;
+}
+
+.colorDot:focus,
+.colorDot:focus-visible,
+.colorDot:active {
+  outline: none !important;
+}
+
+@media (max-width: 768px) {
+  .colorDot {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .colorDot {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+
+/* .container {
   margin: 16px 0;
 }
 
@@ -79,4 +136,4 @@
   .colorName {
     font-size: 12px;
   }
-}
+} */

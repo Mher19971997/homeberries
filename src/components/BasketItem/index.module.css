@@ -283,7 +283,7 @@
     .item {
         grid-template-columns: 70px 1fr;
         column-gap: 12px;
-        gap: 40px
+        gap: 15px
     }
 
     .name {
