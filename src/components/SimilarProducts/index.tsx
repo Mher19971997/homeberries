@@ -113,7 +113,7 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({
         <>
           <div className={styles.productsGrid}>
             {similarProducts.map((product: CatalogItem) => (
-              <FavoriteItem catalog={product} />
+              <FavoriteItem key={product.uuid} catalog={product} />
             ))}
           </div>
           {isFetchingNextPage && (

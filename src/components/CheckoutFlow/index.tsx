@@ -41,24 +41,27 @@ const STEPS = ['Address', 'Shipping', 'Payment'];
 
 function StepIndicator({ current }: { current: number }) {
   return (
-    <div className={styles.stepIndicator}>
+    <div
+      className={styles.stepIndicator}
+      data-step={current}
+    >
       {STEPS.map((label, i) => {
-        const state = i < current ? 'done' : i === current ? 'active' : 'pending';
+        const state =
+          i < current ? 'done' : i === current ? 'active' : 'pending';
+
         return (
-          <React.Fragment key={label}>
-            <div className={`${styles.step} ${styles[state]}`}>
-              <div className={styles.stepCircle}>
-                {React.createElement(STEP_ICONS[i], {
-                  className: styles.stepIcon,
-                })}
-              </div>
-              <div className={styles.stepMeta}>
-                <span>Step {i + 1}</span>
-                <span>{label}</span>
-              </div>
+          <div key={i} className={`${styles.step} ${styles[state]}`}>
+            <div className={styles.stepCircle}>
+              {React.createElement(STEP_ICONS[i], {
+                className: styles.stepIcon,
+              })}
             </div>
-            {i < STEPS.length - 1}
-          </React.Fragment>
+
+            <div className={styles.stepMeta}>
+              <span>Step {i + 1}</span>
+              <span>{label}</span>
+            </div>
+          </div>
         );
       })}
     </div>
@@ -157,12 +160,15 @@ function ShippingStep({
               onChange={() => onSelect(method.id)}
               className={styles.radioHidden}
             />
-            <div className={styles.radioCircle}>
-              {selected === method.id && <div className={styles.radioInner} />}
-            </div>
-            <div className={styles.shipmentBody}>
-              <span className={styles.shipmentLabel}>{method.label}</span>
-              <span className={styles.shipmentDesc}>{method.description}</span>
+            <div className={styles.shipmentMain}>
+              <div className={styles.radioCircle}>
+                {selected === method.id && <div className={styles.radioInner} />}
+              </div>
+
+              <div className={styles.shipmentText}>
+                <span className={styles.shipmentLabel}>{method.label}</span>
+                <span className={styles.shipmentDesc}>{method.description}</span>
+              </div>
             </div>
             <div className={styles.shipmentDate}>
               {method.date ? (
@@ -277,55 +283,75 @@ function PaymentStep({
           </div>
         </div>
         {tab === 'Credit Card' && !showStripe && (
-          <div className={styles.cardDetails}>
-            <div className={styles.cardVisual}>
-              <div className={styles.cardChip}>
-                <div className={styles.chipLineH} />
-                <div className={styles.chipLineV} />
-                <div className={styles.chipInner} />
+          <>
+            <div className={styles.cardDetails}>
+              <div className={styles.cardVisual}>
+                <div className={styles.cardChip}>
+                  <div className={styles.chipLineH} />
+                  <div className={styles.chipLineV} />
+                  <div className={styles.chipInner} />
+                </div>
+
+                <div className={styles.cardWifi}>
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
+                <div className={styles.cardNumber}>4085 9536 8475 9530</div>
+                <div className={styles.cardHolder}>Cardholder</div>
+
+                <div className={styles.masterLogo}>
+                  <div className={styles.masterCircle1} />
+                  <div className={styles.masterCircle2} />
+                </div>
               </div>
 
-              <div className={styles.cardWifi}>
-                <span />
-                <span />
-                <span />
-              </div>
+              <div className={styles.paymentForm}>
+                <input
+                  className={styles.payInput}
+                  placeholder="Cardholder Name"
+                  value={cardName}
+                  onChange={(e) => setCardName(e.target.value)}
+                />
 
-              <div className={styles.cardNumber}>4085 9536 8475 9530</div>
-              <div className={styles.cardHolder}>Cardholder</div>
+                <input
+                  className={styles.payInput}
+                  placeholder="Card Number"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(e.target.value)}
+                />
 
-              <div className={styles.masterLogo}>
-                <div className={styles.masterCircle1} />
-                <div className={styles.masterCircle2} />
+                <div className={styles.payRow}>
+                  <input
+                    className={styles.payInput}
+                    placeholder="Exp. Date"
+                    value={expDate}
+                    onChange={(e) => setExpDate(e.target.value)}
+                  />
+
+                  <input
+                    className={styles.payInput}
+                    placeholder="CVV"
+                    value={cvv}
+                    onChange={(e) => setCvv(e.target.value)}
+                  />
+                </div>
               </div>
             </div>
-            <div className={styles.paymentForm}>
-              <input className={styles.payInput} placeholder="Cardholder Name" value={cardName} onChange={(e) => setCardName(e.target.value)} />
-              <input className={styles.payInput} placeholder="Card Number" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} />
-              <div className={styles.payRow}>
-                <input className={styles.payInput} placeholder="Exp. Date" value={expDate} onChange={(e) => setExpDate(e.target.value)} />
-                <input className={styles.payInput} placeholder="CVV" value={cvv} onChange={(e) => setCvv(e.target.value)} />
-              </div>
-              </div>
+
+            <div className={styles.billingAddressSection}>
               <label className={styles.checkboxRow}>
-                <input type="checkbox" checked={sameAsBilling} onChange={(e) => setSameAsBilling(e.target.checked)} className={styles.checkbox} />
+                <input
+                  type="checkbox"
+                  checked={sameAsBilling}
+                  onChange={(e) => setSameAsBilling(e.target.checked)}
+                  className={styles.checkbox}
+                />
                 <span>Same as billing address</span>
               </label>
             </div>
-        )}
-        {tab === 'Credit Card' && showStripe && (
-          <SelectPaymentMethod
-            amount={total * 100}
-            open={true}
-            onClose={() => setShowStripe(false)}
-            onPaymentSuccess={onPaymentSuccess}
-            onPaymentError={onPaymentError}
-          />
-        )}
-        {tab !== 'Credit Card' && (
-          <div className={styles.altPayment}>
-            <p>Redirect to {tab} to complete payment.</p>
-          </div>
+          </>
         )}
         <div className={styles.navButtons}>
           <button className={styles.btnBack} onClick={onBack}>Back</button>

@@ -320,7 +320,7 @@
   margin-top: auto;
 }
 
-.addressDetails{
+.addressDetails {
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -432,7 +432,7 @@
 }
 
 .paymentPanel .navButtons {
-  margin-top: 40px;
+  margin-top: 36px;
   width: 100%;
   display: flex;
   gap: 23px
@@ -686,10 +686,34 @@
 }
 
 .checkbox {
+  appearance: none;
+  -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  accent-color: #000;
+  border: 1.5px solid #ccc;
+  border-radius: 3px;
   cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.checkbox:checked {
+  background: #000;
+  border-color: #000;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 3px;
+  width: 2px;
+  height: 5px;
+  border: 2px solid #fff;
+  border-top: none;
+  border-left: none;
+  transform: rotate(45deg);
 }
 
 .navButtons {
@@ -736,6 +760,40 @@
   opacity: 0.9;
 }
 
+.billingAddressSection {
+  margin-top: 24px;
+}
+
+.checkboxRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.cardDetails {
+  margin-top: 40px;
+}
+
+.shipmentMain {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.shipmentText {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+
 @media (max-width: 960px) {
   .stepIndicator {
     padding: 40px 0;
@@ -756,5 +814,160 @@
 
   .navButtons {
     justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .stepIndicator .step {
+    display: none;
+  }
+
+  .stepIndicator[data-step="0"] .step:nth-child(1),
+  .stepIndicator[data-step="0"] .step:nth-child(2) {
+    display: flex;
+  }
+
+  .stepIndicator[data-step="1"] .step:nth-child(2),
+  .stepIndicator[data-step="1"] .step:nth-child(3) {
+    display: flex;
+  }
+
+  .stepIndicator[data-step="2"] .step:nth-child(2),
+  .stepIndicator[data-step="2"] .step:nth-child(3) {
+    display: flex;
+  }
+
+  .stepMeta span:first-child {
+    font-size: 10px;
+  }
+
+  .stepMeta span:last-child {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .stepCircle {
+    width: 20px;
+    height: 20px;
+  }
+
+  .addressCard {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .addressBody {
+    min-width: 0;
+  }
+
+  .addressHeader {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .addressLabel {
+    font-size: 14px;
+  }
+
+  .addressLine {
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .addressActions {
+    margin-left: auto;
+    gap: 12px;
+  }
+
+  .shipmentCard {
+    flex-wrap: wrap;
+    padding: 16px;
+    gap: 12px;
+    position: relative;
+  }
+
+  .shipmentText {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .paymentLayout {
+    flex-direction: column-reverse;
+    gap: 32px;
+  }
+
+  .summaryPanel {
+    width: 100%;
+  }
+
+  .paymentPanel {
+    width: 100%;
+    max-width: none;
+  }
+
+  .cardVisual {
+    width: 100%;
+    max-width: none;
+    height: 190px;
+    padding: 16px;
+  }
+
+  .cardNumber {
+    font-size: 18px;
+  }
+
+  .cardHolder {
+    font-size: 12px;
+  }
+
+  .payInput {
+    height: 44px;
+    font-size: 13px;
+  }
+
+  .payRow {
+    gap: 10px;
+  }
+
+  .billingAddressSection {
+    margin-top: 12px;
+  }
+
+  .checkboxRow {
+    font-size: 13px;
+  }
+
+  .navButtons,
+  .paymentPanel .navButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btnBack,
+  .btnNext,
+  .paymentPanel .btnBack,
+  .paymentPanel .btnNext {
+    width: 100%;
+    padding: 0;
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .checkoutInner {
+    padding: 0 16px 32px;
+  }
+
+  .shipmentMain {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .summaryPanel {
+    display: none;
   }
 }

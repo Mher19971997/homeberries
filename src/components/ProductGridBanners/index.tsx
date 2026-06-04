@@ -1,6 +1,8 @@
+'use client'
 import React, { useState, useRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import styles from './index.module.css';
+import { useRouter } from 'next/navigation';
 
 interface GridBannerItem {
   id: number;
@@ -42,7 +44,6 @@ const GRID_BANNERS_DATA: GridBannerItem[] = [
 ];
 
 const BG_COLORS = ['#ffffff', '#f9f9f9', '#eaeaea', '#2c2c2c'];
-
 export default function ProductGridBanners() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -72,6 +73,7 @@ export default function ProductGridBanners() {
   };
 
   const isDarkBg = BG_COLORS[activeIndex] === '#2c2c2c';
+  const router = useRouter()
 
   return (
     <Box
@@ -96,7 +98,7 @@ export default function ProductGridBanners() {
               <Typography className={styles.bannerDescription}>
                 {banner.description}
               </Typography>
-              <Button variant="outlined" className={styles.actionButton}>
+              <Button variant="outlined" className={styles.actionButton} onClick={() => router.push('/catalog')}>
                 Shop Now
               </Button>
             </Box>
