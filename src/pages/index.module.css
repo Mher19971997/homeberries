@@ -67,7 +67,7 @@
 }
 
 /* 375px и ниже: уменьшаем gap и padding чтобы вторая карточка не обрезалась */
-@media (max-width: 375px) {
+@media (max-width:400px) {
   .catalogGrid {
     gap: 16px;
   }

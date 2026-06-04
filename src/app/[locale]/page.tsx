@@ -131,7 +131,7 @@ export default function Home() {
         </div>
       )}
       <ProductGridBanners />
-      <div style={{ width: '100%', maxWidth: '1120px', margin: '56px auto 80px auto', padding: '0 16px' }}>
+      <div style={{ width: '100%', maxWidth: '1120px', margin: '80px auto 80px auto', padding: '0 16px' }}>
         <p
           style={{
             fontSize: '24px',

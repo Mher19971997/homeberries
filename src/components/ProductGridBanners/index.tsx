@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { Box, Button, Typography } from '@mui/material';
 import styles from './index.module.css';
 import { useRouter } from 'next/navigation';
 
@@ -76,40 +75,39 @@ export default function ProductGridBanners() {
   const router = useRouter()
 
   return (
-    <Box
+    <div
       className={[styles.wrapper, isDarkBg ? styles.darkTheme : ''].join(' ')}
       style={{ '--dynamic-bg': BG_COLORS[activeIndex] } as React.CSSProperties}
     >
-      <Box
+      <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
         className={styles.gridContainer}
       >
         {GRID_BANNERS_DATA.map((banner) => (
-          <Box key={banner.id} className={[styles.gridCard, banner.className].join(' ')}>
-            <Box className={styles.imageBox}>
+          <div key={banner.id} className={[styles.gridCard, banner.className].join(' ')}>
+            <div className={styles.imageBox}>
               <img src={banner.image} alt={banner.title} className={styles.productImg} />
-            </Box>
+            </div>
 
-            <Box className={styles.infoBox}>
-              <Typography className={styles.bannerTitle}>
+            <div className={styles.infoBox}>
+              <p className={styles.bannerTitle}>
                 {banner.title}
-              </Typography>
-              <Typography className={styles.bannerDescription}>
+              </p>
+              <p className={styles.bannerDescription}>
                 {banner.description}
-              </Typography>
-              <Button variant="outlined" className={styles.actionButton} onClick={() => router.push('/catalog')}>
+              </p>
+              <button className={styles.actionButton} onClick={() => router.push('/catalog')}>
                 Shop Now
-              </Button>
-            </Box>
-          </Box>
+              </button>
+            </div>
+          </div>
         ))}
-      </Box>
+      </div>
 
-      {/* Точки пагинации */}
-      <Box className={styles.paginationDots}>
+      <div className={styles.paginationDots}>
         {GRID_BANNERS_DATA.map((_, index) => (
-          <Box
+          <div
             key={index}
             className={[
               styles.dot,
@@ -118,7 +116,7 @@ export default function ProductGridBanners() {
             onClick={() => handleDotClick(index)}
           />
         ))}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 }

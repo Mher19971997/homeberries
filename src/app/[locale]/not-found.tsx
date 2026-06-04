@@ -3,7 +3,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Footer from '@homeberris/layouts/Footer';
 
 export default function NotFound() {
   const router = useRouter();
@@ -234,20 +233,6 @@ export default function NotFound() {
         </Box>
       </Box>
 
-      {/* Footer с уменьшенным padding чтобы всё вошло в экран */}
-      <Box
-        sx={{
-          flexShrink: 0,
-          '& footer': {
-            padding: '20px 0 !important',
-          },
-          '& .footerContent': {
-            gap: '24px !important',
-          },
-        }}
-      >
-        <Footer />
-      </Box>
     </Box>
   );
 }

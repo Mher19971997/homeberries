@@ -99,12 +99,14 @@
   font-family: Inter;
   font-weight: 500;
   font-style: Medium;
-  font-size: 16px;
+  font-size: 15px;
   leading-trim: NONE;
   line-height: 24px;
   letter-spacing: 0%;
   text-align: center;
   color: #fff;
+  max-width: 191px;
+  width: 100%;
   transition: background-color 0.2s;
 }
 
@@ -377,5 +379,7 @@
     line-height: 24px;
     letter-spacing: 0%;
     text-align: center;
+    padding: unset;
+    min-height: 56px;
   }
 }

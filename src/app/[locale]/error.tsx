@@ -3,7 +3,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import Footer from '@homeberris/layouts/Footer';
 
 export default function Error({
   error,
@@ -231,9 +230,6 @@ export default function Error({
         </Box>
       </Box>
 
-      <Box sx={{ flexShrink: 0, '& footer': { padding: '20px 0 !important' } }}>
-        <Footer />
-      </Box>
     </Box>
   );
 }

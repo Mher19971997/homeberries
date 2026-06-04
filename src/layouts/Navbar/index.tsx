@@ -102,8 +102,10 @@ const Navbar = () => {
           onClick={() => setMenuOpen(true)}
           aria-label="open menu"
         >
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+          <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="25" height="2.5" rx="1.25" fill="#080341"/>
+            <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341"/>
+            <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341"/>
           </svg>
         </button>
 

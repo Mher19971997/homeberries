@@ -125,7 +125,7 @@
     aspect-ratio: unset;
     padding: 8px;
   }
-  .cardName{
+  .cardName {
     font-size: 14px;
   }
 }
@@ -138,5 +138,16 @@
 
   .title {
     font-size: 20px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 375px) {
+    .card{
+    max-width: 163px;
+    width: 100%;
+    min-height: 128px;
+  }
+  .section{
+    padding-bottom: 64px;
   }
 }

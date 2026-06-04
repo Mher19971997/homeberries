@@ -39,10 +39,10 @@
   align-items: center;
   background-color: #f5f5f5;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 20px 0 20px 20px;
   width: 372px;
   height: 56px;
-  max-width: 400px;
+  max-width: 372px;
   gap: 8px;
   flex-shrink: 0;
 }
@@ -158,20 +158,14 @@
   display: none;
   align-items: center;
   justify-content: center;
-  width: 25px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   color: #080341;
   flex-shrink: 0;
-}
-
-.burgerBtn svg {
-  color: #000000;
-  width: 24px;
-  height: 24px;
 }
 
 /* Overlay */
@@ -333,7 +327,7 @@
 
 @media only screen and (max-width: 992px) {
   .navbarInner {
-    padding: 16px 24px;
+    padding: 32px 24px;
     gap: 24px;
   }
 

@@ -56,69 +56,68 @@
 
 .infoBox {
   display: grid;
-  grid-template-rows: 85px 110px auto;
   align-items: start;
   gap: 0px;
   width: 100%;
 }
 
 .bannerTitle {
-  font-family: var(--font-inter) !important;
-  font-size: 34px !important;
-  font-weight: 300 !important;
-  line-height: 1.2 !important;
-  color: #000000 !important;
-  margin: 0 0 16px 0 !important;
+  font-family: var(--font-inter);
+  font-size: 33px;
+  font-weight: 300;
+  line-height: 1.2;
+  color: #000000;
+  margin: 0 0 16px 0;
 }
 
 .macbookGridCard .bannerTitle {
-  color: #ffffff !important;
+  color: #ffffff;
 }
 
 .bannerDescription {
-  font-family: var(--font-inter) !important;
-  font-size: 14px !important;
-  font-weight: 400 !important;
-  line-height: 1.5 !important;
-  color: #909090 !important;
-  margin: 0 0 24px 0 !important;
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #909090;
+  margin: 0 0 16px 0;
   max-width: 280px;
 }
 
 .macbookGridCard .bannerDescription {
-  color: #a4a4a4 !important;
+  color: #a4a4a4;
 }
 
 .actionButton {
-  text-transform: none !important;
-  font-family: var(--font-inter) !important;
-  font-size: 14px;
+  font-family: var(--font-inter);
+  font-size: 16px;
   font-weight: 500;
-  padding: 16px 0 !important;
+  padding: 16px 0;
   width: 100%;
-  max-width: 180px;
+  max-width: 191px;
   text-align: center;
   border-radius: 6px;
-  border: 1px solid #000000 !important;
-  color: #000000 !important;
-  background-color: transparent !important;
-  transition: all 0.2s ease !important;
+  border: 1px solid #000000;
+  color: #000000;
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
   align-self: end;
 }
 
 .actionButton:hover {
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  background-color: #000000;
+  color: #ffffff;
 }
 
 .macbookGridCard .actionButton {
-  border: 1px solid #ffffff !important;
-  color: #ffffff !important;
+  border: 1px solid #ffffff;
+  color: #ffffff;
 }
 
 .macbookGridCard .actionButton:hover {
-  background-color: #ffffff !important;
-  color: #2c2c2c !important;
+  background-color: #ffffff;
+  color: #2c2c2c;
 }
 
 .paginationDots {
@@ -154,24 +153,24 @@
   }
 
   .bannerTitle {
-    font-size: 28px !important;
+    font-size: 28px;
   }
 
   .bannerDescription {
     max-width: 100%;
-    font-size: 14px !important;
+    font-size: 14px;
   }
 
   .actionButton {
-    padding: 12px 0 !important;
+    padding: 12px 0;
     max-width: 160px;
   }
 }
 
 @media (max-width: 600px) {
   .wrapper {
-    background-color: var(--dynamic-bg) !important;
-    margin-top: 64px !important;
+    background-color: var(--dynamic-bg);
+    margin-top: 64px;
   }
 
   .gridContainer {
@@ -195,25 +194,25 @@
     justify-content: center;
     align-items: center;
     padding: 24px;
-    background-color: transparent !important;
+    background-color: transparent;
   }
 
   .darkTheme .bannerTitle {
-    color: #ffffff !important;
+    color: #ffffff;
   }
 
   .darkTheme .bannerDescription {
-    color: #a4a4a4 !important;
+    color: #a4a4a4;
   }
 
   .darkTheme .actionButton {
-    border: 1px solid #ffffff !important;
-    color: #ffffff !important;
+    border: 1px solid #ffffff;
+    color: #ffffff;
   }
 
   .darkTheme .actionButton:hover {
-    background-color: #ffffff !important;
-    color: #2c2c2c !important;
+    background-color: #ffffff;
+    color: #2c2c2c;
   }
 
   .imageBox {
@@ -235,27 +234,27 @@
   }
 
   .bannerTitle {
-    font-size: 32px !important;
-    color: #000000 !important;
-    margin: 0 !important;
+    font-size: 32px;
+    color: #000000;
+    margin: 0;
   }
 
   .bannerDescription {
     max-width: 310px;
-    font-size: 14px !important;
-    line-height: 1.5 !important;
-    color: #909090 !important;
-    margin: 0 !important;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #909090;
+    margin: 0;
   }
 
   .actionButton {
     width: 100%;
     max-width: 220px;
-    padding: 14px 0 !important;
-    margin-top: 12px !important;
-    border: 1px solid #000000 !important;
-    color: #000000 !important;
-    align-self: center !important;
+    padding: 14px 0;
+    margin-top: 12px;
+    border: 1px solid #000000;
+    color: #000000;
+    align-self: center;
   }
 
   .paginationDots {
@@ -286,5 +285,23 @@
 
   .darkTheme .activeDot {
     background-color: #ffffff;
+  }
+}
+
+
+@media (min-width: 320px) and (max-width: 375px) {
+  .wrapper {
+    overflow: hidden;
+  }
+
+  .gridContainer {
+    width: 311px;
+    height: 555px;
+    margin-inline: auto;
+  }
+
+  .gridCard {
+    flex: 0 0 311px;
+    scroll-snap-align: start;
   }
 }

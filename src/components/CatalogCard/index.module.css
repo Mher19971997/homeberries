@@ -12,7 +12,7 @@
   max-width: 100%;
   min-height: 432px;
   height: 100%;
-  padding: 20px 16px 16px;
+  padding: 24px 16px 16px;
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease;
@@ -39,7 +39,7 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  margin-bottom: 13px;
+  margin-bottom: 16px;
 }
 
 .favoriteButton {
