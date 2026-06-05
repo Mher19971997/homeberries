@@ -21,16 +21,13 @@ import {
 } from "@homeberris/assets/icons/order";
 import WiFiCard from "@homeberris/assets/icons/wifi";
 import MastercardIcon from "@homeberris/assets/icons/mastercard";
-<<<<<<< Updated upstream
 import { useMutation, useQueryClient as useQC } from "@tanstack/react-query";
 import { useLoadScript } from "@react-google-maps/api";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
+import { useTranslation } from "react-i18next";
 
 const GOOGLE_LIBRARIES: ("places")[] = ["places"];
-=======
-import { useTranslation } from "react-i18next";
->>>>>>> Stashed changes
 
 interface Address {
   uuid: string;
@@ -192,7 +189,6 @@ function AddressStep({
   token: string;
   isLoaded: boolean;
 }) {
-<<<<<<< Updated upstream
   const [showForm, setShowForm] = React.useState(false);
   const [editAddr, setEditAddr] = React.useState<Address | null>(null);
   const qc = useQC();
@@ -214,9 +210,7 @@ function AddressStep({
     setShowForm(false);
     setEditAddr(null);
   };
-=======
   const { t } = useTranslation('common');
->>>>>>> Stashed changes
 
   return (
     <div className={styles.stepContent}>
@@ -260,7 +254,6 @@ function AddressStep({
             </div>
           </label>
         ))}
-<<<<<<< Updated upstream
 
         {showForm ? (
           <AddressForm
@@ -276,14 +269,6 @@ function AddressStep({
             Add New Address
           </button>
         )}
-=======
-        <button className={styles.addAddressBtn}>
-          <span className={styles.addIcon}>
-            <AddAddressIcon />
-          </span>
-          {t("checkout.address.addNew")}
-        </button>
->>>>>>> Stashed changes
       </div>
     </div>
   );

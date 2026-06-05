@@ -9,14 +9,11 @@ import { getAllBaskets } from '@homeberris/http/basketApi';
 import { getBasketCount } from '@homeberris/utils/indexedDB';
 import qs from 'qs';
 import styles from './index.module.css';
-<<<<<<< Updated upstream
-import { CartIcon, FavoriteIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
 import { getProfile } from '@homeberris/http/userApi';
-=======
 import { CartIcon, FavoriteIcon, GlobeIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
 import SelectLanguageInPopover from '@homeberris/components/SelectLanguageInPopover';
 import { useTranslation } from 'react-i18next';
->>>>>>> Stashed changes
+
 
 const Navbar = () => {
   const { t } = useTranslation('common');
