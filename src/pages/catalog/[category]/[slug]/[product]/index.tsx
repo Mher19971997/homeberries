@@ -24,7 +24,7 @@ export default function Catalog() {
 
   const { toast, hideToast } = useToast();
 
-  const { data: catalog, isLoading } = useQuery<CatalogItem | null>({
+  const { data: catalog, isPending } = useQuery<CatalogItem | null>({
     queryKey: ['getCatalogByUud', catalogUuid],
     queryFn: () =>
       getCatalogByUud(
@@ -42,9 +42,10 @@ export default function Catalog() {
       ),
     enabled: !!catalogUuid && isUUID(catalogUuid),
     retry: 1,
+    staleTime: 1000 * 60 * 5,
   });
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className={styles.loadingContainer}>
         <div className={styles.spinner} />

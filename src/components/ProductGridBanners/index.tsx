@@ -1,120 +1,109 @@
 'use client'
-import React, { useState, useRef } from 'react';
-import styles from './index.module.css';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getAllCatalogs } from '@homeberris/http/catalogApi';
+import qs from 'qs';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { A11y } from 'swiper/modules';
+// @ts-ignore
+import 'swiper/css';
+import styles from './index.module.css';
 
-interface GridBannerItem {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  className: string;
-}
-
-const GRID_BANNERS_DATA: GridBannerItem[] = [
-  {
-    id: 1,
-    title: 'Popular Products',
-    description: 'iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.',
-    image: '/images/PopularProducts.png',
-    className: styles.popularGridCard,
-  },
-  {
-    id: 2,
-    title: 'Ipad Pro',
-    description: 'iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.',
-    image: '/images/IpadPro.png',
-    className: styles.ipadGridCard,
-  },
-  {
-    id: 3,
-    title: 'Samsung Galaxy',
-    description: 'iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.',
-    image: '/images/SamsungGalaxy.png',
-    className: styles.samsungGridCard,
-  },
-  {
-    id: 4,
-    title: 'Macbook Pro',
-    description: 'iPad combines a magnificent 10.2-inch Retina display, incredible performance, multitasking and ease of use.',
-    image: '/images/MacbookPro.png',
-    className: styles.macbookGridCard,
-  },
-];
+const BASE_URL = 'http://localhost:6001';
 
 const BG_COLORS = ['#ffffff', '#f9f9f9', '#eaeaea', '#2c2c2c'];
+
+const CARD_CLASSES = [
+  styles.popularGridCard,
+  styles.ipadGridCard,
+  styles.samsungGridCard,
+  styles.macbookGridCard,
+];
+
 export default function ProductGridBanners() {
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = () => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
+  const query = qs.stringify({
+    filterMeta: { isPopular: true },
+    queryMeta: { paginate: true, limit: 20, page: 1 },
+  });
 
-    const scrollLeft = container.scrollLeft;
-    const width = container.clientWidth;
-    const newIndex = Math.round(scrollLeft / width);
-    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < GRID_BANNERS_DATA.length) {
-      setActiveIndex(newIndex);
-    }
-  };
+  const { data } = useQuery({
+    queryKey: ['popularCatalogs'],
+    queryFn: () => getAllCatalogs(query),
+  });
 
-  const handleDotClick = (index: number) => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
+  const banners = data?.data ?? [];
 
-    const width = container.clientWidth;
-    container.scrollTo({
-      left: width * index,
-      behavior: 'smooth',
-    });
-    setActiveIndex(index);
-  };
-
-  const isDarkBg = BG_COLORS[activeIndex] === '#2c2c2c';
-  const router = useRouter()
+  if (!banners.length) return null;
 
   return (
-    <div
-      className={[styles.wrapper, isDarkBg ? styles.darkTheme : ''].join(' ')}
-      style={{ '--dynamic-bg': BG_COLORS[activeIndex] } as React.CSSProperties}
-    >
-      <div
-        ref={scrollContainerRef}
-        onScroll={handleScroll}
-        className={styles.gridContainer}
+    <div className={styles.wrapper}>
+      <Swiper
+        modules={[A11y]}
+        slidesPerView={4}
+        slidesPerGroup={1}
+        spaceBetween={0}
+        grabCursor
+        loop={true}
+        onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+        breakpoints={{
+          0:    { slidesPerView: 1 },
+          600:  { slidesPerView: 2 },
+          900:  { slidesPerView: 3 },
+          1200: { slidesPerView: 4 },
+        }}
+        className={styles.swiper}
       >
-        {GRID_BANNERS_DATA.map((banner) => (
-          <div key={banner.id} className={[styles.gridCard, banner.className].join(' ')}>
-            <div className={styles.imageBox}>
-              <img src={banner.image} alt={banner.title} className={styles.productImg} />
-            </div>
+        {banners.map((catalog, index) => {
+          const imageUrl = catalog.images?.[0]?.image
+            ? `${BASE_URL}/${catalog.images[0].image}`
+            : null;
+          const isDark = BG_COLORS[index % BG_COLORS.length] === '#2c2c2c';
 
-            <div className={styles.infoBox}>
-              <p className={styles.bannerTitle}>
-                {banner.title}
-              </p>
-              <p className={styles.bannerDescription}>
-                {banner.description}
-              </p>
-              <button className={styles.actionButton} onClick={() => router.push('/catalog')}>
-                Shop Now
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          return (
+            <SwiperSlide key={catalog.uuid}>
+              <div className={[styles.gridCard, CARD_CLASSES[index % CARD_CLASSES.length]].join(' ')}>
+                <div className={styles.imageBox}>
+                  {imageUrl && (
+                    <img src={imageUrl} alt={catalog.name} className={styles.productImg} draggable={false} />
+                  )}
+                </div>
+                <div className={styles.infoBox}>
+                  <p className={[styles.bannerTitle, isDark ? styles.lightText : ''].join(' ')}>
+                    {catalog.name}
+                  </p>
+                  <p className={styles.bannerDescription}>{catalog.description}</p>
+                  <button
+                    className={[styles.actionButton, isDark ? styles.actionButtonDark : ''].join(' ')}
+                    onClick={() => {
+                      const cat = catalog.category?.name;
+                      const sub = catalog.subCategorie?.name;
+                      const uuid = catalog.uuid;
+                      if (cat && sub && uuid) {
+                        router.push(`/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${uuid}`);
+                      } else if (cat && uuid) {
+                        router.push(`/catalog/${encodeURIComponent(cat)}/${uuid}`);
+                      } else {
+                        router.push('/catalog');
+                      }
+                    }}
+                  >
+                    Shop Now
+                  </button>
+                </div>
+              </div>
+            </SwiperSlide>
+          );
+        })}
+      </Swiper>
 
-      <div className={styles.paginationDots}>
-        {GRID_BANNERS_DATA.map((_, index) => (
-          <div
-            key={index}
-            className={[
-              styles.dot,
-              activeIndex === index ? styles.activeDot : '',
-            ].join(' ')}
-            onClick={() => handleDotClick(index)}
-          />
+      {/* Custom dots — только на 320-375px */}
+      <div className={styles.dots}>
+        {banners.map((_, i) => (
+          <span key={i} className={[styles.dot, activeIndex === i ? styles.dotActive : ''].join(' ')} />
         ))}
       </div>
     </div>

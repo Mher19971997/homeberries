@@ -34,7 +34,7 @@ const fadeOut = keyframes`
   to   { opacity: 0; }
 `;
 
-const MIN_DISPLAY_MS = 700;
+const MIN_DISPLAY_MS = 0;
 
 export default function Preloader() {
   const pathname = usePathname();

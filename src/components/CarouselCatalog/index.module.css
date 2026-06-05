@@ -339,6 +339,54 @@
   }
 }
 
+.carouselWrapper {
+  width: 100%;
+  position: relative;
+}
+
+.carouselTrack {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carouselTrack::-webkit-scrollbar {
+  display: none;
+}
+
+.carouselTrack .banner {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 0;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.activeDot {
+  background: #fff;
+  width: 24px;
+  border-radius: 4px;
+}
+
 @media (min-width: 320px) and (max-width: 375px) {
   .proText {
     font-family: var(--font-inter);
