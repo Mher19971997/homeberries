@@ -140,6 +140,7 @@ export default function CatalogPage() {
             brands={brands}
             selectedBrands={selectedBrands}
             onBrandsChange={setSelectedBrands}
+            categoryName={categoryName}
           />
         </div>
 

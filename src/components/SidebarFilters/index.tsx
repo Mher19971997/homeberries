@@ -1,12 +1,16 @@
 import React from 'react';
+import { useQueries } from '@tanstack/react-query';
+import * as qs from 'qs';
 import { BrandItem } from '@homeberris/types/brand';
 import { ChevronDownIcon, SearchIconNotMUI } from '@homeberris/assets/icons/catalog';
+import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from './index.module.css';
 
 interface SidebarFiltersProps {
   brands: BrandItem[];
   selectedBrands: string[];
   onBrandsChange: (brands: string[]) => void;
+  categoryName?: string;
 }
 
 const EXTRA_SECTIONS = [
@@ -17,10 +21,27 @@ const EXTRA_SECTIONS = [
   'Built-in memory',
 ];
 
-export default function SidebarFilters({ brands, selectedBrands, onBrandsChange }: SidebarFiltersProps) {
+export default function SidebarFilters({ brands, selectedBrands, onBrandsChange, categoryName }: SidebarFiltersProps) {
   const [brandSearch, setBrandSearch] = React.useState('');
   const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
     brand: true,
+  });
+
+  const brandCountQueries = useQueries({
+    queries: brands.map((brand) => ({
+      queryKey: ['brandCount', brand.uuid, categoryName],
+      queryFn: () => getAllCatalogs(qs.stringify({
+        filterMeta: { brandUuid: brand.uuid },
+        ...(categoryName ? { includeMeta: [{ association: 'category', where: { name: categoryName } }] } : {}),
+        queryMeta: { paginate: true, limit: 1, page: 1 },
+      })),
+      staleTime: 1000 * 60 * 5,
+    })),
+  });
+
+  const brandCounts: Record<string, number> = {};
+  brands.forEach((brand, i) => {
+    brandCounts[brand.uuid] = (brandCountQueries[i]?.data as any)?.meta?.count ?? 0;
   });
 
   const filteredBrands = brands.filter((b) =>
@@ -71,7 +92,12 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange 
                       checked={selectedBrands.includes(brand.uuid)}
                       onChange={() => handleToggle(brand.uuid)}
                     />
-                    <span className={styles.checkboxLabel}>{brand.name}</span>
+                    <span className={styles.checkboxLabel}>
+                      {brand.name}
+                      {brandCounts[brand.uuid] > 0 && (
+                        <span className={styles.brandCount}>{brandCounts[brand.uuid]}</span>
+                      )}
+                    </span>
                   </label>
                 ))
               )}

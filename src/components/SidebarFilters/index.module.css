@@ -140,3 +140,10 @@
   font-size: 13px;
   color: #999;
 }
+
+.brandCount {
+  font-family: var(--font-inter);
+  font-size: 13px;
+  color: #aaa;
+  margin-left: 6px;
+}
