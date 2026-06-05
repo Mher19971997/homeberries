@@ -21,6 +21,12 @@ import {
 } from "@homeberris/assets/icons/order";
 import WiFiCard from "@homeberris/assets/icons/wifi";
 import MastercardIcon from "@homeberris/assets/icons/mastercard";
+import { useMutation, useQueryClient as useQC } from "@tanstack/react-query";
+import { useLoadScript } from "@react-google-maps/api";
+import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
+import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
+
+const GOOGLE_LIBRARIES: ("places")[] = ["places"];
 
 interface Address {
   uuid: string;
@@ -73,15 +79,138 @@ function StepIndicator({ current }: { current: number }) {
   );
 }
 
+function AddressForm({
+  initial,
+  token,
+  onSave,
+  onCancel,
+  isLoaded,
+}: {
+  initial?: { uuid: string; address: string; lat: string; lng: string };
+  token: string;
+  onSave: () => void;
+  onCancel: () => void;
+  isLoaded: boolean;
+}) {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    defaultValue: initial?.address || "",
+    initOnMount: isLoaded,
+  });
+
+  const [lat, setLat] = React.useState(initial?.lat || "");
+  const [lng, setLng] = React.useState(initial?.lng || "");
+  const [saving, setSaving] = React.useState(false);
+  const [showSuggestions, setShowSuggestions] = React.useState(false);
+
+  const qc = useQC();
+
+  const handleSelect = async (address: string) => {
+    setValue(address, false);
+    clearSuggestions();
+    setShowSuggestions(false);
+    try {
+      const results = await getGeocode({ address });
+      const coords = await getLatLng(results[0]);
+      setLat(String(coords.lat));
+      setLng(String(coords.lng));
+    } catch {}
+  };
+
+  const handleSave = async () => {
+    if (!value.trim()) return;
+    setSaving(true);
+    try {
+      const authToken = token || (typeof window !== 'undefined' ? (document.cookie.match(/token=([^;]+)/)?.[1] || '') : '');
+      if (initial?.uuid) {
+        await updateDeliveryAddress(initial.uuid, { address: value, lat, lng }, authToken);
+      } else {
+        await createDeliveryAddress({ address: value, lat, lng }, authToken);
+      }
+      qc.invalidateQueries({ queryKey: ["getDeliveryAddresses"] });
+      onSave();
+    } catch {} finally {
+      setSaving(false);
+    }
+  };
+
+  if (!isLoaded) return <p className={styles.addressLine}>Загрузка...</p>;
+
+  return (
+    <div className={styles.addressFormBox}>
+      <div style={{ position: "relative" }}>
+        <input
+          className={styles.addressInput}
+          value={value}
+          onChange={(e) => { setValue(e.target.value); setShowSuggestions(true); }}
+          onFocus={() => setShowSuggestions(true)}
+          disabled={!ready}
+          placeholder="Введите адрес..."
+        />
+        {showSuggestions && status === "OK" && (
+          <div className={styles.suggestionsList}>
+            {data.map(({ place_id, description }: any) => (
+              <div
+                key={place_id}
+                className={styles.suggestionItem}
+                onClick={() => handleSelect(description)}
+              >
+                {description}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className={styles.addressFormBtns}>
+        <button className={styles.btnBack} onClick={onCancel}>Отмена</button>
+        <button className={styles.btnNext} onClick={handleSave} disabled={saving || !value.trim()}>
+          {saving ? "Сохраняем..." : "Сохранить"}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function AddressStep({
   addresses,
   selected,
   onSelect,
+  token,
+  isLoaded,
 }: {
   addresses: Address[];
   selected: string;
   onSelect: (uuid: string) => void;
+  token: string;
+  isLoaded: boolean;
 }) {
+  const [showForm, setShowForm] = React.useState(false);
+  const [editAddr, setEditAddr] = React.useState<Address | null>(null);
+  const qc = useQC();
+
+  const handleDelete = async (uuid: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!confirm("Удалить адрес?")) return;
+    await deleteDeliveryAddress(uuid, token);
+    qc.invalidateQueries({ queryKey: ["getDeliveryAddresses"] });
+  };
+
+  const handleEdit = (addr: Address, e: React.MouseEvent) => {
+    e.preventDefault();
+    setEditAddr(addr);
+    setShowForm(true);
+  };
+
+  const handleFormClose = () => {
+    setShowForm(false);
+    setEditAddr(null);
+  };
+
   return (
     <div className={styles.stepContent}>
       <div className={styles.addressList}>
@@ -108,32 +237,15 @@ function AddressStep({
                 <span className={styles.addressTag}>{addr.tag}</span>
               </div>
               {addr.street.split("\n").map((line, i) => (
-                <p key={i} className={styles.addressLine}>
-                  {line}
-                </p>
+                <p key={i} className={styles.addressLine}>{line}</p>
               ))}
             </div>
             <div className={styles.addressActions}>
-              <button
-                className={styles.iconBtn}
-                title="Edit"
-                onClick={(e) => e.preventDefault()}
-              >
+              <button className={styles.iconBtn} title="Edit" onClick={(e) => handleEdit(addr, e)}>
                 <EditIcon />
               </button>
-              <button
-                className={styles.iconBtn}
-                title="Delete"
-                onClick={(e) => e.preventDefault()}
-              >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#000"
-                  strokeWidth="2"
-                >
+              <button className={styles.iconBtn} title="Delete" onClick={(e) => handleDelete(addr.uuid, e)}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -141,12 +253,21 @@ function AddressStep({
             </div>
           </label>
         ))}
-        <button className={styles.addAddressBtn}>
-          <span className={styles.addIcon}>
-            <AddAddressIcon />
-          </span>
-          Add New Address
-        </button>
+
+        {showForm ? (
+          <AddressForm
+            token={token}
+            initial={editAddr ? { uuid: editAddr.uuid, address: editAddr.street, lat: "", lng: "" } : undefined}
+            onSave={handleFormClose}
+            onCancel={handleFormClose}
+            isLoaded={isLoaded}
+          />
+        ) : (
+          <button className={styles.addAddressBtn} onClick={() => { setEditAddr(null); setShowForm(true); }}>
+            <span className={styles.addIcon}><AddAddressIcon /></span>
+            Add New Address
+          </button>
+        )}
       </div>
     </div>
   );
@@ -553,6 +674,11 @@ export default function CheckoutFlow() {
   const router = useRouter();
   const [cookies] = useCookies(["token"]);
   const isAuth = useAuth();
+
+  const { isLoaded: mapsLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyDL9J82iDhcUWdQiuIvBYa0t5asrtz3Swk",
+    libraries: GOOGLE_LIBRARIES,
+  });
   const { showToast } = useToast();
   const [step, setStep] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState("");
@@ -623,10 +749,10 @@ export default function CheckoutFlow() {
     }
     return deliveryAddresses.data.map((a: any) => ({
       uuid: a.uuid,
-      label: a.name ?? a.city ?? "Address",
-      tag: a.type ?? "HOME",
-      street: `${a.street ?? ""}, ${a.city ?? ""}, ${a.country ?? ""}\n${a.phone ?? ""}`,
-      phone: a.phone ?? "",
+      label: a.address?.split(',')?.[0]?.trim() || "Мой адрес",
+      tag: "HOME",
+      street: a.address ?? "",
+      phone: "",
     }));
   }, [deliveryAddresses]);
 
@@ -701,6 +827,8 @@ export default function CheckoutFlow() {
               addresses={addresses}
               selected={selectedAddress || "1"}
               onSelect={setSelectedAddress}
+              token={cookies.token}
+              isLoaded={mapsLoaded}
             />
           )}
           {step === 1 && (

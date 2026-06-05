@@ -1,387 +1,171 @@
-﻿import React, { useEffect } from 'react';
-import {
-  Box,
-  Avatar,
-  Card,
-  Grid,
-  Typography,
-  Button,
-  Badge,
-  IconButton,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
-import styles from '@homeberris/pages/profile/index.module.css';
-import { QueryClient, dehydrate, useQuery } from '@tanstack/react-query';
-import { getProfile } from '@homeberris/http/userApi';
-import { getTokenFromCookie } from '@homeberris/utils/auth';
-import { User } from '@homeberris/types/user';
+'use client';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-import StarIcon from '@mui/icons-material/Star';
-import CreditCardIcon from '@mui/icons-material/CreditCard';
-import SettingsIcon from '@mui/icons-material/Settings';
-import DevicesIcon from '@mui/icons-material/Devices';
-import BusinessIcon from '@mui/icons-material/Business';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import AssignmentReturnIcon from '@mui/icons-material/AssignmentReturn';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import * as qs from 'qs';
-import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
-import { TopNav } from '@homeberris/features/myorders/delivery';
+import { getProfile } from '@homeberris/http/userApi';
+import { getAllCatalogs } from '@homeberris/http/catalogApi';
+import { removeToken } from '@homeberris/utils/auth';
 import { useFavorites } from '@homeberris/context/favoritesContext';
-import { pluralizeItems } from '@homeberris/utils/formatPlural';
+import { User } from '@homeberris/types/user';
+import CatalogCard from '@homeberris/components/CatalogCard';
+import styles from '@homeberris/pages/profile/index.module.css';
+import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, Star, LogOut } from 'lucide-react';
+
+const MENU_ITEMS = [
+  { label: 'Мои заказы', icon: Package, path: '/myorders/delivery' },
+  { label: 'Избранное', icon: Heart, path: '/favorites' },
+  { label: 'Корзина', icon: ShoppingCart, path: '/basket' },
+  { label: 'Мои адреса', icon: MapPin, path: '/order' },
+];
+
+const SERVICE_ITEMS = [
+  { label: 'Написать в поддержку', icon: MessageCircle },
+  { label: 'Вернуть товар', icon: RotateCcw },
+  { label: 'Частые вопросы', icon: HelpCircle },
+];
+
+const buildCatalogUrl = (catalog: any) => {
+  const cat = catalog?.category?.name;
+  const sub = catalog?.subCategorie?.name;
+  if (cat && sub) return `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${catalog.uuid}`;
+  if (cat) return `/catalog/${encodeURIComponent(cat)}/${catalog.uuid}`;
+  return `/catalog`;
+};
 
 export default function Profile() {
   const [cookies] = useCookies(['token']);
   const router = useRouter();
-  const { items } = useFavorites();
+  const { items: favorites } = useFavorites();
 
-  // 🔐 Проверка токена
   useEffect(() => {
-    if (!cookies.token) {
-      router.replace('/security/login');
-    }
+    if (!cookies.token) router.replace('/security/login');
   }, [cookies.token, router]);
+
   const { data: user } = useQuery<User>({
     queryKey: ['getProfile'],
     queryFn: () => getProfile(cookies.token),
     enabled: !!cookies.token,
   });
 
-  // Получаем недавно просмотренные товары (заглушка)
   const { data: recentCatalogs } = useQuery({
     queryKey: ['recentCatalogs'],
     queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 } })),
     enabled: !!cookies.token,
   });
 
+  const handleLogout = () => {
+    removeToken();
+    router.push('/');
+  };
+
+  const userLetter = user?.email?.[0]?.toUpperCase() || 'U';
+  const userName = user?.email?.split('@')[0] || 'Пользователь';
+
   return (
-    <Box className={styles.body}>
-      {/* Top Navigation */}
-      <TopNav />
+    <div className={styles.page}>
+      <div className={styles.container}>
 
-      <Grid container spacing={3} className={styles.container}>
-        {/* Left Sidebar */}
-        <Grid item lg={3} md={4} xs={12}>
-          <Card className={styles.sidebarCard}>
-            {/* User Profile */}
-            <Box className={styles.userProfileSection}>
-              <Box display="flex" alignItems="center" gap={2} sx={{ mb: 2 }}>
-                <Avatar sx={{ width: 56, height: 56, bgcolor: '#667eea' }}>
-                  {user?.email?.[0]?.toUpperCase() || 'U'}
-                </Avatar>
-                <Box flex={1}>
-                  <Typography variant="h6" fontWeight={600}>
-                    {user?.email?.split('@')[0] || 'Пользователь'}
-                  </Typography>
-                </Box>
-                <Badge badgeContent={2} color="error">
-                  <IconButton size="small">
-                    <NotificationsNoneIcon />
-                  </IconButton>
-                </Badge>
-              </Box>
+        {/* Header */}
+        <div className={styles.header}>
+          <div className={styles.avatar}>{userLetter}</div>
+          <div className={styles.headerInfo}>
+            <p className={styles.userName}>{userName}</p>
+            <p className={styles.userEmail}>{user?.email}</p>
+          </div>
+          <button className={styles.logoutBtn} onClick={handleLogout}>
+            <LogOut size={16} strokeWidth={1.8} />
+            Выйти
+          </button>
+        </div>
 
-              {/* Info Cards */}
-              <Box display="flex" gap={1.5} sx={{ mb: 3 }}>
-                <Card className={styles.infoCard}>
-                  <Typography variant="caption" color="text.secondary">
-                    WB скидка
-                  </Typography>
-                  <Typography variant="h6" fontWeight={700} color="#667eea">
-                    до 40%
-                  </Typography>
-                </Card>
-                <Card className={styles.infoCard}>
-                  <Typography variant="caption" color="text.secondary">
-                    Оплата при получении
-                  </Typography>
-                  <Typography variant="h6" fontWeight={700} color="#667eea">
-                    до 196 000 ₽
-                  </Typography>
-                </Card>
-              </Box>
-            </Box>
+        {/* Stats */}
+        <div className={styles.stats}>
+          <div className={styles.statCard} onClick={() => router.push('/favorites')}>
+            <Heart size={28} strokeWidth={1.8} color="#111" />
+            <p className={styles.statValue}>{favorites.length}</p>
+            <p className={styles.statLabel}>Избранное</p>
+          </div>
+          <div className={styles.statCard} onClick={() => router.push('/myorders/delivery')}>
+            <Package size={28} strokeWidth={1.8} color="#111" />
+            <p className={styles.statValue}>—</p>
+            <p className={styles.statLabel}>Заказы</p>
+          </div>
+          <div className={styles.statCard} onClick={() => router.push('/basket')}>
+            <ShoppingCart size={28} strokeWidth={1.8} color="#111" />
+            <p className={styles.statValue}>—</p>
+            <p className={styles.statLabel}>Корзина</p>
+          </div>
+        </div>
 
-            <Divider sx={{ my: 2 }} />
+        <div className={styles.content}>
+          {/* Sidebar */}
+          <div className={styles.sidebar}>
+            <div className={styles.sidebarCard}>
+              <p className={styles.sidebarTitle}>Навигация</p>
+              {MENU_ITEMS.map((item) => (
+                <button key={item.label} className={styles.menuItem} onClick={() => router.push(item.path)}>
+                  <item.icon size={18} strokeWidth={1.8} color="#111" />
+                  <span className={styles.menuLabel}>{item.label}</span>
+                  <ChevronRight size={16} strokeWidth={1.8} color="#bbb" />
+                </button>
+              ))}
+            </div>
 
-            {/* Финансы */}
-            <Box className={styles.sidebarSection}>
-              <Typography variant="caption" className={styles.sectionTitle}>
-                Финансы
-              </Typography>
-              <List>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => router.push('/profile?tab=payment')}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'rgba(102, 126, 234, 0.08)',
-                      }
-                    }}
-                  >
-                    <ListItemIcon sx={{ color: '#242424', minWidth: 40 }}>
-                      <CreditCardIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Способы оплаты"
-                      primaryTypographyProps={{
-                        color: '#242424',
-                        fontSize: '14px'
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => router.push('/profile?tab=requisites')}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'rgba(102, 126, 234, 0.08)',
-                      }
-                    }}
-                  >
-                    <ListItemIcon sx={{ color: '#242424', minWidth: 40 }}>
-                      <CreditCardIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Реквизиты"
-                      primaryTypographyProps={{
-                        color: '#242424',
-                        fontSize: '14px'
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Box>
+            <div className={styles.sidebarCard}>
+              <p className={styles.sidebarTitle}>Сервис и помощь</p>
+              {SERVICE_ITEMS.map((item) => (
+                <button key={item.label} className={styles.menuItem}>
+                  <item.icon size={18} strokeWidth={1.8} color="#111" />
+                  <span className={styles.menuLabel}>{item.label}</span>
+                  <ChevronRight size={16} strokeWidth={1.8} color="#bbb" />
+                </button>
+              ))}
+            </div>
+          </div>
 
-            <Divider sx={{ my: 2 }} />
+          {/* Main */}
+          <div className={styles.main}>
+            <div className={styles.mainCard}>
+              <div className={styles.cardHeader}>
+                <p className={styles.cardTitle}>Недавно смотрели</p>
+                <button className={styles.seeAll} onClick={() => router.push('/catalog')}>Смотреть всё →</button>
+              </div>
+              {recentCatalogs?.data && recentCatalogs.data.length > 0 ? (
+                <div className={styles.catalogGrid}>
+                  {recentCatalogs.data.slice(0, 4).map((catalog: any) => (
+                    <div key={catalog.uuid} className={styles.catalogItem}>
+                      <CatalogCard
+                        catalog={catalog}
+                        onNavigate={() => router.push(buildCatalogUrl(catalog))}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className={styles.emptyText}>Вы ещё не просматривали товары</p>
+              )}
+            </div>
 
-            {/* Управление */}
-            <Box className={styles.sidebarSection}>
-              <Typography variant="caption" className={styles.sectionTitle}>
-                Управление
-              </Typography>
-              <List>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => router.push('/profile?tab=settings')}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'rgba(102, 126, 234, 0.08)',
-                      }
-                    }}
-                  >
-                    <ListItemIcon sx={{ color: '#242424', minWidth: 40 }}>
-                      <SettingsIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Настройки"
-                      primaryTypographyProps={{
-                        color: '#242424',
-                        fontSize: '14px'
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton
-                    onClick={() => router.push('/profile?tab=devices')}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'rgba(102, 126, 234, 0.08)',
-                      }
-                    }}
-                  >
-                    <ListItemIcon sx={{ color: '#242424', minWidth: 40 }}>
-                      <DevicesIcon />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary="Ваши устройства"
-                      primaryTypographyProps={{
-                        color: '#242424',
-                        fontSize: '14px'
-                      }}
-                    />
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </Box>
-
-            <Divider sx={{ my: 2 }} />
-
-            {/* Бизнес */}
-            <Box className={styles.sidebarSection}>
-              <Typography variant="caption" className={styles.sectionTitle}>
-                Бизнес
-              </Typography>
-              <Button
-                variant="contained"
-                fullWidth
-                startIcon={<BusinessIcon />}
-                className={styles.businessButton}
-                onClick={() => router.push('/profile?tab=business')}
-              >
-                Покупайте как бизнес
-              </Button>
-            </Box>
-          </Card>
-        </Grid>
-
-        {/* Main Content */}
-        <Grid item lg={9} md={8} xs={12}>
-          {/* WB Банк */}
-          <Card className={styles.mainCard}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Box>
-                <Typography variant="h3" fontWeight={700} sx={{ mb: 1 }}>
-                  0 ₽
-                </Typography>
-                <Typography variant="h6" color="text.secondary">
-                  WB Банк
-                </Typography>
-              </Box>
-              <Button
-                variant="contained"
-                className={styles.walletButton}
-                onClick={() => router.push('/profile?tab=bank')}
-              >
-                Открыть WB Кошелёк
-              </Button>
-            </Box>
-          </Card>
-
-          {/* Quick Stats */}
-          <Grid container spacing={2} sx={{ mt: 2 }}>
-            <Grid item xs={12} sm={4}>
-              <Card className={styles.statCard} onClick={() => router.push('/favorites')}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      Избранное
-                    </Typography>
-                    <Typography variant="h6" fontWeight={600}>
-                      {pluralizeItems(items.length)}
-                    </Typography>
-                  </Box>
-                  <FavoriteIcon sx={{ fontSize: 40, color: '#667eea' }} />
-                </Box>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Card className={styles.statCard} onClick={() => router.push('/profile?tab=purchases')}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      Покупки
-                    </Typography>
-                    <Typography variant="h6" fontWeight={600}>
-                      Смотреть
-                    </Typography>
-                  </Box>
-                  <ShoppingBagIcon sx={{ fontSize: 40, color: '#667eea' }} />
-                </Box>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Card className={styles.statCard} onClick={() => router.push('/profile?tab=ratings')}>
-                <Box display="flex" justifyContent="space-between" alignItems="center">
-                  <Box>
-                    <Typography variant="caption" color="text.secondary">
-                      Ждут оценки
-                    </Typography>
-                    <Typography variant="h6" fontWeight={600}>
-                      105 товаров
-                    </Typography>
-                  </Box>
-                  <StarIcon sx={{ fontSize: 40, color: '#667eea' }} />
-                </Box>
-              </Card>
-            </Grid>
-          </Grid>
-
-          {/* Сервис и помощь */}
-          <Card className={styles.mainCard} sx={{ mt: 2 }}>
-            <Typography variant="h6" fontWeight={600} sx={{ mb: 2 }}>
-              Сервис и помощь
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={4}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<ChatBubbleOutlineIcon />}
-                  className={styles.serviceButton}
-                  onClick={() => router.push('/profile?tab=support')}
-                >
-                  Написать в поддержку
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<AssignmentReturnIcon />}
-                  className={styles.serviceButton}
-                  onClick={() => router.push('/profile?tab=return')}
-                >
-                  Вернуть товар
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Button
-                  fullWidth
-                  variant="outlined"
-                  startIcon={<HelpOutlineIcon />}
-                  className={styles.serviceButton}
-                  onClick={() => router.push('/profile?tab=faq')}
-                >
-                  Частые вопросы
-                </Button>
-              </Grid>
-            </Grid>
-          </Card>
-
-          {/* Недавно смотрели */}
-          <Card className={styles.mainCard} sx={{ mt: 2 }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-              <Typography variant="h6" fontWeight={600}>
-                Недавно смотрели
-              </Typography>
-              <Button
-                variant="text"
-                endIcon={<ArrowForwardIosIcon />}
-                onClick={() => router.push('/profile?tab=recent')}
-              >
-                Все
-              </Button>
-            </Box>
-            {recentCatalogs?.data && recentCatalogs.data.length > 0 ? (
-              <Grid container spacing={2}>
-                {recentCatalogs.data.slice(0, 4).map((catalog: any) => (
-                  <FavoriteItem catalog={catalog} />
-                ))}
-              </Grid>
-            ) : (
-              <Typography color="text.secondary" textAlign="center" sx={{ py: 4 }}>
-                Вы еще не просматривали товары
-              </Typography>
-            )}
-          </Card>
-        </Grid>
-      </Grid>
-    </Box>
+            <div className={styles.mainCard}>
+              <div className={styles.cardHeader}>
+                <p className={styles.cardTitle}>Информация об аккаунте</p>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.infoLabel}>Email</span>
+                <span className={styles.infoValue}>{user?.email || '—'}</span>
+              </div>
+              <div className={styles.infoRow}>
+                <span className={styles.infoLabel}>Роль</span>
+                <span className={styles.infoValue}>
+                  {Array.isArray(user?.roles) ? user.roles.join(', ') : '—'}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
-

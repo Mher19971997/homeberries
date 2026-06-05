@@ -8,7 +8,7 @@ import { CatalogItem } from '@homeberris/types/catalog';
 import { insertBasket } from '@homeberris/http/basketApi';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
-import { checkToken } from '@homeberris/utils/auth';
+import { checkToken, getToken } from '@homeberris/utils/auth';
 import { addToBasket } from '@homeberris/utils/indexedDB';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import styles from './index.module.css';
@@ -28,7 +28,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   const isAuth = checkToken();
 
   const { mutate } = useMutation({
-    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid }, cookies.token),
+    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, getToken() || cookies.token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['basketCount'] });
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });

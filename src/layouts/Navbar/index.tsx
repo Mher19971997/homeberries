@@ -10,6 +10,7 @@ import { getBasketCount } from '@homeberris/utils/indexedDB';
 import qs from 'qs';
 import styles from './index.module.css';
 import { CartIcon, FavoriteIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
+import { getProfile } from '@homeberris/http/userApi';
 
 const Navbar = () => {
   const router = useRouter();
@@ -31,6 +32,14 @@ const Navbar = () => {
     window.addEventListener('openNavMenu', onOpenMenu);
     return () => window.removeEventListener('openNavMenu', onOpenMenu);
   }, []);
+
+  const { data: profile } = useQuery({
+    queryKey: ['getProfile', cookies.token],
+    queryFn: () => getProfile(cookies.token),
+    enabled: !!isAuth && !!cookies.token,
+  });
+
+  const userLetter = profile?.email ? profile.email[0].toUpperCase() : null;
 
   const { data: basket } = useQuery({
     queryKey: ['basketCount', cookies.token],
@@ -98,7 +107,11 @@ const Navbar = () => {
             </div>
           </button>
           <button className={styles.iconBtn} onClick={() => router.push(isAuth ? '/profile' : '/security/login')}>
-            <UserIcon />
+            {isAuth && userLetter ? (
+              <div className={styles.avatarCircle}>{userLetter}</div>
+            ) : (
+              <UserIcon />
+            )}
           </button>
         </div>
 
@@ -166,7 +179,11 @@ const Navbar = () => {
             <span className={styles.drawerIconLabel}>Корзина</span>
           </button>
           <button className={styles.drawerIconBtn} onClick={() => { router.push(isAuth ? '/profile' : '/security/login'); setMenuOpen(false); }}>
-            <UserIcon />
+            {isAuth && userLetter ? (
+              <div className={styles.avatarCircle}>{userLetter}</div>
+            ) : (
+              <UserIcon />
+            )}
             <span className={styles.drawerIconLabel}>{isAuth ? 'Профиль' : 'Войти'}</span>
           </button>
         </div>
