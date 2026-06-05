@@ -15,7 +15,7 @@
 
 .breadcrumbLink {
   text-decoration: none;
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;
@@ -28,7 +28,7 @@
 }
 
 .breadcrumbActive {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;
@@ -50,14 +50,14 @@
 
 .filterTitle {
   font-size: 24px;
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 600;
   color: #111111;
   margin: 0;
 }
 
 .count {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-size: 12px;
   line-height: 16px;
   color: #868695;

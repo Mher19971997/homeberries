@@ -1,6 +1,6 @@
 .section {
   width: 100%;
-  padding: 88px 0;
+  padding: 88px 16px;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -16,7 +16,7 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 48px;
 }
 
 .title {
@@ -31,7 +31,7 @@
 .ratingInner {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 60px;
 }
 
 .ratingLeft {
@@ -171,10 +171,10 @@
 }
 
 .reviewItem {
-  padding: 24px 16;
+  padding: 24px 28px 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   border-radius: 10px;
   background-color: #fafafa;
 }
@@ -188,7 +188,7 @@
 .reviewAuthor {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 19px;
 }
 
 .avatar {
@@ -243,6 +243,7 @@
   line-height: 24px;
   color: #797979;
   margin: 0;
+  padding-left: 75px;
 }
 
 .reviewImages {
@@ -306,7 +307,7 @@
 
 @media only screen and (max-width: 768px) {
   .section {
-    padding: 32px 16;
+    padding: 32px 16px;
     gap: 16px;
   }
   .ratingLeft {
@@ -357,7 +358,7 @@
 
 @media only screen and (max-width: 480px) {
   .section {
-    padding: 24px 16px;
+    padding: 24px 16px 77px 16px;
   }
 
   .ratingBlock,
@@ -397,7 +398,12 @@
 
   .viewMoreBtn {
     padding: 10px 32px;
-    font-size: 13px;
+    font-size: 14px;
+    border: 1px solid #545454;
+    max-width: 216px ;
+    width: 100%;
+    justify-content: center;
+    margin-top: unset;
   }
   .ordinaryClass {
     display: flex;
@@ -412,6 +418,17 @@
     line-height: 16px;
     letter-spacing: 0%;
     text-align: center;
-    color: #D9D9D9;
+    color: #d9d9d9;
+  }
+  .reviewHeader {
+    flex-direction: row;
+  }
+}
+@media (min-width: 320px) and (max-width: 375px) {
+  .reviewHeader {
+    flex-direction: column;
+  }
+  .reviewText{
+    padding-left: unset;
   }
 }

@@ -26,6 +26,12 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  React.useEffect(() => {
+    const onOpenMenu = () => setMenuOpen(true);
+    window.addEventListener('openNavMenu', onOpenMenu);
+    return () => window.removeEventListener('openNavMenu', onOpenMenu);
+  }, []);
+
   const { data: basket } = useQuery({
     queryKey: ['basketCount', cookies.token],
     queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),

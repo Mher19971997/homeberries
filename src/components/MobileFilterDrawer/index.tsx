@@ -85,7 +85,26 @@ export default function MobileFilterDrawer({
         onClick={onClose}
       />
       <div className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}>
-        {/* Header */}
+        {/* Navbar header */}
+        <div className={styles.navHeader}>
+          <span className={styles.navLogo} onClick={() => { onClose(); }}>cyber</span>
+          <button
+            className={styles.burgerBtn}
+            aria-label="open menu"
+            onClick={() => {
+              onClose();
+              window.dispatchEvent(new CustomEvent('openNavMenu'));
+            }}
+          >
+            <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="25" height="2.5" rx="1.25" fill="#080341"/>
+              <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341"/>
+              <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Filters header */}
         <div className={styles.header}>
           <button className={styles.backBtn} onClick={onClose}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -159,7 +178,7 @@ export default function MobileFilterDrawer({
                       '&:hover, &.Mui-focusVisible': { boxShadow: '0 0 0 6px rgba(0,0,0,0.1)' },
                     },
                     '& .MuiSlider-track': { height: 3, border: 'none' },
-                    '& .MuiSlider-rail': { height: 3, backgroundColor: '#e0e0e0' },
+                    '& .MuiSlider-rail': { height: 3, backgroundColor: '#CECECE' },
                   }}
                 />
               </div>

@@ -95,5 +95,6 @@
 @media (min-width: 320px) and (max-width: 375px) {
   .container {
     padding: unset;
+    padding-top: 24px;
   }
 }

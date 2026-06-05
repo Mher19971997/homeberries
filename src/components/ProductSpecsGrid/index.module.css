@@ -60,6 +60,7 @@
 @media (min-width: 320px) and (max-width: 375px) {
   .specsGrid{
     grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
   .specLabel{
     font-size: 12px;

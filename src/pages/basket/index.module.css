@@ -3,7 +3,7 @@
     gap: 48px;
     width: 100%;
     max-width: 1120px;
-    margin: 56px auto;
+    margin: 112px auto;
     padding: 0 16px;
     align-items: flex-start;
     box-sizing: border-box;
@@ -50,6 +50,7 @@
     gap: 0;
     box-sizing: border-box;
     width: 100%;
+    min-width: 536px;
 }
 
 .summaryTitle {
@@ -135,7 +136,7 @@
 .summaryRowsContainer {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
     margin-top: 8px;
     padding-top: 8px;
 }
@@ -222,7 +223,7 @@
     }
 
     .right {
-        width: 400px;
+        width: 100%;
     }
 }
 
@@ -260,6 +261,7 @@
 
     .summaryCard {
         padding: 32px 24px;
+        min-width: unset;
     }
 
     .checkoutBtn {
@@ -286,8 +288,9 @@
     }
 
     .summaryRowsContainer {
-        padding: 24px 16px;
+        padding: 0px 16px;
         border-radius: 8px;
+        gap: 20px;
     }
 
     .input,

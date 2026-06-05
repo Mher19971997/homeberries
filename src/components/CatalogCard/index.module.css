@@ -99,7 +99,7 @@
 
 /* ── Name ── */
 .name {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 500;
   font-size: 16px;
   line-height: 22px;
@@ -121,7 +121,7 @@
 
 /* ── Price ── */
 .price {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 600;
   font-size: 20px;
   line-height: 24px;
@@ -137,7 +137,7 @@
 
 /* ── Button ── */
 .buyBtn {
-  font-family: Inter, sans-serif;
+  font-family: var(--font-inter);
   font-weight: 500;
   font-size: 14px;
   line-height: 1;

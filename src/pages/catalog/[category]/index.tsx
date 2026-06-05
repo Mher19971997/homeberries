@@ -171,6 +171,9 @@ export default function CatalogPage() {
           </div>
 
           {/* Грид товаров */}
+          <div className={styles.productTotal}>
+            <p>Products Result : <span>85</span></p>
+          </div>
           <StaticProductCard catalogs={catalogs?.data || []} />
 
           {/* Пагинация */}
