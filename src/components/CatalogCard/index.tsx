@@ -74,6 +74,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
         open={openSuccess}
         handleClose={() => setOpenSuccess(false)}
         message="Added to basket"
+        productName={catalog?.name}
       />
 
       <div className={styles.inner}>

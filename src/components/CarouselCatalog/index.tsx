@@ -47,7 +47,14 @@ const CarouselCatalog: React.FC = () => {
                 <div className={styles.textBlock}>
                   {banner.subtitle && <span className={styles.proText}>{banner.subtitle}</span>}
                   <div className={styles.titleRow}>
-                    <span className={styles.titleLight}>{banner.title}</span>
+                    {banner.title.split(' ').slice(0, -1).join(' ') && (
+                      <span className={styles.titleLight}>
+                        {banner.title.split(' ').slice(0, -1).join(' ')}&nbsp;
+                      </span>
+                    )}
+                    <span className={styles.titleBold}>
+                      {banner.title.split(' ').slice(-1)[0]}
+                    </span>
                   </div>
                   {banner.description && (
                     <p className={styles.description}>{banner.description}</p>
