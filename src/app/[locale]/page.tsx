@@ -53,7 +53,7 @@ export default function Home() {
 
   const { data: discountData, isLoading: isDiscountLoading } = useQuery({
     queryKey: ['getDiscountCatalogs'],
-    queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4, page: 1 } })),
+    queryFn: () => getAllCatalogs(qs.stringify({ filterMeta: { isDiscount: true }, queryMeta: { paginate: true, limit: 4, page: 1 } })),
   });
 
   const catalogs: CatalogItem[] = (data?.data || []).slice(0, 8);

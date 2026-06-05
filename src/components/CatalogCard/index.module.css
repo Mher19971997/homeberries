@@ -119,6 +119,35 @@
   overflow: hidden;
 }
 
+/* ── Discount ── */
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.priceOld {
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-weight: 400;
+  color: #aaa;
+  text-decoration: line-through;
+  margin: 0;
+}
+
+.discountBadge {
+  display: inline-block;
+  background: #e53935;
+  color: #fff;
+  font-family: var(--font-inter);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
 /* ── Price ── */
 .price {
   font-family: var(--font-inter);

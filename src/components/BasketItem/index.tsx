@@ -12,7 +12,10 @@ interface Props {
 }
 
 export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props) {
-  const price = Number(basket?.catalog?.price) || 0;
+  const originalPrice = Number(basket?.catalog?.price) || 0;
+  const discount = (basket?.catalog as any)?.discountPercent || 0;
+  const isDiscount = (basket?.catalog as any)?.isDiscount && discount > 0;
+  const price = isDiscount ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
   const quantity = basket.quantity || 1;
 
   const formatPrice = (p: number) =>
@@ -56,7 +59,12 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
             +
           </button>
         </div>
-        <p className={styles.price}>{formatPrice(price)}</p>
+        <div>
+          {isDiscount && (
+            <p className={styles.priceOld}>{formatPrice(originalPrice)}</p>
+          )}
+          <p className={styles.price}>{formatPrice(price)}</p>
+        </div>
         <button
           className={styles.removeBtn}
           onClick={() => basket.uuid && onRemove?.(basket.uuid)}

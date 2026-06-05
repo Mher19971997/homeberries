@@ -110,7 +110,16 @@
     font-weight: 500;
     color: #000;
     margin: 0;
-    /* min-width: 80px; */
+    text-align: right;
+}
+
+.priceOld {
+    font-family: var(--font-inter);
+    font-size: 13px;
+    font-weight: 400;
+    color: #aaa;
+    text-decoration: line-through;
+    margin: 0;
     text-align: right;
 }
 

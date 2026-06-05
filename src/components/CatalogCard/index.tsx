@@ -97,7 +97,17 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
 
         <div className={styles.body}>
           <p className={styles.name}>{catalog?.name}</p>
-          <p className={styles.price}>{formatPrice(catalog?.price)}</p>
+          {catalog?.isDiscount && catalog?.discountPercent > 0 ? (
+            <div className={styles.priceBlock}>
+              <p className={styles.priceOld}>{formatPrice(catalog?.price)}</p>
+              <p className={styles.price}>
+                {formatPrice(Math.round(Number(catalog.price) * (1 - catalog.discountPercent / 100)))}
+              </p>
+              <span className={styles.discountBadge}>-{catalog.discountPercent}%</span>
+            </div>
+          ) : (
+            <p className={styles.price}>{formatPrice(catalog?.price)}</p>
+          )}
           <button className={styles.buyBtn} onClick={handleAddToBasket}>
             Buy Now
           </button>
