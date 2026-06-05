@@ -319,7 +319,6 @@
   gap: 24px;
   width: 100%;
   margin-top: 12px;
-  
 }
 
 .addressDetails {
@@ -448,7 +447,6 @@
 .paymentPanel .btnBack {
   flex: 1;
   max-width: 244px;
-
 }
 
 .paymentSection {
@@ -498,21 +496,22 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .cardVisual::before {
   content: "";
   position: absolute;
   top: -60%;
-  left: 36%;
-  width: 48px;
+  left: 48%;
+  width: 30px;
   height: 220%;
-  background: linear-gradient(
+  background-color: #2c2c2ca8;
+  /* background: linear-gradient(
     to right,
     rgba(255, 255, 255, 0.08),
     rgba(255, 255, 255, 0.03)
-  );
+  ); */
   transform: rotate(28deg);
   pointer-events: none;
   z-index: 1;
@@ -522,10 +521,11 @@
   content: "";
   position: absolute;
   top: -60%;
-  left: 54%;
-  width: 18px;
+  left: 63%;
+  width: 30px;
   height: 220%;
-  background: rgba(255, 255, 255, 0.04);
+  background-color: #2C2C2CA8;
+  /* background: rgba(255, 255, 255, 0.04); */
   transform: rotate(28deg);
   pointer-events: none;
   z-index: 1;
@@ -603,14 +603,19 @@
   font-weight: 500;
   letter-spacing: 0.06em;
   word-spacing: 0.28em;
-  margin-bottom: 24px;
+  margin-top: 24px;
   font-family: var(--font-inter);
   position: relative;
   z-index: 2;
   color: #ffffff;
 }
-
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .cardHolder {
+  align-self: center;
   font-size: 13px;
   color: #7c7c7c;
   font-weight: 400;
@@ -813,7 +818,7 @@
   .stepLine {
     margin: 0 12px;
   }
-  .paymentPanel{
+  .paymentPanel {
     width: 100%;
   }
   .paymentLayout {
@@ -831,19 +836,20 @@
 }
 
 @media (max-width: 600px) {
-  .shipmentCardSelected .shipmentLabel,.shipmentDesc {
+  .shipmentCardSelected .shipmentLabel,
+  .shipmentDesc {
     font-size: 16px;
   }
-  .checkoutBody{
+  .checkoutBody {
     margin-bottom: unset;
   }
-  .shipmentList{
+  .shipmentList {
     margin-bottom: 24px;
   }
-  .shipmentList{
+  .shipmentList {
     gap: 16px;
   }
-  .shipmentLabel{
+  .shipmentLabel {
     font-size: 16px;
   }
   .stepIndicator .step {
@@ -943,7 +949,7 @@
     padding: 16px;
     margin-bottom: 40px;
   }
-  .paymentForm{
+  .paymentForm {
     margin-bottom: 48px;
   }
   .cardNumber {
