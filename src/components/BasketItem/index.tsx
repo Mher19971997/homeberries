@@ -21,12 +21,33 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
   const formatPrice = (p: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(p);
 
+  const [inputValue, setInputValue] = React.useState(String(quantity));
+
+  React.useEffect(() => { setInputValue(String(quantity)); }, [quantity]);
+
   const handleDecrease = () => {
     if (quantity > 1) onUpdateQuantity?.(basket.uuid!, quantity - 1);
   };
 
   const handleIncrease = () => {
     onUpdateQuantity?.(basket.uuid!, quantity + 1);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleInputCommit = () => {
+    const num = parseInt(inputValue);
+    if (!isNaN(num) && num > 0) {
+      onUpdateQuantity?.(basket.uuid!, num);
+    } else {
+      setInputValue(String(quantity));
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleInputCommit();
   };
 
   const images =
@@ -54,7 +75,15 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
           <button className={styles.qtyBtn} onClick={handleDecrease}>
             −
           </button>
-          <span className={styles.qtyValue}>{quantity}</span>
+          <input
+            className={styles.qtyValue}
+            type="number"
+            min={1}
+            value={inputValue}
+            onChange={handleInputChange}
+            onBlur={handleInputCommit}
+            onKeyDown={handleKeyDown}
+          />
           <button className={styles.qtyBtn} onClick={handleIncrease}>
             +
           </button>

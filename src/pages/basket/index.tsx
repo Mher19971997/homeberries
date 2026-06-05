@@ -1,5 +1,7 @@
 ﻿import React from 'react';
 import styles from '@homeberris/pages/basket/index.module.css';
+import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
+import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
 import BasketItem from '@homeberris/components/BasketItem';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -30,6 +32,8 @@ export default function BasketPage() {
 
   const [localBaskets, setLocalBaskets] = React.useState<any[]>([]);
   const [showPaymentModal, setShowPaymentModal] = React.useState(false);
+  const [basketPage, setBasketPage] = React.useState(1);
+  const BASKET_LIMIT = 3;
   const [promoCode, setPromoCode] = React.useState('');
   const [bonusCard, setBonusCard] = React.useState('');
 
@@ -53,6 +57,10 @@ export default function BasketPage() {
   const currentBaskets = isAuth
     ? baskets
     : { data: localBaskets, meta: { count: localBaskets.length } };
+
+  const allBasketItems = currentBaskets?.data || [];
+  const totalBasketPages = Math.max(1, Math.ceil(allBasketItems.length / BASKET_LIMIT));
+  const pagedBasketItems = allBasketItems.slice((basketPage - 1) * BASKET_LIMIT, basketPage * BASKET_LIMIT);
 
   const TAX_RATE = 0.021; // ~$50 on $2347
   const SHIPPING = 29;
@@ -100,8 +108,8 @@ export default function BasketPage() {
         <h1 className={styles.title}>Shopping Cart</h1>
 
         <div className={styles.itemsList}>
-          {currentBaskets?.data && currentBaskets.data.length > 0 ? (
-            currentBaskets.data.map((basket: BasketDataItem, index: number) => (
+          {allBasketItems.length > 0 ? (
+            pagedBasketItems.map((basket: BasketDataItem, index: number) => (
               <BasketItem
                 key={basket.uuid || index}
                 basket={basket}
@@ -124,6 +132,34 @@ export default function BasketPage() {
             <p className={styles.emptyText}>Your cart is empty.</p>
           )}
         </div>
+
+        {totalBasketPages > 1 && (
+          <div className={paginationStyles.pagination}>
+            <button
+              className={paginationStyles.pageBtn}
+              onClick={() => setBasketPage(p => Math.max(1, p - 1))}
+              disabled={basketPage === 1}
+            >
+              <PaginationLeft />
+            </button>
+            {Array.from({ length: totalBasketPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                className={`${paginationStyles.pageBtn} ${basketPage === page ? paginationStyles.pageBtnActive : ''}`}
+                onClick={() => setBasketPage(page)}
+              >
+                {page}
+              </button>
+            ))}
+            <button
+              className={paginationStyles.pageBtn}
+              onClick={() => setBasketPage(p => Math.min(totalBasketPages, p + 1))}
+              disabled={basketPage === totalBasketPages}
+            >
+              <PaginationRight />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className={styles.right}>

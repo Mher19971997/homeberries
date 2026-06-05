@@ -102,6 +102,18 @@
     font-weight: 500;
     font-family: var(--font-inter);
     color: #000;
+    text-align: center;
+    outline: none;
+}
+
+.qtyValue::-webkit-outer-spin-button,
+.qtyValue::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.qtyValue[type=number] {
+    -moz-appearance: textfield;
 }
 
 .price {
