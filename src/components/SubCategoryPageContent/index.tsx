@@ -382,7 +382,6 @@ export default function SubCategoryPageContent({
             >
               <Box className={styles.cardWrapper}>
                 <CatalogCard
-                  catalogsPage={true}
                   sortPanelOne={sortPanelOne}
                   catalog={catalog}
                   onNavigate={() =>

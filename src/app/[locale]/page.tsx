@@ -139,7 +139,7 @@ export default function Home() {
             borderBottom: activeTab === 'new' ? '2px solid #000000' : '2px solid transparent',
           }}
         >
-          New Arrival
+          {t('home.tabs.new')}
         </span>
         <span
           onClick={() => setActiveTab('bestseller')}
@@ -150,7 +150,7 @@ export default function Home() {
             borderBottom: activeTab === 'bestseller' ? '2px solid #000000' : '2px solid transparent',
           }}
         >
-          Bestseller
+          {t('home.tabs.bestseller')}
         </span>
         <span
           onClick={() => setActiveTab('featured')}
@@ -161,7 +161,7 @@ export default function Home() {
             borderBottom: activeTab === 'featured' ? '2px solid #000000' : '2px solid transparent',
           }}
         >
-          Featured Products
+          {t('home.tabs.featured')}
         </span>
       </div>
 
@@ -199,7 +199,7 @@ export default function Home() {
             textAlign: 'left',
           }}
         >
-          Discounts up to -50%
+          {t('home.discountsTitle')}
         </p>
 
         {isDiscountLoading ? (

@@ -4,13 +4,11 @@ import { initReactI18next } from 'react-i18next';
 import ruCommon from '../../public/locales/ru/common.json';
 import enCommon from '../../public/locales/en/common.json';
 import hyCommon from '../../public/locales/hy/common.json';
-import deCommon from '../../public/locales/de/common.json';
 
 const resources = {
   ru: { common: ruCommon },
   en: { common: enCommon },
   hy: { common: hyCommon },
-  de: { common: deCommon },
 };
 
 if (!i18n.isInitialized) {
@@ -20,7 +18,7 @@ if (!i18n.isInitialized) {
       resources,
       lng: 'ru',
       fallbackLng: 'ru',
-      supportedLngs: ['ru', 'en', 'hy', 'de'],
+      supportedLngs: ['ru', 'en', 'hy'],
       defaultNS: 'common',
       ns: ['common'],
       interpolation: { escapeValue: false },

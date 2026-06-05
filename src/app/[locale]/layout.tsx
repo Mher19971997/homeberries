@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: 'Cyber - Премиальный интернет-магазин',
 };
 
-const locales = ['ru', 'en', 'hy', 'de'];
+const locales = ['ru', 'en', 'hy'];
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

@@ -1,43 +1,67 @@
+'use client';
+
 import * as React from 'react';
 import Popover from '@mui/material/Popover';
-import Typography from '@mui/material/Typography';
 import SelectLanguageItem from '../SelectLanguageItem';
 import styles from '@homeberris/components/SelectLanguageInPopover/index.module.css';
-import { Box, Divider } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { Box } from '@mui/material';
+import { useEffect } from 'react';
 import { useRouter, useParams, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
-interface SelectLanguageInPopoverProps { }
+interface SelectLanguageInPopoverProps {
+  children?: React.ReactNode;
+}
 
 interface SelectlanguageItem {
   id: number;
-  currency: string;
   flagIconName: string;
-  description: string;
   language: string;
   locale: string;
 }
 
-const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
-  props
-) => {
-  const { } = props as SelectLanguageInPopoverProps;
+const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = ({
+  children,
+}) => {
   const router = useRouter();
   const params = useParams();
   const pathname = usePathname();
+
   const currentLocale = (params?.locale as string) ?? 'ru';
   const { t } = useTranslation('common');
-  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
- const languages: SelectlanguageItem[] = [
-  { id: 1, currency: 'RUB', flagIconName: 'fi-ru', description: `${t('language.rubDescription')}`, language: 'Русский', locale: 'ru' },
-  { id: 2, currency: 'USD', flagIconName: 'fi-us', description: `${t('language.usdDescription')}`, language: 'English', locale: 'en' },
-  { id: 3, currency: 'AMD', flagIconName: 'fi-am', description: `${t('language.amdDescription')}`, language: 'Հայերեն', locale: 'hy' },
-  { id: 4, currency: 'EUR', flagIconName: 'fi-eu', description: `${t('language.eurDescription')}`, language: 'Deutsch', locale: 'de' },
-]; 
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [storedLocale, setStoredLocale] = React.useState<string | null>(null);
+
+  const languages: SelectlanguageItem[] = [
+    { id: 1, flagIconName: 'fi-ru', language: 'Русский', locale: 'ru' },
+    { id: 2, flagIconName: 'fi-us', language: 'English', locale: 'en' },
+    { id: 3, flagIconName: 'fi-am', language: 'Հայերեն', locale: 'hy' },
+  ];
+
+  // ===== LOAD FROM LOCALSTORAGE =====
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const saved = localStorage.getItem('selectedLocale');
+    if (saved) {
+      setStoredLocale(saved);
+
+      // если отличается от URL — можно синхронизировать
+      if (saved !== currentLocale) {
+        const newPath =
+          pathname?.replace(`/${currentLocale}`, `/${saved}`) ??
+          `/${saved}`;
+
+        router.push(newPath);
+      }
+    }
+  }, []);
+
+  const activeLocale = storedLocale ?? currentLocale;
+
   const currentLanguage =
-    languages.find((l) => l.locale === currentLocale) ?? languages[0];
+    languages.find((l) => l.locale === activeLocale) ?? languages[0];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -47,8 +71,17 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
     setAnchorEl(null);
   };
 
+  // ===== SELECT LANGUAGE =====
   const handleLanguageSelect = (option: SelectlanguageItem) => {
-    const newPath = pathname?.replace(`/${currentLocale}`, `/${option.locale}`) ?? `/${option.locale}`;
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selectedLocale', option.locale);
+      setStoredLocale(option.locale);
+    }
+
+    const newPath =
+      pathname?.replace(`/${currentLocale}`, `/${option.locale}`) ??
+      `/${option.locale}`;
+
     router.push(newPath);
     handleClose();
   };
@@ -58,25 +91,36 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
 
   useEffect(() => {
     if (!open) return;
+
     const handleScroll = () => handleClose();
     window.addEventListener('scroll', handleScroll, { passive: true });
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, [open]);
 
   return (
     <Box>
-      <Box
-        className={styles.trigger}
-        onClick={handleClick}
-        aria-describedby={id}
-        component="button"
-        sx={{ background: 'transparent', border: 'none', p: 0, m: 0, cursor: 'pointer' }}
-      >
-        <span className={`fi ${currentLanguage.flagIconName} ${styles.flagIcon}`}></span>
-        <Typography className={styles.currencyText}>
-          {currentLanguage.currency}
-        </Typography>
-      </Box>
+      {children ? (
+        <Box
+          component="span"
+          onClick={handleClick}
+          aria-describedby={id}
+          sx={{ display: 'inline-flex', alignItems: 'center', cursor: 'pointer' }}
+        >
+          {children}
+        </Box>
+      ) : (
+        <Box
+          className={styles.trigger}
+          onClick={handleClick}
+          aria-describedby={id}
+          component="button"
+          sx={{ background: 'transparent', border: 'none', p: 0, m: 0, cursor: 'pointer' }}
+        >
+          <span className={`fi ${currentLanguage.flagIconName} ${styles.flagIcon}`} />
+        </Box>
+      )}
+
       <Popover
         id={id}
         open={open}
@@ -84,27 +128,16 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
         onClose={handleClose}
         disableScrollLock
         transitionDuration={0}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left'
-        }}
-        PaperProps={{
-          className: styles.popoverPaper
-        }}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+        PaperProps={{ className: styles.popoverPaper }}
       >
         <Box className={styles.popover}>
-          {/* <Typography className={styles.title}>Выберите валюту и язык</Typography> */}
-          <Typography className={styles.title}>{t('language.selectTitle')}</Typography>
-          <Divider sx={{ my: 1.5 }} />
           <Box className={styles.languagesList}>
-            {languages.map((language: SelectlanguageItem) => (
+            {languages.map((language) => (
               <SelectLanguageItem
-                {...language}
                 key={language.id}
+                {...language}
                 isSelected={currentLanguage.locale === language.locale}
                 onSelect={() => handleLanguageSelect(language)}
               />
@@ -117,8 +150,6 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = (
 };
 
 export default SelectLanguageInPopover;
-
-
 
 
 

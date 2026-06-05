@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const locales = ['ru', 'en', 'hy', 'de'];
+const locales = ['ru', 'en', 'hy'];
 const defaultLocale = 'ru';
 
 // UUID pattern

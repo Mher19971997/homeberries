@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,6 +11,7 @@ const inter = Inter({
 });
 
 const SmallerBanners: React.FC = () => {
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   return (
@@ -94,7 +96,7 @@ const SmallerBanners: React.FC = () => {
               className={styles.shopBtn}
               onClick={() => router.push('/catalog')}
             >
-              Shop Now
+              {t('home.shopNow')}
             </button>
           </div>
 

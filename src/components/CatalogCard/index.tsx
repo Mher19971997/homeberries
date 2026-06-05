@@ -13,6 +13,7 @@ import { addToBasket } from '@homeberris/utils/indexedDB';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import styles from './index.module.css';
 import { HeartFilledIcon, HeartIcon } from '@homeberris/assets/icons/catalog';
+import { useTranslation } from 'react-i18next';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -21,6 +22,7 @@ interface CatalogCardProps {
 }
 
 const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
+  const { t } = useTranslation('common');
   const queryClient = useQueryClient();
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [cookies] = useCookies(['token']);
@@ -109,7 +111,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
             <p className={styles.price}>{formatPrice(catalog?.price)}</p>
           )}
           <button className={styles.buyBtn} onClick={handleAddToBasket}>
-            Buy Now
+            {t('home.buyNow')}
           </button>
         </div>
       </div>

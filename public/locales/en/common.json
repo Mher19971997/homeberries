@@ -1,124 +1,61 @@
 {
   "nav": {
     "home": "Home",
-    "catalog": "Catalog",
-    "basket": "Cart",
-    "favorites": "Favorites",
-    "orders": "My Orders",
-    "profile": "Profile",
-    "delivery": "Delivery",
-    "addresses": "Addresses",
-    "aiAssistant": "AI Assistant",
-    "login": "Sign In"
+    "about": "About",
+    "contact": "Contact Us",
+    "blog": "Blog",
+    "search": "Search"
   },
-  "language": {
-    "selectTitle": "Select Currency and Language",
-    "rubDescription": "Russian Ruble",
-    "usdDescription": "US Dollar",
-    "amdDescription": "Armenian Dram",
-    "eurDescription": "Euro"
-  },
-  "tabs": {
-    "products": "Products"
-  },
-  "search": {
-    "placeholder": "Search...",
-    "placeholderSpecific": "Search on STYLEBOX",
-    "photoTitle": "Search by Photo",
-    "photo": {
-      "title": "Search by Photo",
-      "uploadText": "Upload an image to search",
-      "chooseFile": "Choose file",
-      "chooseAnother": "Choose another",
-      "searchButton": "Search"
-    }
-  },
-  "carousel": {
-    "banners": {
-      "1": {
-        "title": "New Collection 2024",
-        "subtitle": "Up to 50% off on all items",
-        "button": "View Catalog"
-      },
-      "2": {
-        "title": "Discounted Electronics",
-        "subtitle": "Best prices on Apple products",
-        "button": "Shop Now"
-      },
-      "3": {
-        "title": "Fashion Clothing",
-        "subtitle": "New season arrivals are here",
-        "button": "Choose Outfit"
-      }
-    }
-  },
-  "product": {
-    "addToCart": "Add to cart",
-    "buyNow": "Buy now",
-    "inStock": "In stock",
-    "outOfStock": "Out of stock"
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "Error",
-    "save": "Save",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "edit": "Edit",
-    "selectPickupPoint": "Select pickup point"
-  },
-  "address": {
-    "default": "Default",
-    "noSaved": "No saved addresses",
-    "addNew": "Add new address",
-    "deliveryMethod": "Delivery method",
-    "select": "Select"
+  "categories": {
+    "title": "Browse By Category",
+    "phones": "Phones",
+    "smartWatches": "Smart Watches",
+    "cameras": "Cameras",
+    "headphones": "Headphones",
+    "computers": "Computers",
+    "gaming": "Gaming"
   },
   "catalog": {
-    "title": {
-      "fallback": "You might like this"
-    },
-    "loading": "Loading products...",
-    "loadingMore": "Loading more products...",
+    "loading": "Loading...",
     "empty": "No products found"
   },
-  "card": {
-    "walletInfo": "with WB Wallet",
-    "rating": {
-      "reviews": {
-        "1": "review",
-        "few": "reviews",
-        "many": "reviews"
-      }
+  "home": {
+    "tabs": {
+      "new": "New Arrival",
+      "bestseller": "Bestseller",
+      "featured": "Featured Products"
     },
-    "basket": {
-      "added": "added to cart"
+    "buyNow": "Buy now",
+    "shopNow": "Shop now",
+    "discountsTitle": "Discounts up to -50%",
+    "bigSummerSale": {
+      "titleThin": "Big Summer",
+      "titleBold": "Sale",
+      "subtitle": "Commodo fames vitae vitae leo mauris in. Eu consequat."
     }
   },
-  "aiAssistant": {
-    "title": "AI Assistant",
-    "status": {
-      "connected": "Connected",
-      "disconnected": "Disconnected"
+  "footer": {
+    "brand": {
+      "description": "We are a residential interior design firm located in Portland. Our boutique-studio offers more than"
     },
-    "chat": {
-      "placeholder": "Type a message or use voice input..."
+    "services": {
+      "title": "Services",
+      "bonusProgram": "Bonus program",
+      "giftCards": "Gift cards",
+      "creditPayment": "Credit and payment",
+      "serviceContracts": "Service contracts",
+      "nonCashAccount": "Non-cash account",
+      "payment": "Payment"
     },
-    "voice": {
-      "speaking": "Speaking...",
-      "on": "Enable voice",
-      "off": "Disable voice"
-    },
-    "catalog": {
-      "recommended": "Recommended products:"
+    "buyerHelp": {
+      "title": "Assistance to the buyer",
+      "findOrder": "Find an order",
+      "deliveryTerms": "Terms of delivery",
+      "exchangeReturn": "Exchange and return of goods",
+      "guarantee": "Guarantee",
+      "faq": "Frequently asked questions",
+      "termsOfUse": "Terms of use of the site"
     }
-  },
-  "addresses": {
-    "title": "Company store locations",
-    "listTitle": "Store locations",
-    "back": "← Back to list",
-    "company": "Company",
-    "button": "Go to company catalog"
   },
   "favorites": {
     "breadcrumb": {
@@ -129,48 +66,78 @@
       "title": "Favorites"
     }
   },
+  "catalogFavorites": {
+    "home": "Home",
+    "category": "Category",
+    "products": "products",
+    "allFilters": "All filters",
+    "noProductsTitle": "No products in this subcategory yet",
+    "noProductsDesc": "We are working on expanding the assortment. Please check back later!",
+    "backToCategory": "Back to category \"{{name}}\"",
+    "categories": "Categories"
+  },
   "basket": {
-    "title": "Basket",
-    "myData": "My data",
-    "paymentMethod": "Payment method",
-    "total": "Total",
-    "empty": "Basket is empty",
-    "emptyAuthHint": "Log in to save your basket",
-    "selectPayment": "Select payment method",
-    "order": "Place order",
-    "orderMobile": "checkout",
-    "product_one": "item",
-    "product_few": "items",
-    "product_many": "items",
-    "payment": {
-      "selectMethod": "Select payment method",
-      "title": "Order payment",
-      "noAmount": "Payment amount is not specified",
-      "secureInfo": "Your card data is securely protected by Stripe"
-    },
-    "delivery": {
-      "title": "Delivery to pickup point"
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty.",
+    "summary": {
+      "title": "Order Summary",
+      "promoLabel": "Discount code / Promo code",
+      "promoPlaceholder": "Code",
+      "bonusLabel": "Your bonus card number",
+      "bonusPlaceholder": "Enter Card Number",
+      "apply": "Apply",
+      "subtotal": "Subtotal",
+      "tax": "Estimated Tax",
+      "shipping": "Estimated shipping & Handling",
+      "total": "Total",
+      "checkout": "Checkout"
     }
   },
-  "profile": {
-    "discount": "WB discount",
-    "paymentOnDelivery": "Cash on delivery",
-    "upTo": "up to",
-    "logout": "Log out",
-    "menu": {
-      "purchases": "Purchases",
-      "favorites": "Favorites",
-      "brands": "Favorite brands",
-      "orders": "Orders",
-      "certificates": "Your certificates",
-      "wallet": "WB Bank",
-      "paymentMethods": "Payment methods"
+  "checkout": {
+    "steps": {
+      "address": "Address",
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "step": "Step"
     },
-    "chat": {
-      "title": "Chats",
-      "description": "With support, sellers and couriers",
-      "reviews": "Reviews & questions",
-      "business": "Shop as a business"
+    "address": {
+      "title": "Select Address",
+      "addNew": "Add New Address",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "shipping": {
+      "title": "Shipping Method",
+      "free": "Free",
+      "fastPrice": "$8.50",
+      "schedule": "Schedule",
+      "regularlyShipment": "Regular delivery",
+      "descriptionFree": "Regular delivery",
+      "descriptionFast": "Get your delivery as soon as possible",
+      "descriptionSchedule": "Pick a date when you want to get your delivery",
+      "date" : "Select Date"
+    },
+    "payment": {
+      "title": "Payment",
+      "summary": "Summary",
+      "address": "Address",
+      "shipmentMethod": "Shipment method",
+      "subtotal": "Subtotal",
+      "tax": "Estimated Tax",
+      "estimated": "Estimated shipping & Handling",
+      "shipping": "Shipping & Handling",
+      "total": "Total",
+      "cardholder": "Cardholder Name",
+      "cardNumber": "Card Number",
+      "expDate": "Exp. Date",
+      "cvv": "CVV",
+      "sameAsBilling": "Same as billing address",
+      "back": "Back",
+      "pay": "Pay"
+    },
+    "buttons": {
+      "next": "Next",
+      "back": "Back"
     }
   }
 }

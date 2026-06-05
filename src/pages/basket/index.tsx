@@ -105,7 +105,7 @@ export default function BasketPage() {
     <>
     <div className={styles.page}>
       <div className={styles.left}>
-        <h1 className={styles.title}>Shopping Cart</h1>
+        <h1 className={styles.title}>{t('basket.title')}</h1>
 
         <div className={styles.itemsList}>
           {allBasketItems.length > 0 ? (
@@ -129,7 +129,7 @@ export default function BasketPage() {
               />
             ))
           ) : (
-            <p className={styles.emptyText}>Your cart is empty.</p>
+            <p className={styles.emptyText}>{t('basket.empty')}</p>
           )}
         </div>
 
@@ -164,53 +164,53 @@ export default function BasketPage() {
 
       <div className={styles.right}>
         <div className={styles.summaryCard}>
-          <h2 className={styles.summaryTitle}>Order Summary</h2>
+          <h2 className={styles.summaryTitle}>{t('basket.summary.title')}</h2>
 
           <div className={styles.field}>
-            <label className={styles.fieldLabel}>Discount code / Promo code</label>
+            <label className={styles.fieldLabel}>{t('basket.summary.promoLabel')}</label>
             <input
               className={styles.input}
-              placeholder="Code"
+              placeholder={t('basket.summary.promoPlaceholder')}
               value={promoCode}
               onChange={(e) => setPromoCode(e.target.value)}
             />
           </div>
 
           <div className={styles.field}>
-            <label className={styles.fieldLabel}>Your bonus card number</label>
+            <label className={styles.fieldLabel}>{t('basket.summary.bonusLabel')}</label>
             <div className={styles.inputWrapper}>
               <input
                 className={styles.inputWithBtn}
-                placeholder="Enter Card Number"
+                placeholder={t('basket.summary.bonusPlaceholder')}
                 value={bonusCard}
                 onChange={(e) => setBonusCard(e.target.value)}
               />
-              <button className={styles.applyBtn}>Apply</button>
+              <button className={styles.applyBtn}>{t('basket.summary.apply')}</button>
             </div>
           </div>
 
           <div className={styles.summaryRowsContainer}>
             <div className={styles.summaryRow}>
-              <span className={styles.rowLabelBold}>Subtotal</span>
+              <span className={styles.rowLabelBold}>{t('basket.summary.subtotal')}</span>
               <span className={styles.bold}>{formatPrice(subtotal)}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span className={styles.rowLabelValue}>Estimated Tax</span>
+              <span className={styles.rowLabelValue}>{t('basket.summary.tax')}</span>
               <span className={styles.rowValue}>{formatPrice(tax)}</span>
             </div>
             <div className={styles.summaryRow}>
-              <span className={styles.rowLabelValue}>Estimated shipping &amp; Handling</span>
+              <span className={styles.rowLabelValue}>{t('basket.summary.shipping')}</span>
               <span className={styles.rowValue}>{formatPrice(SHIPPING)}</span>
             </div>
 
             <div className={styles.summaryRow} style={{ marginTop: '24px' }}>
-              <span className={styles.rowLabelBold}>Total</span>
+              <span className={styles.rowLabelBold}>{t('basket.summary.total')}</span>
               <span className={styles.totalPrice}>{formatPrice(total)}</span>
             </div>
           </div>
 
           <button className={styles.checkoutBtn} onClick={handleCheckout}>
-            Checkout
+            {t('basket.summary.checkout')}
           </button>
         </div>
       </div>

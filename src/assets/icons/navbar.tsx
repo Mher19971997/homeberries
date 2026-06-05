@@ -23,3 +23,11 @@ export const SearchIcon = ({ className }: { className?: string }) => (
         <path d="M20 20L16.2223 16.2156M18.3158 11.1579C18.3158 13.0563 17.5617 14.8769 16.2193 16.2193C14.8769 17.5617 13.0563 18.3158 11.1579 18.3158C9.2595 18.3158 7.43886 17.5617 6.0965 16.2193C4.75413 14.8769 4 13.0563 4 11.1579C4 9.2595 4.75413 7.43886 6.0965 6.0965C7.43886 4.75413 9.2595 4 11.1579 4C13.0563 4 14.8769 4.75413 16.2193 6.0965C17.5617 7.43886 18.3158 9.2595 18.3158 11.1579V11.1579Z" stroke="#989898" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
 );
+
+export const GlobeIcon = ({ className }: { className?: string }) => (
+  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <line x1="6" y1="16" x2="26" y2="16" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M16 6a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);

@@ -1,8 +1,13 @@
+'use client'
+
 import { Box, Typography, Link } from '@mui/material';
 import styles from './index.module.css';
 import { FacebookIcon, InstagramIcon, TikTokIcon, TwitterIcon } from '@homeberris/assets/icons/footer';
+import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
+  const { t } = useTranslation('common');
+  
   return (
     <Box component="footer" className={styles.footerContainer}>
       <Box className={styles.footerContent}>
@@ -12,31 +17,31 @@ export default function Footer() {
             cyber
           </Typography>
           <Typography className={styles.description}>
-            We are a residential interior design firm located in Portland. Our boutique-studio offers more than
+            {t('footer.brand.description')}
           </Typography>
         </Box>
 
         <Box className={styles.linksColumn}>
-          <Typography className={styles.columnTitle}>Services</Typography>
+          <Typography className={styles.columnTitle}>{t('footer.services.title')}</Typography>
           <Box className={styles.linksList}>
-            <Link href="#" className={styles.footerLink}>Bonus program</Link>
-            <Link href="#" className={styles.footerLink}>Gift cards</Link>
-            <Link href="#" className={styles.footerLink}>Credit and payment</Link>
-            <Link href="#" className={styles.footerLink}>Service contracts</Link>
-            <Link href="#" className={styles.footerLink}>Non-cash account</Link>
-            <Link href="#" className={styles.footerLink}>Payment</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.bonusProgram')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.giftCards')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.creditPayment')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.serviceContracts')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.nonCashAccount')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.services.payment')}</Link>
           </Box>
         </Box>
 
         <Box className={styles.linksColumn}>
-          <Typography className={styles.columnTitle}>Assistance to the buyer</Typography>
+          <Typography className={styles.columnTitle}>{t('footer.buyerHelp.title')}</Typography>
           <Box className={styles.linksList}>
-            <Link href="#" className={styles.footerLink}>Find an order</Link>
-            <Link href="#" className={styles.footerLink}>Terms of delivery</Link>
-            <Link href="#" className={styles.footerLink}>Exchange and return of goods</Link>
-            <Link href="#" className={styles.footerLink}>Guarantee</Link>
-            <Link href="#" className={styles.footerLink}>Frequently asked questions</Link>
-            <Link href="#" className={styles.footerLink}>Terms of use of the site</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.findOrder')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.deliveryTerms')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.exchangeReturn')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.guarantee')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.faq')}</Link>
+            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.termsOfUse')}</Link>
           </Box>
         </Box>
 

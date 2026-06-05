@@ -21,12 +21,16 @@ import {
 } from "@homeberris/assets/icons/order";
 import WiFiCard from "@homeberris/assets/icons/wifi";
 import MastercardIcon from "@homeberris/assets/icons/mastercard";
+<<<<<<< Updated upstream
 import { useMutation, useQueryClient as useQC } from "@tanstack/react-query";
 import { useLoadScript } from "@react-google-maps/api";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
 
 const GOOGLE_LIBRARIES: ("places")[] = ["places"];
+=======
+import { useTranslation } from "react-i18next";
+>>>>>>> Stashed changes
 
 interface Address {
   uuid: string;
@@ -51,12 +55,11 @@ interface CheckoutItem {
   image?: string;
 }
 
-const STEPS = ["Address", "Shipping", "Payment"];
-
-function StepIndicator({ current }: { current: number }) {
+function StepIndicator({ current, steps }: { current: number, steps: string[] }) {
+  const { t } = useTranslation('common');
   return (
     <div className={styles.stepIndicator} data-step={current}>
-      {STEPS.map((label, i) => {
+      {steps.map((label, i) => {
         const state =
           i < current ? "done" : i === current ? "active" : "pending";
 
@@ -69,7 +72,7 @@ function StepIndicator({ current }: { current: number }) {
             </div>
 
             <div className={styles.stepMeta}>
-              <span>Step {i + 1}</span>
+              <span>{t('checkout.steps.step')} {i + 1}</span>
               <span>{label}</span>
             </div>
           </div>
@@ -189,6 +192,7 @@ function AddressStep({
   token: string;
   isLoaded: boolean;
 }) {
+<<<<<<< Updated upstream
   const [showForm, setShowForm] = React.useState(false);
   const [editAddr, setEditAddr] = React.useState<Address | null>(null);
   const qc = useQC();
@@ -210,11 +214,14 @@ function AddressStep({
     setShowForm(false);
     setEditAddr(null);
   };
+=======
+  const { t } = useTranslation('common');
+>>>>>>> Stashed changes
 
   return (
     <div className={styles.stepContent}>
       <div className={styles.addressList}>
-        <h2 className={styles.sectionTitle}>Select Address</h2>
+        <h2 className={styles.sectionTitle}>{t('checkout.address.title')}</h2>
         {addresses.map((addr) => (
           <label
             key={addr.uuid}
@@ -253,6 +260,7 @@ function AddressStep({
             </div>
           </label>
         ))}
+<<<<<<< Updated upstream
 
         {showForm ? (
           <AddressForm
@@ -268,34 +276,18 @@ function AddressStep({
             Add New Address
           </button>
         )}
+=======
+        <button className={styles.addAddressBtn}>
+          <span className={styles.addIcon}>
+            <AddAddressIcon />
+          </span>
+          {t("checkout.address.addNew")}
+        </button>
+>>>>>>> Stashed changes
       </div>
     </div>
   );
 }
-
-const SHIPMENT_METHODS: ShipmentMethod[] = [
-  {
-    id: "free",
-    label: "Free",
-    description: "Regulary shipment",
-    price: null,
-    date: "17 Oct, 2023",
-  },
-  {
-    id: "fast",
-    label: "$8.50",
-    description: "Get your delivery as soon as possible",
-    price: 8.5,
-    date: "1 Oct, 2023",
-  },
-  {
-    id: "schedule",
-    label: "Schedule",
-    description: "Pick a date when you want to get your delivery",
-    price: null,
-    date: null,
-  },
-];
 
 const STEP_ICONS = [LocationIcon, ShippingIcon, PaymentIcon];
 
@@ -306,10 +298,35 @@ function ShippingStep({
   selected: string;
   onSelect: (id: string) => void;
 }) {
+  const { t } = useTranslation('common');
+  const SHIPMENT_METHODS: ShipmentMethod[] = [
+    {
+      id: "free",
+      label: `${t('checkout.shipping.free')}`,
+      description: `${t('checkout.shipping.regularlyShipment')}`,
+      price: null,
+      date: "17 Oct, 2023",
+    },
+    {
+      id: "fast",
+      label: "$8.50",
+      description: `${t('checkout.shipping.descriptionFast')}`,
+      price: 8.5,
+      date: "1 Oct, 2023",
+    },
+    {
+      id: "schedule",
+      label: `${t('checkout.shipping.schedule')}`,
+      description: `${t('checkout.shipping.descriptionSchedule')}`,
+      price: null,
+      date: null,
+    },
+  ];
+
   return (
     <div className={styles.stepContent}>
       <div className={styles.shipmentList}>
-        <h2 className={styles.sectionTitle}>Shipment Method</h2>
+        <h2 className={styles.sectionTitle}>{t('checkout.shipping.title')}</h2>
         {SHIPMENT_METHODS.map((method) => (
           <label
             key={method.id}
@@ -342,7 +359,7 @@ function ShippingStep({
                 <span>{method.date}</span>
               ) : (
                 <span className={styles.selectDate}>
-                  Select Date
+                  {t('checkout.shipping.date')}
                   <svg
                     width="12"
                     height="12"
@@ -397,12 +414,13 @@ function PaymentStep({
   const [cvv, setCvv] = useState("");
   const [sameAsBilling, setSameAsBilling] = useState(true);
   const [showStripe, setShowStripe] = useState(false);
+  const { t } = useTranslation('common');
 
   const fmt = (n: number) => `$${n}`;
   const TABS: PaymentTab[] = ["Credit Card", "PayPal", "PayPal Credit"];
   const shipLabel =
     shipmentMethod === "free"
-      ? "Free"
+      ? `${t('checkout.shipping.free')}`
       : shipmentMethod === "fast"
         ? "$8.50"
         : "Scheduled";
@@ -412,7 +430,7 @@ function PaymentStep({
       {/* Summary Panel (Слева) */}
       <div className={styles.summaryPanel}>
         <div className={styles.summary}>
-          <h3 className={styles.summaryPanelTitle}>Summary</h3>
+          <h3 className={styles.summaryPanelTitle}>{t('checkout.payment.summary')}</h3>
         </div>
         <div className={styles.summaryItems}>
           {items.map((item, i) => (
@@ -432,24 +450,24 @@ function PaymentStep({
         <div className={styles.details}>
           <div className={styles.addressDetails}>
             <div className={styles.summaryMeta}>
-              <p className={styles.summaryMetaLabel}>Address</p>
+              <p className={styles.summaryMetaLabel}>{t('checkout.payment.address')}</p>
               <p className={styles.summaryMetaValue}>
                 {address || "1131 Dusty Townline, Jacksonville, TX 40322"}
               </p>
             </div>
             <div className={styles.summaryMeta}>
-              <p className={styles.summaryMetaLabel}>Shipment method</p>
+              <p className={styles.summaryMetaLabel}>{t('checkout.payment.shipmentMethod')}</p>
               <p className={styles.summaryMetaValue}>{shipLabel}</p>
             </div>
           </div>
           <div className={styles.summaryTotals}>
             <div className={styles.summaryTotalRow}>
-              <span>Subtotal</span>
+              <span>{t('checkout.payment.subtotal')}</span>
               <span>{fmt(subtotal)}</span>
             </div>
             <div className={styles.taxes}>
               <div className={`${styles.summaryTotalRow} ${styles.muted}`}>
-                <span>Estimated Tax</span>
+                <span>{t('checkout.payment.tax')}</span>
                 <span>{fmt(tax)}</span>
               </div>
               <div className={`${styles.summaryTotalRow} ${styles.muted}`}>
@@ -547,7 +565,7 @@ function PaymentStep({
                   <span />
                   <span />
                 </div> */}
-                <WiFiCard/>
+                <WiFiCard />
                 <div className={styles.cardNumber}>4085 9536 8475 9530</div>
                 <div className={styles.wrapper}>
                   <div className={styles.cardHolder}>Cardholder</div>
@@ -577,7 +595,7 @@ function PaymentStep({
                       fill="#FF5E00"
                     />
                   </svg> */}
-                  <MastercardIcon/>
+                  <MastercardIcon />
                 </div>
 
                 {/* <div className={styles.masterLogo}>
@@ -589,14 +607,14 @@ function PaymentStep({
               <div className={styles.paymentForm}>
                 <input
                   className={styles.payInput}
-                  placeholder="Cardholder Name"
+                  placeholder={t('checkout.payment.cardholder')}
                   value={cardName}
                   onChange={(e) => setCardName(e.target.value)}
                 />
 
                 <input
                   className={styles.payInput}
-                  placeholder="Card Number"
+                  placeholder={t('checkout.payment.cardNumber')}
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
                 />
@@ -604,7 +622,7 @@ function PaymentStep({
                 <div className={styles.payRow}>
                   <input
                     className={styles.payInput}
-                    placeholder="Exp. Date"
+                    placeholder={t('checkout.payment.expDate')}
                     value={expDate}
                     onChange={(e) => setExpDate(e.target.value)}
                   />
@@ -627,17 +645,17 @@ function PaymentStep({
                   onChange={(e) => setSameAsBilling(e.target.checked)}
                   className={styles.checkbox}
                 />
-                <span>Same as billing address</span>
+                <span>{t('checkout.payment.sameAsBilling')}</span>
               </label>
             </div>
           </>
         )}
         <div className={styles.navButtons}>
           <button className={styles.btnBack} onClick={onBack}>
-            Back
+            {t('checkout.payment.back')}
           </button>
           <button className={styles.btnNext} onClick={onNext}>
-            Pay
+            {t('checkout.payment.pay')}
           </button>
         </div>
       </div>
@@ -654,22 +672,26 @@ function NavButtons({
   onBack: () => void;
   onNext: () => void;
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <div
       className={`${styles.navButtons} ${step === 2 ? styles.navButtonsPayment : ""}`}
     >
       {" "}
       <button className={styles.btnBack} onClick={onBack}>
-        Back
+        {t('checkout.buttons.back')}
       </button>
       <button className={styles.btnNext} onClick={onNext}>
-        {step === 2 ? "Pay" : "Next"}
+        {step === 2 ? `${t('checkout.payment.pay')}` : `${t('checkout.buttons.next')}`}
       </button>
     </div>
   );
 }
 
 export default function CheckoutFlow() {
+  const { t } = useTranslation('common');
+
   const queryClient = useQueryClient();
   const router = useRouter();
   const [cookies] = useCookies(["token"]);
@@ -684,6 +706,9 @@ export default function CheckoutFlow() {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [selectedShipment, setSelectedShipment] = useState("free");
   const [localBaskets, setLocalBaskets] = useState<any[]>([]);
+
+  const steps = [t("checkout.steps.address"), t("checkout.steps.shipping"), t("checkout.steps.payment")];
+
 
   const { data: baskets } = useQuery({
     queryKey: ["getAllBaskets"],
@@ -769,8 +794,8 @@ export default function CheckoutFlow() {
       const images =
         item?.catalog?.images?.length > 0
           ? item.catalog.images.map(({ image }: any) => ({
-              imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
-            }))
+            imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
+          }))
           : [{ imgPath: "/images/cardEmpty.png" }];
 
       const imgSrc = images?.[0]?.imgPath || "/images/cardEmpty.png";
@@ -820,7 +845,7 @@ export default function CheckoutFlow() {
   return (
     <div className={styles.checkoutPage}>
       <div className={styles.checkoutInner}>
-        <StepIndicator current={step} />
+        <StepIndicator current={step} steps={steps} />
         <div className={styles.checkoutBody}>
           {step === 0 && (
             <AddressStep

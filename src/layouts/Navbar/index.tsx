@@ -9,10 +9,17 @@ import { getAllBaskets } from '@homeberris/http/basketApi';
 import { getBasketCount } from '@homeberris/utils/indexedDB';
 import qs from 'qs';
 import styles from './index.module.css';
+<<<<<<< Updated upstream
 import { CartIcon, FavoriteIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
 import { getProfile } from '@homeberris/http/userApi';
+=======
+import { CartIcon, FavoriteIcon, GlobeIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
+import SelectLanguageInPopover from '@homeberris/components/SelectLanguageInPopover';
+import { useTranslation } from 'react-i18next';
+>>>>>>> Stashed changes
 
 const Navbar = () => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const isAuth = useAuth();
   const [cookies] = useCookies(['token']);
@@ -75,14 +82,14 @@ const Navbar = () => {
         <div className={styles.searchBox}>
           <SearchIcon className={styles.searchIcon} />
           <input
-            placeholder="Search"
+            placeholder={t('nav.search')}
             className={styles.searchInput}
           />
         </div>
 
         {/* Навигация */}
         <nav className={styles.navLinks}>
-          {['Home', 'About', 'Contact Us', 'Blog'].map((item) => (
+          {[t('nav.home'), t('nav.about'), t('nav.contact'), t('nav.blog')].map((item) => (
             <span
               key={item}
               onClick={() => router.push('/')}
@@ -113,6 +120,11 @@ const Navbar = () => {
               <UserIcon />
             )}
           </button>
+          <SelectLanguageInPopover>
+            <button className={styles.iconBtn}>
+              <GlobeIcon />
+            </button>
+          </SelectLanguageInPopover>
         </div>
 
         {/* Бургер кнопка */}
@@ -122,9 +134,9 @@ const Navbar = () => {
           aria-label="open menu"
         >
           <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="25" height="2.5" rx="1.25" fill="#080341"/>
-            <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341"/>
-            <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341"/>
+            <rect width="25" height="2.5" rx="1.25" fill="#080341" />
+            <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341" />
+            <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341" />
           </svg>
         </button>
 
@@ -146,7 +158,7 @@ const Navbar = () => {
             aria-label="close menu"
           >
             <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
             </svg>
           </button>
         </div>
@@ -186,6 +198,12 @@ const Navbar = () => {
             )}
             <span className={styles.drawerIconLabel}>{isAuth ? 'Профиль' : 'Войти'}</span>
           </button>
+          <SelectLanguageInPopover>
+            <button className={styles.drawerIconBtn}>
+              <GlobeIcon />
+              <span className={styles.drawerIconLabel}>Язык</span>
+            </button>
+          </SelectLanguageInPopover>
         </div>
       </div>
     </div>

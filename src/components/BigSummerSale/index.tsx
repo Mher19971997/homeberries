@@ -2,25 +2,27 @@
 
 import { useRouter } from 'next/navigation';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 export default function BigSummerSale() {
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   return (
     <div className={styles.saleBanner}>
       <div className={styles.overlayContent}>
         <h2 className={styles.mainTitle}>
-          <span className={styles.thinText}>Big Summer</span>
+          <span className={styles.thinText}>{t('home.bigSummerSale.titleThin')}</span>
           {' '}
-          <span className={styles.boldText}>Sale</span>
+          <span className={styles.boldText}>{t('home.bigSummerSale.titleBold')}</span>
         </h2>
 
         <p className={styles.subtitle}>
-          Commodo fames vitae vitae leo mauris in. Eu consequat.
+          {t('home.bigSummerSale.subtitle')}
         </p>
 
         <button className={styles.shopButton} onClick={() => router.push('/en/catalog')}>
-          Shop Now
+          {t('home.shopNow')}
         </button>
       </div>
     </div>

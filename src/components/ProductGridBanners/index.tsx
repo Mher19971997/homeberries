@@ -9,6 +9,7 @@ import { A11y } from 'swiper/modules';
 // @ts-ignore
 import 'swiper/css';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 const BASE_URL = 'http://localhost:6001';
 
@@ -23,6 +24,7 @@ const CARD_CLASSES = [
 
 export default function ProductGridBanners() {
   const router = useRouter();
+  const { t } = useTranslation('common');
   const [activeIndex, setActiveIndex] = useState(0);
 
   const query = qs.stringify({
@@ -91,7 +93,7 @@ export default function ProductGridBanners() {
                       }
                     }}
                   >
-                    Shop Now
+                    {t('home.shopNow')}
                   </button>
                 </div>
               </div>

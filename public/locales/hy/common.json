@@ -1,176 +1,143 @@
 {
   "nav": {
     "home": "Գլխավոր",
-    "catalog": "Կատալոգ",
-    "basket": "Զամբյուղ",
-    "favorites": "Ընտրվածներ",
-    "orders": "Իմ պատվերները",
-    "profile": "Պրոֆիլ",
-    "delivery": "Առաքում",
-    "addresses": "Հասցեներ",
-    "aiAssistant": "AI Օգնական",
-    "login": "Մուտք գործել"
+    "about": "Մեր մասին",
+    "contact": "Կապ",
+    "blog": "Բլոգ",
+    "search": "Որոնում"
   },
-  "language": {
-    "selectTitle": "Ընտրեք արժույթը և լեզուն",
-    "rubDescription": "Ռուսական ռուբլի",
-    "usdDescription": "ԱՄՆ դոլար",
-    "amdDescription": "Հայկական դրամ",
-    "eurDescription": "Եվրո"
-  },
-  "tabs": {
-    "products": "Ապրանքներ"
-  },
-  "search": {
-    "placeholder": "Փնտրել...",
-    "placeholderSpecific": "Փնտրել STYLEBOX-ում",
-    "photoTitle": "Որոնում լուսանկարով",
-    "photo": {
-      "title": "Որոնում լուսանկարով",
-      "uploadText": "Վերբեռնեք պատկեր որոնման համար",
-      "chooseFile": "Ընտրել ֆայլ",
-      "chooseAnother": "Ընտրել ուրիշ",
-      "searchButton": "Փնտրել"
-    }
-  },
-  "carousel": {
-    "banners": {
-      "1": {
-        "title": "Նոր հավաքածու 2024",
-        "subtitle": "Մինչև 50% զեղչ բոլոր ապրանքների վրա",
-        "button": "Դիտել կատալոգը"
-      },
-      "2": {
-        "title": "Էլեկտրոնիկա զեղչով",
-        "subtitle": "Լավագույն գները Apple-ի տեխնիկայի վրա",
-        "button": "Գնել հիմա"
-      },
-      "3": {
-        "title": "Նորաձև հագուստ",
-        "subtitle": "Սեզոնի նորույթները արդեն վաճառքում են",
-        "button": "Ընտրել հագուստ"
-      }
-    }
-  },
-  "product": {
-    "addToCart": "Ավելացնել զամբյուղ",
-    "buyNow": "Գնել հիմա",
-    "inStock": "Առկա է",
-    "outOfStock": "Առկա չէ"
-  },
-  "common": {
-    "loading": "Բեռնում...",
-    "error": "Սխալ",
-    "save": "Պահպանել",
-    "cancel": "Չեղարկել",
-    "delete": "Ջնջել",
-    "edit": "Խմբագրել",
-    "selectPickupPoint": "Ընտրեք թողարկման կետը"
-  },
-  "address": {
-    "default": "Լռելյայն",
-    "noSaved": "Պահված հասցեներ չկան",
-    "addNew": "Ավելացնել նոր հասցե",
-    "deliveryMethod": "Առաքման եղանակ",
-    "select": "Ընտրել"
+  "categories": {
+    "title": "Դիտել ըստ կատեգորիայի",
+    "phones": "Հեռախոսներ",
+    "smartWatches": "ժամացույցներ",
+    "cameras": "Ֆոտոխցիկներ",
+    "headphones": "Ականջակալներ",
+    "computers": "Համակարգիչներ",
+    "gaming": "Խաղեր"
   },
   "catalog": {
-    "title": {
-      "fallback": "Հնարավոր է ձեզ դուր գա"
-    },
-    "loading": "Ապրանքների բեռնում...",
-    "loadingMore": "Լրացուցիչ ապրանքների բեռնում...",
+    "loading": "Բեռնվում է...",
     "empty": "Ապրանքներ չեն գտնվել"
   },
-  "card": {
-    "walletInfo": "WB դրամապանակով",
-    "rating": {
-      "reviews": {
-        "1": "գնահատում",
-        "few": "գնահատումներ",
-        "many": "գնահատումներ"
-      }
+  "home": {
+    "tabs": {
+      "new": "Նոր ժամանումներ",
+      "bestseller": "Բեսթսելլեր",
+      "featured": "Առաջարկվող ապրանքներ"
     },
-    "basket": {
-      "added": "ավելացվել է զամբյուղ"
+    "buyNow": "Գնել հիմա",
+    "shopNow": "Գնել հիմա",
+    "discountsTitle": "Զեղչեր մինչև -50%",
+    "bigSummerSale": {
+      "titleThin": "Մեծ ամառային",
+      "titleBold": "Զեղչ",
+      "subtitle": "Commodo fames vitae vitae leo mauris in. Eu consequat."
     }
   },
-  "aiAssistant": {
-    "title": "AI օգնական",
-    "status": {
-      "connected": "Միացված է",
-      "disconnected": "Միացված չէ"
+  "footer": {
+    "brand": {
+      "description": "Մենք բնակելի ինտերիերի դիզայնի ստուդիա ենք Պորտլենդում։ Մեր բուտիկ ստուդիան առաջարկում է ավելին"
     },
-    "chat": {
-      "placeholder": "Գրեք հաղորդագրություն կամ օգտագործեք ձայնային մուտք..."
+    "services": {
+      "title": "Ծառայություններ",
+      "bonusProgram": "Բոնուսային ծրագիր",
+      "giftCards": "Նվեր քարտեր",
+      "creditPayment": "Վարկ և վճարում",
+      "serviceContracts": "Ծառայության պայմանագրեր",
+      "nonCashAccount": "Անկանխիկ հաշիվ",
+      "payment": "Վճարում"
     },
-    "voice": {
-      "speaking": "Խոսում է...",
-      "on": "Միացնել ձայնը",
-      "off": "Անջատել ձայնը"
-    },
-    "catalog": {
-      "recommended": "Առաջարկվող ապրանքներ:"
+    "buyerHelp": {
+      "title": "Օգնություն գնորդին",
+      "findOrder": "Գտնել պատվեր",
+      "deliveryTerms": "Առաքման պայմաններ",
+      "exchangeReturn": "Փոխանակում և վերադարձ",
+      "guarantee": "Երաշխիք",
+      "faq": "Հաճախ տրվող հարցեր",
+      "termsOfUse": "Կայքի օգտագործման պայմաններ"
     }
-  },
-  "addresses": {
-    "title": "Ընկերությունների խանութների հասցեներ",
-    "listTitle": "Խանութների հասցեներ",
-    "back": "← Վերադառնալ ցանկին",
-    "company": "Ընկերություն",
-    "button": "Անցնել ընկերության կատալոգ"
   },
   "favorites": {
     "breadcrumb": {
       "home": "Գլխավոր",
-      "title": "Ընտրվածներ"
+      "title": "Նախընտրածներ"
     },
     "header": {
-      "title": "Ընտրվածներ"
+      "title": "Նախընտրածներ"
     }
+  },
+  "catalogFavorites": {
+    "home": "Գլխավոր",
+    "category": "Կատեգորիա",
+    "products": "ապրանք",
+    "allFilters": "Բոլոր ֆիլտրերը",
+    "noProductsTitle": "Այս ենթակատեգորիայում դեռ ապրանքներ չկան",
+    "noProductsDesc": "Մենք աշխատում ենք տեսականու ավելացման վրա։ Խնդրում ենք այցելել ավելի ուշ։",
+    "backToCategory": "Վերադառնալ կատեգորիա \"{{name}}\"",
+    "categories": "Կատեգորիաներ"
   },
   "basket": {
-    "title": "Զամբյուղ",
-    "myData": "Իմ տվյալները",
-    "paymentMethod": "Վճարման եղանակ",
-    "total": "Ընդհանուր",
-    "empty": "Զամբյուղը դատարկ է",
-    "emptyAuthHint": "Մուտք գործեք՝ զամբյուղը պահպանելու համար",
-    "selectPayment": "Ընտրել վճարման եղանակը",
-    "order": "Պատվիրել",
-    "orderMobile": "պատվերի ձևավորում",
-    "product_one": "ապրանք",
-    "product_few": "ապրանք",
-    "product_many": "ապրանք",
-    "payment": {
-      "selectMethod": "Ընտրել վճարման եղանակ",
-      "title": "Պատվերի վճարում",
-      "noAmount": "Վճարման գումարը նշված չէ",
-      "secureInfo": "Քարտի տվյալները ապահով պաշտպանված են Stripe-ի միջոցով"
-    },
-    "delivery": {
-      "title": "Առաքում ստացման կետ"
+    "title": "Գնումների զամբյուղ",
+    "empty": "Ձեր զամբյուղը դատարկ է։",
+    "summary": {
+      "title": "Պատվերի ամփոփում",
+      "promoLabel": "Զեղչի կոդ / պրոմո կոդ",
+      "promoPlaceholder": "Կոդ",
+      "bonusLabel": "Ձեր բոնուս քարտի համարը",
+      "bonusPlaceholder": "Մուտքագրեք քարտի համարը",
+      "apply": "Կիրառել",
+      "subtotal": "Ենթագումար",
+      "tax": "Հաշվարկված հարկ",
+      "shipping": "Առաքում և սպասարկում",
+      "total": "Ընդհանուր",
+      "checkout": "Վճարել"
     }
   },
-  "profile": {
-    "discount": "WB զեղչ",
-    "paymentOnDelivery": "Վճարում ստանալիս",
-    "upTo": "մինչև",
-    "logout": "Ելք",
-    "menu": {
-      "purchases": "Գնումներ",
-      "favorites": "Ընտրյալներ",
-      "brands": "Սիրված բրենդներ",
-      "orders": "Պատվերներ",
-      "certificates": "Ձեր վկայականները",
-      "wallet": "WB Բանկ",
-      "paymentMethods": "Վճարման եղանակներ"
+  "checkout": {
+    "steps": {
+      "address": "Հասցե",
+      "shipping": "Առաքում",
+      "payment": "Վճարում",
+      "step": "Քայլ"
     },
-    "chat": {
-      "title": "Չատեր",
-      "description": "Աջակցության, վաճառողների և առաքիչների հետ",
-      "reviews": "Կարծիքներ և հարցեր",
-      "business": "Գնեք որպես բիզնես"
+    "address": {
+      "title": "Ընտրել հասցե",
+      "addNew": "Ավելացնել նոր հասցե",
+      "edit": "Խմբագրել",
+      "delete": "Ջնջել"
+    },
+    "shipping": {
+      "title": "Առաքման եղանակ",
+      "free": "Անվճար",
+      "fastPrice": "$8.50",
+      "regularlyShipment": "Սովորական առաքում",
+      "schedule": "Ժամանակացույցով",
+      "descriptionFree": "Սովորական առաքում",
+      "descriptionFast": "Առաքում հնարավորինս արագ",
+      "descriptionSchedule": "Ընտրեք առաքման ամսաթիվը",
+      "date": "Ընտրեք ամսաթիվը"
+    },
+    "payment": {
+      "title": "Վճարում",
+      "summary": "Ամփոփում",
+      "address": "Հասցե",
+      "shipmentMethod": "Առաքման եղանակ",
+      "subtotal": "Ենթագումար",
+      "tax": "Մոտավոր հարկ",
+      "estimated": "Հաշվարկված առաքում և սպասարկում",
+      "shipping": "Առաքում և սպասարկում",
+      "total": "Ընդամենը",
+      "cardholder": "Քարտատիրոջ անուն",
+      "cardNumber": "Քարտի համար",
+      "expDate": "Վավերականություն",
+      "cvv": "CVV",
+      "sameAsBilling": "Նույնն է վճարման հասցեի հետ",
+      "back": "Հետ",
+      "pay": "Վճարել"
+    },
+    "buttons": {
+      "next": "Հաջորդ",
+      "back": "Հետ"
     }
   }
 }

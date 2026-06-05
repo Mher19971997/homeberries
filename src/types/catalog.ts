@@ -22,6 +22,8 @@ export interface CatalogItem {
   infos: InfoItem[];
   comments: CommentItem[];
   groupOption: groupOptionItem[];
+  isDiscount?: boolean;
+  discountPercent: number
 }
 export interface InfoItem {
   uuid: UUID;
