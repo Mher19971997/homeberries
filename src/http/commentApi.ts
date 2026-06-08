@@ -7,6 +7,7 @@ const createComment = async (
   inputDto: {
     text: string;
     catalogUuid: UUID;
+    rating?: number;
     image?: File;
   },
   token: string
@@ -14,6 +15,7 @@ const createComment = async (
   const formData = new FormData();
   formData.append('text', inputDto.text);
   formData.append('catalogUuid', inputDto.catalogUuid);
+  if (inputDto.rating) formData.append('rating', String(inputDto.rating));
   if (inputDto.image) {
     formData.append('image', inputDto.image);
   }

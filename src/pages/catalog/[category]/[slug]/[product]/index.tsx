@@ -35,7 +35,7 @@ export default function Catalog() {
             { association: 'subCategorie' },
             { association: 'images' },
             { association: 'groupOption', include: [{ association: 'options' }] },
-            { association: 'comments' },
+            { association: 'comments', include: [{ association: 'user' }] },
             { association: 'brand' },
             { association: 'colors' }
           ]

@@ -530,43 +530,8 @@ interface ProductPageContentProps {
       <ProductDetailsSection catalog={catalog} />
 
       {/* Reviews section */}
-      <ProductReviewsSection />
+      <ProductReviewsSection catalog={catalog} />
 
-      {/* Комментарии */}
-      {catalog?.comments && catalog.comments.length > 0 && (
-        <div className={styles.commentsSection}>
-          <h5 className={styles.sectionTitle}>Отзывы</h5>
-          <div className={styles.commentsWrapper}>
-            {canScrollLeft && (
-              <button
-                className={styles.scrollButton}
-                onClick={scrollLeft}
-                aria-label="Прокрутить влево"
-              >
-                ‹
-              </button>
-            )}
-            <div
-              ref={commentsContainerRef}
-              className={styles.commentsContainer}
-              onScroll={checkScrollButtons}
-            >
-              {catalog.comments.map((comment: CommentItem) => (
-                <CommentCard key={comment.uuid} comment={comment} />
-              ))}
-            </div>
-            {canScrollRight && (
-              <button
-                className={styles.scrollButton}
-                onClick={scrollRight}
-                aria-label="Прокрутить вправо"
-              >
-                ›
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Похожие товары */}
       <SimilarProducts
