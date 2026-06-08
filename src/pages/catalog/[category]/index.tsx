@@ -197,7 +197,7 @@ export default function CatalogPage() {
           />
 
           {/* Пагинация */}
-          {totalPages >= 1 && (
+          {totalPages > 1 && (
             <div className={styles.pagination}>
               <button
                 className={styles.pageBtn}
