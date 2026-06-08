@@ -1,4 +1,4 @@
-import { $host } from '@homeberris/http/index';
+import { $host, $authHost } from '@homeberris/http/index';
 import { User } from '@homeberris/types/user';
 
 const getProfile = async (token: string): Promise<User> => {
@@ -10,4 +10,9 @@ const getProfile = async (token: string): Promise<User> => {
   return data;
 };
 
-export { getProfile };
+const uploadAvatar = async (uuid: string, formData: FormData): Promise<User> => {
+  const { data } = await $authHost.patch(`/api/v1/user/${uuid}`, formData);
+  return data;
+};
+
+export { getProfile, uploadAvatar };

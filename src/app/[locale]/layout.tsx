@@ -39,7 +39,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={inter.className}>
-        <Providers>
+        <Providers locale={locale}>
           <Preloader />
           <main className={styles.main}>
             <Navbar />

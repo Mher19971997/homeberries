@@ -100,7 +100,6 @@ export default function ProductPageContent({
     onError: (error) => console.error(error),
   });
 
-<<<<<<< Updated upstream
     const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isAuth && cookies.token) {
@@ -112,19 +111,6 @@ export default function ProductPageContent({
       }
     };
     
-=======
-  const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    if (isAuth && cookies.token) {
-      mutate(catalog!.uuid);
-    } else {
-      addToBasket(catalog, 1)
-        .then(() => setOpenSuccess(true))
-        .catch((err) => console.error(err));
-    }
-  };
-
->>>>>>> Stashed changes
   const handleDragStart = (x: number) => {
     dragStartX.current = x;
     setIsDragging(true);
@@ -268,7 +254,6 @@ export default function ProductPageContent({
       })
     : [];
 
-  const router = useRouter()
   const handleCheckout = () => {
     // if (!isAuth) { router.push('/security/login'); return; }
     // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
@@ -463,7 +448,6 @@ export default function ProductPageContent({
             })()}
 
             {/* Описание */}
-<<<<<<< Updated upstream
             {(() => {
               const desc = catalog.description || staticDescription;
               const isLong = desc.length > 50;
@@ -481,21 +465,6 @@ export default function ProductPageContent({
                 </div>
               );
             })()}
-=======
-            <div className={styles.descriptionSection}>
-              <p
-                className={`${styles.descriptionText} ${showFullDesc ? styles.descriptionTextFull : ""}`}
-              >
-                {catalog.description || staticDescription}
-              </p>
-              <button
-                className={styles.moreBtn}
-                onClick={() => setShowFullDesc((p) => !p)}
-              >
-                {showFullDesc ? t("productPageContent.description.less") : t("productPageContent.description.more")}
-              </button>
-            </div>
->>>>>>> Stashed changes
           </div>
 
           {/* Блок 3: Кнопки + Доставка */}
@@ -559,44 +528,6 @@ export default function ProductPageContent({
       {/* Reviews section */}
       <ProductReviewsSection catalog={catalog} />
 
-<<<<<<< Updated upstream
-=======
-      {/* Комментарии */}
-      {catalog?.comments && catalog.comments.length > 0 && (
-        <div className={styles.commentsSection}>
-          <h5 className={styles.sectionTitle}>{t('productPageContent.comments.title')}</h5>
-          <div className={styles.commentsWrapper}>
-            {canScrollLeft && (
-              <button
-                className={styles.scrollButton}
-                onClick={scrollLeft}
-                aria-label={t('productPageContent.comments.scrollLeft')}
-              >
-                ‹
-              </button>
-            )}
-            <div
-              ref={commentsContainerRef}
-              className={styles.commentsContainer}
-              onScroll={checkScrollButtons}
-            >
-              {catalog.comments.map((comment: CommentItem) => (
-                <CommentCard key={comment.uuid} comment={comment} />
-              ))}
-            </div>
-            {canScrollRight && (
-              <button
-                className={styles.scrollButton}
-                onClick={scrollRight}
-                aria-label={t('productPageContent.comments.scrollRight')}
-              >
-                ›
-              </button>
-            )}
-          </div>
-        </div>
-      )}
->>>>>>> Stashed changes
 
       {/* Похожие товары */}
       <SimilarProducts

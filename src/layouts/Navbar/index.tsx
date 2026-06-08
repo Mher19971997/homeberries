@@ -81,6 +81,7 @@ const Navbar = () => {
           <input
             placeholder={t('nav.search')}
             className={styles.searchInput}
+            suppressHydrationWarning
           />
         </div>
 

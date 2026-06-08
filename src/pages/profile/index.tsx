@@ -1,10 +1,10 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import * as qs from 'qs';
-import { getProfile } from '@homeberris/http/userApi';
+import { getProfile, uploadAvatar } from '@homeberris/http/userApi';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { removeToken } from '@homeberris/utils/auth';
 import { useFavorites } from '@homeberris/context/favoritesContext';
@@ -60,6 +60,29 @@ export default function Profile() {
     router.push('/');
   };
 
+  const queryClient = useQueryClient();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const { mutate: updateAvatar } = useMutation({
+    mutationFn: ({ uuid, formData }: { uuid: string; formData: FormData }) =>
+      uploadAvatar(uuid, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getProfile'] });
+    },
+  });
+
+  const handleAvatarClick = () => fileInputRef.current?.click();
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user?.uuid) return;
+    const formData = new FormData();
+    formData.append('avatar', file);
+    updateAvatar({ uuid: user.uuid, formData });
+    e.target.value = '';
+  };
+
+  const BASE_URL = 'http://localhost:6001';
   const userLetter = user?.email?.[0]?.toUpperCase() || 'U';
   const userName = user?.email?.split('@')[0] || 'Пользователь';
 
@@ -69,7 +92,18 @@ export default function Profile() {
 
         {/* Header */}
         <div className={styles.header}>
-          <div className={styles.avatar}>{userLetter}</div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={handleFileChange}
+          />
+          <div className={styles.avatar} onClick={handleAvatarClick} style={{ cursor: 'pointer', overflow: 'hidden', padding: 0 }}>
+            {user?.avatar
+              ? <img src={`${BASE_URL}/${user.avatar}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : userLetter}
+          </div>
           <div className={styles.headerInfo}>
             <p className={styles.userName}>{userName}</p>
             <p className={styles.userEmail}>{user?.email}</p>

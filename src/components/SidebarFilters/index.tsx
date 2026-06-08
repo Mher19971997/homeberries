@@ -16,7 +16,6 @@ interface SidebarFiltersProps {
   onFiltersChange?: (filters: Record<string, string[]>) => void;
 }
 
-<<<<<<< Updated upstream
 export default function SidebarFilters({
   brands,
   selectedBrands,
@@ -25,11 +24,6 @@ export default function SidebarFilters({
   catalogs = [],
   onFiltersChange,
 }: SidebarFiltersProps) {
-=======
-
-
-export default function SidebarFilters({ brands, selectedBrands, onBrandsChange, categoryName }: SidebarFiltersProps) {
->>>>>>> Stashed changes
   const [brandSearch, setBrandSearch] = React.useState('');
   const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({ brand: true });
   const [selectedOptions, setSelectedOptions] = React.useState<Record<string, string[]>>({});
@@ -160,7 +154,6 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
           </div>
           {openSections[name] && (
             <div className={styles.accordionBody}>
-<<<<<<< Updated upstream
               {values.length === 0 ? (
                 <p className={styles.emptyText}>No data</p>
               ) : (
@@ -178,9 +171,6 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
                   ))}
                 </div>
               )}
-=======
-              <p className={styles.emptyText}>{t('sidebarFilters.noData')}</p>
->>>>>>> Stashed changes
             </div>
           )}
         </div>

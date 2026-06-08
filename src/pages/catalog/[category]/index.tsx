@@ -65,10 +65,10 @@ export default function CatalogPage() {
   });
   const brands = brandsData?.data || [];
 
-  const buildQuery = () => {
+  const buildQuery = (catUuid?: string) => {
     const filters: any = {
       includeMeta: [
-        { association: "category", where: { name: categoryName } },
+        { association: "category" },
         { association: "brand" },
         { association: "groupOption", include: [{ association: "options" }] },
         ...Object.entries(groupFilters).map(([groupName, values]) => ({
@@ -79,13 +79,14 @@ export default function CatalogPage() {
       ],
       queryMeta: { paginate: true, limit: ITEMS_PER_PAGE, page: currentPage },
     };
+    const catFilter = catUuid ? { categoryUuid: catUuid } : { categoryUuid: { like: "%" } };
+    filters.filterMeta = selectedBrands.length > 0
+      ? { ...catFilter, brandUuid: { in: selectedBrands } }
+      : catFilter;
     if (priceRange)
       filters.where = { price: { $gte: priceRange.min, $lte: priceRange.max } };
-    if (selectedBrands.length > 0)
-      filters.filterMeta = { brandUuid: { in: selectedBrands } };
     if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
     else if (sortBy === "price_desc") filters.queryMeta.order = { price: "DESC" };
-    else if (sortBy === "rating") filters.queryMeta.order = { rating: "DESC" };
     else if (sortBy === "newest") filters.queryMeta.order = { createdAt: "DESC" };
     return qs.stringify(filters);
   };
@@ -96,6 +97,7 @@ export default function CatalogPage() {
   }>({
     queryKey: [
       "getAllCatalogsByCategory",
+      categoryUuid,
       categoryName,
       sortBy,
       priceRange,
@@ -103,8 +105,8 @@ export default function CatalogPage() {
       groupFilters,
       currentPage,
     ],
-    queryFn: () => getAllCatalogs(buildQuery()),
-    enabled: !!categoryName,
+    queryFn: () => getAllCatalogs(buildQuery(categoryUuid)),
+    enabled: !!categoryName && !!categoryUuid,
   });
 
   const totalPages = catalogs?.meta

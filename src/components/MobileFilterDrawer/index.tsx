@@ -91,6 +91,7 @@ export default function MobileFilterDrawer({
           <button
             className={styles.burgerBtn}
             aria-label="open menu"
+            suppressHydrationWarning
             onClick={() => {
               onClose();
               window.dispatchEvent(new CustomEvent('openNavMenu'));
@@ -106,7 +107,7 @@ export default function MobileFilterDrawer({
 
         {/* Filters header */}
         <div className={styles.header}>
-          <button className={styles.backBtn} onClick={onClose}>
+          <button className={styles.backBtn} suppressHydrationWarning onClick={onClose}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
               <path d="M15 18L9 12L15 6" stroke="#242424" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
@@ -136,6 +137,7 @@ export default function MobileFilterDrawer({
                       className={styles.priceField}
                       type="number"
                       value={tempMin}
+                      suppressHydrationWarning
                       onChange={(e) => {
                         const v = parseInt(e.target.value) || 0;
                         setTempMin(Math.min(v, tempMax - 1));
@@ -149,6 +151,7 @@ export default function MobileFilterDrawer({
                       className={styles.priceField}
                       type="number"
                       value={tempMax}
+                      suppressHydrationWarning
                       onChange={(e) => {
                         const v = parseInt(e.target.value) || PRICE_MAX;
                         setTempMax(Math.max(v, tempMin + 1));
@@ -204,6 +207,7 @@ export default function MobileFilterDrawer({
                     className={styles.searchInput}
                     placeholder="Search"
                     value={brandSearch}
+                    suppressHydrationWarning
                     onChange={(e) => setBrandSearch(e.target.value)}
                   />
                 </div>
@@ -217,6 +221,7 @@ export default function MobileFilterDrawer({
                           type="checkbox"
                           className={styles.checkbox}
                           checked={localBrands.includes(brand.uuid)}
+                          suppressHydrationWarning
                           onChange={() => toggleBrand(brand.uuid)}
                         />
                         <span className={styles.checkboxLabel}>{brand.name}</span>
@@ -251,7 +256,7 @@ export default function MobileFilterDrawer({
 
         {/* Footer */}
         <div className={styles.footer}>
-          <button className={styles.applyBtn} onClick={handleApply}>
+          <button className={styles.applyBtn} suppressHydrationWarning onClick={handleApply}>
             Apply
           </button>
         </div>
