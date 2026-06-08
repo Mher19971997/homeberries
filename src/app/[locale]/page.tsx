@@ -83,6 +83,10 @@ export default function Home() {
       queryMeta: { paginate: true, limit: ITEMS_LIMIT, page: newPage },
     };
 
+    if (activeTab === 'featured') {
+      filters.filterMeta = { isFeatured: true };
+    }
+
     if (selectedCategory) {
       filters.includeMeta = [
         { association: 'category', where: { uuid: selectedCategory.uuid } },
@@ -101,7 +105,7 @@ export default function Home() {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid, newPage],
+    queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid, newPage, activeTab],
     queryFn: () => getAllCatalogs(buildQuery()),
   });
 
