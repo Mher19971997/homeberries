@@ -139,5 +139,156 @@
       "next": "Հաջորդ",
       "back": "Հետ"
     }
+  },
+  "catalogAll": {
+    "breadcrumb": {
+      "home": "Գլխավոր",
+      "catalog": "Կատալոգ"
+    },
+    "filters": {
+      "title": "Ֆիլտրեր",
+      "selectedProducts": "Ընտրված ապրանքներ"
+    },
+    "sort": {
+      "title": "Դասավորում",
+      "rating": "Ըստ վարկանիշի",
+      "popularity": "Ըստ ժողովրդականության",
+      "priceAsc": "Գին՝ ցածրից բարձր",
+      "priceDesc": "Գին՝ բարձրից ցածր",
+      "newest": "Նորագույն"
+    },
+    "products": {
+      "result": "Ապրանքների արդյունք"
+    },
+    "pagination": {
+      "next": "Հաջորդ",
+      "previous": "Նախորդ"
+    }
+  },
+  "sidebarFilters": {
+    "brand": "Բրենդ",
+    "search": "Փնտրել",
+    "noBrands": "Բրենդեր չկան",
+    "noData": "Տվյալներ չկան",
+    "extraSections": {
+      "batteryCapacity": "Մարտկոցի տարողություն",
+      "screenType": "Էկրանի տեսակ",
+      "screenDiagonal": "Էկրանի չափ",
+      "protectionClass": "Պաշտպանության դաս",
+      "builtInMemory": "Ներկառուցված հիշողություն"
+    }
+  },
+  "productDetails": {
+    "title": "Մանրամասներ",
+    "viewMore": "Ցույց տալ ավելին",
+    "viewLess": "Թաքցնել",
+    "description": "Just so I know is judged by its cover, the first thing you notice when you pick up a modern smartphone is the display. Nothing anything, from our smartphones drive our life or quality! wait the display makes sure you're set up for the best actions and options, leaving you feel like you're really somewhere, and how great that is even satisfied quite a lot thing is fine with displays. Bold colors and sharp characters always promise the quality of the actors provided by the producers of the California brand, and then you'll 5.7 inch Retina genius, where you'll achieve as enjoyed the ambitions for many.",
+    "specs": {
+      "screen": "Էկրան",
+      "cpu": "Պրոցեսոր",
+      "camera": "Ֆոտոխցիկ",
+      "battery": "Մարտկոց",
+      "memory": "Հիշողություն",
+      "labels": {
+        "screenDiagonal": "Էկրանի չափ",
+        "screenResolution": "Էկրանի լուծաչափ",
+        "screenRefreshRate": "Թարմացման հաճախականություն",
+        "colorDensity": "Պիքսելների խտություն",
+        "screenType": "Էկրանի տեսակ",
+        "additionally": "Լրացուցիչ",
+        "cores": "Միջուկների քանակ",
+        "mainCamera": "Հիմնական տեսախցիկ",
+        "frontCamera": "Առջևի տեսախցիկ",
+        "opticalZoom": "Օպտիկական զում",
+        "video": "Տեսանկարահանում",
+        "batteryCapacity": "Մարտկոցի ծավալ",
+        "fastCharging": "Արագ լիցքավորում",
+        "wirelessCharging": "Անլար լիցքավորում",
+        "storage": "Հիշողություն",
+        "screenSize": "Էկրանի չափ"
+      }
+    }
+  },
+  "reviews": {
+    "title": "Կարծիքներ",
+    "ofReviews": "{{count}} կարծիքներից",
+    "leaveComment": "Թողնել մեկնաբանություն",
+    "viewMore": "Ցույց տալ ավելին",
+    "viewLess": "Թաքցնել",
+    "ratingBars": {
+      "excellent": "Գերազանց",
+      "good": "Լավ",
+      "average": "Միջին",
+      "belowAverage": "Միջինից ցածր",
+      "poor": "Վատ"
+    }
+  },
+  "productPageContent": {
+    "breadcrumb": {
+      "home": "Գլխավոր"
+    },
+    "gallery": {
+      "noImages": "Պատկերներ չեն գտնվել"
+    },
+    "description": {
+      "more": "ավելին...",
+      "less": "քիչ..."
+    },
+    "actions": {
+      "addToWishlist": "Ավելացնել ցանկին",
+      "addToCart": "Ավելացնել զամբյուղ",
+      "inCart": "Զամբյուղում է ✓"
+    },
+    "delivery": {
+      "free": {
+        "title": "Անվճար առաքում",
+        "subtitle": "1-2 օր"
+      },
+      "stock": {
+        "title": "Առկա է",
+        "subtitle": "Այսօր"
+      },
+      "guarantee": {
+        "title": "Երաշխիք",
+        "subtitle": "1 տարի"
+      }
+    },
+    "comments": {
+      "title": "Կարծիքներ",
+      "scrollLeft": "Սահեցնել ձախ",
+      "scrollRight": "Սահեցնել աջ"
+    },
+    "color": "Ընտրել գույն"
+  },
+  "auth": {
+    "login": {
+      "title": "Մուտք գործեք ձեր հաշիվ",
+      "tabLogin": "Մուտք",
+      "tabRegister": "Գրանցում",
+      "email": "Էլ․ փոստ",
+      "password": "Գաղտնաբառ",
+      "passwordPlaceholder": "Մուտքագրեք գաղտնաբառը",
+      "submit": "Մուտք",
+      "loading": "Մուտք է կատարվում...",
+      "welcome": "Բարի գալուստ!"
+    },
+    "register": {
+      "title": "Ստեղծել հաշիվ",
+      "email": "Էլ․ փոստ",
+      "password": "Գաղտնաբառ",
+      "passwordPlaceholder": "Առնվազն 8 նիշ",
+      "confirmPassword": "Հաստատել գաղտնաբառը",
+      "confirmPlaceholder": "Կրկնեք գաղտնաբառը",
+      "submit": "Ստեղծել հաշիվ",
+      "loading": "Հաշիվը ստեղծվում է...",
+      "success": "Հաշիվը ստեղծված է!"
+    },
+    "errors": {
+      "fillFields": "Լրացրեք բոլոր դաշտերը",
+      "passwordMismatch": "Գաղտնաբառերը չեն համընկնում",
+      "passwordLength": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ",
+      "invalid": "Սխալ էլ․ փոստ կամ գաղտնաբառ",
+      "registerError": "Գրանցման սխալ"
+    }
   }
 }

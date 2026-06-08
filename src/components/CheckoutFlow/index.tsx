@@ -266,7 +266,7 @@ function AddressStep({
         ) : (
           <button className={styles.addAddressBtn} onClick={() => { setEditAddr(null); setShowForm(true); }}>
             <span className={styles.addIcon}><AddAddressIcon /></span>
-            Add New Address
+            {t('checkout.address.addNew')}
           </button>
         )}
       </div>
@@ -456,12 +456,12 @@ function PaymentStep({
                 <span>{fmt(tax)}</span>
               </div>
               <div className={`${styles.summaryTotalRow} ${styles.muted}`}>
-                <span>Estimated shipping &amp; Handling</span>
+                <span>{t('checkout.payment.estimated')}</span>
                 <span>{fmt(shippingCost)}</span>
               </div>
             </div>
             <div className={`${styles.summaryTotalRow} ${styles.totalRow}`}>
-              <span>Total</span>
+              <span>{t('checkout.payment.total')}</span>
               <span>{fmt(total)}</span>
             </div>
           </div>
@@ -471,7 +471,7 @@ function PaymentStep({
       {/* Payment Form Panel (Справа) */}
       <div className={styles.paymentPanel}>
         <div className={styles.paymentSection}>
-          <h2 className={styles.sectionTitle}>Payment</h2>
+          <h2 className={styles.sectionTitle}>{t('checkout.payment.title')}</h2>
           <div className={styles.paymentTabs}>
             {TABS.map((t) => (
               <button

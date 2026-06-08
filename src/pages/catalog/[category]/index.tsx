@@ -19,6 +19,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ListResult } from "@homeberris/types/filter";
 
 import styles from "@homeberris/pages/catalog/[category]/index.module.css";
+import { useTranslation } from "react-i18next";
 
 const ITEMS_PER_PAGE = 9;
 
@@ -31,6 +32,8 @@ export default function CatalogPage() {
   const breadcrumbPath = categoryName
     ? `/catalog/${encodeURIComponent(categoryName)}`
     : "/catalog";
+
+  const { t } = useTranslation('common');
 
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [sortBy, setSortBy] = React.useState("rating");
@@ -124,11 +127,11 @@ export default function CatalogPage() {
       {/* Breadcrumb */}
       <nav className={styles.breadcrumb} aria-label="breadcrumb">
         <Link href="/" className={styles.breadcrumbLink}>
-          Главная
+          {t('catalogAll.breadcrumb.home')}
         </Link>
         <ChevronSepIcon className={styles.breadcrumbSep} />
         <Link href="/catalog" className={styles.breadcrumbLink}>
-          Catalog
+          {t('catalogAll.breadcrumb.catalog')}
         </Link>
         <ChevronSepIcon className={styles.breadcrumbSep} />
         <Link
@@ -162,27 +165,27 @@ export default function CatalogPage() {
               onClick={() => setShowDrawer(true)}
             >
               <FilterIcon />
-              Filters
+              {t('catalogAll.filters.title')}
             </button>
             <p className={styles.selectedCount}>
-              Selected Products: <strong>{catalogs?.meta?.count || 0}</strong>
+              {t('catalogAll.filters.selectedProducts')}: <strong>{catalogs?.meta?.count || 0}</strong>
             </p>
             <select
               className={styles.sortSelect}
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
             >
-              <option value="rating">By rating</option>
-              <option value="popularity">By popularity</option>
-              <option value="price_asc">Price: low to high</option>
-              <option value="price_desc">Price: high to low</option>
-              <option value="newest">Newest</option>
+              <option value="rating">{t('catalogAll.sort.rating')}</option>
+              <option value="popularity">{t('catalogAll.sort.popularity')}</option>
+              <option value="price_asc">{t('catalogAll.sort.priceAsc')}</option>
+              <option value="price_desc">{t('catalogAll.sort.priceDesc')}</option>
+              <option value="newest">{t('catalogAll.sort.newest')}</option>
             </select>
           </div>
 
           {/* Грид товаров */}
           <div className={styles.productTotal}>
-            <p>Products Result : <span>85</span></p>
+            <p>{t('catalogAll.products.result')} : <span>85</span></p>
           </div>
           <StaticProductCard
             catalogs={catalogs?.data || []}

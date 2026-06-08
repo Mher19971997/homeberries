@@ -5,6 +5,7 @@ import { BrandItem } from '@homeberris/types/brand';
 import { ChevronDownIcon, SearchIconNotMUI } from '@homeberris/assets/icons/catalog';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarFiltersProps {
   brands: BrandItem[];
@@ -15,6 +16,7 @@ interface SidebarFiltersProps {
   onFiltersChange?: (filters: Record<string, string[]>) => void;
 }
 
+<<<<<<< Updated upstream
 export default function SidebarFilters({
   brands,
   selectedBrands,
@@ -23,9 +25,24 @@ export default function SidebarFilters({
   catalogs = [],
   onFiltersChange,
 }: SidebarFiltersProps) {
+=======
+
+
+export default function SidebarFilters({ brands, selectedBrands, onBrandsChange, categoryName }: SidebarFiltersProps) {
+>>>>>>> Stashed changes
   const [brandSearch, setBrandSearch] = React.useState('');
   const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({ brand: true });
   const [selectedOptions, setSelectedOptions] = React.useState<Record<string, string[]>>({});
+
+  const { t } = useTranslation('common');
+
+  const EXTRA_SECTIONS = [
+    t('sidebarFilters.extraSections.batteryCapacity'),
+    t('sidebarFilters.extraSections.screenType'),
+    t('sidebarFilters.extraSections.screenDiagonal'),
+    t('sidebarFilters.extraSections.protectionClass'),
+    t('sidebarFilters.extraSections.builtInMemory'),
+  ];
 
   const brandCountQueries = useQueries({
     queries: brands.map((brand) => ({
@@ -91,7 +108,7 @@ export default function SidebarFilters({
           className={`${styles.accordionHeader} ${openSections.brand ? styles.accordionHeaderOpen : ''}`}
           onClick={() => toggle('brand')}
         >
-          <p className={styles.accordionTitle}>Brand</p>
+          <p className={styles.accordionTitle}>{t('sidebarFilters.brand')}</p>
           <ChevronDownIcon className={`${styles.chevron} ${openSections.brand ? styles.chevronOpen : ''}`} />
         </div>
         {openSections.brand && (
@@ -100,14 +117,14 @@ export default function SidebarFilters({
               <SearchIconNotMUI />
               <input
                 className={styles.searchInput}
-                placeholder="Search"
+                placeholder={t('sidebarFilters.search')}
                 value={brandSearch}
                 onChange={(e) => setBrandSearch(e.target.value)}
               />
             </div>
             <div className={styles.brandList}>
               {filteredBrands.length === 0 ? (
-                <p className={styles.emptyText}>No brands</p>
+                <p className={styles.emptyText}>{t('sidebarFilters.noBrands')}</p>
               ) : (
                 filteredBrands.map((brand) => (
                   <label key={brand.uuid} className={styles.checkboxRow}>
@@ -143,6 +160,7 @@ export default function SidebarFilters({
           </div>
           {openSections[name] && (
             <div className={styles.accordionBody}>
+<<<<<<< Updated upstream
               {values.length === 0 ? (
                 <p className={styles.emptyText}>No data</p>
               ) : (
@@ -160,6 +178,9 @@ export default function SidebarFilters({
                   ))}
                 </div>
               )}
+=======
+              <p className={styles.emptyText}>{t('sidebarFilters.noData')}</p>
+>>>>>>> Stashed changes
             </div>
           )}
         </div>

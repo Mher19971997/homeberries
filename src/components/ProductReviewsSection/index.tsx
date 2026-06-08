@@ -2,11 +2,45 @@ import React from "react";
 import { StarIcon, StarHalfIcon, StarEmptyIcon, ChevronDownIcon } from "@homeberris/assets/icons/reviews";
 import { Paperclip, Send } from "lucide-react";
 import styles from "./index.module.css";
+<<<<<<< Updated upstream
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createComment } from "@homeberris/http/commentApi";
 import { useCookies } from "react-cookie";
 import { checkToken } from "@homeberris/utils/auth";
 import { UUID } from "crypto";
+=======
+import { useTranslation } from "react-i18next";
+
+const staticReviews = [
+  {
+    id: 1,
+    name: "Grace Carey",
+    date: "24 January 2023",
+    rating: 4,
+    text: "I was a bit nervous to be buying a secondhand phone from Amazon, but I couldn't be happier with my purchase!! I have a pre-paid data plan so I was worried that this phone wouldn't connect with my data plan, since the new phones don't have the physical Sim tray anymore, but couldn't have been easier! I bought an Unlocked black iPhone 14 Pro Max in excellent condition and everything is PERFECT. It was super easy to set up and the phone works and looks great. It truly was in excellent condition. Highly recommend!!!❤",
+    images: [],
+    avatar: null,
+  },
+  {
+    id: 2,
+    name: "Ronald Richards",
+    date: "24 January 2023",
+    rating: 5,
+    text: "This phone has 1T storage and is durable. Plus all the new iPhones have a C port! Apple is phasing out the current ones! (All about the Benjamins) So if you want a phone that's going to last grab an iPhone 14 pro max and get several cords and plugs.",
+    images: [],
+    avatar: null,
+  },
+  {
+    id: 3,
+    name: "Darcy King",
+    date: "24 January 2023",
+    rating: 3.5,
+    text: "I might be the only one to say this but the camera is a little funky. Hoping it will change with a software update; otherwise, love this phone! Came in great condition",
+    images: ["/static/review1.jpg", "/static/review2.jpg"],
+    avatar: null,
+  },
+];
+>>>>>>> Stashed changes
 
 const INITIAL_COUNT = 3;
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
@@ -97,6 +131,7 @@ interface Props {
 
 export default function ProductReviewsSection({ catalog }: Props) {
   const [showAll, setShowAll] = React.useState(false);
+<<<<<<< Updated upstream
   const [rating, setRating] = React.useState(5);
   const [text, setText] = React.useState("");
   const [image, setImage] = React.useState<File | null>(null);
@@ -133,18 +168,42 @@ export default function ProductReviewsSection({ catalog }: Props) {
     if (!dateStr) return "";
     return new Date(dateStr).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
   };
+=======
+  const { t } = useTranslation('common');
+
+  const staticRating = {
+    average: 4.8,
+    total: 125,
+    bars: [
+      { label: t('reviews.title'), count: 100 },
+      { label: t('reviews.ratingBars.good'), count: 11 },
+      { label: t('reviews.ratingBars.average'), count: 3 },
+      { label: t('reviews.ratingBars.belowAverage'), count: 8 },
+      { label: t('reviews.ratingBars.poor'), count: 1 },
+    ],
+  };
+
+  const maxBar = Math.max(...staticRating.bars.map((b) => b.count));
+  const visibleReviews = showAll ? staticReviews : staticReviews.slice(0, INITIAL_COUNT);
+>>>>>>> Stashed changes
 
   return (
     <section className={styles.section}>
       {/* Рейтинг */}
       <div className={styles.ratingBlock}>
-        <h2 className={styles.title}>Reviews</h2>
+        <h2 className={styles.title}>{t('reviews.title')}</h2>
         <div className={styles.ratingInner}>
           <div className={styles.ratingLeft}>
             <div className={styles.ordinaryClass}>
+<<<<<<< Updated upstream
               <span className={styles.ratingNumber}>{avgRating || "—"}</span>
               <br />
               <span className={styles.ratingTotal}>of {comments.length} reviews</span>
+=======
+              <span className={styles.ratingNumber}>{staticRating.average}</span>
+              <br />
+              <span className={styles.ratingTotal}>of {staticRating.total} reviews</span>
+>>>>>>> Stashed changes
             </div>
             {avgRating > 0 && <StarRating rating={avgRating} />}
           </div>
@@ -160,6 +219,7 @@ export default function ProductReviewsSection({ catalog }: Props) {
             ))}
           </div>
         </div>
+<<<<<<< Updated upstream
 
         {/* Leave Comment */}
         <CommentInput
@@ -172,6 +232,12 @@ export default function ProductReviewsSection({ catalog }: Props) {
           setImage={setImage}
           isPending={isPending}
           onSend={() => text.trim() && mutate()}
+=======
+        <input
+          type="text"
+          className={styles.leaveCommentInput}
+          placeholder={t('reviews.leaveComment')}
+>>>>>>> Stashed changes
         />
       </div>
 
@@ -205,6 +271,7 @@ export default function ProductReviewsSection({ catalog }: Props) {
             );
           })}
 
+<<<<<<< Updated upstream
           {comments.length > INITIAL_COUNT && (
             <button className={styles.viewMoreBtn} onClick={() => setShowAll((p) => !p)}>
               {showAll ? "View Less" : "View More"}
@@ -213,6 +280,15 @@ export default function ProductReviewsSection({ catalog }: Props) {
           )}
         </div>
       )}
+=======
+        <button className={styles.viewMoreBtn} onClick={() => setShowAll((p) => !p)}>
+          {showAll ? t('reviews.viewLess') : t('reviews.viewMore')}
+          <ChevronDownIcon
+            style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }}
+          />
+        </button>
+      </div>
+>>>>>>> Stashed changes
     </section>
   );
 }

@@ -123,14 +123,18 @@
     position: absolute;
     right: 16px;
     min-height: 32px;
-    padding: 0 16px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 12px;
     border: 1px solid;
     border-radius: 6px;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     max-width: 76px;
-    width: 100%;
+    width: auto;
 }
 
 .summaryRowsContainer {

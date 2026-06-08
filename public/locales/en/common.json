@@ -115,7 +115,7 @@
       "descriptionFree": "Regular delivery",
       "descriptionFast": "Get your delivery as soon as possible",
       "descriptionSchedule": "Pick a date when you want to get your delivery",
-      "date" : "Select Date"
+      "date": "Select Date"
     },
     "payment": {
       "title": "Payment",
@@ -138,6 +138,157 @@
     "buttons": {
       "next": "Next",
       "back": "Back"
+    }
+  },
+  "catalogAll": {
+    "breadcrumb": {
+      "home": "Home",
+      "catalog": "Catalog"
+    },
+    "filters": {
+      "title": "Filters",
+      "selectedProducts": "Selected Products"
+    },
+    "sort": {
+      "title": "Sort",
+      "rating": "By rating",
+      "popularity": "By popularity",
+      "priceAsc": "Price: low to high",
+      "priceDesc": "Price: high to low",
+      "newest": "Newest"
+    },
+    "products": {
+      "result": "Products Result"
+    },
+    "pagination": {
+      "next": "Next",
+      "previous": "Previous"
+    }
+  },
+  "sidebarFilters": {
+    "brand": "Brand",
+    "search": "Search",
+    "noBrands": "No brands",
+    "noData": "No data",
+    "extraSections": {
+      "batteryCapacity": "Battery capacity",
+      "screenType": "Screen type",
+      "screenDiagonal": "Screen diagonal",
+      "protectionClass": "Protection class",
+      "builtInMemory": "Built-in memory"
+    }
+  },
+  "productDetails": {
+    "title": "Details",
+    "viewMore": "View More",
+    "viewLess": "View Less",
+    "description": "Just so I know is judged by its cover, the first thing you notice when you pick up a modern smartphone is the display. Nothing anything, from our smartphones drive our life or quality! wait the display makes sure you're set up for the best actions and options, leaving you feel like you're really somewhere, and how great that is even satisfied quite a lot thing is fine with displays. Bold colors and sharp characters always promise the quality of the actors provided by the producers of the California brand, and then you'll 5.7 inch Retina genius, where you'll achieve as enjoyed the ambitions for many.",
+    "specs": {
+      "screen": "Screen",
+      "cpu": "CPU",
+      "camera": "Camera",
+      "battery": "Battery",
+      "memory": "Memory",
+      "labels": {
+        "screenDiagonal": "Screen diagonal",
+        "screenResolution": "Screen resolution",
+        "screenRefreshRate": "Screen refresh rate",
+        "colorDensity": "Color density",
+        "screenType": "Screen type",
+        "additionally": "Additionally",
+        "cores": "Number of cores",
+        "mainCamera": "Main camera",
+        "frontCamera": "Front camera",
+        "opticalZoom": "Optical zoom",
+        "video": "Video recording",
+        "batteryCapacity": "Battery capacity",
+        "fastCharging": "Fast charging",
+        "wirelessCharging": "Wireless charging",
+        "storage": "Storage options",
+        "screenSize": "Screen size"
+      }
+    }
+  },
+  "reviews": {
+    "title": "Reviews",
+    "ofReviews": "of {{count}} reviews",
+    "leaveComment": "Leave Comment",
+    "viewMore": "View More",
+    "viewLess": "View Less",
+    "ratingBars": {
+      "excellent": "Excellent",
+      "good": "Good",
+      "average": "Average",
+      "belowAverage": "Below Average",
+      "poor": "Poor"
+    }
+  },
+  "productPageContent": {
+    "breadcrumb": {
+      "home": "Home"
+    },
+    "gallery": {
+      "noImages": "Images not found"
+    },
+    "description": {
+      "more": "more...",
+      "less": "less..."
+    },
+    "actions": {
+      "addToWishlist": "Add to Wishlist",
+      "addToCart": "Add to Cart",
+      "inCart": "In Cart ✓"
+    },
+    "delivery": {
+      "free": {
+        "title": "Free Delivery",
+        "subtitle": "1-2 day"
+      },
+      "stock": {
+        "title": "In Stock",
+        "subtitle": "Today"
+      },
+      "guarantee": {
+        "title": "Guaranteed",
+        "subtitle": "1 year"
+      }
+    },
+    "comments": {
+      "title": "Reviews",
+      "scrollLeft": "Scroll left",
+      "scrollRight": "Scroll right"
+    },
+    "color": "Select color"
+  },
+  "auth": {
+    "login": {
+      "title": "Log in to your account",
+      "tabLogin": "Login",
+      "tabRegister": "Register",
+      "email": "Email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter password",
+      "submit": "Log in",
+      "loading": "Logging in...",
+      "welcome": "Welcome back!"
+    },
+    "register": {
+      "title": "Create an account",
+      "email": "Email",
+      "password": "Password",
+      "passwordPlaceholder": "Minimum 8 characters",
+      "confirmPassword": "Confirm password",
+      "confirmPlaceholder": "Repeat password",
+      "submit": "Create account",
+      "loading": "Creating account...",
+      "success": "Account created!"
+    },
+    "errors": {
+      "fillFields": "Please fill in all fields",
+      "passwordMismatch": "Passwords do not match",
+      "passwordLength": "Password must be at least 8 characters",
+      "invalid": "Invalid email or password",
+      "registerError": "Registration error"
     }
   }
 }

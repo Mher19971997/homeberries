@@ -12,6 +12,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const locale = (params?.locale as string) || 'ru';
 
+  // supressHydrationWarning
+  if (i18n.language !== locale) {
+    i18n.changeLanguage(locale);
+  }
+
   const queryClient = React.useRef(new QueryClient({
     defaultOptions: {
       queries: {
@@ -21,11 +26,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     },
   }));
 
-  React.useEffect(() => {
-    if (i18n.language !== locale) {
-      i18n.changeLanguage(locale);
-    }
-  }, [locale]);
+
 
   return (
     <QueryClientProvider client={queryClient.current}>

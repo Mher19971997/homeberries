@@ -139,5 +139,156 @@
       "next": "Далее",
       "back": "Назад"
     }
+  },
+  "catalogAll": {
+    "breadcrumb": {
+      "home": "Главная",
+      "catalog": "Каталог"
+    },
+    "filters": {
+      "title": "Фильтры",
+      "selectedProducts": "Выбранные товары"
+    },
+    "sort": {
+      "title": "Сортировка",
+      "rating": "По рейтингу",
+      "popularity": "По популярности",
+      "priceAsc": "Цена: по возрастанию",
+      "priceDesc": "Цена: по убыванию",
+      "newest": "Новинки"
+    },
+    "products": {
+      "result": "Результаты товаров"
+    },
+    "pagination": {
+      "next": "Далее",
+      "previous": "Назад"
+    }
+  },
+  "sidebarFilters": {
+    "brand": "Бренд",
+    "search": "Поиск",
+    "noBrands": "Бренды отсутствуют",
+    "noData": "Нет данных",
+    "extraSections": {
+      "batteryCapacity": "Ёмкость аккумулятора",
+      "screenType": "Тип экрана",
+      "screenDiagonal": "Диагональ экрана",
+      "protectionClass": "Класс защиты",
+      "builtInMemory": "Встроенная память"
+    }
+  },
+  "productDetails": {
+    "title": "Подробности",
+    "viewMore": "Показать ещё",
+    "viewLess": "Скрыть",
+    "description": "Just so I know is judged by its cover, the first thing you notice when you pick up a modern smartphone is the display. Nothing anything, from our smartphones drive our life or quality! wait the display makes sure you're set up for the best actions and options, leaving you feel like you're really somewhere, and how great that is even satisfied quite a lot thing is fine with displays. Bold colors and sharp characters always promise the quality of the actors provided by the producers of the California brand, and then you'll 5.7 inch Retina genius, where you'll achieve as enjoyed the ambitions for many.",
+    "specs": {
+      "screen": "Экран",
+      "cpu": "Процессор",
+      "camera": "Камера",
+      "battery": "Батарея",
+      "memory": "Память",
+      "labels": {
+        "screenDiagonal": "Диагональ экрана",
+        "screenResolution": "Разрешение экрана",
+        "screenRefreshRate": "Частота обновления",
+        "colorDensity": "Плотность пикселей",
+        "screenType": "Тип экрана",
+        "additionally": "Дополнительно",
+        "cores": "Количество ядер",
+        "mainCamera": "Основная камера",
+        "frontCamera": "Фронтальная камера",
+        "opticalZoom": "Оптический зум",
+        "video": "Видео запись",
+        "batteryCapacity": "Ёмкость батареи",
+        "fastCharging": "Быстрая зарядка",
+        "wirelessCharging": "Беспроводная зарядка",
+        "storage": "Встроенная память",
+        "screenSize": "Размер экрана"
+      }
+    }
+  },
+  "reviews": {
+    "title": "Отзывы",
+    "ofReviews": "из {{count}} отзывов",
+    "leaveComment": "Оставить комментарий",
+    "viewMore": "Показать ещё",
+    "viewLess": "Скрыть",
+    "ratingBars": {
+      "excellent": "Отлично",
+      "good": "Хорошо",
+      "average": "Средне",
+      "belowAverage": "Ниже среднего",
+      "poor": "Плохо"
+    }
+  },
+  "productPageContent": {
+    "breadcrumb": {
+      "home": "Главная"
+    },
+    "gallery": {
+      "noImages": "Изображения не найдены"
+    },
+    "description": {
+      "more": "ещё...",
+      "less": "скрыть"
+    },
+    "actions": {
+      "addToWishlist": "В избранное",
+      "addToCart": "Добавить в корзину",
+      "inCart": "В корзине ✓"
+    },
+    "delivery": {
+      "free": {
+        "title": "Бесплатная доставка",
+        "subtitle": "1-2 дня"
+      },
+      "stock": {
+        "title": "В наличии",
+        "subtitle": "Сегодня"
+      },
+      "guarantee": {
+        "title": "Гарантия",
+        "subtitle": "1 год"
+      }
+    },
+    "comments": {
+      "title": "Отзывы",
+      "scrollLeft": "Прокрутить влево",
+      "scrollRight": "Прокрутить вправо"
+    },
+    "color": "Выберите цвет"
+  },
+  "auth": {
+    "login": {
+      "title": "Войдите в свой аккаунт",
+      "tabLogin": "Войти",
+      "tabRegister": "Регистрация",
+      "email": "Email",
+      "password": "Пароль",
+      "passwordPlaceholder": "Введите пароль",
+      "submit": "Войти",
+      "loading": "Входим...",
+      "welcome": "Добро пожаловать!"
+    },
+    "register": {
+      "title": "Создайте аккаунт",
+      "email": "Email",
+      "password": "Пароль",
+      "passwordPlaceholder": "Минимум 8 символов",
+      "confirmPassword": "Подтвердите пароль",
+      "confirmPlaceholder": "Повторите пароль",
+      "submit": "Создать аккаунт",
+      "loading": "Создаём...",
+      "success": "Аккаунт создан!"
+    },
+    "errors": {
+      "fillFields": "Заполните все поля",
+      "passwordMismatch": "Пароли не совпадают",
+      "passwordLength": "Пароль минимум 8 символов",
+      "invalid": "Неверный email или пароль",
+      "registerError": "Ошибка при регистрации"
+    }
   }
 }

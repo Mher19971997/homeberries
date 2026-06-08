@@ -37,8 +37,7 @@ import { useFavorites } from "@homeberris/context/favoritesContext";
 import { useCookies } from "react-cookie";
 import { insertBasket } from "@homeberris/http/basketApi";
 import { addToBasket } from "@homeberris/utils/indexedDB";
-
-
+import { useTranslation } from "react-i18next";
 
 interface ProductPageContentProps {
   catalog: CatalogItem | undefined;
@@ -46,52 +45,50 @@ interface ProductPageContentProps {
   subCategoryName?: string;
 }
 
-
-
-
-
-  interface CatalogCardProps {
+interface CatalogCardProps {
   catalog: CatalogItem;
   sortPanelOne?: boolean;
   onNavigate?: () => void;
 }
 
-  export default function ProductPageContent({
-    catalog,
-    categoryName,
-    subCategoryName,
-  }: ProductPageContentProps) {
-    const route = useRouter();
-    const routeParams = useParams();
-    const routePathname = usePathname();
-    const [showFullDesc, setShowFullDesc] = React.useState(false);
-    const [selectedStorage, setSelectedStorage] = React.useState<string | null>(
-      null,
-    );
-    const [selectedColor, setSelectedColor] = React.useState<string | null>(null);
-    const [activeIndex, setActiveIndex] = React.useState(0);
-    const [animState, setAnimState] = React.useState<
+export default function ProductPageContent({
+  catalog,
+  categoryName,
+  subCategoryName,
+}: ProductPageContentProps) {
+  const route = useRouter();
+  const routeParams = useParams();
+  const routePathname = usePathname();
+  const [showFullDesc, setShowFullDesc] = React.useState(false);
+  const [selectedStorage, setSelectedStorage] = React.useState<string | null>(
+    null,
+  );
+  const [selectedColor, setSelectedColor] = React.useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [animState, setAnimState] = React.useState<
     "exitLeft" | "exitRight" | "enterRight" | "enterLeft" | null
-    >(null);
-    const dragStartX = React.useRef<number | null>(null);
-    const [isDragging, setIsDragging] = React.useState(false);
-    
-    const changeImage = (nextIndex: number, dir: "left" | "right") => {
-      if (nextIndex === activeIndex) return;
-      setAnimState(dir === "left" ? "exitLeft" : "exitRight");
-      setTimeout(() => {
-        setActiveIndex(nextIndex);
-        setAnimState(dir === "left" ? "enterRight" : "enterLeft");
-        setTimeout(() => setAnimState(null), 350);
-      }, 250);
-    };
+  >(null);
+  const dragStartX = React.useRef<number | null>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+
+  const { t } = useTranslation('common');
+
+  const changeImage = (nextIndex: number, dir: "left" | "right") => {
+    if (nextIndex === activeIndex) return;
+    setAnimState(dir === "left" ? "exitLeft" : "exitRight");
+    setTimeout(() => {
+      setActiveIndex(nextIndex);
+      setAnimState(dir === "left" ? "enterRight" : "enterLeft");
+      setTimeout(() => setAnimState(null), 350);
+    }, 250);
+  };
 
   const queryClient = useQueryClient();
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [cookies] = useCookies(['token']);
   const { isFavorite, toggleFavorite } = useFavorites();
 
-  
+
   const isAuth = checkToken();
   const { mutate } = useMutation({
     mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, cookies.token),
@@ -103,6 +100,7 @@ interface ProductPageContentProps {
     onError: (error) => console.error(error),
   });
 
+<<<<<<< Updated upstream
     const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isAuth && cookies.token) {
@@ -114,6 +112,19 @@ interface ProductPageContentProps {
       }
     };
     
+=======
+  const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isAuth && cookies.token) {
+      mutate(catalog!.uuid);
+    } else {
+      addToBasket(catalog, 1)
+        .then(() => setOpenSuccess(true))
+        .catch((err) => console.error(err));
+    }
+  };
+
+>>>>>>> Stashed changes
   const handleDragStart = (x: number) => {
     dragStartX.current = x;
     setIsDragging(true);
@@ -199,12 +210,12 @@ interface ProductPageContentProps {
   const staticColors = ["#000000", "#781DBC", "#E10000", "#E1B000", "#E8E8E8"];
   const staticStorage = ["128GB", "256GB", "512GB", "1TB"];
   const staticSpecs = [
-    { name: "Screen size", value: '6.7"', icon: <ScreenSizeIcon /> },
+    { name: t('productDetails.specs.labels.screenSize'), value: '6.7"', icon: <ScreenSizeIcon /> },
     { name: "CPU", value: "Apple A16 Bionic", icon: <CpuIcon /> },
-    { name: "Number of Cores", value: "6", icon: <CoresIcon /> },
-    { name: "Main camera", value: "48-12 -12 MP", icon: <CameraIcon /> },
-    { name: "Front-camera", value: "12 MP", icon: <FrontCameraIcon /> },
-    { name: "Battery capacity", value: "4323 mAh", icon: <BatteryIcon /> },
+    { name: t('productDetails.specs.labels.cores'), value: "6", icon: <CoresIcon /> },
+    { name: t('productDetails.specs.labels.mainCamera'), value: "48-12 -12 MP", icon: <CameraIcon /> },
+    { name: t('productDetails.specs.labels.frontCamera'), value: "12 MP", icon: <FrontCameraIcon /> },
+    { name: t('productDetails.specs.labels.batteryCapacity'), value: "4323 mAh", icon: <BatteryIcon /> },
   ];
   const staticDescription =
     "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, yes and in bright light using the new system with two cameras.";
@@ -257,21 +268,21 @@ interface ProductPageContentProps {
       })
     : [];
 
-        const router = useRouter()
-        const handleCheckout = () => {
+  const router = useRouter()
+  const handleCheckout = () => {
     // if (!isAuth) { router.push('/security/login'); return; }
     // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
     // setShowPaymentModal(true);
-      console.log('checkout clicked');
+    console.log('checkout clicked');
     route.push(`/order`);
   };
-      
+
   return (
     <div className={styles.body}>
       <div className={styles.contantHeader}>
         <nav aria-label="breadcrumb" className={styles.breadcrumb}>
           <Link href="/" className={styles.breadcrumbLink}>
-            Главная
+            {t('productPageContent.breadcrumb.home')}
           </Link>
           <ChevronSepIcon className={styles.breadcrumbSep} />
           <Link href={categoryPath} className={styles.breadcrumbLink}>
@@ -349,7 +360,7 @@ interface ProductPageContentProps {
             </div>
           ) : (
             <div className={styles.imagePlaceholder}>
-              <p>Изображения не найдены</p>
+              <p>{t('productPageContent.gallery.noImages')}</p>
             </div>
           )}
         </div>
@@ -379,7 +390,7 @@ interface ProductPageContentProps {
               return (
                 <div className={styles.colorSelector}>
                   <span className={styles.colorSelectorLabel}>
-                    Select color :
+                    {t('productPageContent.color')} :
                   </span>
                   {dbColors.map((c) => (
                     <button
@@ -452,6 +463,7 @@ interface ProductPageContentProps {
             })()}
 
             {/* Описание */}
+<<<<<<< Updated upstream
             {(() => {
               const desc = catalog.description || staticDescription;
               const isLong = desc.length > 50;
@@ -469,6 +481,21 @@ interface ProductPageContentProps {
                 </div>
               );
             })()}
+=======
+            <div className={styles.descriptionSection}>
+              <p
+                className={`${styles.descriptionText} ${showFullDesc ? styles.descriptionTextFull : ""}`}
+              >
+                {catalog.description || staticDescription}
+              </p>
+              <button
+                className={styles.moreBtn}
+                onClick={() => setShowFullDesc((p) => !p)}
+              >
+                {showFullDesc ? t("productPageContent.description.less") : t("productPageContent.description.more")}
+              </button>
+            </div>
+>>>>>>> Stashed changes
           </div>
 
           {/* Блок 3: Кнопки + Доставка */}
@@ -479,10 +506,10 @@ interface ProductPageContentProps {
                 className={styles.btnWishlist}
                 onClick={handleAddToBasket}
               >
-                Add to Wishlist
+                {t('productPageContent.actions.addToWishlist')}
               </button>
-              <button className={styles.btnCart} onClick={handleCheckout }>
-                {isInCart ? "In Cart ✓" : "Add to Card"}
+              <button className={styles.btnCart} onClick={handleCheckout}>
+                {isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
               </button>
             </div>
 
@@ -495,8 +522,8 @@ interface ProductPageContentProps {
                   </div>
                 </div>
                 <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>Free Delivery</span>
-                  <span className={styles.deliverySubtitle}>1-2 day</span>
+                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.free.title')}</span>
+                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.free.subtitle')}</span>
                 </div>
               </div>
               <div className={styles.deliveryItem}>
@@ -506,8 +533,8 @@ interface ProductPageContentProps {
                   </div>
                 </div>
                 <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>In Stock</span>
-                  <span className={styles.deliverySubtitle}>Today</span>
+                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.stock.title')}</span>
+                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.stock.subtitle')}</span>
                 </div>
               </div>
               <div className={styles.deliveryItem}>
@@ -517,8 +544,8 @@ interface ProductPageContentProps {
                   </div>
                 </div>
                 <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>Guaranteed</span>
-                  <span className={styles.deliverySubtitle}>1 year</span>
+                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.guarantee.title')}</span>
+                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.guarantee.subtitle')}</span>
                 </div>
               </div>
             </div>
@@ -532,6 +559,44 @@ interface ProductPageContentProps {
       {/* Reviews section */}
       <ProductReviewsSection catalog={catalog} />
 
+<<<<<<< Updated upstream
+=======
+      {/* Комментарии */}
+      {catalog?.comments && catalog.comments.length > 0 && (
+        <div className={styles.commentsSection}>
+          <h5 className={styles.sectionTitle}>{t('productPageContent.comments.title')}</h5>
+          <div className={styles.commentsWrapper}>
+            {canScrollLeft && (
+              <button
+                className={styles.scrollButton}
+                onClick={scrollLeft}
+                aria-label={t('productPageContent.comments.scrollLeft')}
+              >
+                ‹
+              </button>
+            )}
+            <div
+              ref={commentsContainerRef}
+              className={styles.commentsContainer}
+              onScroll={checkScrollButtons}
+            >
+              {catalog.comments.map((comment: CommentItem) => (
+                <CommentCard key={comment.uuid} comment={comment} />
+              ))}
+            </div>
+            {canScrollRight && (
+              <button
+                className={styles.scrollButton}
+                onClick={scrollRight}
+                aria-label={t('productPageContent.comments.scrollRight')}
+              >
+                ›
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+>>>>>>> Stashed changes
 
       {/* Похожие товары */}
       <SimilarProducts
