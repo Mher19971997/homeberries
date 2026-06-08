@@ -58,7 +58,7 @@
 
 /* ─── Left: Gallery ──────────────────────────────────── */
 .gridItemImage {
-  align-self: center;
+  align-self: flex-start;
 }
 
 .gallery {

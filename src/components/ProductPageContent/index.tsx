@@ -94,7 +94,7 @@ interface ProductPageContentProps {
   
   const isAuth = checkToken();
   const { mutate } = useMutation({
-    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid }, cookies.token),
+    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, cookies.token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['basketCount'] });
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
@@ -106,7 +106,7 @@ interface ProductPageContentProps {
     const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
       if (isAuth && cookies.token) {
-        mutate(catalog!.uuid) ;
+        mutate(catalog!.uuid);
       } else {
         addToBasket(catalog, 1)
           .then(() => setOpenSuccess(true))
@@ -416,7 +416,8 @@ interface ProductPageContentProps {
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
                   ? storageGroup.options.map((o: OptionsItem) => o.value)
-                  : staticStorage;
+                  : [];
+              if (storageItems.length === 0) return null;
               return (
                 <div className={styles.storageSelector}>
                   {storageItems.map((val: string, i: number) => (
@@ -451,19 +452,23 @@ interface ProductPageContentProps {
             })()}
 
             {/* Описание */}
-            <div className={styles.descriptionSection}>
-              <p
-                className={`${styles.descriptionText} ${showFullDesc ? styles.descriptionTextFull : ""}`}
-              >
-                {catalog.description || staticDescription}
-              </p>
-              <button
-                className={styles.moreBtn}
-                onClick={() => setShowFullDesc((p) => !p)}
-              >
-                {showFullDesc ? "less..." : "more..."}
-              </button>
-            </div>
+            {(() => {
+              const desc = catalog.description || staticDescription;
+              const isLong = desc.length > 50;
+              const displayedDesc = isLong && !showFullDesc ? desc.slice(0, 50) + "..." : desc;
+              return (
+                <div className={styles.descriptionSection}>
+                  <p className={`${styles.descriptionText} ${styles.descriptionTextFull}`}>
+                    {displayedDesc}
+                  </p>
+                  {isLong && (
+                    <button className={styles.moreBtn} onClick={() => setShowFullDesc((p) => !p)}>
+                      {showFullDesc ? "less..." : "more..."}
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
           </div>
 
           {/* Блок 3: Кнопки + Доставка */}
@@ -522,7 +527,7 @@ interface ProductPageContentProps {
       </div>
 
       {/* Details section */}
-      <ProductDetailsSection />
+      <ProductDetailsSection catalog={catalog} />
 
       {/* Reviews section */}
       <ProductReviewsSection />
