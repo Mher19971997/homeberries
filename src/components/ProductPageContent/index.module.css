@@ -53,6 +53,7 @@
   max-width: 1120px;
   margin: 0 auto;
   margin-bottom: 112px;
+  justify-content: space-between;
 }
 
 /* ─── Left: Gallery ──────────────────────────────────── */
@@ -111,8 +112,8 @@
 
 .mainImage {
   width: 413px;
-  min-width: 413px;
-  min-height: 516px;
+  width: 413px;
+  height: 516px;
   flex-shrink: 0;
   overflow: hidden;
 }

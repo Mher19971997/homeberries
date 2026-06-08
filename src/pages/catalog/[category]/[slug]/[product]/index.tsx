@@ -36,7 +36,8 @@ export default function Catalog() {
             { association: 'images' },
             { association: 'groupOption', include: [{ association: 'options' }] },
             { association: 'comments' },
-            { association: 'brand' }
+            { association: 'brand' },
+            { association: 'colors' }
           ]
         })
       ),

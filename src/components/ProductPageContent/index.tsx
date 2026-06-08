@@ -232,13 +232,30 @@ interface ProductPageContentProps {
       : categoryPath;
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
-  const images =
-    catalog?.images && catalog.images.length > 0
-      ? catalog.images.map(({ image }: any) => {
+
+  const allImages: any[] = catalog?.images || [];
+  const dbColors: { uuid: string; color: string; inStock: boolean }[] = (catalog as any)?.colors || [];
+
+  // Фото для текущего выбранного цвета, или общие фото (без colorUuid)
+  const filteredImages = React.useMemo(() => {
+    if (selectedColor && dbColors.length > 0) {
+      const colorObj = dbColors.find(c => c.color === selectedColor);
+      if (colorObj) {
+        const colorImages = allImages.filter((img: any) => img.colorUuid === colorObj.uuid);
+        if (colorImages.length > 0) return colorImages;
+      }
+    }
+    // Показываем общие фото (без colorUuid) или все если нет общих
+    const general = allImages.filter((img: any) => !img.colorUuid);
+    return general.length > 0 ? general : allImages;
+  }, [allImages, selectedColor, dbColors]);
+
+  const images = filteredImages.length > 0
+    ? filteredImages.map(({ image }: any) => {
         const imagePath = image.startsWith("/") ? image : "/" + image;
         return baseUrl + imagePath;
       })
-      : [];
+    : [];
 
         const router = useRouter()
         const handleCheckout = () => {
@@ -358,31 +375,21 @@ interface ProductPageContentProps {
           <div className={styles.infoBlock2}>
             {/* Выбор цвета */}
             {(() => {
-              const colorGroup = catalog.groupOption?.find(
-                (g: groupOptionItem) =>
-                  g.options?.some((o: OptionsItem) =>
-                    o.name?.toLowerCase().includes("цвет"),
-                  ),
-              );
-              const colorOptions = colorGroup?.options?.filter(
-                (o: OptionsItem) => o.name?.toLowerCase().includes("цвет"),
-              );
-              const colors =
-                colorOptions && colorOptions.length > 0
-                  ? colorOptions.map((o: OptionsItem) => o.value)
-                  : staticColors;
-              const safeColorOptions = colorOptions ?? [];
+              if (dbColors.length === 0) return null;
               return (
                 <div className={styles.colorSelector}>
                   <span className={styles.colorSelectorLabel}>
                     Select color :
                   </span>
-                  <ProductColorSelector
-                    options={safeColorOptions}
-                    onColorSelect={(color) => {
-                      setSelectedColor(color.name);
-                    }}
-                  />
+                  {dbColors.map((c) => (
+                    <button
+                      key={c.uuid}
+                      className={`${styles.colorDot} ${selectedColor === c.color ? styles.colorDotActive : ''}`}
+                      style={{ backgroundColor: c.color, opacity: c.inStock ? 1 : 0.35 }}
+                      onClick={() => setSelectedColor(c.color)}
+                      title={c.color}
+                    />
+                  ))}
 
                   {/* {colors.map((color: string, i: number) => (
                     <button
