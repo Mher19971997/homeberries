@@ -11,21 +11,21 @@ interface SidebarFiltersProps {
   selectedBrands: string[];
   onBrandsChange: (brands: string[]) => void;
   categoryName?: string;
+  catalogs?: any[];
+  onFiltersChange?: (filters: Record<string, string[]>) => void;
 }
 
-const EXTRA_SECTIONS = [
-  'Battery capacity',
-  'Screen type',
-  'Screen diagonal',
-  'Protection class',
-  'Built-in memory',
-];
-
-export default function SidebarFilters({ brands, selectedBrands, onBrandsChange, categoryName }: SidebarFiltersProps) {
+export default function SidebarFilters({
+  brands,
+  selectedBrands,
+  onBrandsChange,
+  categoryName,
+  catalogs = [],
+  onFiltersChange,
+}: SidebarFiltersProps) {
   const [brandSearch, setBrandSearch] = React.useState('');
-  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
-    brand: true,
-  });
+  const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({ brand: true });
+  const [selectedOptions, setSelectedOptions] = React.useState<Record<string, string[]>>({});
 
   const brandCountQueries = useQueries({
     queries: brands.map((brand) => ({
@@ -39,6 +39,20 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
     })),
   });
 
+  const groupSections = React.useMemo(() => {
+    const map = new Map<string, Set<string>>();
+    catalogs.forEach((catalog: any) => {
+      (catalog.groupOption || []).forEach((group: any) => {
+        if (!map.has(group.name)) map.set(group.name, new Set());
+        (group.options || []).forEach((opt: any) => map.get(group.name)!.add(opt.value));
+      });
+    });
+    return Array.from(map.entries()).map(([name, values]) => ({
+      name,
+      values: Array.from(values),
+    }));
+  }, [catalogs]);
+
   const brandCounts: Record<string, number> = {};
   brands.forEach((brand, i) => {
     brandCounts[brand.uuid] = (brandCountQueries[i]?.data as any)?.meta?.count ?? 0;
@@ -48,11 +62,22 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
     b.name.toLowerCase().includes(brandSearch.toLowerCase())
   );
 
-  const handleToggle = (uuid: string) => {
+  const handleToggleBrand = (uuid: string) => {
     const next = selectedBrands.includes(uuid)
       ? selectedBrands.filter((id) => id !== uuid)
       : [...selectedBrands, uuid];
     onBrandsChange(next);
+  };
+
+  const handleToggleOption = (groupName: string, value: string) => {
+    const current = selectedOptions[groupName] || [];
+    const next = current.includes(value)
+      ? current.filter((v) => v !== value)
+      : [...current, value];
+    const updated = { ...selectedOptions, [groupName]: next };
+    if (next.length === 0) delete updated[groupName];
+    setSelectedOptions(updated);
+    onFiltersChange?.(updated);
   };
 
   const toggle = (key: string) =>
@@ -90,7 +115,7 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
                       type="checkbox"
                       className={styles.checkbox}
                       checked={selectedBrands.includes(brand.uuid)}
-                      onChange={() => handleToggle(brand.uuid)}
+                      onChange={() => handleToggleBrand(brand.uuid)}
                     />
                     <span className={styles.checkboxLabel}>
                       {brand.name}
@@ -106,19 +131,35 @@ export default function SidebarFilters({ brands, selectedBrands, onBrandsChange,
         )}
       </div>
 
-      {/* Extra sections */}
-      {EXTRA_SECTIONS.map((label) => (
-        <div key={label} className={styles.accordion}>
+      {/* Динамические секции из groupOption */}
+      {groupSections.map(({ name, values }) => (
+        <div key={name} className={styles.accordion}>
           <div
-            className={`${styles.accordionHeader} ${openSections[label] ? styles.accordionHeaderOpen : ''}`}
-            onClick={() => toggle(label)}
+            className={`${styles.accordionHeader} ${openSections[name] ? styles.accordionHeaderOpen : ''}`}
+            onClick={() => toggle(name)}
           >
-            <p className={styles.accordionTitle}>{label}</p>
-            <ChevronDownIcon className={`${styles.chevron} ${openSections[label] ? styles.chevronOpen : ''}`} />
+            <p className={styles.accordionTitle}>{name}</p>
+            <ChevronDownIcon className={`${styles.chevron} ${openSections[name] ? styles.chevronOpen : ''}`} />
           </div>
-          {openSections[label] && (
+          {openSections[name] && (
             <div className={styles.accordionBody}>
-              <p className={styles.emptyText}>No data</p>
+              {values.length === 0 ? (
+                <p className={styles.emptyText}>No data</p>
+              ) : (
+                <div className={styles.brandList}>
+                  {values.map((val) => (
+                    <label key={val} className={styles.checkboxRow}>
+                      <input
+                        type="checkbox"
+                        className={styles.checkbox}
+                        checked={(selectedOptions[name] || []).includes(val)}
+                        onChange={() => handleToggleOption(name, val)}
+                      />
+                      <span className={styles.checkboxLabel}>{val}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>

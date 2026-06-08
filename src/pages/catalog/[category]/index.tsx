@@ -1,6 +1,7 @@
 import React from "react";
 import * as qs from "qs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronSepIcon, PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
 import { useParams } from "next/navigation";
 
@@ -22,6 +23,7 @@ import styles from "@homeberris/pages/catalog/[category]/index.module.css";
 const ITEMS_PER_PAGE = 9;
 
 export default function CatalogPage() {
+  const router = useRouter();
   const params = useParams();
   const category = params?.category;
   const categoryName =
@@ -37,11 +39,12 @@ export default function CatalogPage() {
     max: number;
   } | null>(null);
   const [selectedBrands, setSelectedBrands] = React.useState<string[]>([]);
+  const [groupFilters, setGroupFilters] = React.useState<Record<string, string[]>>({});
   const [currentPage, setCurrentPage] = React.useState(1);
 
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [sortBy, priceRange, selectedBrands]);
+  }, [sortBy, priceRange, selectedBrands, groupFilters]);
 
   const { data: menuTree } = useQuery({
     queryKey: ["getMenuTree"],
@@ -64,6 +67,12 @@ export default function CatalogPage() {
       includeMeta: [
         { association: "category", where: { name: categoryName } },
         { association: "brand" },
+        { association: "groupOption", include: [{ association: "options" }] },
+        ...Object.entries(groupFilters).map(([groupName, values]) => ({
+          association: "groupOption",
+          where: { name: groupName },
+          include: [{ association: "options", where: { value: { in: values } } }],
+        })),
       ],
       queryMeta: { paginate: true, limit: ITEMS_PER_PAGE, page: currentPage },
     };
@@ -71,13 +80,10 @@ export default function CatalogPage() {
       filters.where = { price: { $gte: priceRange.min, $lte: priceRange.max } };
     if (selectedBrands.length > 0)
       filters.filterMeta = { brandUuid: { in: selectedBrands } };
-    if (sortBy === "price_asc") filters.queryMeta.order = [["price", "ASC"]];
-    else if (sortBy === "price_desc")
-      filters.queryMeta.order = [["price", "DESC"]];
-    else if (sortBy === "rating")
-      filters.queryMeta.order = [["rating", "DESC"]];
-    else if (sortBy === "newest")
-      filters.queryMeta.order = [["createdAt", "DESC"]];
+    if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
+    else if (sortBy === "price_desc") filters.queryMeta.order = { price: "DESC" };
+    else if (sortBy === "rating") filters.queryMeta.order = { rating: "DESC" };
+    else if (sortBy === "newest") filters.queryMeta.order = { createdAt: "DESC" };
     return qs.stringify(filters);
   };
 
@@ -91,6 +97,7 @@ export default function CatalogPage() {
       sortBy,
       priceRange,
       selectedBrands,
+      groupFilters,
       currentPage,
     ],
     queryFn: () => getAllCatalogs(buildQuery()),
@@ -141,6 +148,8 @@ export default function CatalogPage() {
             selectedBrands={selectedBrands}
             onBrandsChange={setSelectedBrands}
             categoryName={categoryName}
+            catalogs={catalogs?.data || []}
+            onFiltersChange={setGroupFilters}
           />
         </div>
 
@@ -175,7 +184,17 @@ export default function CatalogPage() {
           <div className={styles.productTotal}>
             <p>Products Result : <span>85</span></p>
           </div>
-          <StaticProductCard catalogs={catalogs?.data || []} />
+          <StaticProductCard
+            catalogs={catalogs?.data || []}
+            onNavigate={(item) => {
+              const cat = (item as any).category?.name || categoryName;
+              const sub = (item as any).subCategorie?.name;
+              const url = sub
+                ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
+                : `/catalog/${encodeURIComponent(cat)}/${item.uuid}`;
+              router.push(url);
+            }}
+          />
 
           {/* Пагинация */}
           {totalPages >= 1 && (
