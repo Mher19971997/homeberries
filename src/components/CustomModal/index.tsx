@@ -57,7 +57,7 @@ const CustomModal: React.FC<CustomModalProps> = (props) => {
             id='modal-modal-title'
             variant='h6'
             component='h2'
-            color='warning'
+            color='#000'
             fontWeight={'bold'}
           >
             {title}

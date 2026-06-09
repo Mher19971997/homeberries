@@ -21,6 +21,8 @@ import { useRouter } from 'next/navigation';
 // Импорт хука для анализа речи
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { useTranslation } from 'react-i18next';
+import { useToast } from '@homeberris/hooks/useToast';
+import Toast from '@homeberris/components/Toast';
 
 interface AiAssistantProps {
   onCatalogSelect?: (catalog: any) => void;
@@ -28,6 +30,7 @@ interface AiAssistantProps {
 
 const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
   const { t } = useTranslation('common');
+  const { toast, showWarning, hideToast } = useToast();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -324,7 +327,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
 
   const handleVoiceInput = () => {
     if (!recognitionRef.current) {
-      alert('Голосовой ввод не поддерживается в вашем браузере');
+      showWarning('Голосовой ввод не поддерживается в вашем браузере');
       return;
     }
 
@@ -516,6 +519,7 @@ const AiAssistant: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
           </Paper>
         </Grid>
       </Grid>
+      <Toast open={toast.open} message={toast.message} type={toast.type} onClose={hideToast} />
     </Box>
   );
 };

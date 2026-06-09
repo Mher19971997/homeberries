@@ -141,6 +141,20 @@
     "buttons": {
       "next": "Next",
       "back": "Back"
+    },
+    "form": {
+      "placeholder": "Enter address...",
+      "saving": "Saving...",
+      "save": "Save",
+      "cancel": "Cancel",
+      "loading": "Loading...",
+      "myAddress": "My address"
+    },
+    "confirm": {
+      "title": "Delete address?",
+      "description": "The address will be permanently deleted.",
+      "cancel": "Cancel",
+      "delete": "Delete"
     }
   },
   "catalogAll": {

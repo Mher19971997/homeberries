@@ -26,6 +26,7 @@ import { useLoadScript } from "@react-google-maps/api";
 import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
 import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
 import { useTranslation } from "react-i18next";
+import CustomModal from "@homeberris/components/CustomModal";
 
 const GOOGLE_LIBRARIES: ("places")[] = ["places"];
 
@@ -107,6 +108,7 @@ function AddressForm({
   const [lng, setLng] = React.useState(initial?.lng || "");
   const [saving, setSaving] = React.useState(false);
   const [showSuggestions, setShowSuggestions] = React.useState(false);
+  const { t } = useTranslation('common');
 
   const qc = useQC();
 
@@ -139,7 +141,7 @@ function AddressForm({
     }
   };
 
-  if (!isLoaded) return <p className={styles.addressLine}>Загрузка...</p>;
+  if (!isLoaded) return <p className={styles.addressLine}>{t('checkout.form.loading')}</p>;
 
   return (
     <div className={styles.addressFormBox}>
@@ -150,7 +152,7 @@ function AddressForm({
           onChange={(e) => { setValue(e.target.value); setShowSuggestions(true); }}
           onFocus={() => setShowSuggestions(true)}
           disabled={!ready}
-          placeholder="Введите адрес..."
+          placeholder={t('checkout.form.placeholder')}
         />
         {showSuggestions && status === "OK" && (
           <div className={styles.suggestionsList}>
@@ -167,9 +169,9 @@ function AddressForm({
         )}
       </div>
       <div className={styles.addressFormBtns}>
-        <button className={styles.btnBack} onClick={onCancel}>Отмена</button>
+        <button className={styles.btnBack} onClick={onCancel}>{t('checkout.form.cancel')}</button>
         <button className={styles.btnNext} onClick={handleSave} disabled={saving || !value.trim()}>
-          {saving ? "Сохраняем..." : "Сохранить"}
+          {saving ? t('checkout.form.saving') : t('checkout.form.save')}
         </button>
       </div>
     </div>
@@ -191,13 +193,19 @@ function AddressStep({
 }) {
   const [showForm, setShowForm] = React.useState(false);
   const [editAddr, setEditAddr] = React.useState<Address | null>(null);
+  const [confirmDeleteUuid, setConfirmDeleteUuid] = React.useState<string | null>(null);
   const qc = useQC();
 
-  const handleDelete = async (uuid: string, e: React.MouseEvent) => {
+  const handleDelete = (uuid: string, e: React.MouseEvent) => {
     e.preventDefault();
-    if (!confirm("Удалить адрес?")) return;
-    await deleteDeliveryAddress(uuid, token);
+    setConfirmDeleteUuid(uuid);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!confirmDeleteUuid) return;
+    await deleteDeliveryAddress(confirmDeleteUuid, token);
     qc.invalidateQueries({ queryKey: ["getDeliveryAddresses"] });
+    setConfirmDeleteUuid(null);
   };
 
   const handleEdit = (addr: Address, e: React.MouseEvent) => {
@@ -270,6 +278,27 @@ function AddressStep({
           </button>
         )}
       </div>
+
+      <CustomModal
+        open={confirmDeleteUuid !== null}
+        title={t('checkout.confirm.title')}
+        width={400}
+        handleClose={() => setConfirmDeleteUuid(null)}
+      >
+        <div className={styles.confirmBody}>
+          <div className={styles.confirmIcon}>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="#000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M10 11v5M14 11v5" stroke="#000" strokeWidth="1.8" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <p className={styles.confirmText}>{t('checkout.confirm.description')}</p>
+          <div className={styles.confirmActions}>
+            <button className={styles.confirmCancel} onClick={() => setConfirmDeleteUuid(null)}>{t('checkout.confirm.cancel')}</button>
+            <button className={styles.confirmDelete} onClick={handleConfirmDelete}>{t('checkout.confirm.delete')}</button>
+          </div>
+        </div>
+      </CustomModal>
     </div>
   );
 }
@@ -759,7 +788,7 @@ export default function CheckoutFlow() {
     }
     return deliveryAddresses.data.map((a: any) => ({
       uuid: a.uuid,
-      label: a.address?.split(',')?.[0]?.trim() || "Мой адрес",
+      label: a.address?.split(',')?.[0]?.trim() || t('checkout.form.myAddress'),
       tag: "HOME",
       street: a.address ?? "",
       phone: "",
