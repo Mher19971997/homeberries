@@ -25,6 +25,7 @@ export default function Providers({ children, locale }: { children: React.ReactN
     i18nRef.current = { instance: createI18nInstance(locale), locale };
   }
 
+
   const queryClient = React.useRef(new QueryClient({
     defaultOptions: {
       queries: {

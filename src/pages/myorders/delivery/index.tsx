@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import styles from '@homeberris/features/myorders/delivery/styles/index.module.css';
 import {
   useDelivery
 } from '@homeberris/features/myorders/delivery/hooks/useDelivery';
@@ -11,17 +11,18 @@ import {
   TabsOrder,
   TopNav
 } from '@homeberris/features/myorders/delivery/components';
+import { useTranslation } from 'react-i18next';
 
 export default function DeliveryPage() {
   const delivery = useDelivery();
+  const { t } = useTranslation('common');
 
   return (
-    <Box>
+    <div className={styles.body}>
+      <div className={styles.container}>
       <TopNav />
 
-      <Typography variant="h4" sx={{ mb: 3 }}>
-        Мои заказы
-      </Typography>
+      <h4 className={styles.pageTitle}>{t('delivery.pageTitle')}</h4>
 
       {delivery.isPaymentSuccess && delivery.paymentInfo && (
         <SuccessInfo paymentInfo={delivery.paymentInfo} />
@@ -56,6 +57,7 @@ export default function DeliveryPage() {
         onSuccess={delivery.handlePaymentSuccess}
         onError={delivery.handlePaymentError}
       />
-    </Box>
+      </div>
+    </div>
   );
 }

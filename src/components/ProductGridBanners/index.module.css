@@ -72,6 +72,11 @@
   color: #909090;
   margin: 0 0 16px 0;
   max-width: 280px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: calc(1.5em * 3);
 }
 
 .macbookGridCard .bannerDescription { color: #a4a4a4; }

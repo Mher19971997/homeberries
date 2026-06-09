@@ -31,7 +31,6 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = ({
   const { t } = useTranslation('common');
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const [storedLocale, setStoredLocale] = React.useState<string | null>(null);
 
   const languages: SelectlanguageItem[] = [
     { id: 1, flagIconName: 'fi-ru', language: 'Русский', locale: 'ru' },
@@ -39,29 +38,9 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = ({
     { id: 3, flagIconName: 'fi-am', language: 'Հայերեն', locale: 'hy' },
   ];
 
-  // ===== LOAD FROM LOCALSTORAGE =====
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const saved = localStorage.getItem('selectedLocale');
-    if (saved) {
-      setStoredLocale(saved);
-
-      // если отличается от URL — можно синхронизировать
-      if (saved !== currentLocale) {
-        const newPath =
-          pathname?.replace(`/${currentLocale}`, `/${saved}`) ??
-          `/${saved}`;
-
-        router.push(newPath);
-      }
-    }
-  }, []);
-
-  const activeLocale = storedLocale ?? currentLocale;
-
+  // URL — источник правды для активного языка
   const currentLanguage =
-    languages.find((l) => l.locale === activeLocale) ?? languages[0];
+    languages.find((l) => l.locale === currentLocale) ?? languages[0];
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -73,15 +52,11 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = ({
 
   // ===== SELECT LANGUAGE =====
   const handleLanguageSelect = (option: SelectlanguageItem) => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('selectedLocale', option.locale);
-      setStoredLocale(option.locale);
-    }
-
-    const newPath =
-      pathname?.replace(`/${currentLocale}`, `/${option.locale}`) ??
-      `/${option.locale}`;
-
+    if (option.locale === currentLocale) { handleClose(); return; }
+    document.cookie = `NEXT_LOCALE=${option.locale}; path=/; max-age=31536000`;
+    const segments = (pathname ?? '/').split('/');
+    segments[1] = option.locale;
+    const newPath = segments.join('/') || `/${option.locale}`;
     router.push(newPath);
     handleClose();
   };

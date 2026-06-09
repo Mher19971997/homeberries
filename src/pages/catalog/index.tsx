@@ -11,6 +11,7 @@ import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { getBrands } from '@homeberris/http/brandApi';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CatalogCard from '@homeberris/components/CatalogCard';
+import { useTranslation } from 'react-i18next';
 
 import styles from './index.module.css';
 
@@ -26,6 +27,7 @@ const buildCatalogUrl = (catalog: CatalogItem) => {
 
 export default function CatalogIndexPage() {
   const router = useRouter();
+  const { t } = useTranslation('common');
   const searchParams = useSearchParams();
   const searchQuery = searchParams?.get('search') ?? '';
 
@@ -33,6 +35,19 @@ export default function CatalogIndexPage() {
   const [selectedBrand, setSelectedBrand] = React.useState('');
   const [minPrice, setMinPrice] = React.useState('');
   const [maxPrice, setMaxPrice] = React.useState('');
+
+  const [debouncedMin, setDebouncedMin] = React.useState('');
+  const [debouncedMax, setDebouncedMax] = React.useState('');
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedMin(minPrice), 300);
+    return () => clearTimeout(t);
+  }, [minPrice]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedMax(maxPrice), 300);
+    return () => clearTimeout(t);
+  }, [maxPrice]);
 
   const sentinelRef = useRef<HTMLDivElement>(null);
 
@@ -45,24 +60,23 @@ export default function CatalogIndexPage() {
   const buildQuery = (page: number) => {
     const filters: any = {
       queryMeta: { paginate: true, limit: LIMIT, page },
+      filterMeta: {},
     };
 
     if (searchQuery) {
-      filters.filterMeta = { ...filters.filterMeta, websearchQuery: { name: searchQuery } };
+      filters.filterMeta.name = { iLike: `%${searchQuery}%` };
     }
     if (selectedBrand) {
-      filters.filterMeta = { ...filters.filterMeta, brandUuid: selectedBrand };
+      filters.filterMeta.brandUuid = { eq: selectedBrand };
     }
-    if (minPrice || maxPrice) {
-      filters.where = {
-        price: {
-          ...(minPrice ? { $gte: Number(minPrice) } : {}),
-          ...(maxPrice ? { $lte: Number(maxPrice) } : {}),
-        },
+    if (debouncedMin || debouncedMax) {
+      filters.filterMeta.priceRange = {
+        ...(debouncedMin ? { gte: debouncedMin } : {}),
+        ...(debouncedMax ? { lte: debouncedMax } : {}),
       };
     }
-    if (sortBy === 'price_asc') filters.queryMeta.order = [['price', 'ASC']];
-    else if (sortBy === 'price_desc') filters.queryMeta.order = [['price', 'DESC']];
+    if (sortBy === 'price_asc') filters.queryMeta.order = { price: 'ASC' };
+    else if (sortBy === 'price_desc') filters.queryMeta.order = { price: 'DESC' };
 
     return qs.stringify(filters);
   };
@@ -74,7 +88,7 @@ export default function CatalogIndexPage() {
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['catalogInfinite', searchQuery, sortBy, selectedBrand, minPrice, maxPrice],
+    queryKey: ['catalogInfinite', searchQuery, sortBy, selectedBrand, debouncedMin, debouncedMax],
     queryFn: ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam as number)),
     initialPageParam: 1,
     getNextPageParam: (lastPage: any, allPages) => {
@@ -109,17 +123,17 @@ export default function CatalogIndexPage() {
     <div className={styles.body}>
       {/* Breadcrumb */}
       <nav aria-label="breadcrumb" className={styles.breadcrumb}>
-        <Link className={styles.breadcrumbLink} href="/">Главная</Link>
+        <Link className={styles.breadcrumbLink} href="/">{t('catalogIndex.breadcrumbHome')}</Link>
         <span className={styles.breadcrumbSep}>/</span>
         <span className={styles.breadcrumbCurrent}>
-          {searchQuery ? `Поиск: ${searchQuery}` : 'Каталог'}
+          {searchQuery ? `${t('catalogIndex.searchPrefix')}${searchQuery}` : t('catalogIndex.breadcrumbCatalog')}
         </span>
       </nav>
 
       {/* Горизонтальный фильтр */}
       <div className={styles.filterBar}>
         {/* Кол-во */}
-        <span className={styles.filterCount}>{totalCount} товаров</span>
+        <span className={styles.filterCount}>{t('catalogIndex.count', { count: totalCount })}</span>
 
         {/* Бренд */}
         <select
@@ -127,7 +141,7 @@ export default function CatalogIndexPage() {
           value={selectedBrand}
           onChange={e => setSelectedBrand(e.target.value)}
         >
-          <option value="">Все бренды</option>
+          <option value="">{t('catalogIndex.allBrands')}</option>
           {brands.map((b: any) => (
             <option key={b.uuid} value={b.uuid}>{b.name}</option>
           ))}
@@ -138,7 +152,7 @@ export default function CatalogIndexPage() {
           <input
             className={styles.filterInput}
             type="number"
-            placeholder="Цена от"
+            placeholder={t('catalogIndex.priceFrom')}
             value={minPrice}
             onChange={e => setMinPrice(e.target.value)}
           />
@@ -146,7 +160,7 @@ export default function CatalogIndexPage() {
           <input
             className={styles.filterInput}
             type="number"
-            placeholder="до"
+            placeholder={t('catalogIndex.priceTo')}
             value={maxPrice}
             onChange={e => setMaxPrice(e.target.value)}
           />
@@ -158,18 +172,18 @@ export default function CatalogIndexPage() {
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
         >
-          <option value="newest">Новинки</option>
-          <option value="price_asc">Цена: по возрастанию</option>
-          <option value="price_desc">Цена: по убыванию</option>
+          <option value="newest">{t('catalogIndex.sortNewest')}</option>
+          <option value="price_asc">{t('catalogIndex.sortPriceAsc')}</option>
+          <option value="price_desc">{t('catalogIndex.sortPriceDesc')}</option>
         </select>
 
         {/* Сброс */}
         {(selectedBrand || minPrice || maxPrice) && (
           <button
             className={styles.resetBtn}
-            onClick={() => { setSelectedBrand(''); setMinPrice(''); setMaxPrice(''); }}
+            onClick={() => { setSelectedBrand(''); setMinPrice(''); setMaxPrice(''); setDebouncedMin(''); setDebouncedMax(''); }}
           >
-            Сбросить
+            {t('catalogIndex.reset')}
           </button>
         )}
       </div>
@@ -181,7 +195,7 @@ export default function CatalogIndexPage() {
         </div>
       ) : allCatalogs.length === 0 ? (
         <div className={styles.emptyBox}>
-          <p className={styles.emptyText}>Товары не найдены</p>
+          <p className={styles.emptyText}>{t('catalogIndex.empty')}</p>
         </div>
       ) : (
         <div className={styles.container}>
@@ -208,7 +222,7 @@ export default function CatalogIndexPage() {
 
       {/* Конец списка */}
       {!hasNextPage && allCatalogs.length > 0 && (
-        <p className={styles.endText}>Все товары загружены</p>
+        <p className={styles.endText}>{t('catalogIndex.allLoaded')}</p>
       )}
     </div>
   );

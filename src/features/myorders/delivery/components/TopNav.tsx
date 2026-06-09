@@ -1,31 +1,18 @@
-import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
+import { useTranslation } from 'react-i18next';
 
 export const TopNav = () => {
+    const { t } = useTranslation('common');
     return (
-        <Box className={styles.topNav}>
-            <Link href="/" className={styles.navLink}>
-                <Typography>Главная</Typography>
-            </Link>
-            <Link href="/myorders/delivery" className={styles.navLink}>
-                <Typography className={styles.navLinkActive}>Заказы</Typography>
-            </Link>
-            <Link href="/profile?tab=purchases" className={styles.navLink}>
-                <Typography>Покупки</Typography>
-            </Link>
-            <Link href="/favorites" className={styles.navLink}>
-                <Typography>Избранное</Typography>
-            </Link>
-            <Link href="/profile?tab=bank" className={styles.navLink}>
-                <Typography>WB Банк</Typography>
-            </Link>
-            <Link href="/profile?tab=reviews" className={styles.navLink}>
-                <Typography>Отзывы и вопросы</Typography>
-            </Link>
-            <Link href="/profile?tab=more" className={styles.navLink}>
-                <Typography>Ещё разделы</Typography>
-            </Link>
-        </Box>
+        <div className={styles.topNav}>
+            <Link href="/" className={styles.navLink}>{t('delivery.topNav.home')}</Link>
+            <Link href="/myorders/delivery" className={`${styles.navLink} ${styles.navLinkActive}`}>{t('delivery.topNav.orders')}</Link>
+            <Link href="/profile?tab=purchases" className={styles.navLink}>{t('delivery.topNav.purchases')}</Link>
+            <Link href="/favorites" className={styles.navLink}>{t('delivery.topNav.favorites')}</Link>
+            <Link href="/profile?tab=bank" className={styles.navLink}>{t('delivery.topNav.bank')}</Link>
+            <Link href="/profile?tab=reviews" className={styles.navLink}>{t('delivery.topNav.reviews')}</Link>
+            <Link href="/profile?tab=more" className={styles.navLink}>{t('delivery.topNav.moreSections')}</Link>
+        </div>
     );
 };

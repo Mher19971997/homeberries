@@ -1,4 +1,3 @@
-import { Grid } from '@mui/material';
 import { OrderItem } from '@homeberris/http/orderApi';
 import { EmptyOrder, LoadingOrder, OrderCard } from '@homeberris/features/myorders/delivery';
 
@@ -21,16 +20,15 @@ export const OrderList = ({
   if (orders.length === 0) return <EmptyOrder tabValue={tabValue} />;
 
   return (
-    <Grid container spacing={2}>
+    <div>
       {orders.map(order => (
-        <Grid item xs={12} key={order.uuid}>
-          <OrderCard
-            order={order}
-            onMenuOpen={onMenuOpen}
-            onPay={onPay}
-          />
-        </Grid>
+        <OrderCard
+          key={order.uuid}
+          order={order}
+          onMenuOpen={onMenuOpen}
+          onPay={onPay}
+        />
       ))}
-    </Grid>
+    </div>
   );
 };

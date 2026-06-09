@@ -38,6 +38,7 @@ import { useCookies } from "react-cookie";
 import { insertBasket } from "@homeberris/http/basketApi";
 import { addToBasket } from "@homeberris/utils/indexedDB";
 import { useTranslation } from "react-i18next";
+import { addRecentlyViewed } from "@homeberris/utils/recentlyViewed";
 
 interface ProductPageContentProps {
   catalog: CatalogItem | undefined;
@@ -72,6 +73,10 @@ export default function ProductPageContent({
   const [isDragging, setIsDragging] = React.useState(false);
 
   const { t } = useTranslation('common');
+
+  React.useEffect(() => {
+    if (catalog?.uuid) addRecentlyViewed(catalog.uuid);
+  }, [catalog?.uuid]);
 
   const changeImage = (nextIndex: number, dir: "left" | "right") => {
     if (nextIndex === activeIndex) return;
@@ -403,11 +408,7 @@ export default function ProductPageContent({
             {/* Выбор памяти/хранилища */}
             {(() => {
               const storageGroup = catalog.groupOption?.find(
-                (g: groupOptionItem) =>
-                  g.name?.toLowerCase().includes("памят") ||
-                  g.name?.toLowerCase().includes("хранил") ||
-                  g.name?.toLowerCase().includes("storage") ||
-                  g.options?.some((o: OptionsItem) => /gb|tb/i.test(o.value)),
+                (g: groupOptionItem) => g.name === "Память",
               );
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
@@ -430,22 +431,7 @@ export default function ProductPageContent({
             })()}
 
             {/* Характеристики */}
-            {(() => {
-              const allOptions: { name: string; value: string }[] = [];
-              catalog.groupOption?.forEach((g: groupOptionItem) => {
-                g.options?.forEach((o: OptionsItem) => {
-                  if (
-                    !o.name?.toLowerCase().includes("цвет") &&
-                    !/gb|tb/i.test(o.value)
-                  ) {
-                    allOptions.push({ name: o.name, value: o.value });
-                  }
-                });
-              });
-              const specs =
-                allOptions.length >= 6 ? allOptions.slice(0, 6) : staticSpecs;
-              return <ProductSpecsGrid specs={specs} />;
-            })()}
+            <ProductSpecsGrid specs={staticSpecs} />
 
             {/* Описание */}
             {(() => {

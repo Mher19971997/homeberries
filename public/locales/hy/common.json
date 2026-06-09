@@ -4,7 +4,10 @@
     "about": "Մեր մասին",
     "contact": "Կապ",
     "blog": "Բլոգ",
-    "search": "Որոնում"
+    "search": "Որոնում",
+    "profile": "Պրոֆիլ",
+    "login": "Մուտք",
+    "language": "Լեզու"
   },
   "categories": {
     "title": "Դիտել ըստ կատեգորիայի",
@@ -259,6 +262,101 @@
       "scrollRight": "Սահեցնել աջ"
     },
     "color": "Ընտրել գույն"
+  },
+  "catalogIndex": {
+    "breadcrumbHome": "Գլխավոր",
+    "breadcrumbCatalog": "Կատալոգ",
+    "searchPrefix": "Որոնում՝ ",
+    "count": "{{count}} ապրանք",
+    "allBrands": "Բոլոր ապրանքանիշները",
+    "priceFrom": "Գինը սկսած",
+    "priceTo": "մինչև",
+    "sortNewest": "Նորեր",
+    "sortPriceAsc": "Գին՝ աճման կարգով",
+    "sortPriceDesc": "Գին՝ նվազման կարգով",
+    "reset": "Զրոյացնել",
+    "empty": "Ապրանքներ չեն գտնվել",
+    "allLoaded": "Բոլոր ապրանքները բեռնված են"
+  },
+  "recentlyViewedPage": {
+    "breadcrumbHome": "Գլխավոր",
+    "breadcrumbProfile": "Պրոֆիլ",
+    "breadcrumbCurrent": "Վերջերս դիտված",
+    "title": "Վերջերս դիտված",
+    "count": "{{count}} ապրանք",
+    "emptyTitle": "Դուք դեռ որևէ ապրանք չեք դիտել",
+    "emptySubtitle": "Բացեք ցանկացած ապրանք — այն կհայտնվի այստեղ"
+  },
+  "profile": {
+    "logout": "Ելք",
+    "favorites": "Ընտրյալներ",
+    "orders": "Պատվերներ",
+    "basket": "Զամբյուղ",
+    "navigation": "Նավիգացիա",
+    "myOrders": "Իմ պատվերները",
+    "myAddresses": "Իմ հասցեները",
+    "service": "Սպասարկում և օգնություն",
+    "support": "Գրել աջակցությանը",
+    "return": "Վերադարձնել ապրանք",
+    "faq": "Հաճախ տրվող հարցեր",
+    "recentlyViewed": "Վերջերս դիտված",
+    "seeAll": "Տեսնել բոլորը →",
+    "notViewed": "Դուք դեռ որևէ ապրանք չեք դիտել",
+    "accountInfo": "Հաշվի տեղեկություններ",
+    "email": "Էլ. փոստ",
+    "role": "Դեր"
+  },
+  "delivery": {
+    "pageTitle": "Իմ պատվերները",
+    "topNav": {
+      "home": "Գլխավոր",
+      "orders": "Պատվերներ",
+      "purchases": "Գնումներ",
+      "favorites": "Ընտրյալներ",
+      "bank": "WB Բանկ",
+      "reviews": "Կարծիքներ և հարցեր",
+      "moreSections": "Ավելին"
+    },
+    "tabs": {
+      "all": "Բոլորը",
+      "processing": "Մշակման մեջ",
+      "shipped": "Ուղարկված",
+      "delivered": "Առաքված",
+      "cancelled": "Չեղարկված"
+    },
+    "empty": {
+      "noOrders": "Դուք դեռ պատվերներ չունեք",
+      "noOrdersFound": "Այս կարգավիճակով պատվերներ չեն գտնվել",
+      "startShopping": "Սկսեք գնումներ կատարել, և ձեր պատվերները կհայտնվեն այստեղ",
+      "tryOtherTab": "Փորձեք ընտրել մեկ այլ ներդիր",
+      "shopBtn": "Գնալ գնումների"
+    },
+    "card": {
+      "orderNum": "Պատվեր №",
+      "qty": "Քանակ:",
+      "payBtn": "Վճարել"
+    },
+    "menu": {
+      "details": "Մանրամասներ",
+      "cancel": "Չեղարկել"
+    },
+    "status": {
+      "delivered": "Առաքված",
+      "cancelled": "Չեղարկված",
+      "processing": "Մշակման մեջ",
+      "shipped": "Ուղարկված",
+      "pending": "Սպասում է",
+      "paid": "Վճարված",
+      "unknown": "Անհայտ"
+    },
+    "success": {
+      "title": "Վճարումը հաջողությամբ մշակվեց!",
+      "paymentId": "Վճարման ID",
+      "amount": "Գումար",
+      "status": "Կարգավիճակ",
+      "description": "Նկարագրություն",
+      "paid": "Վճարված"
+    }
   },
   "auth": {
     "login": {

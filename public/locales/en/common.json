@@ -4,7 +4,10 @@
     "about": "About",
     "contact": "Contact Us",
     "blog": "Blog",
-    "search": "Search"
+    "search": "Search",
+    "profile": "Profile",
+    "login": "Login",
+    "language": "Language"
   },
   "categories": {
     "title": "Browse By Category",
@@ -259,6 +262,101 @@
       "scrollRight": "Scroll right"
     },
     "color": "Select color"
+  },
+  "catalogIndex": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCatalog": "Catalog",
+    "searchPrefix": "Search: ",
+    "count": "{{count}} products",
+    "allBrands": "All brands",
+    "priceFrom": "Price from",
+    "priceTo": "To",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "reset": "Reset",
+    "empty": "No products found",
+    "allLoaded": "All products loaded"
+  },
+  "recentlyViewedPage": {
+    "breadcrumbHome": "Home",
+    "breadcrumbProfile": "Profile",
+    "breadcrumbCurrent": "Recently Viewed",
+    "title": "Recently Viewed",
+    "count": "{{count}} products",
+    "emptyTitle": "You haven't viewed any products yet",
+    "emptySubtitle": "Open any product — it will appear here"
+  },
+  "profile": {
+    "logout": "Logout",
+    "favorites": "Favorites",
+    "orders": "Orders",
+    "basket": "Basket",
+    "navigation": "Navigation",
+    "myOrders": "My Orders",
+    "myAddresses": "My Addresses",
+    "service": "Service & Support",
+    "support": "Contact Support",
+    "return": "Return a Product",
+    "faq": "Frequently Asked Questions",
+    "recentlyViewed": "Recently Viewed",
+    "seeAll": "See all →",
+    "notViewed": "You haven't viewed any products yet",
+    "accountInfo": "Account Information",
+    "email": "Email",
+    "role": "Role"
+  },
+  "delivery": {
+    "pageTitle": "My Orders",
+    "topNav": {
+      "home": "Home",
+      "orders": "Orders",
+      "purchases": "Purchases",
+      "favorites": "Favorites",
+      "bank": "WB Bank",
+      "reviews": "Reviews & Questions",
+      "moreSections": "More sections"
+    },
+    "tabs": {
+      "all": "All",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled"
+    },
+    "empty": {
+      "noOrders": "You have no orders yet",
+      "noOrdersFound": "No orders found with this status",
+      "startShopping": "Start shopping and your orders will appear here",
+      "tryOtherTab": "Try selecting another tab",
+      "shopBtn": "Go shopping"
+    },
+    "card": {
+      "orderNum": "Order #",
+      "qty": "Quantity:",
+      "payBtn": "Pay"
+    },
+    "menu": {
+      "details": "Details",
+      "cancel": "Cancel"
+    },
+    "status": {
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "pending": "Pending",
+      "paid": "Paid",
+      "unknown": "Unknown"
+    },
+    "success": {
+      "title": "Payment successfully processed!",
+      "paymentId": "Payment ID",
+      "amount": "Amount",
+      "status": "Status",
+      "description": "Description",
+      "paid": "Paid"
+    }
   },
   "auth": {
     "login": {

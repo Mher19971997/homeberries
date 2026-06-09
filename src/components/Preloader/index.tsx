@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Typography } from '@mui/material';
-import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { keyframes } from '@mui/system';
 
@@ -37,14 +36,11 @@ const fadeOut = keyframes`
 const MIN_DISPLAY_MS = 700;
 
 export default function Preloader() {
-  const pathname = usePathname();
   const [visible, setVisible] = useState(true);
   const [hiding, setHiding] = useState(false);
 
   useEffect(() => {
-    // Show on every route change
-    setVisible(true);
-    setHiding(false);
+    document.body.style.overflow = 'hidden';
 
     const hideTimer = setTimeout(() => {
       setHiding(true);
@@ -52,13 +48,15 @@ export default function Preloader() {
 
     const removeTimer = setTimeout(() => {
       setVisible(false);
+      document.body.style.overflow = '';
     }, MIN_DISPLAY_MS + 400);
 
     return () => {
       clearTimeout(hideTimer);
       clearTimeout(removeTimer);
+      document.body.style.overflow = '';
     };
-  }, [pathname]);
+  }, []);
 
   if (!visible) return null;
 

@@ -4,7 +4,10 @@
     "about": "О нас",
     "contact": "Контакты",
     "blog": "Блог",
-    "search": "Поиск"
+    "search": "Поиск",
+    "profile": "Профиль",
+    "login": "Войти",
+    "language": "Язык"
   },
   "categories": {
     "title": "Категории",
@@ -259,6 +262,101 @@
       "scrollRight": "Прокрутить вправо"
     },
     "color": "Выберите цвет"
+  },
+  "catalogIndex": {
+    "breadcrumbHome": "Главная",
+    "breadcrumbCatalog": "Каталог",
+    "searchPrefix": "Поиск: ",
+    "count": "{{count}} товаров",
+    "allBrands": "Все бренды",
+    "priceFrom": "Цена от",
+    "priceTo": "до",
+    "sortNewest": "Новинки",
+    "sortPriceAsc": "Цена: по возрастанию",
+    "sortPriceDesc": "Цена: по убыванию",
+    "reset": "Сбросить",
+    "empty": "Товары не найдены",
+    "allLoaded": "Все товары загружены"
+  },
+  "recentlyViewedPage": {
+    "breadcrumbHome": "Главная",
+    "breadcrumbProfile": "Профиль",
+    "breadcrumbCurrent": "Недавно смотрели",
+    "title": "Недавно смотрели",
+    "count": "{{count}} товаров",
+    "emptyTitle": "Вы ещё не просматривали товары",
+    "emptySubtitle": "Откройте любой товар — он появится здесь"
+  },
+  "profile": {
+    "logout": "Выйти",
+    "favorites": "Избранное",
+    "orders": "Заказы",
+    "basket": "Корзина",
+    "navigation": "Навигация",
+    "myOrders": "Мои заказы",
+    "myAddresses": "Мои адреса",
+    "service": "Сервис и помощь",
+    "support": "Написать в поддержку",
+    "return": "Вернуть товар",
+    "faq": "Частые вопросы",
+    "recentlyViewed": "Недавно смотрели",
+    "seeAll": "Смотреть всё →",
+    "notViewed": "Вы ещё не просматривали товары",
+    "accountInfo": "Информация об аккаунте",
+    "email": "Email",
+    "role": "Роль"
+  },
+  "delivery": {
+    "pageTitle": "Мои заказы",
+    "topNav": {
+      "home": "Главная",
+      "orders": "Заказы",
+      "purchases": "Покупки",
+      "favorites": "Избранное",
+      "bank": "WB Банк",
+      "reviews": "Отзывы и вопросы",
+      "moreSections": "Ещё разделы"
+    },
+    "tabs": {
+      "all": "Все",
+      "processing": "В обработке",
+      "shipped": "Отправлен",
+      "delivered": "Доставлен",
+      "cancelled": "Отменен"
+    },
+    "empty": {
+      "noOrders": "У вас пока нет заказов",
+      "noOrdersFound": "Заказы с таким статусом не найдены",
+      "startShopping": "Начните делать покупки, и ваши заказы появятся здесь",
+      "tryOtherTab": "Попробуйте выбрать другую вкладку",
+      "shopBtn": "Перейти к покупкам"
+    },
+    "card": {
+      "orderNum": "Заказ №",
+      "qty": "Количество:",
+      "payBtn": "Оплатить"
+    },
+    "menu": {
+      "details": "Подробнее",
+      "cancel": "Отменить"
+    },
+    "status": {
+      "delivered": "Доставлен",
+      "cancelled": "Отменен",
+      "processing": "В обработке",
+      "shipped": "Отправлен",
+      "pending": "Ожидает",
+      "paid": "Оплачено",
+      "unknown": "Неизвестно"
+    },
+    "success": {
+      "title": "Платеж успешно обработан!",
+      "paymentId": "ID платежа",
+      "amount": "Сумма",
+      "status": "Статус",
+      "description": "Описание",
+      "paid": "Оплачено"
+    }
   },
   "auth": {
     "login": {

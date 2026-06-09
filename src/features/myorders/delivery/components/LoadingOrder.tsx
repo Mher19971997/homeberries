@@ -1,16 +1,13 @@
-import { Card, Grid, Skeleton } from '@mui/material';
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
 
 export const LoadingOrder = () => {
     return (
-        <Grid container spacing={2}>
+        <div className={styles.loadingList} suppressHydrationWarning>
             {[1, 2, 3].map((i) => (
-                <Grid item xs={12} key={i}>
-                    <Card className={styles.orderCard}>
-                        <Skeleton variant="rectangular" height={200} />
-                    </Card>
-                </Grid>
+                <div key={i} className={styles.orderCard} suppressHydrationWarning>
+                    <div className={styles.skeleton} style={{ height: 120 }} suppressHydrationWarning />
+                </div>
             ))}
-        </Grid>
+        </div>
     );
 };

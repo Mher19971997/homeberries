@@ -1,37 +1,23 @@
-import { Alert, AlertTitle, Box, Typography } from '@mui/material';
+import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
 import PaymentIcons from '@homeberris/components/PaymentIcons';
+import { useTranslation } from 'react-i18next';
 
 export const SuccessInfo = ({ paymentInfo }: { paymentInfo: any }) => {
+    const { t } = useTranslation('common');
     return (
-        <Alert
-            severity="success"
-            icon={<PaymentIcons />}
-            sx={{
-                mb: 3,
-                borderRadius: 2,
-                backgroundColor: '#f0f9ff',
-                border: '1px solid #10b981'
-            }}
-        >
-            <AlertTitle sx={{ fontWeight: 600, mb: 1 }}>
-                Платеж успешно обработан!
-            </AlertTitle>
-            <Box sx={{ mt: 1 }}>
-                <Typography variant="body2" sx={{ mb: 0.5 }}>
-                    <strong>ID платежа:</strong> {paymentInfo.id}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 0.5 }}>
-                    <strong>Сумма:</strong> {((paymentInfo.amount || 0) / 100).toFixed(2)} ₽
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 0.5 }}>
-                    <strong>Статус:</strong> {paymentInfo.status === 'succeeded' ? 'Оплачено' : paymentInfo.status}
-                </Typography>
+        <div className={styles.successBox}>
+            <div className={styles.successHeader}>
+                <PaymentIcons />
+                <p className={styles.successTitle}>{t('delivery.success.title')}</p>
+            </div>
+            <div className={styles.successDetails}>
+                <p className={styles.successRow}><strong>{t('delivery.success.paymentId')}:</strong> {paymentInfo.id}</p>
+                <p className={styles.successRow}><strong>{t('delivery.success.amount')}:</strong> {((paymentInfo.amount || 0) / 100).toFixed(2)} ₽</p>
+                <p className={styles.successRow}><strong>{t('delivery.success.status')}:</strong> {paymentInfo.status === 'succeeded' ? t('delivery.success.paid') : paymentInfo.status}</p>
                 {paymentInfo.description && (
-                    <Typography variant="body2">
-                        <strong>Описание:</strong> {paymentInfo.description}
-                    </Typography>
+                    <p className={styles.successRow}><strong>{t('delivery.success.description')}:</strong> {paymentInfo.description}</p>
                 )}
-            </Box>
-        </Alert>
+            </div>
+        </div>
     );
 };

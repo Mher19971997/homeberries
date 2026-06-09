@@ -6,25 +6,15 @@ import { useCookies } from 'react-cookie';
 import * as qs from 'qs';
 import { getProfile, uploadAvatar } from '@homeberris/http/userApi';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
+import { getAllBaskets } from '@homeberris/http/basketApi';
+import { getRecentlyViewed } from '@homeberris/utils/recentlyViewed';
 import { removeToken } from '@homeberris/utils/auth';
 import { useFavorites } from '@homeberris/context/favoritesContext';
+import { useTranslation } from 'react-i18next';
 import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/pages/profile/index.module.css';
-import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, Star, LogOut } from 'lucide-react';
-
-const MENU_ITEMS = [
-  { label: 'Мои заказы', icon: Package, path: '/myorders/delivery' },
-  { label: 'Избранное', icon: Heart, path: '/favorites' },
-  { label: 'Корзина', icon: ShoppingCart, path: '/basket' },
-  { label: 'Мои адреса', icon: MapPin, path: '/order' },
-];
-
-const SERVICE_ITEMS = [
-  { label: 'Написать в поддержку', icon: MessageCircle },
-  { label: 'Вернуть товар', icon: RotateCcw },
-  { label: 'Частые вопросы', icon: HelpCircle },
-];
+import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut } from 'lucide-react';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -38,6 +28,7 @@ export default function Profile() {
   const [cookies] = useCookies(['token']);
   const router = useRouter();
   const { items: favorites } = useFavorites();
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     if (!cookies.token) router.replace('/security/login');
@@ -49,10 +40,24 @@ export default function Profile() {
     enabled: !!cookies.token,
   });
 
-  const { data: recentCatalogs } = useQuery({
-    queryKey: ['recentCatalogs'],
-    queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 } })),
+  const { data: basket } = useQuery({
+    queryKey: ['basketCount', cookies.token],
+    queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
     enabled: !!cookies.token,
+  });
+
+  const basketCount = basket?.meta?.count || 0;
+
+  const [recentUuids, setRecentUuids] = React.useState<string[]>([]);
+
+  useEffect(() => {
+    setRecentUuids(getRecentlyViewed().slice(0, 4));
+  }, []);
+
+  const { data: recentCatalogs } = useQuery({
+    queryKey: ['recentCatalogs', recentUuids],
+    queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 }, filterMeta: { uuid: { in: recentUuids } } })),
+    enabled: !!cookies.token && recentUuids.length > 0,
   });
 
   const handleLogout = () => {
@@ -84,7 +89,20 @@ export default function Profile() {
 
   const BASE_URL = 'http://localhost:6001';
   const userLetter = user?.email?.[0]?.toUpperCase() || 'U';
-  const userName = user?.email?.split('@')[0] || 'Пользователь';
+  const userName = user?.email?.split('@')[0] || 'User';
+
+  const MENU_ITEMS = [
+    { label: t('profile.myOrders'), icon: Package, path: '/myorders/delivery' },
+    { label: t('profile.favorites'), icon: Heart, path: '/favorites' },
+    { label: t('profile.basket'), icon: ShoppingCart, path: '/basket' },
+    { label: t('profile.myAddresses'), icon: MapPin, path: '/order' },
+  ];
+
+  const SERVICE_ITEMS = [
+    { label: t('profile.support'), icon: MessageCircle },
+    { label: t('profile.return'), icon: RotateCcw },
+    { label: t('profile.faq'), icon: HelpCircle },
+  ];
 
   return (
     <div className={styles.page}>
@@ -110,7 +128,7 @@ export default function Profile() {
           </div>
           <button className={styles.logoutBtn} onClick={handleLogout}>
             <LogOut size={16} strokeWidth={1.8} />
-            Выйти
+            {t('profile.logout')}
           </button>
         </div>
 
@@ -119,17 +137,17 @@ export default function Profile() {
           <div className={styles.statCard} onClick={() => router.push('/favorites')}>
             <Heart size={28} strokeWidth={1.8} color="#111" />
             <p className={styles.statValue}>{favorites.length}</p>
-            <p className={styles.statLabel}>Избранное</p>
+            <p className={styles.statLabel}>{t('profile.favorites')}</p>
           </div>
           <div className={styles.statCard} onClick={() => router.push('/myorders/delivery')}>
             <Package size={28} strokeWidth={1.8} color="#111" />
             <p className={styles.statValue}>—</p>
-            <p className={styles.statLabel}>Заказы</p>
+            <p className={styles.statLabel}>{t('profile.orders')}</p>
           </div>
           <div className={styles.statCard} onClick={() => router.push('/basket')}>
             <ShoppingCart size={28} strokeWidth={1.8} color="#111" />
-            <p className={styles.statValue}>—</p>
-            <p className={styles.statLabel}>Корзина</p>
+            <p className={styles.statValue}>{basketCount}</p>
+            <p className={styles.statLabel}>{t('profile.basket')}</p>
           </div>
         </div>
 
@@ -137,7 +155,7 @@ export default function Profile() {
           {/* Sidebar */}
           <div className={styles.sidebar}>
             <div className={styles.sidebarCard}>
-              <p className={styles.sidebarTitle}>Навигация</p>
+              <p className={styles.sidebarTitle}>{t('profile.navigation')}</p>
               {MENU_ITEMS.map((item) => (
                 <button key={item.label} className={styles.menuItem} onClick={() => router.push(item.path)}>
                   <item.icon size={18} strokeWidth={1.8} color="#111" />
@@ -148,7 +166,7 @@ export default function Profile() {
             </div>
 
             <div className={styles.sidebarCard}>
-              <p className={styles.sidebarTitle}>Сервис и помощь</p>
+              <p className={styles.sidebarTitle}>{t('profile.service')}</p>
               {SERVICE_ITEMS.map((item) => (
                 <button key={item.label} className={styles.menuItem}>
                   <item.icon size={18} strokeWidth={1.8} color="#111" />
@@ -163,8 +181,8 @@ export default function Profile() {
           <div className={styles.main}>
             <div className={styles.mainCard}>
               <div className={styles.cardHeader}>
-                <p className={styles.cardTitle}>Недавно смотрели</p>
-                <button className={styles.seeAll} onClick={() => router.push('/catalog')}>Смотреть всё →</button>
+                <p className={styles.cardTitle}>{t('profile.recentlyViewed')}</p>
+                <button className={styles.seeAll} onClick={() => router.push('/recently-viewed')}>{t('profile.seeAll')}</button>
               </div>
               {recentCatalogs?.data && recentCatalogs.data.length > 0 ? (
                 <div className={styles.catalogGrid}>
@@ -178,20 +196,20 @@ export default function Profile() {
                   ))}
                 </div>
               ) : (
-                <p className={styles.emptyText}>Вы ещё не просматривали товары</p>
+                <p className={styles.emptyText}>{t('profile.notViewed')}</p>
               )}
             </div>
 
             <div className={styles.mainCard}>
               <div className={styles.cardHeader}>
-                <p className={styles.cardTitle}>Информация об аккаунте</p>
+                <p className={styles.cardTitle}>{t('profile.accountInfo')}</p>
               </div>
               <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Email</span>
+                <span className={styles.infoLabel}>{t('profile.email')}</span>
                 <span className={styles.infoValue}>{user?.email || '—'}</span>
               </div>
               <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>Роль</span>
+                <span className={styles.infoLabel}>{t('profile.role')}</span>
                 <span className={styles.infoValue}>
                   {Array.isArray(user?.roles) ? user.roles.join(', ') : '—'}
                 </span>
