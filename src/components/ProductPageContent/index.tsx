@@ -253,10 +253,12 @@ export default function ProductPageContent({
   }, [allImages, selectedColor, dbColors]);
 
   const images = filteredImages.length > 0
-    ? filteredImages.map(({ image }: any) => {
-        const imagePath = image.startsWith("/") ? image : "/" + image;
-        return baseUrl + imagePath;
-      })
+    ? filteredImages
+        .filter(({ image }: any) => !!image)
+        .map(({ image }: any) => {
+          const imagePath = image.startsWith("/") ? image : "/" + image;
+          return baseUrl + imagePath;
+        })
     : [];
 
   const handleCheckout = () => {
@@ -387,7 +389,7 @@ export default function ProductPageContent({
                       key={c.uuid}
                       className={`${styles.colorDot} ${selectedColor === c.color ? styles.colorDotActive : ''}`}
                       style={{ backgroundColor: c.color, opacity: c.inStock ? 1 : 0.35 }}
-                      onClick={() => setSelectedColor(c.color)}
+                      onClick={() => { setSelectedColor(prev => prev === c.color ? null : c.color); setActiveIndex(0); }}
                       title={c.color}
                     />
                   ))}
@@ -397,7 +399,7 @@ export default function ProductPageContent({
                       key={i}
                       className={`${styles.colorDot} ${selectedColor === color ? styles.colorDotActive : ""}`}
                       style={{ backgroundColor: color }}
-                      onClick={() => setSelectedColor(color)}
+                      onClick={() => { setSelectedColor(color); setActiveIndex(0); }}
                       title={color}
                     />
                   ))} */}

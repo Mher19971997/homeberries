@@ -272,7 +272,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 1px solid black;
   cursor: pointer;
   padding: 0;
 }
@@ -280,8 +280,8 @@
 .colorDotActive {
   border-color: #242424;
   box-shadow:
-    0 0 0 2px #fff,
-    0 0 0 4px #242424;
+    0 0 0 1px #fff,
+    0 0 0 2px #242424;
 }
 
 /* ─── Storage selector ───────────────────────────────── */

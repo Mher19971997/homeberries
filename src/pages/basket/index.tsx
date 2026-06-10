@@ -73,7 +73,7 @@ export default function BasketPage() {
   }, [currentBaskets?.data]);
 
   const tax = Math.round(subtotal * TAX_RATE);
-  const total = subtotal + tax + SHIPPING;
+  const total = allBasketItems.length > 0 ? subtotal + tax + SHIPPING : 0;
 
   const handleCheckout = () => {
     // if (!isAuth) { router.push('/security/login'); return; }
@@ -203,7 +203,7 @@ export default function BasketPage() {
             </div>
             <div className={styles.summaryRow}>
               <span className={styles.rowLabelValue}>{t('basket.summary.shipping')}</span>
-              <span className={styles.rowValue}>{formatPrice(SHIPPING)}</span>
+              <span className={styles.rowValue}>{formatPrice(allBasketItems.length > 0 ? SHIPPING : 0)}</span>
             </div>
 
             <div className={styles.summaryRow} style={{ marginTop: '24px' }}>
