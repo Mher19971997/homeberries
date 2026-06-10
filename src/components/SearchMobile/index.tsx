@@ -9,7 +9,7 @@ import CustomModal from '../CustomModal';
 import styles from './index.module.css';
 import IClose from '../Icons/IClose';
 import SearchIcon from '@mui/icons-material/Search';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 
 interface SearchMobileProps {
   icon: React.ReactNode;

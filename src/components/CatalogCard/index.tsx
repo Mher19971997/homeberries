@@ -75,7 +75,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
       <PositionedSnackbar
         open={openSuccess}
         handleClose={() => setOpenSuccess(false)}
-        message="Added to basket"
+        message={t('basket.addedToBasket')}
         productName={catalog?.name}
       />
 

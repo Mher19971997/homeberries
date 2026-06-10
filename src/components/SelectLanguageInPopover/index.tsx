@@ -6,7 +6,8 @@ import SelectLanguageItem from '../SelectLanguageItem';
 import styles from '@homeberris/components/SelectLanguageInPopover/index.module.css';
 import { Box } from '@mui/material';
 import { useEffect } from 'react';
-import { useRouter, useParams, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 interface SelectLanguageInPopoverProps {

@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useParams } from 'next/navigation';
 import { Box, Grid, CircularProgress, Typography } from '@mui/material';
 import { CarAiDialog, CarEquipment, CarGallery, CarInfo, CarSimilar, CarSpecs, CarStatistics, useCarDetail } from '@homeberris/features/cars';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';

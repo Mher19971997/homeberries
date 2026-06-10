@@ -1,5 +1,5 @@
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useTranslation } from 'react-i18next';
 
 export const EmptyOrder = ({ tabValue }: { tabValue: number }) => {

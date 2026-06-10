@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Grid
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useQuery } from '@tanstack/react-query';
 import { getCarMenu, CarMenuBrand, CarMenuModel, CarMenuSubModel } from '@homeberris/http/carApi';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';

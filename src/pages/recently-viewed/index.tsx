@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import * as qs from 'qs';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { getRecentlyViewed } from '@homeberris/utils/recentlyViewed';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useTranslation } from 'react-i18next';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/pages/favorites/index.module.css';

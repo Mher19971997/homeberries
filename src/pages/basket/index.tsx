@@ -5,12 +5,12 @@ import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalo
 import BasketItem from '@homeberris/components/BasketItem';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAllBaskets } from '@homeberris/http/basketApi';
+import { getAllBaskets, removeBasketCatalog } from '@homeberris/http/basketApi';
 import { getDeliveryAddressApi } from '@homeberris/http/deliveryAddressApi';
 import { getProfile } from '@homeberris/http/userApi';
 import qs from 'qs';
 import { useCookies } from 'react-cookie';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useAuth } from '@homeberris/hooks/useAuth';
 import { useToast } from '@homeberris/hooks/useToast';
 import { useTranslation } from 'react-i18next';
@@ -118,6 +118,9 @@ export default function BasketPage() {
                   if (!isAuth) {
                     await removeFromBasket(uuid);
                     setLocalBaskets(await getBasketItems());
+                  } else {
+                    await removeBasketCatalog(uuid, cookies.token);
+                    await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
                   }
                 }}
                 onUpdateQuantity={async (uuid: string, quantity: number) => {

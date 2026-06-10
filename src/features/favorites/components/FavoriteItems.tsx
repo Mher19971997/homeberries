@@ -1,7 +1,7 @@
 import React from 'react';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from './FavoriteItems.module.css';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 
 const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ catalog, sortPanelOne = false }) => {
     const router = useRouter();

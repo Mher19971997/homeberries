@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Badge, Box, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 
 interface NavbarItemProps {
   label: string;

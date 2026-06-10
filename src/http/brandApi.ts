@@ -18,10 +18,10 @@ const getBrandsByCategory = async (categoryUuid: string): Promise<{ data: BrandI
   const queryString = qs.stringify({
     includeMeta: [
       {
-        association: 'categories',
-        where: {
-          uuid: categoryUuid
-        }
+        association: 'catalogs',
+        where: { categoryUuid },
+        required: true,
+        attributes: [],
       }
     ]
   });

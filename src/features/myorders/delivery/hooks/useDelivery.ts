@@ -1,7 +1,8 @@
 ﻿import { useMemo, useState, useCallback, useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useSearchParams } from 'next/navigation';
 import * as qs from 'qs';
 import { getAllOrders, OrderItem } from '@homeberris/http/orderApi';
 import { getPaymentIntent } from '@homeberris/http/paymentApi';

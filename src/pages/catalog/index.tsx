@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import * as qs from 'qs';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useSearchParams } from 'next/navigation';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 

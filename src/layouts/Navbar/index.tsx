@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useFavorites } from '@homeberris/context/favoritesContext';
 import { useQuery } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';

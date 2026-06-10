@@ -10,7 +10,8 @@ import styles from '@homeberris/pages/services/address/index.module.css';
 import { CompanyAddressData } from '@homeberris/http/companyAddressApi';
 import { useLoadScript } from '@react-google-maps/api';
 import { useQuery } from '@tanstack/react-query';
-import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useSearchParams, usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 
 export default function AddressPage() {

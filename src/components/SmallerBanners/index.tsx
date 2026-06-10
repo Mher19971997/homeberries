@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { Inter } from 'next/font/google';
 import styles from './index.module.css';
 import { useTranslation } from 'react-i18next';
@@ -35,9 +35,7 @@ const SmallerBanners: React.FC = () => {
             </picture>
             <div className={styles.cardTextPS5}>
               <h3 className={styles.titleLg}>Playstation 5</h3>
-              <p className={styles.desc}>
-                Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience.
-              </p>
+              <p className={styles.desc}>{t('smallerBanners.ps5.desc')}</p>
             </div>
           </div>
 
@@ -57,7 +55,7 @@ const SmallerBanners: React.FC = () => {
                 <h3 className={styles.titleSm}>
                   Apple <br className={styles.brDesktop} /> AirPods <strong>Max</strong>
                 </h3>
-                <p className={styles.desc}>Computational audio. Listen, it's powerful</p>
+                <p className={styles.desc}>{t('smallerBanners.airpods.desc')}</p>
               </div>
             </div>
 
@@ -75,7 +73,7 @@ const SmallerBanners: React.FC = () => {
                 <h3 className={styles.titleSmLight}>
                   Apple <br className={styles.brDesktop} /> Vision <strong>Pro</strong>
                 </h3>
-                <p className={styles.desc}>An immersive way to experience entertainment</p>
+                <p className={styles.desc}>{t('smallerBanners.visionPro.desc')}</p>
               </div>
             </div>
 
@@ -89,9 +87,7 @@ const SmallerBanners: React.FC = () => {
               Macbook <br />
               <strong>Air</strong>
             </h2>
-            <p className={styles.desc}>
-              The new 15-inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display.
-            </p>
+            <p className={styles.desc}>{t('smallerBanners.macbook.desc')}</p>
             <button 
               className={styles.shopBtn}
               onClick={() => router.push('/catalog')}

@@ -7,7 +7,8 @@ import HomeIcon from '@mui/icons-material/Home';
 import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 import PersonIcon from '@mui/icons-material/Person';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useRouter, usePathname } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { usePathname } from 'next/navigation';
 
 import { getAllBaskets } from '@homeberris/http/basketApi';
 import { useQuery } from '@tanstack/react-query';

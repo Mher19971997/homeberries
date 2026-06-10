@@ -17,7 +17,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createComment } from '@homeberris/http/commentApi';
 import { UUID } from 'crypto';
 import { checkToken } from '@homeberris/utils/auth';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import styles from './index.module.css';

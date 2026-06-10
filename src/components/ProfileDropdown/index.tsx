@@ -14,7 +14,7 @@ import {
   Badge,
   Avatar
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useCookies } from 'react-cookie';
 import { removeToken } from '@homeberris/utils/auth';
 import { useQuery } from '@tanstack/react-query';

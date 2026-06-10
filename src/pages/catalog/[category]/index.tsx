@@ -1,7 +1,7 @@
 import React from "react";
 import * as qs from "qs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { ChevronSepIcon, PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
 import { useParams } from "next/navigation";
 
@@ -153,6 +153,7 @@ export default function CatalogPage() {
             selectedBrands={selectedBrands}
             onBrandsChange={setSelectedBrands}
             categoryName={categoryName}
+            categoryUuid={categoryUuid}
             catalogs={catalogs?.data || []}
             onFiltersChange={setGroupFilters}
           />

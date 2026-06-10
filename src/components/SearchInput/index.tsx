@@ -21,7 +21,7 @@ import { searchCategories } from '@homeberris/http/categoryApi';
 import qs from 'qs';
 import { useDebounce } from '@homeberris/hooks/useDebounce';
 import PhotoSearchModal from '../PhotoSearchModal';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import FolderIcon from '@mui/icons-material/Folder';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { useTranslation } from 'react-i18next';

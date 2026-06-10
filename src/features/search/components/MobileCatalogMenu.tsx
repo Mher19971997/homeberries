@@ -9,7 +9,7 @@ import {
   Box,
 } from '@mui/material';
 import { ExpandMore, ChevronRight } from '@mui/icons-material';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 
 interface Props {

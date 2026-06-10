@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useMutation } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import { Box, Breadcrumbs, Typography, Alert, Grid, Link as MuiLink } from '@mui/material';

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { createPortal } from 'react-dom';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface PositionedSnackbarProps {
   open: boolean;
@@ -15,6 +16,7 @@ const PositionedSnackbar: React.FC<PositionedSnackbarProps> = ({
   handleClose,
   productName,
 }) => {
+  const { t } = useTranslation('common');
   React.useEffect(() => {
     if (!open) return;
     const t = setTimeout(handleClose, 3000);
@@ -38,7 +40,7 @@ const PositionedSnackbar: React.FC<PositionedSnackbarProps> = ({
       </div>
 
       <a href="/basket" className={styles.link} onClick={handleClose}>
-        View →
+        {t('basket.view')}
       </a>
 
       <button className={styles.close} onClick={handleClose} aria-label="close">

@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem } from '@homeberris/types/category';

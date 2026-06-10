@@ -12,6 +12,7 @@ interface SidebarFiltersProps {
   selectedBrands: string[];
   onBrandsChange: (brands: string[]) => void;
   categoryName?: string;
+  categoryUuid?: string;
   catalogs?: any[];
   onFiltersChange?: (filters: Record<string, string[]>) => void;
 }
@@ -21,6 +22,7 @@ export default function SidebarFilters({
   selectedBrands,
   onBrandsChange,
   categoryName,
+  categoryUuid,
   catalogs = [],
   onFiltersChange,
 }: SidebarFiltersProps) {
@@ -40,10 +42,12 @@ export default function SidebarFilters({
 
   const brandCountQueries = useQueries({
     queries: brands.map((brand) => ({
-      queryKey: ['brandCount', brand.uuid, categoryName],
+      queryKey: ['brandCount', brand.uuid, categoryUuid],
       queryFn: () => getAllCatalogs(qs.stringify({
-        filterMeta: { brandUuid: brand.uuid },
-        ...(categoryName ? { includeMeta: [{ association: 'category', where: { name: categoryName } }] } : {}),
+        filterMeta: {
+          brandUuid: brand.uuid,
+          ...(categoryUuid ? { categoryUuid } : {}),
+        },
         queryMeta: { paginate: true, limit: 1, page: 1 },
       })),
       staleTime: 1000 * 60 * 5,

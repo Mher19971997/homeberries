@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
 import * as qs from 'qs';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';

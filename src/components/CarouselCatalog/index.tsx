@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useQuery } from '@tanstack/react-query';
 import styles from './index.module.css';
 import { getActiveBanners, BannerItem } from '@homeberris/http/bannerApi';

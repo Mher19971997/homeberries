@@ -2,7 +2,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import qs from 'qs';
 import { UUID } from 'crypto';
 import styles from './index.module.css';

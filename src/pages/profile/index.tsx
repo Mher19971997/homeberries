@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import * as qs from 'qs';

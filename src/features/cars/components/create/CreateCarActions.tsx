@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Box, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 
 interface Props {
   isLoading: boolean;

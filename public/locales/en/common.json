@@ -22,6 +22,20 @@
     "loading": "Loading...",
     "empty": "No products found"
   },
+  "smallerBanners": {
+    "ps5": {
+      "desc": "Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience."
+    },
+    "airpods": {
+      "desc": "Computational audio. Listen, it's powerful"
+    },
+    "visionPro": {
+      "desc": "An immersive way to experience entertainment"
+    },
+    "macbook": {
+      "desc": "The new 15-inch MacBook Air makes room for more of what you love with a spacious Liquid Retina display."
+    }
+  },
   "home": {
     "tabs": {
       "new": "New Arrival",
@@ -80,6 +94,8 @@
     "categories": "Categories"
   },
   "basket": {
+    "addedToBasket": "Added to basket",
+    "view": "View →",
     "title": "Shopping Cart",
     "empty": "Your cart is empty.",
     "summary": {

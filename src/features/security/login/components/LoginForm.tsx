@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { login, register } from '@homeberris/http/authApi';
 import { setToken } from '@homeberris/utils/auth';
 import styles from '@homeberris/features/security/login/styles/index.module.css';
