@@ -1,12 +1,18 @@
 import { $host } from '@homeberris/http/index';
 
+export interface LocalizedString {
+  ru: string;
+  en: string;
+  hy: string;
+}
+
 export interface BannerItem {
   uuid: string;
-  title: string;
-  subtitle?: string;
-  description?: string;
+  title: LocalizedString;
+  subtitle?: LocalizedString;
+  description?: LocalizedString;
   image: string;
-  buttonText?: string;
+  buttonText?: LocalizedString;
   buttonLink?: string;
   sortOrder: number;
   isActive: boolean;

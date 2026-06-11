@@ -6,6 +6,13 @@ import { ChevronDownIcon, SearchIconNotMUI } from '@homeberris/assets/icons/cata
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from './index.module.css';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'next/navigation';
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
 
 interface SidebarFiltersProps {
   brands: BrandItem[];
@@ -31,6 +38,8 @@ export default function SidebarFilters({
   const [selectedOptions, setSelectedOptions] = React.useState<Record<string, string[]>>({});
 
   const { t } = useTranslation('common');
+  const routeParams = useParams();
+  const locale = (routeParams?.locale as string) || 'ru';
 
   const EXTRA_SECTIONS = [
     t('sidebarFilters.extraSections.batteryCapacity'),
@@ -58,15 +67,19 @@ export default function SidebarFilters({
     const map = new Map<string, Set<string>>();
     catalogs.forEach((catalog: any) => {
       (catalog.groupOption || []).forEach((group: any) => {
-        if (!map.has(group.name)) map.set(group.name, new Set());
-        (group.options || []).forEach((opt: any) => map.get(group.name)!.add(opt.value));
+        const groupName = getLoc(group.name, locale);
+        if (!map.has(groupName)) map.set(groupName, new Set());
+        (group.options || []).forEach((opt: any) => {
+          const optValue = getLoc(opt.value, locale);
+          if (optValue) map.get(groupName)!.add(optValue);
+        });
       });
     });
     return Array.from(map.entries()).map(([name, values]) => ({
       name,
       values: Array.from(values),
     }));
-  }, [catalogs]);
+  }, [catalogs, locale]);
 
   const brandCounts: Record<string, number> = {};
   brands.forEach((brand, i) => {

@@ -2,6 +2,13 @@ import React from "react";
 import { ChevronDownIcon } from "@homeberris/assets/icons/reviews";
 import styles from "./index.module.css";
 import { useTranslation } from "react-i18next";
+import { useParams } from "next/navigation";
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
 
 const STORAGE_KEYWORDS = ["памят", "хранил", "storage"];
 const INITIAL_VISIBLE = 2;
@@ -12,18 +19,20 @@ interface Props {
 
 export default function ProductDetailsSection({ catalog }: Props) {
   const { t } = useTranslation('common');
+  const routeParams = useParams();
+  const locale = (routeParams?.locale as string) || 'ru';
   const [showAll, setShowAll] = React.useState(false);
 
   const dynamicSpecs = React.useMemo(() => {
     if (!catalog?.groupOption?.length) return [];
     return catalog.groupOption
-      .filter((g: any) => !STORAGE_KEYWORDS.some(k => g.name?.toLowerCase().includes(k)))
+      .filter((g: any) => !STORAGE_KEYWORDS.some(k => getLoc(g.name, 'ru').toLowerCase().includes(k)))
       .map((g: any) => ({
-        group: g.name,
-        rows: (g.options || []).map((o: any) => ({ label: o.name || "", value: o.value || "" })),
+        group: getLoc(g.name, locale),
+        rows: (g.options || []).map((o: any) => ({ label: getLoc(o.name, locale) || "", value: getLoc(o.value, locale) || "" })),
       }))
       .filter((g: any) => g.rows.length > 0);
-  }, [catalog]);
+  }, [catalog, locale]);
 
   const specs = dynamicSpecs.length > 0 ? dynamicSpecs : [];
   const visibleSpecs = showAll ? specs : specs.slice(0, INITIAL_VISIBLE);
@@ -36,7 +45,7 @@ export default function ProductDetailsSection({ catalog }: Props) {
         <h2 className={styles.title}>{t('productDetails.title')}</h2>
 
         {catalog?.description && (
-          <p className={styles.description}>{catalog.description}</p>
+          <p className={styles.description}>{getLoc(catalog.description, locale)}</p>
         )}
 
         <div className={styles.specsTable}>

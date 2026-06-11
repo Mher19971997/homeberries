@@ -21,6 +21,12 @@ import { ListResult } from "@homeberris/types/filter";
 import styles from "@homeberris/pages/catalog/[category]/index.module.css";
 import { useTranslation } from "react-i18next";
 
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
+
 const ITEMS_PER_PAGE = 9;
 
 export default function CatalogPage() {
@@ -34,6 +40,7 @@ export default function CatalogPage() {
     : "/catalog";
 
   const { t } = useTranslation('common');
+  const locale = (params?.locale as string) || 'ru';
 
   const [showDrawer, setShowDrawer] = React.useState(false);
   const [sortBy, setSortBy] = React.useState("rating");
@@ -54,7 +61,7 @@ export default function CatalogPage() {
     queryFn: getMenuTree,
   });
   const categoryData = (menuTree || []).find(
-    (c: CategoryItem) => c.name === categoryName,
+    (c: CategoryItem) => getLoc(c.name, 'en') === categoryName || getLoc(c.name, locale) === categoryName,
   );
   const categoryUuid = categoryData?.uuid;
 
@@ -140,7 +147,7 @@ export default function CatalogPage() {
           href={breadcrumbPath}
           className={`${styles.breadcrumbLink} ${styles.breadcrumbLinkActive}`}
         >
-          {categoryName}
+          {categoryData ? getLoc(categoryData.name, locale) : categoryName}
         </Link>
       </nav>
 
@@ -193,8 +200,8 @@ export default function CatalogPage() {
           <StaticProductCard
             catalogs={catalogs?.data || []}
             onNavigate={(item) => {
-              const cat = (item as any).category?.name || categoryName;
-              const sub = (item as any).subCategorie?.name;
+              const cat = getLoc((item as any).category?.name, locale) || categoryName;
+              const sub = getLoc((item as any).subCategorie?.name, locale);
               const url = sub
                 ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
                 : `/catalog/${encodeURIComponent(cat)}/${item.uuid}`;

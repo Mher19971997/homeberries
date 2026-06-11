@@ -40,6 +40,12 @@ import { addToBasket } from "@homeberris/utils/indexedDB";
 import { useTranslation } from "react-i18next";
 import { addRecentlyViewed } from "@homeberris/utils/recentlyViewed";
 
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
+
 interface ProductPageContentProps {
   catalog: CatalogItem | undefined;
   categoryName?: string;
@@ -211,9 +217,11 @@ export default function ProductPageContent({
   const staticDescription =
     "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, yes and in bright light using the new system with two cameras.";
 
-  const finalCategoryName = categoryName || catalog?.category?.name || "";
+  const locale = (routeParams?.locale as string) || 'ru';
+
+  const finalCategoryName = categoryName || getLoc(catalog?.category?.name, locale) || "";
   const finalSubCategoryName =
-    subCategoryName || catalog?.subCategorie?.name || "";
+    subCategoryName || getLoc(catalog?.subCategorie?.name, locale) || "";
 
   const decodedCategory =
     typeof routeParams?.category === "string"
@@ -292,7 +300,7 @@ export default function ProductPageContent({
           <span
             className={`${styles.breadcrumbLink} ${styles.breadcrumbLinkActive}`}
           >
-            {catalog?.brand?.name || catalog?.name}
+            {catalog?.brand?.name || getLoc(catalog?.name, locale)}
           </span>
         </nav>
       </div>
@@ -334,7 +342,7 @@ export default function ProductPageContent({
               >
                 <img
                   src={images[activeIndex]}
-                  alt={catalog.name}
+                  alt={getLoc(catalog.name, locale)}
                   draggable={false}
                   className={
                     animState === "exitLeft"
@@ -361,7 +369,7 @@ export default function ProductPageContent({
         <div className={styles.gridItemInfo}>
           {/* Блок 1: Название + Цена */}
           <div className={styles.infoBlock1}>
-            <h1 className={styles.productTitle}>{catalog.name}</h1>
+            <h1 className={styles.productTitle}>{getLoc(catalog.name, locale)}</h1>
             <div className={styles.priceRow}>
               <span className={styles.currentPrice}>
                 {formatPriceHook(catalog.price)}
@@ -410,11 +418,11 @@ export default function ProductPageContent({
             {/* Выбор памяти/хранилища */}
             {(() => {
               const storageGroup = catalog.groupOption?.find(
-                (g: groupOptionItem) => g.name === "Память",
+                (g: groupOptionItem) => getLoc(g.name, 'ru') === "Память",
               );
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
-                  ? storageGroup.options.map((o: OptionsItem) => o.value)
+                  ? storageGroup.options.map((o: OptionsItem) => getLoc(o.value, locale))
                   : [];
               if (storageItems.length === 0) return null;
               return (
@@ -437,7 +445,7 @@ export default function ProductPageContent({
 
             {/* Описание */}
             {(() => {
-              const desc = catalog.description || staticDescription;
+              const desc = getLoc(catalog.description, locale) || staticDescription;
               const isLong = desc.length > 50;
               const displayedDesc = isLong && !showFullDesc ? desc.slice(0, 50) + "..." : desc;
               return (

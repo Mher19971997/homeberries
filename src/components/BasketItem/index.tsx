@@ -1,6 +1,13 @@
 import React from 'react';
 import styles from './index.module.css';
 import { BasketDataItem } from '@homeberris/types/basket';
+import { useParams } from 'next/navigation';
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
 
 interface Props {
   basket: BasketDataItem;
@@ -12,6 +19,8 @@ interface Props {
 }
 
 export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props) {
+  const routeParams = useParams();
+  const locale = (routeParams?.locale as string) || 'ru';
   const originalPrice = Number(basket?.catalog?.price) || 0;
   const discount = (basket?.catalog as any)?.discountPercent || 0;
   const isDiscount = (basket?.catalog as any)?.isDiscount && discount > 0;
@@ -64,10 +73,10 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
       <img
         className={styles.image}
         src={imgSrc}
-        alt={basket?.catalog?.name || 'Product'}
+        alt={getLoc(basket?.catalog?.name, locale) || 'Product'}
       />
       <div className={styles.info}>
-        <p className={styles.name}>{basket?.catalog?.name || '—'}</p>
+        <p className={styles.name}>{getLoc(basket?.catalog?.name, locale) || '—'}</p>
         <p className={styles.sku}>#121286541212</p>
       </div>
       <div className={styles.controlsRight}>

@@ -89,7 +89,8 @@
 .shopBtn {
   border: 1px solid #fff;
   color: #fff;
-  padding: 16px 56px;
+  /* padding: 16px 56px; */
+  padding: 16px 20px;
   border-radius: 6px;
   letter-spacing: 0.5px;
   background: transparent;

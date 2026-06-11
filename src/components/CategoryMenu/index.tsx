@@ -5,9 +5,18 @@ import { useQuery } from '@tanstack/react-query';
 import { getCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem } from '@homeberris/types/category';
 import styles from './index.module.css';
+import { useParams } from 'next/navigation';
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
 
 const CategoryMenu: React.FC = () => {
   const router = useRouter();
+  const routeParams = useParams();
+  const locale = (routeParams?.locale as string) || 'ru';
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -22,7 +31,7 @@ const CategoryMenu: React.FC = () => {
   const categories = categoriesData?.data || [];
 
   const handleCategoryClick = (category: CategoryItem) => {
-    router.push(`/catalog/${category.name}`);
+    router.push(`/catalog/${getLoc(category.name, locale)}`);
   };
 
   if (!isClient || isLoading) {
@@ -40,7 +49,7 @@ const CategoryMenu: React.FC = () => {
               onClick={() => handleCategoryClick(category)}
             >
               <Typography className={styles.menuItemText}>
-                {category.name}
+                {getLoc(category.name, locale)}
               </Typography>
             </Box>
           ))}

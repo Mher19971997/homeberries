@@ -1,14 +1,23 @@
 'use client'
 import React, { useState, useRef } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import styles from './index.module.css';
-import { getActiveBanners, BannerItem } from '@homeberris/http/bannerApi';
+import { getActiveBanners, BannerItem, LocalizedString } from '@homeberris/http/bannerApi';
 
 const BASE_URL = 'http://localhost:6001';
 
+const getLoc = (val: LocalizedString | string | undefined, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale as keyof LocalizedString] || val.ru || '';
+};
+
 const CarouselCatalog: React.FC = () => {
   const router = useRouter();
+  const params = useParams();
+  const locale = (params?.locale as string) ?? 'ru';
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -45,30 +54,30 @@ const CarouselCatalog: React.FC = () => {
             <div key={banner.uuid} className={styles.banner}>
               <div className={styles.bannerContainer}>
                 <div className={styles.textBlock}>
-                  {banner.subtitle && <span className={styles.proText}>{banner.subtitle}</span>}
+                  {getLoc(banner.subtitle, locale) && <span className={styles.proText}>{getLoc(banner.subtitle, locale)}</span>}
                   <div className={styles.titleRow}>
-                    {banner.title.split(' ').slice(0, -1).join(' ') && (
+                    {getLoc(banner.title, locale).split(' ').slice(0, -1).join(' ') && (
                       <span className={styles.titleLight}>
-                        {banner.title.split(' ').slice(0, -1).join(' ')}&nbsp;
+                        {getLoc(banner.title, locale).split(' ').slice(0, -1).join(' ')}&nbsp;
                       </span>
                     )}
                     <span className={styles.titleBold}>
-                      {banner.title.split(' ').slice(-1)[0]}
+                      {getLoc(banner.title, locale).split(' ').slice(-1)[0]}
                     </span>
                   </div>
-                  {banner.description && (
-                    <p className={styles.description}>{banner.description}</p>
+                  {getLoc(banner.description, locale) && (
+                    <p className={styles.description}>{getLoc(banner.description, locale)}</p>
                   )}
-                  {banner.buttonText && (
+                  {getLoc(banner.buttonText, locale) && (
                     <button
                       className={styles.shopBtn}
                       onClick={() => router.push(banner.buttonLink || '/catalog')}
                     >
-                      {banner.buttonText}
+                      {getLoc(banner.buttonText, locale)}
                     </button>
                   )}
                 </div>
-                <img className={styles.bannerImg} src={imgSrc} alt={banner.title} />
+                <img className={styles.bannerImg} src={imgSrc} alt={getLoc(banner.title, locale)} />
               </div>
             </div>
           );

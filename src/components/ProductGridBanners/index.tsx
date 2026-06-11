@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import qs from 'qs';
@@ -13,6 +14,12 @@ import { useTranslation } from 'react-i18next';
 
 const BASE_URL = 'http://localhost:6001';
 
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
+
 const BG_COLORS = ['#ffffff', '#f9f9f9', '#eaeaea', '#2c2c2c'];
 
 const CARD_CLASSES = [
@@ -24,6 +31,8 @@ const CARD_CLASSES = [
 
 export default function ProductGridBanners() {
   const router = useRouter();
+  const params = useParams();
+  const locale = (params?.locale as string) ?? 'ru';
   const { t } = useTranslation('common');
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -70,19 +79,19 @@ export default function ProductGridBanners() {
               <div className={[styles.gridCard, CARD_CLASSES[index % CARD_CLASSES.length]].join(' ')}>
                 <div className={styles.imageBox}>
                   {imageUrl && (
-                    <img src={imageUrl} alt={catalog.name} className={styles.productImg} draggable={false} />
+                    <img src={imageUrl} alt={getLoc(catalog.name, locale)} className={styles.productImg} draggable={false} />
                   )}
                 </div>
                 <div className={styles.infoBox}>
                   <p className={[styles.bannerTitle, isDark ? styles.lightText : ''].join(' ')}>
-                    {catalog.name}
+                    {getLoc(catalog.name, locale)}
                   </p>
-                  <p className={styles.bannerDescription}>{catalog.description}</p>
+                  <p className={styles.bannerDescription}>{getLoc(catalog.description, locale)}</p>
                   <button
                     className={[styles.actionButton, isDark ? styles.actionButtonDark : ''].join(' ')}
                     onClick={() => {
-                      const cat = catalog.category?.name;
-                      const sub = catalog.subCategorie?.name;
+                      const cat = getLoc(catalog.category?.name, locale);
+                      const sub = getLoc(catalog.subCategorie?.name, locale);
                       const uuid = catalog.uuid;
                       if (cat && sub && uuid) {
                         router.push(`/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${uuid}`);

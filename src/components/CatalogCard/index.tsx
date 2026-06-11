@@ -14,6 +14,7 @@ import { useFavorites } from '@homeberris/context/favoritesContext';
 import styles from './index.module.css';
 import { HeartFilledIcon, HeartIcon } from '@homeberris/assets/icons/catalog';
 import { useTranslation } from 'react-i18next';
+import { useParams } from 'next/navigation';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -21,8 +22,16 @@ interface CatalogCardProps {
   onNavigate?: () => void;
 }
 
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
+
 const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   const { t } = useTranslation('common');
+  const params = useParams();
+  const locale = (params?.locale as string) ?? 'ru';
   const queryClient = useQueryClient();
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [cookies] = useCookies(['token']);
@@ -76,7 +85,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
         open={openSuccess}
         handleClose={() => setOpenSuccess(false)}
         message={t('basket.addedToBasket')}
-        productName={catalog?.name}
+        productName={getLoc(catalog?.name, locale)}
       />
 
       <div className={styles.inner}>
@@ -92,13 +101,13 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
         <div className={styles.imageWrap}>
           <img
             src={imgSrc}
-            alt={catalog?.name}
+            alt={getLoc(catalog?.name, locale)}
             onError={(e) => { (e.target as HTMLImageElement).src = EmtpImg.src; }}
           />
         </div>
 
         <div className={styles.body}>
-          <p className={styles.name}>{catalog?.name}</p>
+          <p className={styles.name}>{getLoc(catalog?.name, locale)}</p>
           {catalog?.isDiscount && catalog?.discountPercent > 0 ? (
             <div className={styles.priceBlock}>
               <p className={styles.priceOld}>{formatPrice(catalog?.price)}</p>
