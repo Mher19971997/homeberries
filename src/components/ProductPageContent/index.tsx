@@ -24,6 +24,7 @@ import {
   OptionsItem,
   groupOptionItem,
   CatalogItem,
+  ProductSpecItem,
 } from "@homeberris/types/catalog";
 import styles from "./index.module.css";
 import { useProductPurchase } from "@homeberris/features/catalog/hooks/useProductPurchase";
@@ -204,6 +205,7 @@ export default function ProductPageContent({
     return null;
   }
 
+  const locale = (routeParams?.locale as string) || 'ru';
   const staticColors = ["#000000", "#781DBC", "#E10000", "#E1B000", "#E8E8E8"];
   const staticStorage = ["128GB", "256GB", "512GB", "1TB"];
   const staticSpecs = [
@@ -216,8 +218,6 @@ export default function ProductPageContent({
   ];
   const staticDescription =
     "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, yes and in bright light using the new system with two cameras.";
-
-  const locale = (routeParams?.locale as string) || 'ru';
 
   const finalCategoryName = categoryName || getLoc(catalog?.category?.name, locale) || "";
   const finalSubCategoryName =
@@ -441,7 +441,18 @@ export default function ProductPageContent({
             })()}
 
             {/* Характеристики */}
-            <ProductSpecsGrid specs={staticSpecs} />
+            {(() => {
+              const dynSpecs = (catalog.productSpecs || []).map((s: ProductSpecItem) => {
+                const DynIcon = s.icon ? (require('lucide-react') as Record<string, any>)[s.icon] : null;
+                return {
+                  name: getLoc(s.name, locale),
+                  value: getLoc(s.value, locale),
+                  icon: DynIcon ? React.createElement(DynIcon, { size: 18 }) : undefined,
+                };
+              });
+              const specsToShow = dynSpecs.length > 0 ? dynSpecs : staticSpecs;
+              return <ProductSpecsGrid specs={specsToShow} />;
+            })()}
 
             {/* Описание */}
             {(() => {

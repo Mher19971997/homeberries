@@ -22,6 +22,7 @@ export interface CatalogItem {
   infos: InfoItem[];
   comments: CommentItem[];
   groupOption: groupOptionItem[];
+  productSpecs?: ProductSpecItem[];
   isDiscount?: boolean;
   discountPercent: number
 }
@@ -55,6 +56,13 @@ export interface CommentItem {
 export interface ImagesItem {
   uuid?: string;
   image?: string;
+}
+
+export interface ProductSpecItem {
+  uuid?: string;
+  icon?: string;
+  name: { ru: string; en: string; hy: string } | string;
+  value: { ru: string; en: string; hy: string } | string;
 }
 
 export interface CategoryItem {
