@@ -200,8 +200,8 @@ export default function CatalogPage() {
           <StaticProductCard
             catalogs={catalogs?.data || []}
             onNavigate={(item) => {
-              const cat = getLoc((item as any).category?.name, locale) || categoryName;
-              const sub = getLoc((item as any).subCategorie?.name, locale);
+              const cat = getLoc((item as any).category?.name, 'en') || categoryName;
+              const sub = getLoc((item as any).subCategorie?.name, 'en');
               const url = sub
                 ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
                 : `/catalog/${encodeURIComponent(cat)}/${item.uuid}`;
@@ -222,18 +222,16 @@ export default function CatalogPage() {
 
               {(() => {
                 const pages: (number | string)[] = [];
-                if (totalPages <= 7) {
+                if (totalPages <= 4) {
                   for (let i = 1; i <= totalPages; i++) pages.push(i);
                 } else {
                   pages.push(1);
                   if (currentPage > 3) pages.push("...");
-                  for (
-                    let i = Math.max(2, currentPage - 1);
-                    i <= Math.min(totalPages - 1, currentPage + 1);
-                    i++
-                  ) {
-                    pages.push(i);
-                  }
+                  const start = Math.max(2, currentPage - 1);
+                  const end = currentPage <= 2
+                    ? Math.min(totalPages - 1, 3)
+                    : Math.min(totalPages - 1, currentPage + 1);
+                  for (let i = start; i <= end; i++) pages.push(i);
                   if (currentPage < totalPages - 2) pages.push("...");
                   pages.push(totalPages);
                 }

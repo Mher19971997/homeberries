@@ -18,6 +18,12 @@ import { getCategories, getSubCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import styles from './index.module.css';
 
+const getLoc = (val: any, locale = 'ru'): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || val.en || '';
+};
+
 interface CategorySelectorProps {
   onCategorySelect?: (category: CategoryItem) => void;
   onSubCategorySelect?: (subCategory: SubCategoryItem) => void;
@@ -142,7 +148,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                   className={styles.categoryItem}
                 >
                   <ListItemText
-                    primary={category.name}
+                    primary={getLoc(category.name)}
                     primaryTypographyProps={{
                       fontWeight: isSelected ? 600 : 400
                     }}
@@ -176,7 +182,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                           className={styles.subCategoryItem}
                         >
                           <ListItemText
-                            primary={subCategory.name}
+                            primary={getLoc(subCategory.name)}
                             primaryTypographyProps={{
                               fontSize: '0.9rem'
                             }}

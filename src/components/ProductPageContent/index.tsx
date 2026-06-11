@@ -219,9 +219,8 @@ export default function ProductPageContent({
   const staticDescription =
     "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, yes and in bright light using the new system with two cameras.";
 
-  const finalCategoryName = categoryName || getLoc(catalog?.category?.name, locale) || "";
-  const finalSubCategoryName =
-    subCategoryName || getLoc(catalog?.subCategorie?.name, locale) || "";
+  const finalCategoryName = getLoc(catalog?.category?.name, locale) || categoryName || "";
+  const finalSubCategoryName = getLoc(catalog?.subCategorie?.name, locale) || subCategoryName || "";
 
   const decodedCategory =
     typeof routeParams?.category === "string"
@@ -300,7 +299,7 @@ export default function ProductPageContent({
           <span
             className={`${styles.breadcrumbLink} ${styles.breadcrumbLinkActive}`}
           >
-            {catalog?.brand?.name || getLoc(catalog?.name, locale)}
+            {getLoc(catalog?.name, locale)}
           </span>
         </nav>
       </div>

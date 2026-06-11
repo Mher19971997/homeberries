@@ -17,9 +17,15 @@ import styles from './index.module.css';
 
 const LIMIT = 12;
 
-const buildCatalogUrl = (catalog: CatalogItem) => {
-  const cat = (catalog as any).category?.name;
-  const sub = (catalog as any).subCategorie?.name;
+const getLoc = (val: any, locale: string) => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || val.en || '';
+};
+
+const buildCatalogUrl = (catalog: CatalogItem, locale: string) => {
+  const cat = getLoc((catalog as any).category?.name, 'en');
+  const sub = getLoc((catalog as any).subCategorie?.name, 'en');
   if (cat && sub) return `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${catalog.uuid}`;
   if (cat) return `/catalog/${encodeURIComponent(cat)}/${catalog.uuid}`;
   return `/catalog`;
@@ -27,7 +33,8 @@ const buildCatalogUrl = (catalog: CatalogItem) => {
 
 export default function CatalogIndexPage() {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const locale = i18n.language || 'ru';
   const searchParams = useSearchParams();
   const searchQuery = searchParams?.get('search') ?? '';
 
@@ -203,7 +210,7 @@ export default function CatalogIndexPage() {
             <div key={catalog.uuid} className={styles.cardWrap}>
               <CatalogCard
                 catalog={catalog}
-                onNavigate={() => router.push(buildCatalogUrl(catalog))}
+                onNavigate={() => router.push(buildCatalogUrl(catalog, locale))}
               />
             </div>
           ))}

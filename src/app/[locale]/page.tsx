@@ -25,12 +25,16 @@ import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.
 const renderPagination = (currentPage: number, totalPages: number, setPage: (p: number) => void) => {
   if (totalPages <= 1) return null;
   const pages: (number | string)[] = [];
-  if (totalPages <= 7) {
+  if (totalPages <= 4) {
     for (let i = 1; i <= totalPages; i++) pages.push(i);
   } else {
     pages.push(1);
     if (currentPage > 3) pages.push('...');
-    for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) pages.push(i);
+    const start = Math.max(2, currentPage - 1);
+    const end = currentPage <= 2
+      ? Math.min(totalPages - 1, 3)
+      : Math.min(totalPages - 1, currentPage + 1);
+    for (let i = start; i <= end; i++) pages.push(i);
     if (currentPage < totalPages - 2) pages.push('...');
     pages.push(totalPages);
   }
@@ -59,9 +63,15 @@ const renderPagination = (currentPage: number, totalPages: number, setPage: (p: 
   );
 };
 
-const buildCatalogUrl = (catalog: CatalogItem) => {
-  const cat = (catalog as any).category?.name;
-  const sub = (catalog as any).subCategorie?.name;
+const getLoc = (val: any, locale: string) => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || val.en || '';
+};
+
+const buildCatalogUrl = (catalog: CatalogItem, locale: string) => {
+  const cat = getLoc((catalog as any).category?.name, 'en');
+  const sub = getLoc((catalog as any).subCategorie?.name, 'en');
   const uuid = catalog.uuid;
   if (cat && sub) return `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${uuid}`;
   if (cat) return `/catalog/${encodeURIComponent(cat)}/${uuid}`;
@@ -70,7 +80,8 @@ const buildCatalogUrl = (catalog: CatalogItem) => {
 
 export default function Home() {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const locale = i18n.language || 'ru';
   const [selectedCategory, setSelectedCategory] = useState<CategoryItem | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<SubCategoryItem | null>(null);
 
@@ -179,7 +190,7 @@ export default function Home() {
             {catalogs.length > 0 ? (
               catalogs.map((catalog, index) => (
                 <div className={styles.catalogItem} key={catalog?.uuid || index}>
-                  <CatalogCard catalog={catalog} onNavigate={() => router.push(buildCatalogUrl(catalog))} />
+                  <CatalogCard catalog={catalog} onNavigate={() => router.push(buildCatalogUrl(catalog, locale))} />
                 </div>
               ))
             ) : (
@@ -215,7 +226,7 @@ export default function Home() {
             {discountCatalogs.length > 0 ? (
               discountCatalogs.map((catalog, index) => (
                 <div className={styles.catalogItem} key={`discount-${catalog?.uuid || index}`}>
-                  <CatalogCard catalog={catalog} onNavigate={() => router.push(buildCatalogUrl(catalog))} />
+                  <CatalogCard catalog={catalog} onNavigate={() => router.push(buildCatalogUrl(catalog, locale))} />
                 </div>
               ))
             ) : (

@@ -1,6 +1,7 @@
 'use client';
 
 import { getCatalogByUud } from '@homeberris/http/catalogApi';
+import { getMenuTree } from '@homeberris/http/categoryApi';
 import React from 'react';
 import { Grid, Box, Typography, CircularProgress } from '@mui/material';
 import { useToast } from '@homeberris/hooks/useToast';
@@ -11,6 +12,7 @@ import { useParams } from 'next/navigation';
 import ProductPageContent from '@homeberris/components/ProductPageContent';
 import SubCategoryPageContent from '@homeberris/components/SubCategoryPageContent';
 import { CatalogItem } from '@homeberris/types/catalog';
+import { CategoryItem } from '@homeberris/types/category';
 
 const isUUID = (str: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -24,6 +26,30 @@ export default function Catalog() {
   const isProduct = isUUID(slugStr);
 
   const { toast, showError, hideToast } = useToast();
+
+  const getLoc = (val: any, locale: string): string => {
+    if (!val) return '';
+    if (typeof val === 'string') return val;
+    return val[locale] || val.ru || val.en || '';
+  };
+
+  const { data: menuTree } = useQuery<CategoryItem[]>({
+    queryKey: ['getMenuTree'],
+    queryFn: getMenuTree,
+    enabled: !isProduct,
+  });
+
+  const resolvedSubCategoryUuid = React.useMemo(() => {
+    if (isProduct || !menuTree) return null;
+    const cat = menuTree.find(
+      (c: CategoryItem) => getLoc(c.name, 'en') === decodedCategoryName || getLoc(c.name, 'ru') === decodedCategoryName
+    );
+    if (!cat?.subCategories) return null;
+    const sub = cat.subCategories.find(
+      (s: any) => getLoc(s.name, 'en') === slugStr || getLoc(s.name, 'ru') === slugStr
+    );
+    return sub?.uuid || null;
+  }, [menuTree, decodedCategoryName, slugStr, isProduct]);
 
   const { data: productCatalog, isLoading: isLoadingProduct } = useQuery<CatalogItem | null>({
     queryKey: ['getCatalogByUud', slugStr],
@@ -85,7 +111,7 @@ export default function Catalog() {
 
   return (
     <SubCategoryPageContent
-      subCategoryUuid={null}
+      subCategoryUuid={resolvedSubCategoryUuid}
       subCategoryName={slugStr}
       categoryName={decodedCategoryName}
       subCategoryData={null}
