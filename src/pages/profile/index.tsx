@@ -197,11 +197,11 @@ export default function Profile() {
               </div>
                 {recentlyViewed?.data && recentlyViewed.data.length > 0 ? (
                 <div className={styles.catalogGrid}>
-                  {recentlyViewed.data.slice(0, 4).map((catalog: any) => (
-                    <div key={catalog.uuid} className={styles.catalogItem}>
+                  {recentlyViewed.data.slice(0, 4).map((item: any) => (
+                    <div key={item.uuid} className={styles.catalogItem}>
                       <CatalogCard
-                        catalog={catalog}
-                        onNavigate={() => router.push(buildCatalogUrl(catalog))}
+                        catalog={item.catalog}
+                        onNavigate={() => router.push(buildCatalogUrl(item.catalog))}
                       />
                     </div>
                   ))}
