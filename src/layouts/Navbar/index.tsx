@@ -16,10 +16,18 @@ import SelectLanguageInPopover from '@homeberris/components/SelectLanguageInPopo
 import { useTranslation } from 'react-i18next';
 import { useDebounce } from '@homeberris/hooks/useDebounce';
 import { CatalogItem } from '@homeberris/types/catalog';
+import { useParams } from 'next/navigation';
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val || typeof val === 'string') return val ?? '';
+  return val[locale] || val.en || val.ru || '';
+};
 
 
 const Navbar = () => {
   const { t } = useTranslation('common');
+  const params = useParams();
+  const locale = (params?.locale as string) ?? 'en';
   const router = useRouter();
   const isAuth = useAuth();
   const [cookies] = useCookies(['token']);
@@ -122,8 +130,8 @@ const Navbar = () => {
             <div className={styles.searchDropdown}>
               {searchResults?.data && searchResults.data.length > 0 ? (
                 searchResults.data.map((item: CatalogItem) => {
-                  const cat = (item as any).category?.name;
-                  const sub = (item as any).subCategorie?.name;
+                  const cat = getLoc((item as any).category?.name, locale);
+                  const sub = getLoc((item as any).subCategorie?.name, locale);
                   const href = cat && sub
                     ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
                     : cat ? `/catalog/${encodeURIComponent(cat)}/${item.uuid}` : `/catalog`;
@@ -133,7 +141,7 @@ const Navbar = () => {
                       className={styles.searchDropdownItem}
                       onClick={() => { setShowDropdown(false); setSearchValue(''); router.push(href); }}
                     >
-                      {item.name}
+                      {getLoc(item.name, locale)}
                     </div>
                   );
                 })

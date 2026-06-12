@@ -90,8 +90,8 @@ export default function ProductGridBanners() {
                   <button
                     className={[styles.actionButton, isDark ? styles.actionButtonDark : ''].join(' ')}
                     onClick={() => {
-                      const cat = getLoc(catalog.category?.name, locale);
-                      const sub = getLoc(catalog.subCategorie?.name, locale);
+                      const cat = getLoc(catalog.category?.name, 'en');
+                      const sub = getLoc(catalog.subCategorie?.name, 'en');
                       const uuid = catalog.uuid;
                       if (cat && sub && uuid) {
                         router.push(`/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${uuid}`);

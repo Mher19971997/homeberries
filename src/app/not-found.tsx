@@ -1,8 +1,5 @@
 import { Inter } from 'next/font/google';
-import Providers from '@homeberris/app/providers';
-import Navbar from '@homeberris/layouts/Navbar';
-import Footer from '@homeberris/layouts/Footer';
-import NotFoundContent from './not-found-content';
+import NotFoundWrapper from './not-found-wrapper';
 import '@homeberris/styles/globals.css';
 import '@homeberris/styles/cropper.css';
 import 'slick-carousel/slick/slick.css';
@@ -14,13 +11,9 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function GlobalNotFound() {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <body className={inter.className} style={{ margin: 0, padding: 0 }} suppressHydrationWarning>
-        <Providers>
-          <Navbar />
-          <NotFoundContent />
-          <Footer />
-        </Providers>
+        <NotFoundWrapper />
       </body>
     </html>
   );

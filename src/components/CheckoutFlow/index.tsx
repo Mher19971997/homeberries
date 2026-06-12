@@ -1,5 +1,11 @@
 "use client";
 import React, { useState, useMemo } from "react";
+
+const getLoc = (val: any, locale = 'en'): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.en || val.ru || '';
+};
 import styles from "./index.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllBaskets } from "@homeberris/http/basketApi";
@@ -816,7 +822,7 @@ export default function CheckoutFlow() {
 
       return {
         uuid: (item as any).uuid ?? String(index),
-        name: (item as any).catalog?.name ?? "Product",
+        name: getLoc((item as any).catalog?.name) || "Product",
         price: Number((item as any).catalog?.price) || 0,
         image: imgSrc,
       };

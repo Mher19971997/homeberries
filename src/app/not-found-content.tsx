@@ -3,8 +3,18 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useEffect, useRef, useState } from 'react';
+import { usePathname } from 'next/navigation';
+
+const translations: Record<string, Record<string, string>> = {
+  en: { title: 'Page not found', subtitle: "The page you're looking for doesn't exist or has been moved. Go back to the homepage.", goHome: 'Go to Home', goBack: 'Go Back' },
+  ru: { title: 'Страница не найдена', subtitle: 'Страница, которую вы ищете, не существует или была перемещена. Вернитесь на главную.', goHome: 'На главную', goBack: 'Назад' },
+  hy: { title: 'Էջը չի գտնվել', subtitle: 'Էջը, որը փնտրում եք, գոյություն չունի կամ տեղափոխվել է։ Վերադարձեք գլխավոր էջ։', goHome: 'Գլխավոր էջ', goBack: 'Հետ' },
+};
 
 export default function NotFoundContent() {
+  const pathname = usePathname();
+  const locale = (['en', 'ru', 'hy'].find((l) => pathname?.startsWith(`/${l}`))) ?? 'en';
+  const tr = translations[locale];
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [count, setCount] = useState(0);
@@ -128,7 +138,7 @@ export default function NotFoundContent() {
           transition: 'opacity 0.6s ease 0.8s, transform 0.6s ease 0.8s',
         }}
       >
-        Page not found
+        {tr.title}
       </Typography>
 
       <Typography
@@ -145,8 +155,7 @@ export default function NotFoundContent() {
           transition: 'opacity 0.6s ease 1s, transform 0.6s ease 1s',
         }}
       >
-        The page you&apos;re looking for doesn&apos;t exist
-        or has been moved. Go back to the homepage.
+        {tr.subtitle}
       </Typography>
 
       <Box
@@ -192,7 +201,7 @@ export default function NotFoundContent() {
             transition: 'all 0.2s ease',
           }}
         >
-          Go to Home
+          {tr.goHome}
         </Button>
 
         <Button
@@ -215,7 +224,7 @@ export default function NotFoundContent() {
             transition: 'all 0.2s ease',
           }}
         >
-          Go Back
+          {tr.goBack}
         </Button>
       </Box>
     </Box>

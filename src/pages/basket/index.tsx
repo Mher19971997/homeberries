@@ -145,15 +145,35 @@ export default function BasketPage() {
             >
               <PaginationLeft />
             </button>
-            {Array.from({ length: totalBasketPages }, (_, i) => i + 1).map(page => (
-              <button
-                key={page}
-                className={`${paginationStyles.pageBtn} ${basketPage === page ? paginationStyles.pageBtnActive : ''}`}
-                onClick={() => setBasketPage(page)}
-              >
-                {page}
-              </button>
-            ))}
+            {(() => {
+              const pages: (number | string)[] = [];
+              if (totalBasketPages <= 4) {
+                for (let i = 1; i <= totalBasketPages; i++) pages.push(i);
+              } else {
+                pages.push(1);
+                if (basketPage > 3) pages.push('...');
+                const start = Math.max(2, basketPage - 1);
+                const end = basketPage <= 2
+                  ? Math.min(totalBasketPages - 1, 3)
+                  : Math.min(totalBasketPages - 1, basketPage + 1);
+                for (let i = start; i <= end; i++) pages.push(i);
+                if (basketPage < totalBasketPages - 2) pages.push('...');
+                pages.push(totalBasketPages);
+              }
+              return pages.map((page, i) =>
+                page === '...' ? (
+                  <span key={`dots-${i}`} className={paginationStyles.pageDots}>...</span>
+                ) : (
+                  <button
+                    key={page}
+                    className={`${paginationStyles.pageBtn} ${basketPage === page ? paginationStyles.pageBtnActive : ''}`}
+                    onClick={() => setBasketPage(page as number)}
+                  >
+                    {page}
+                  </button>
+                )
+              );
+            })()}
             <button
               className={paginationStyles.pageBtn}
               onClick={() => setBasketPage(p => Math.min(totalBasketPages, p + 1))}

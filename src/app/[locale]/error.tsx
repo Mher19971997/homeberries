@@ -3,6 +3,7 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function Error({
   error,
@@ -11,6 +12,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [count, setCount] = useState(0);
@@ -139,7 +141,7 @@ export default function Error({
             transition: 'opacity 0.6s ease 0.8s, transform 0.6s ease 0.8s',
           }}
         >
-          Something went wrong
+          {t('errorPage.title')}
         </Typography>
 
         <Typography
@@ -156,7 +158,7 @@ export default function Error({
             transition: 'opacity 0.6s ease 1s, transform 0.6s ease 1s',
           }}
         >
-          An unexpected error occurred. You can try again or go back to the homepage.
+          {t('errorPage.subtitle')}
         </Typography>
 
         <Box
@@ -202,7 +204,7 @@ export default function Error({
               transition: 'all 0.2s ease',
             }}
           >
-            Try Again
+            {t('errorPage.tryAgain')}
           </Button>
 
           <Button
@@ -225,7 +227,7 @@ export default function Error({
               transition: 'all 0.2s ease',
             }}
           >
-            Go to Home
+            {t('errorPage.goHome')}
           </Button>
         </Box>
       </Box>

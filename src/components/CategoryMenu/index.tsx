@@ -31,7 +31,7 @@ const CategoryMenu: React.FC = () => {
   const categories = categoriesData?.data || [];
 
   const handleCategoryClick = (category: CategoryItem) => {
-    router.push(`/catalog/${getLoc(category.name, locale)}`);
+    router.push(`/catalog/${encodeURIComponent(getLoc(category.name, 'en'))}`);
   };
 
   if (!isClient || isLoading) {

@@ -23,11 +23,35 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 function CommentInput({ isAuth, rating, setRating, text, setText, image, setImage, isPending, onSend }: any) {
+  const { t } = useTranslation('common');
   const [focused, setFocused] = React.useState(false);
   const fileRef = React.useRef<HTMLInputElement>(null);
 
+  const [showWarning, setShowWarning] = React.useState(false);
+
   if (!isAuth) return (
-    <input type="text" className={styles.leaveCommentInput} placeholder="Leave Comment" readOnly style={{ cursor: "not-allowed", opacity: 0.6 }} />
+    <div style={{ position: 'relative' }}>
+      <input
+        type="text"
+        className={styles.leaveCommentInput}
+        placeholder={t('reviews.leaveComment')}
+        readOnly
+        onClick={() => setShowWarning(true)}
+        onBlur={() => setShowWarning(false)}
+        style={{ cursor: 'not-allowed', opacity: 0.6 }}
+      />
+      {showWarning && (
+        <div style={{
+          position: 'absolute', top: 'calc(100% + 6px)', left: 0, right: 0,
+          padding: '10px 14px', borderRadius: 8,
+          background: '#fff8e1', border: '1px solid #ffe082',
+          color: '#7a5c00', fontSize: 13, fontFamily: 'inherit',
+          zIndex: 10, boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+        }}>
+          {t('reviews.notLoggedIn')}
+        </div>
+      )}
+    </div>
   );
 
   return (
@@ -37,7 +61,7 @@ function CommentInput({ isAuth, rating, setRating, text, setText, image, setImag
     }}>
       <input
         type="text"
-        placeholder="Leave Comment"
+        placeholder={t('reviews.leaveComment')}
         value={text}
         onChange={(e) => setText(e.target.value)}
         onFocus={() => setFocused(true)}
@@ -113,11 +137,11 @@ export default function ProductReviewsSection({ catalog }: Props) {
     : 0;
 
   const bars = [
-    { label: "Excellent", min: 5, max: 5 },
-    { label: "Good", min: 4, max: 4 },
-    { label: "Average", min: 3, max: 3 },
-    { label: "Below Average", min: 2, max: 2 },
-    { label: "Poor", min: 1, max: 1 },
+    { label: t('reviews.ratingBars.excellent'), min: 5, max: 5 },
+    { label: t('reviews.ratingBars.good'), min: 4, max: 4 },
+    { label: t('reviews.ratingBars.average'), min: 3, max: 3 },
+    { label: t('reviews.ratingBars.belowAverage'), min: 2, max: 2 },
+    { label: t('reviews.ratingBars.poor'), min: 1, max: 1 },
   ].map((b) => ({ label: b.label, count: comments.filter((c: any) => c.rating >= b.min && c.rating <= b.max).length }));
 
   const maxBar = Math.max(...bars.map((b) => b.count), 1);
@@ -146,7 +170,7 @@ export default function ProductReviewsSection({ catalog }: Props) {
             <div className={styles.ordinaryClass}>
               <span className={styles.ratingNumber}>{avgRating || "—"}</span>
               <br />
-              <span className={styles.ratingTotal}>of {comments.length} reviews</span>
+              <span className={styles.ratingTotal}>{t('reviews.ofReviews', { count: comments.length })}</span>
             </div>
             {avgRating > 0 && <StarRating rating={avgRating} />}
           </div>
@@ -209,7 +233,7 @@ export default function ProductReviewsSection({ catalog }: Props) {
 
           {comments.length > INITIAL_COUNT && (
             <button className={styles.viewMoreBtn} onClick={() => setShowAll((p) => !p)}>
-              {showAll ? "View Less" : "View More"}
+              {showAll ? t('reviews.viewLess') : t('reviews.viewMore')}
               <ChevronDownIcon style={{ transform: showAll ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s ease" }} />
             </button>
           )}

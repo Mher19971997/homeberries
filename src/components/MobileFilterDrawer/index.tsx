@@ -1,8 +1,16 @@
 import React from 'react';
-import { Divider, Slider } from '@mui/material';
+import { Slider } from '@mui/material';
 import { BrandItem } from '@homeberris/types/brand';
 import { SearchIconNotMUI } from '@homeberris/assets/icons/catalog';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'next/navigation';
+
+const getLoc = (val: any, locale: string): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.ru || '';
+};
 
 interface MobileFilterDrawerProps {
   open: boolean;
@@ -10,7 +18,9 @@ interface MobileFilterDrawerProps {
   brands: BrandItem[];
   selectedBrands: string[];
   priceRange: { min: number; max: number } | null;
-  onApply: (brands: string[], price: { min: number; max: number } | null) => void;
+  onApply: (brands: string[], price: { min: number; max: number } | null, groupFilters: Record<string, string[]>) => void;
+  catalogs?: any[];
+  initialGroupFilters?: Record<string, string[]>;
 }
 
 const PRICE_MIN = 0;
@@ -23,27 +33,47 @@ export default function MobileFilterDrawer({
   selectedBrands: initialBrands,
   priceRange: initialPrice,
   onApply,
+  catalogs = [],
+  initialGroupFilters = {},
 }: MobileFilterDrawerProps) {
+  const { t } = useTranslation('common');
+  const params = useParams();
+  const locale = (params?.locale as string) || 'en';
   const [brandSearch, setBrandSearch] = React.useState('');
   const [localBrands, setLocalBrands] = React.useState<string[]>(initialBrands);
   const [tempMin, setTempMin] = React.useState<number>(initialPrice?.min ?? PRICE_MIN);
   const [tempMax, setTempMax] = React.useState<number>(initialPrice?.max ?? PRICE_MAX);
+  const [selectedOptions, setSelectedOptions] = React.useState<Record<string, string[]>>(initialGroupFilters);
 
   const [openSections, setOpenSections] = React.useState<Record<string, boolean>>({
     price: true,
     brand: true,
-    memory: false,
-    protection: false,
-    diagonal: false,
-    screenType: false,
-    battery: false,
   });
+
+  const groupSections = React.useMemo(() => {
+    const map = new Map<string, Set<string>>();
+    catalogs.forEach((catalog: any) => {
+      (catalog.groupOption || []).forEach((group: any) => {
+        const groupName = getLoc(group.name, locale);
+        if (!map.has(groupName)) map.set(groupName, new Set());
+        (group.options || []).forEach((opt: any) => {
+          const optValue = getLoc(opt.value, locale);
+          if (optValue) map.get(groupName)!.add(optValue);
+        });
+      });
+    });
+    return Array.from(map.entries()).map(([name, values]) => ({
+      name,
+      values: Array.from(values),
+    }));
+  }, [catalogs, locale]);
 
   React.useEffect(() => {
     if (open) {
       setLocalBrands(initialBrands);
       setTempMin(initialPrice?.min ?? PRICE_MIN);
       setTempMax(initialPrice?.max ?? PRICE_MAX);
+      setSelectedOptions(initialGroupFilters);
     }
   }, [open]);
 
@@ -62,7 +92,11 @@ export default function MobileFilterDrawer({
       tempMin === PRICE_MIN && tempMax === PRICE_MAX
         ? null
         : { min: tempMin, max: tempMax };
-    onApply(localBrands, price);
+    const cleanedOptions: Record<string, string[]> = {};
+    Object.entries(selectedOptions).forEach(([k, v]) => {
+      if (v.length > 0) cleanedOptions[k] = v;
+    });
+    onApply(localBrands, price, cleanedOptions);
     onClose();
   };
 
@@ -70,13 +104,15 @@ export default function MobileFilterDrawer({
     b.name.toLowerCase().includes(brandSearch.toLowerCase())
   );
 
-  const extraSections = [
-    { key: 'memory', label: 'Built-in memory' },
-    { key: 'protection', label: 'Protection class' },
-    { key: 'diagonal', label: 'Screen diagonal' },
-    { key: 'screenType', label: 'Screen type' },
-    { key: 'battery', label: 'Battery capacity' },
-  ];
+  const toggleOption = (groupName: string, value: string) => {
+    setSelectedOptions((prev) => {
+      const current = prev[groupName] || [];
+      const updated = current.includes(value)
+        ? current.filter((v) => v !== value)
+        : [...current, value];
+      return { ...prev, [groupName]: updated };
+    });
+  };
 
   return (
     <>
@@ -112,7 +148,7 @@ export default function MobileFilterDrawer({
               <path d="M15 18L9 12L15 6" stroke="#242424" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <p className={styles.title}>Filters</p>
+          <p className={styles.title}>{t('sidebarFilters.title')}</p>
         </div>
 
         {/* Body */}
@@ -120,7 +156,7 @@ export default function MobileFilterDrawer({
           {/* Price */}
           <div className={styles.section}>
             <div className={styles.sectionHeader} onClick={() => toggleSection('price')}>
-              <p className={styles.sectionTitle}>Price</p>
+              <p className={styles.sectionTitle}>{t('sidebarFilters.price')}</p>
               <svg
                 className={`${styles.chevron} ${openSections.price ? styles.chevronOpen : ''}`}
                 width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -132,7 +168,7 @@ export default function MobileFilterDrawer({
               <div className={styles.sectionContent}>
                 <div className={styles.priceInputs}>
                   <div className={styles.priceInput}>
-                    <span className={styles.priceLabel}>From</span>
+                    <span className={styles.priceLabel}>{t('sidebarFilters.from')}</span>
                     <input
                       className={styles.priceField}
                       type="number"
@@ -146,7 +182,7 @@ export default function MobileFilterDrawer({
                   </div>
                   <span className={styles.priceDash}>—</span>
                   <div className={styles.priceInput}>
-                    <span className={`${styles.priceLabel} ${styles.priceLabelEnd}`}>To</span>
+                    <span className={`${styles.priceLabel} ${styles.priceLabelEnd}`}>{t('sidebarFilters.to')}</span>
                     <input
                       className={styles.priceField}
                       type="number"
@@ -191,7 +227,7 @@ export default function MobileFilterDrawer({
           {/* Brand */}
           <div className={styles.section}>
             <div className={styles.sectionHeader} onClick={() => toggleSection('brand')}>
-              <p className={styles.sectionTitle}>Brand</p>
+              <p className={styles.sectionTitle}>{t('sidebarFilters.brand')}</p>
               <svg
                 className={`${styles.chevron} ${openSections.brand ? styles.chevronOpen : ''}`}
                 width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -205,7 +241,7 @@ export default function MobileFilterDrawer({
                   <SearchIconNotMUI />
                   <input
                     className={styles.searchInput}
-                    placeholder="Search"
+                    placeholder={t('sidebarFilters.search')}
                     value={brandSearch}
                     suppressHydrationWarning
                     onChange={(e) => setBrandSearch(e.target.value)}
@@ -213,7 +249,7 @@ export default function MobileFilterDrawer({
                 </div>
                 <div className={styles.brandList}>
                   {filteredBrands.length === 0 ? (
-                    <p className={styles.emptyText}>No brands found</p>
+                    <p className={styles.emptyText}>{t('sidebarFilters.noBrands')}</p>
                   ) : (
                     filteredBrands.map((brand) => (
                       <label key={brand.uuid} className={styles.checkboxRow}>
@@ -233,21 +269,38 @@ export default function MobileFilterDrawer({
             )}
           </div>
 
-          {/* Extra sections */}
-          {extraSections.map(({ key, label }) => (
-            <div key={key} className={styles.section}>
-              <div className={styles.sectionHeader} onClick={() => toggleSection(key)}>
-                <p className={styles.sectionTitle}>{label}</p>
+          {/* Dynamic group sections from DB */}
+          {groupSections.map(({ name, values }) => (
+            <div key={name} className={styles.section}>
+              <div className={styles.sectionHeader} onClick={() => toggleSection(name)}>
+                <p className={styles.sectionTitle}>{name}</p>
                 <svg
-                  className={`${styles.chevron} ${openSections[key] ? styles.chevronOpen : ''}`}
+                  className={`${styles.chevron} ${openSections[name] ? styles.chevronOpen : ''}`}
                   width="20" height="20" viewBox="0 0 24 24" fill="none"
                 >
                   <path d="M6 9L12 15L18 9" stroke="#868695" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </div>
-              {openSections[key] && (
+              {openSections[name] && (
                 <div className={styles.sectionContent}>
-                  <p className={styles.emptyText}>No data</p>
+                  {values.length === 0 ? (
+                    <p className={styles.emptyText}>{t('sidebarFilters.noData')}</p>
+                  ) : (
+                    <div className={styles.brandList}>
+                      {values.map((val) => (
+                        <label key={val} className={styles.checkboxRow}>
+                          <input
+                            type="checkbox"
+                            className={styles.checkbox}
+                            checked={(selectedOptions[name] || []).includes(val)}
+                            suppressHydrationWarning
+                            onChange={() => toggleOption(name, val)}
+                          />
+                          <span className={styles.checkboxLabel}>{val}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -257,7 +310,7 @@ export default function MobileFilterDrawer({
         {/* Footer */}
         <div className={styles.footer}>
           <button className={styles.applyBtn} suppressHydrationWarning onClick={handleApply}>
-            Apply
+            {t('sidebarFilters.apply')}
           </button>
         </div>
       </div>

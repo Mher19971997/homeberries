@@ -83,14 +83,14 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
 
   // Обработка клика по категории - переход на страницу категории
   const handleCategoryClickForNavigation = (category: CategoryItem) => {
-    router.push(`/catalog/${category.name}`);
+    router.push(`/catalog/${encodeURIComponent(getLoc(category.name, 'en'))}`);
   };
 
   // Обработка клика по подкатегории
   const handleSubCategoryClick = (subCategory: SubCategoryItem, category: CategoryItem) => {
     onSubCategorySelect?.(subCategory);
     // Переход на страницу категории, подкатегория будет использована для фильтрации
-    router.push(`/catalog/${category.name}`);
+    router.push(`/catalog/${encodeURIComponent(getLoc(category.name, 'en'))}`);
   };
 
   if (isLoadingCategories) {

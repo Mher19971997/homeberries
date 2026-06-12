@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { getAllCatalogs } from "@homeberris/http/catalogApi";
 import { getMenuTree } from "@homeberris/http/categoryApi";
 import { getBrandsByCategory } from "@homeberris/http/brandApi";
+import { getCatalogUuidsByOptionValues } from "@homeberris/http/groupOptionApi";
 import { CatalogItem } from "@homeberris/types/catalog";
 import { CategoryItem } from "@homeberris/types/category";
 
@@ -72,24 +73,29 @@ export default function CatalogPage() {
   });
   const brands = brandsData?.data || [];
 
+  const allSelectedValues = Object.values(groupFilters).flat().filter(Boolean);
+  const hasGroupFilters = allSelectedValues.length > 0;
+
+  const { data: matchingCatalogUuids } = useQuery({
+    queryKey: ["groupOptionCatalogUuids", allSelectedValues, categoryUuid],
+    queryFn: () => getCatalogUuidsByOptionValues(allSelectedValues, categoryUuid || ''),
+    enabled: hasGroupFilters && !!categoryUuid,
+  });
+
   const buildQuery = (catUuid?: string) => {
     const filters: any = {
       includeMeta: [
         { association: "category" },
         { association: "brand" },
         { association: "groupOption", include: [{ association: "options" }] },
-        ...Object.entries(groupFilters).map(([groupName, values]) => ({
-          association: "groupOption",
-          where: { name: groupName },
-          include: [{ association: "options", where: { value: { in: values } } }],
-        })),
       ],
       queryMeta: { paginate: true, limit: ITEMS_PER_PAGE, page: currentPage },
     };
     const catFilter = catUuid ? { categoryUuid: catUuid } : { categoryUuid: { like: "%" } };
-    filters.filterMeta = selectedBrands.length > 0
-      ? { ...catFilter, brandUuid: { in: selectedBrands } }
-      : catFilter;
+    let baseMeta: any = catFilter;
+    if (selectedBrands.length > 0) baseMeta = { ...baseMeta, brandUuid: { in: selectedBrands } };
+    if (hasGroupFilters && matchingCatalogUuids?.length) baseMeta = { ...baseMeta, uuid: { in: matchingCatalogUuids } };
+    filters.filterMeta = baseMeta;
     if (priceRange)
       filters.where = { price: { $gte: priceRange.min, $lte: priceRange.max } };
     if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
@@ -109,11 +115,11 @@ export default function CatalogPage() {
       sortBy,
       priceRange,
       selectedBrands,
-      groupFilters,
+      matchingCatalogUuids,
       currentPage,
     ],
     queryFn: () => getAllCatalogs(buildQuery(categoryUuid)),
-    enabled: !!categoryName && !!categoryUuid,
+    enabled: !!categoryName && !!categoryUuid && (!hasGroupFilters || (matchingCatalogUuids !== undefined && matchingCatalogUuids.length > 0)),
   });
 
   const totalPages = catalogs?.meta
@@ -128,9 +134,12 @@ export default function CatalogPage() {
         brands={brands}
         selectedBrands={selectedBrands}
         priceRange={priceRange}
-        onApply={(brands, price) => {
+        catalogs={catalogs?.data || []}
+        initialGroupFilters={groupFilters}
+        onApply={(brands, price, gf) => {
           setSelectedBrands(brands);
           setPriceRange(price);
+          setGroupFilters(gf);
         }}
       />
       {/* Breadcrumb */}
@@ -195,7 +204,7 @@ export default function CatalogPage() {
 
           {/* Грид товаров */}
           <div className={styles.productTotal}>
-            <p>{t('catalogAll.products.result')} : <span>85</span></p>
+            <p>{t('catalogAll.products.result')} : <span>{catalogs?.meta?.count ?? 0}</span></p>
           </div>
           <StaticProductCard
             catalogs={catalogs?.data || []}

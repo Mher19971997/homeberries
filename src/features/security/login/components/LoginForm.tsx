@@ -35,7 +35,7 @@ export const LoginForm: React.FC = () => {
       const res = await login({ email, password });
       if (res?.data?.access_token) {
         setToken(res.data.access_token);
-        setSuccess('Добро пожаловать!');
+        setSuccess(t('auth.login.welcome'));
         setTimeout(() => router.push('/'), 800);
       }
     } catch (err: any) {

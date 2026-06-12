@@ -1,4 +1,10 @@
 ﻿import React, { useState, useRef, useEffect } from 'react';
+
+const getLoc = (val: any, locale = 'en'): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.en || val.ru || '';
+};
 import {
   Box,
   Typography,
@@ -111,7 +117,7 @@ const CategoryMultiDropdown: React.FC<CategoryMultiDropdownProps> = ({
 
   // Обработка клика по категории
   const handleCategoryClick = (category: CategoryItem) => {
-    router.push(`/catalog/${category.name}`);
+    router.push(`/catalog/${encodeURIComponent(getLoc(category.name, 'en'))}`);
     setHoveredCategory(null);
     onCloseMenu?.();
   };
@@ -128,7 +134,7 @@ const CategoryMultiDropdown: React.FC<CategoryMultiDropdownProps> = ({
     }
     
     onSubCategorySelect?.(subCategory);
-    router.push(`/catalog/${category.name}/${subCategory.name}`);
+    router.push(`/catalog/${encodeURIComponent(getLoc(category.name, 'en'))}/${encodeURIComponent(getLoc(subCategory.name, 'en'))}`);
     setHoveredCategory(null);
     onCloseMenu?.();
   };

@@ -8,7 +8,7 @@ export interface CatalogItem {
   deletedAt?: Date;
   name: string;
   description: string;
-  price: string;
+  price: number;
   oldPrice?: string;
   categoryUuid: UUID;
   subCategoryUuid: UUID;

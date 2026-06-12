@@ -199,6 +199,11 @@
     }
   },
   "sidebarFilters": {
+    "title": "Filters",
+    "price": "Price",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
     "brand": "Brand",
     "search": "Search",
     "noBrands": "No brands",
@@ -246,6 +251,7 @@
     "title": "Reviews",
     "ofReviews": "of {{count}} reviews",
     "leaveComment": "Leave Comment",
+    "notLoggedIn": "You must be logged in to leave a comment",
     "viewMore": "View More",
     "viewLess": "View Less",
     "ratingBars": {
@@ -258,7 +264,8 @@
   },
   "productPageContent": {
     "breadcrumb": {
-      "home": "Home"
+      "home": "Home",
+      "catalog": "Catalog"
     },
     "gallery": {
       "noImages": "Images not found"
@@ -418,5 +425,20 @@
       "invalid": "Invalid email or password",
       "registerError": "Registration error"
     }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "The page you're looking for doesn't exist or has been moved. Go back to the homepage.",
+    "goHome": "Go to Home",
+    "goBack": "Go Back"
+  },
+  "errorPage": {
+    "title": "Something went wrong",
+    "subtitle": "An unexpected error occurred. You can try again or go back to the homepage.",
+    "tryAgain": "Try Again",
+    "goHome": "Go to Home"
+  },
+  "similarProducts": {
+    "title": "See also"
   }
 }

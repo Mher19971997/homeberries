@@ -284,6 +284,10 @@ export default function ProductPageContent({
             {t('productPageContent.breadcrumb.home')}
           </Link>
           <ChevronSepIcon className={styles.breadcrumbSep} />
+          <Link href="/catalog" className={styles.breadcrumbLink}>
+            {t('productPageContent.breadcrumb.catalog')}
+          </Link>
+          <ChevronSepIcon className={styles.breadcrumbSep} />
           <Link href={categoryPath} className={styles.breadcrumbLink}>
             {finalCategoryName}
           </Link>
@@ -419,9 +423,18 @@ export default function ProductPageContent({
               const storageGroup = catalog.groupOption?.find(
                 (g: groupOptionItem) => getLoc(g.name, 'ru') === "Память",
               );
+              const parseStorage = (s: string) => {
+                const n = parseFloat(s);
+                if (/tb/i.test(s)) return n * 1024;
+                if (/gb/i.test(s)) return n;
+                if (/mb/i.test(s)) return n / 1024;
+                return n;
+              };
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
-                  ? storageGroup.options.map((o: OptionsItem) => getLoc(o.value, locale))
+                  ? storageGroup.options
+                      .map((o: OptionsItem) => getLoc(o.value, locale))
+                      .sort((a: string, b: string) => parseStorage(a) - parseStorage(b))
                   : [];
               if (storageItems.length === 0) return null;
               return (
@@ -446,11 +459,11 @@ export default function ProductPageContent({
                 return {
                   name: getLoc(s.name, locale),
                   value: getLoc(s.value, locale),
-                  icon: DynIcon ? React.createElement(DynIcon, { size: 18 }) : undefined,
+                  icon: DynIcon ? React.createElement(DynIcon, { size: 18 }) : null,
                 };
               });
-              const specsToShow = dynSpecs.length > 0 ? dynSpecs : staticSpecs;
-              return <ProductSpecsGrid specs={specsToShow} />;
+              if (dynSpecs.length === 0) return null;
+              return <ProductSpecsGrid specs={dynSpecs} />;
             })()}
 
             {/* Описание */}
@@ -465,7 +478,7 @@ export default function ProductPageContent({
                   </p>
                   {isLong && (
                     <button className={styles.moreBtn} onClick={() => setShowFullDesc((p) => !p)}>
-                      {showFullDesc ? "less..." : "more..."}
+                      {showFullDesc ? t('productPageContent.description.less') : t('productPageContent.description.more')}
                     </button>
                   )}
                 </div>
@@ -479,11 +492,11 @@ export default function ProductPageContent({
             <div className={styles.actionButtons}>
               <button
                 className={styles.btnWishlist}
-                onClick={handleAddToBasket}
+                onClick={() => catalog && toggleFavorite(catalog)}
               >
                 {t('productPageContent.actions.addToWishlist')}
               </button>
-              <button className={styles.btnCart} onClick={handleCheckout}>
+              <button className={styles.btnCart} onClick={handleAddToBasket}>
                 {isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
               </button>
             </div>

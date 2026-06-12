@@ -323,7 +323,7 @@ export default function SubCategoryPageContent({
               <CatalogCard
                 catalog={catalog}
                 onNavigate={() =>
-                  router.push(`/catalog/${categoryName}/${subCategoryName}/${catalog.uuid}`)
+                  router.push(`/catalog/${encodeURIComponent(getLoc((catalog as any).category?.name, 'en') || categoryName)}/${encodeURIComponent(getLoc((catalog as any).subCategorie?.name, 'en') || subCategoryName)}/${catalog.uuid}`)
                 }
               />
             </div>
