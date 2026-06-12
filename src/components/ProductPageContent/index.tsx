@@ -40,6 +40,7 @@ import { insertBasket } from "@homeberris/http/basketApi";
 import { addToBasket } from "@homeberris/utils/indexedDB";
 import { useTranslation } from "react-i18next";
 import { addRecentlyViewed } from "@homeberris/utils/recentlyViewed";
+import { useTrackRecentlyViewed } from "@homeberris/hooks/useTrackRecentlyViewed";
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -81,9 +82,15 @@ export default function ProductPageContent({
 
   const { t } = useTranslation('common');
 
+  const trackRecentlyViewed = useTrackRecentlyViewed();
+
+  // React.useEffect(() => {
+  //   if (catalog?.uuid) addRecentlyViewed(catalog.uuid);
+  // }, [catalog?.uuid]);
+  
   React.useEffect(() => {
-    if (catalog?.uuid) addRecentlyViewed(catalog.uuid);
-  }, [catalog?.uuid]);
+    if (catalog?.uuid) trackRecentlyViewed(catalog.uuid);
+  }, [catalog?.uuid, trackRecentlyViewed]);
 
   const changeImage = (nextIndex: number, dir: "left" | "right") => {
     if (nextIndex === activeIndex) return;
@@ -112,17 +119,17 @@ export default function ProductPageContent({
     onError: (error) => console.error(error),
   });
 
-    const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-      if (isAuth && cookies.token) {
-        mutate(catalog!.uuid);
-      } else {
-        addToBasket(catalog, 1)
-          .then(() => setOpenSuccess(true))
-          .catch((err) => console.error(err));
-      }
-    };
-    
+  const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (isAuth && cookies.token) {
+      mutate(catalog!.uuid);
+    } else {
+      addToBasket(catalog, 1)
+        .then(() => setOpenSuccess(true))
+        .catch((err) => console.error(err));
+    }
+  };
+
   const handleDragStart = (x: number) => {
     dragStartX.current = x;
     setIsDragging(true);
@@ -261,11 +268,11 @@ export default function ProductPageContent({
 
   const images = filteredImages.length > 0
     ? filteredImages
-        .filter(({ image }: any) => !!image)
-        .map(({ image }: any) => {
-          const imagePath = image.startsWith("/") ? image : "/" + image;
-          return baseUrl + imagePath;
-        })
+      .filter(({ image }: any) => !!image)
+      .map(({ image }: any) => {
+        const imagePath = image.startsWith("/") ? image : "/" + image;
+        return baseUrl + imagePath;
+      })
     : [];
 
   const handleCheckout = () => {
@@ -433,8 +440,8 @@ export default function ProductPageContent({
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
                   ? storageGroup.options
-                      .map((o: OptionsItem) => getLoc(o.value, locale))
-                      .sort((a: string, b: string) => parseStorage(a) - parseStorage(b))
+                    .map((o: OptionsItem) => getLoc(o.value, locale))
+                    .sort((a: string, b: string) => parseStorage(a) - parseStorage(b))
                   : [];
               if (storageItems.length === 0) return null;
               return (

@@ -15,6 +15,7 @@ import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/pages/profile/index.module.css';
 import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut } from 'lucide-react';
+import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -48,17 +49,27 @@ export default function Profile() {
 
   const basketCount = basket?.meta?.count || 0;
 
-  const [recentUuids, setRecentUuids] = React.useState<string[]>([]);
-
-  useEffect(() => {
-    setRecentUuids(getRecentlyViewed().slice(0, 4));
-  }, []);
-
-  const { data: recentCatalogs } = useQuery({
-    queryKey: ['recentCatalogs', recentUuids],
-    queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 }, filterMeta: { uuid: { in: recentUuids } } })),
-    enabled: !!cookies.token && recentUuids.length > 0,
+  const { data: recentlyViewed } = useQuery({
+    queryKey: ['recentlyViewed', cookies.token],
+    queryFn: () => getAllRecentlyViewed(
+      qs.stringify({ queryMeta: { paginate: true } }),
+      cookies.token
+    ),
+    enabled: !!cookies.token,
   });
+
+
+  // const [recentUuids, setRecentUuids] = React.useState<string[]>([]);
+
+  // useEffect(() => {
+  //   setRecentUuids(getRecentlyViewed().slice(0, 4));
+  // }, []);
+
+  // const { data: recentCatalogs } = useQuery({
+  //   queryKey: ['recentCatalogs', recentUuids],
+  //   queryFn: () => getAllCatalogs(qs.stringify({ queryMeta: { paginate: true, limit: 4 }, filterMeta: { uuid: { in: recentUuids } } })),
+  //   enabled: !!cookies.token && recentUuids.length > 0,
+  // });
 
   const handleLogout = () => {
     removeToken();
@@ -184,7 +195,21 @@ export default function Profile() {
                 <p className={styles.cardTitle}>{t('profile.recentlyViewed')}</p>
                 <button className={styles.seeAll} onClick={() => router.push('/recently-viewed')}>{t('profile.seeAll')}</button>
               </div>
-              {recentCatalogs?.data && recentCatalogs.data.length > 0 ? (
+                {recentlyViewed?.data && recentlyViewed.data.length > 0 ? (
+                <div className={styles.catalogGrid}>
+                  {recentlyViewed.data.slice(0, 4).map((catalog: any) => (
+                    <div key={catalog.uuid} className={styles.catalogItem}>
+                      <CatalogCard
+                        catalog={catalog}
+                        onNavigate={() => router.push(buildCatalogUrl(catalog))}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className={styles.emptyText}>{t('profile.notViewed')}</p>
+              )}
+              {/* {recentCatalogs?.data && recentCatalogs.data.length > 0 ? (
                 <div className={styles.catalogGrid}>
                   {recentCatalogs.data.slice(0, 4).map((catalog: any) => (
                     <div key={catalog.uuid} className={styles.catalogItem}>
@@ -197,7 +222,7 @@ export default function Profile() {
                 </div>
               ) : (
                 <p className={styles.emptyText}>{t('profile.notViewed')}</p>
-              )}
+              )} */}
             </div>
 
             <div className={styles.mainCard}>
