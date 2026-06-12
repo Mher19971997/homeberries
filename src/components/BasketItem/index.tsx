@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './index.module.css';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { useParams } from 'next/navigation';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -27,8 +28,7 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
   const price = isDiscount ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
   const quantity = basket.quantity || 1;
 
-  const formatPrice = (p: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(p);
+  const { formatPrice } = useFormatPrice();
 
   const [inputValue, setInputValue] = React.useState(String(quantity));
 

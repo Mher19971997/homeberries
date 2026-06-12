@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { loadStripe, StripeElementsOptions } from '@stripe/stripe-js';
 import {
   Elements,
@@ -143,7 +143,7 @@ const PaymentFormContent: React.FC<{
           },
         }}
       >
-        {isProcessing ? 'Обработка...' : `Оплатить ${(amount / 100).toFixed(2)} ₽`}
+        {isProcessing ? 'Обработка...' : `Оплатить ${(amount / 100).toFixed(2)} ֏`}
       </Button>
     </form>
   );
@@ -171,7 +171,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
           currency: 'rub',
           orderUuid,
           basketUuids,
-          description: `Оплата заказа на сумму ${(amount / 100).toFixed(2)} ₽`,
+          description: `Оплата заказа на сумму ${(amount / 100).toFixed(2)} ֏`,
         });
         setClientSecret(response.clientSecret);
         setPaymentIntentId(response.paymentIntentId);

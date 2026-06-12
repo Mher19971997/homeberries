@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField, Typography, Divider, Slider } from '@mui/material';
 import BasicPopover from '../BasicPopover';
 import styles from './index.module.css';
+import { useTranslation } from 'react-i18next';
 
 interface PriceFilterProps {
   minPrice?: number;
@@ -10,14 +11,16 @@ interface PriceFilterProps {
 }
 
 const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat('ru-RU').format(Math.round(price));
+  return new Intl.NumberFormat('hy-AM').format(Math.round(price));
 };
 
-const PriceFilter: React.FC<PriceFilterProps> = ({ 
-  minPrice: initialMin = 0, 
+const PriceFilter: React.FC<PriceFilterProps> = ({
+  minPrice: initialMin = 0,
   maxPrice: initialMax = 100000000,
-  onApply 
+  onApply
 }) => {
+  const { t } = useTranslation('common');
+  const currency = t('currency');
   const [minPrice, setMinPrice] = useState<number>(initialMin);
   const [maxPrice, setMaxPrice] = useState<number>(initialMax);
   const [tempMin, setTempMin] = useState<number>(initialMin);
@@ -33,9 +36,9 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
     setIsActive(false);
   }, [initialMin, initialMax]);
 
-  const title = isActive 
-    ? `${formatPrice(tempMin)} - ${formatPrice(tempMax)} ₽`
-    : 'Цена, ₽';
+  const title = isActive
+    ? `${formatPrice(tempMin)} - ${formatPrice(tempMax)} ${currency}`
+    : `Цена, ${currency}`;
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 0;
@@ -87,7 +90,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
             className={styles.priceInput}
             size="small"
             InputProps={{
-              endAdornment: <Typography variant="body2" color="text.secondary">₽</Typography>
+              endAdornment: <Typography variant="body2" color="text.secondary">{currency}</Typography>
             }}
           />
           <Typography className={styles.dash}>—</Typography>
@@ -99,7 +102,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
             className={styles.priceInput}
             size="small"
             InputProps={{
-              endAdornment: <Typography variant="body2" color="text.secondary">₽</Typography>
+              endAdornment: <Typography variant="body2" color="text.secondary">{currency}</Typography>
             }}
           />
         </Box>
@@ -112,7 +115,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
             max={initialMax}
             step={100}
             valueLabelDisplay="auto"
-            valueLabelFormat={(value) => `${formatPrice(value)} ₽`}
+            valueLabelFormat={(value) => `${formatPrice(value)} ${currency}`}
             className={styles.slider}
             sx={{
               color: '#667eea',

@@ -1,5 +1,6 @@
-import { CatalogItem } from '@homeberris/types/catalog';
+﻿import { CatalogItem } from '@homeberris/types/catalog';
 import { useState } from 'react';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 
 interface UseProductPurchaseProps {
   catalog: CatalogItem;
@@ -16,18 +17,7 @@ export const useProductPurchase = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const [isInCart, setIsInCart] = useState(false);
 
-  const formatPrice = (price: string | number | undefined) => {
-    if (!price) return '0 ₽';
-
-    const numPrice =
-      typeof price === 'string' ? parseFloat(price) : price;
-
-    return new Intl.NumberFormat('ru-RU', {
-      style: 'currency',
-      currency: 'RUB',
-      minimumFractionDigits: 0
-    }).format(numPrice);
-  };
+  const { formatPrice } = useFormatPrice();
 
   const currentPrice =
     typeof catalog.price === 'string'

@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 import styles from '@homeberris/pages/basket/index.module.css';
 import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
@@ -97,8 +98,7 @@ export default function BasketPage() {
     showToast(error || 'Payment error', 'error');
   };
 
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(price);
+  const { formatPrice } = useFormatPrice();
 
 
   return (

@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Grid, TextField, FormControlLabel, Checkbox, Box } from '@mui/material';
 import { IFormData } from '@homeberris/features/cars/types';
 
@@ -13,7 +13,7 @@ export const CarPriceYear: React.FC<Props> = ({ formData, handleChange }) => {
       <Box>
         <TextField
           fullWidth
-          label="Цена (₽)"
+          label="Цена (֏)"
           name="price"
           type="number"
           value={formData.price}

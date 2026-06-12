@@ -1,8 +1,11 @@
-import { Card, CardContent, CardMedia, Typography, Button, Grid } from "@mui/material";
+﻿import { Card, CardContent, CardMedia, Typography, Button, Grid } from "@mui/material";
 import Link from "next/link";
 import { CompanyCatalog as CatalogType } from "@homeberris/features/company/types";
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 
-export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => (
+export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => {
+  const { formatPrice } = useFormatPrice();
+  return (
     <Grid item xs={12} sm={6} md={4}>
         <Card>
             {catalog.images && catalog.images.length > 0 && (
@@ -23,7 +26,7 @@ export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => (
                     </Typography>
                 )}
                 <Typography variant="h6" color="primary" mb={2}>
-                    {catalog.price} ₽
+                    {formatPrice(catalog.price)}
                 </Typography>
                 <Link href={`/catalog/${catalog.uuid}`} passHref>
                     <Button variant="contained" fullWidth>
@@ -33,4 +36,5 @@ export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => (
             </CardContent>
         </Card>
     </Grid>
-);
+  );
+};

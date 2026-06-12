@@ -1,4 +1,4 @@
-import { Paper, Typography, Box, Grid } from '@mui/material';
+﻿import { Paper, Typography, Box, Grid } from '@mui/material';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
@@ -9,7 +9,7 @@ interface CarStatisticsProps {
   car: any;
 }
 
-export const CarStatistics = ({ car, statistics, currency = '₽' }: CarStatisticsProps) => {
+export const CarStatistics = ({ car, statistics, currency = '֏' }: CarStatisticsProps) => {
   if (!statistics) return null;
 
   return (
@@ -31,7 +31,7 @@ export const CarStatistics = ({ car, statistics, currency = '₽' }: CarStatisti
             Средняя цена на рынке
           </Typography>
           <Typography variant="h5" sx={{ color: 'white', fontWeight: 700 }}>
-            {new Intl.NumberFormat('ru-RU').format(statistics.averagePrice)} {car.currency || '₽'}
+            {new Intl.NumberFormat('ru-RU').format(statistics.averagePrice)} {car.currency || '֏'}
           </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -47,7 +47,7 @@ export const CarStatistics = ({ car, statistics, currency = '₽' }: CarStatisti
               </Typography>
               <Typography variant="h6" sx={{ color: statistics.isCheaper ? '#4caf50' : '#f44336', fontWeight: 700 }}>
                 {statistics.isCheaper ? '-' : '+'}{Math.abs(statistics.priceDifferencePercent)}% (
-                {new Intl.NumberFormat('ru-RU').format(Math.abs(statistics.priceDifference))} {car.currency || '₽'})
+                {new Intl.NumberFormat('ru-RU').format(Math.abs(statistics.priceDifference))} {car.currency || '֏'})
               </Typography>
             </Box>
           </Box>

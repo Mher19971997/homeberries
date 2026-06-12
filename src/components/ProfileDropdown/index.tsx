@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useRef, useEffect } from 'react';
 import {
@@ -125,7 +125,7 @@ function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): Rea
     {
       icon: <AccountBalanceWalletIcon />,
       label: `${t('profile.menu.wallet')}`,
-      balance: '0 ₽',
+      balance: '0 ֏',
       onClick: () => {
         router.push('/profile?tab=bank');
         onClose();
@@ -244,7 +244,7 @@ function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): Rea
               {t('profile.paymentOnDelivery')}
             </Typography>
             <Typography variant="body2" fontWeight={600}>
-              {t('profile.upTo')} 196 000 ₽
+              {t('profile.upTo')} 196 000 ֏
             </Typography>
           </Box>
         </Box>

@@ -1,4 +1,5 @@
-import React from 'react';
+﻿import React from 'react';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 import {
   Box,
   Drawer,
@@ -28,6 +29,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
   onClose,
   catalog
 }) => {
+  const { formatPrice } = useFormatPrice();
   const handleCopyArticle = (text: string) => {
     navigator.clipboard.writeText(text);
     // Можно добавить уведомление об успешном копировании
@@ -143,7 +145,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
               <ListItem className={styles.listItem}>
                 <ListItemText
                   primary="Цена"
-                  secondary={`${typeof catalog.price === 'string' ? parseFloat(catalog.price) : catalog.price} ₽`}
+                  secondary={formatPrice(catalog.price)}
                 />
               </ListItem>
               {catalog.createdAt && (

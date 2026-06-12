@@ -15,6 +15,7 @@ import styles from './index.module.css';
 import { HeartFilledIcon, HeartIcon } from '@homeberris/assets/icons/catalog';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'next/navigation';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -64,15 +65,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     toggleFavorite(catalog);
   };
 
-  const formatPrice = (price: string | number) => {
-    const num = typeof price === 'string' ? parseFloat(price) : price;
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(num || 0);
-  };
+  const { formatPrice } = useFormatPrice();
 
   const imgSrc =
     catalog?.images?.length > 0

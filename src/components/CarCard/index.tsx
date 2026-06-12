@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Box, Typography, Chip, IconButton } from '@mui/material';
 import Image from 'next/image';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -120,7 +120,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
         </Box>
         <Box className={styles.priceContainer}>
           <Typography className={styles.price}>
-            {formatNumber(car.price)} {car.currency || '₽'}
+            {formatNumber(car.price)} {car.currency || '֏'}
           </Typography>
         </Box>
 
