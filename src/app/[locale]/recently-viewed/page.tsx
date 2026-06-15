@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { useQuery } from '@tanstack/react-query';
 import * as qs from 'qs';
-import { getAllCatalogs } from '@homeberris/http/catalogApi';
-import { getRecentlyViewed } from '@homeberris/utils/recentlyViewed';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useTranslation } from 'react-i18next';
+import { useCookies } from 'react-cookie';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/pages/favorites/index.module.css';
+import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -23,30 +23,16 @@ const buildCatalogUrl = (catalog: any) => {
 const RecentlyViewedPage: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
-  const [uuids, setUuids] = useState<string[]>([]);
-
-  useEffect(() => {
-    setUuids(getRecentlyViewed());
-  }, []);
+  const [cookies] = useCookies(['token']);
 
   const { data, isLoading } = useQuery({
-    queryKey: ['recentlyViewed', uuids],
-    queryFn: () =>
-      getAllCatalogs(
-        qs.stringify({
-          queryMeta: { paginate: true, limit: 20 },
-          filterMeta: { uuid: { in: uuids } },
-        })
-      ),
-    enabled: uuids.length > 0,
+    queryKey: ['recentlyViewed', cookies.token],
+    queryFn: () => getAllRecentlyViewed(
+      qs.stringify({ queryMeta: { paginate: true, limit: 20 } }),
+      cookies.token
+    ),
+    enabled: !!cookies.token,
   });
-
-  const ordered = React.useMemo(() => {
-    if (!data?.data) return [];
-    return uuids
-      .map((id) => data.data.find((c: any) => c.uuid === id))
-      .filter(Boolean);
-  }, [data, uuids]);
 
   return (
     <div className={styles.body}>
@@ -60,7 +46,7 @@ const RecentlyViewedPage: React.FC = () => {
 
       <div className={styles.filterHeader}>
         <p className={styles.filterTitle}>{t('recentlyViewedPage.title')}</p>
-        <p className={styles.count}>{t('recentlyViewedPage.count', { count: ordered.length })}</p>
+        <p className={styles.count}>{t('recentlyViewedPage.count', { count: data?.data?.length ?? 0 })}</p>
       </div>
 
       {isLoading ? (
@@ -69,13 +55,13 @@ const RecentlyViewedPage: React.FC = () => {
             <div key={i} style={{ height: 320, borderRadius: 12, background: '#f0f0f0' }} />
           ))}
         </div>
-      ) : ordered.length > 0 ? (
+      ) : data?.data && data.data.length > 0 ? (
         <div className={styles.grid}>
-          {ordered.map((catalog: any) => (
+          {data.data.map((item: any) => (
             <CatalogCard
-              key={catalog.uuid}
-              catalog={catalog}
-              onNavigate={() => router.push(buildCatalogUrl(catalog))}
+              key={item.uuid}
+              catalog={item.catalog}
+              onNavigate={() => router.push(buildCatalogUrl(item.catalog))}
             />
           ))}
         </div>
