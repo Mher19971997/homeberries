@@ -92,7 +92,9 @@
     "noProductsTitle": "No products in this subcategory yet",
     "noProductsDesc": "We are working on expanding the assortment. Please check back later!",
     "backToCategory": "Back to category \"{{name}}\"",
-    "categories": "Categories"
+    "categories": "Categories",
+    "emptyFavoritesTitle": "No favorites yet",
+    "emptyFavoritesDesc": "Add products you like so you do not lose them"
   },
   "basket": {
     "addedToBasket": "Added to basket",
@@ -205,6 +207,7 @@
     "from": "From",
     "to": "To",
     "apply": "Apply",
+    "reset": "Reset",
     "brand": "Brand",
     "search": "Search",
     "noBrands": "No brands",
@@ -342,7 +345,26 @@
     "notViewed": "You haven't viewed any products yet",
     "accountInfo": "Account Information",
     "email": "Email",
-    "role": "Role"
+    "role": "Role",
+    "user": "User",
+    "discount": "Discount",
+    "upTo": "Up to",
+    "paymentOnDelivery": "Payment on delivery",
+    "menu": {
+      "purchases": "Purchases",
+      "favorites": "Favorites",
+      "brands": "Brands",
+      "orders": "Orders",
+      "certificates": "Certificates",
+      "wallet": "Wallet",
+      "paymentMethods": "Payment methods"
+    },
+    "chat": {
+      "title": "Chat",
+      "description": "Contact support",
+      "reviews": "Reviews",
+      "business": "Business"
+    }
   },
   "delivery": {
     "pageTitle": "My Orders",
@@ -394,7 +416,12 @@
       "status": "Status",
       "description": "Description",
       "paid": "Paid"
-    }
+    },
+    "recentOrders": {
+      "title": "Recently purchased items ({{count}})",
+      "text": "These items were purchased very recently."
+    },
+    "paymentError": "Payment error"
   },
   "auth": {
     "login": {
@@ -424,7 +451,9 @@
       "passwordMismatch": "Passwords do not match",
       "passwordLength": "Password must be at least 8 characters",
       "invalid": "Invalid email or password",
-      "registerError": "Registration error"
+      "registerError": "Registration error",
+      "serverError": "Invalid authorization server response",
+      "loginError": "Login error"
     }
   },
   "notFound": {
@@ -441,5 +470,376 @@
   },
   "similarProducts": {
     "title": "See also"
+  },
+  "product3d": {
+    "title": "3D Product Viewer",
+    "initLoading": "Initializing 3D viewer...",
+    "primitives": "Primitives",
+    "model": "3D Model",
+    "modelError": "Failed to load 3D model. Using primitives.",
+    "loadingLocal": "Loading local 3D model with animation",
+    "loadingRemote": "Loading realistic 3D model from the internet",
+    "initWebGL": "Initializing WebGL...",
+    "loadingScene": "Loading 3D scene...",
+    "creatingModel": "Creating 3D model...",
+    "finalizing": "Finalizing...",
+    "refreshHint": "If loading is stuck, refresh the page",
+    "controls": {
+      "color": "Color",
+      "size": "Size",
+      "shape": "Shape"
+    },
+    "shapes": {
+      "box": "Box",
+      "sphere": "Sphere",
+      "cylinder": "Cylinder"
+    }
+  },
+  "cars": {
+    "units": {
+      "year": "yr.",
+      "km": "km",
+      "litre": "L",
+      "hp": "hp",
+      "per100km": "L/100 km"
+    },
+    "specs": {
+      "title": "Specifications",
+      "year": "Year",
+      "mileage": "Mileage",
+      "color": "Color",
+      "engineType": "Engine Type",
+      "engineVolume": "Engine Volume",
+      "power": "Power",
+      "transmission": "Transmission",
+      "drive": "Drive",
+      "tireSize": "Tire Size",
+      "wheelSize": "Wheel Size",
+      "fuelCity": "Fuel Consumption (city)",
+      "fuelHighway": "Fuel Consumption (highway)"
+    },
+    "equipment": {
+      "title": "Equipment",
+      "sunroof": "Sunroof",
+      "panoramicRoof": "Panoramic Roof",
+      "heatedSeats": "Heated Seats",
+      "navigation": "Navigation",
+      "premiumAudio": "Premium Audio System",
+      "turbo": "Turbo",
+      "parkingSensors": "Parking Sensors"
+    },
+    "aiHelper": {
+      "title": "AI Assistant",
+      "button": "Get advice",
+      "description": "Get a personalized recommendation for this car from our AI assistant. Learn about reliability, maintenance costs, model popularity and more."
+    },
+    "card": {
+      "isNew": "New",
+      "noMileage": "No mileage",
+      "mileageLabel": "Mileage",
+      "colorLabel": "Color",
+      "tiresLabel": "Tires",
+      "wheelsLabel": "Wheels",
+      "transmission": {
+        "automatic": "Automatic",
+        "manual": "Manual"
+      },
+      "drive": {
+        "awd": "All-wheel drive",
+        "fwd": "Front-wheel drive",
+        "rwd": "Rear-wheel drive"
+      }
+    },
+    "bodyType": {
+      "sedan": "Sedan",
+      "hatchback": "Hatchback",
+      "wagon": "Wagon",
+      "coupe": "Coupe",
+      "suv": "SUV",
+      "crossover": "Crossover",
+      "minivan": "Minivan",
+      "pickup": "Pickup",
+      "convertible": "Convertible"
+    },
+    "create": {
+      "basicInfo": {
+        "title": "Basic Information",
+        "carName": "Car Name",
+        "brand": "Brand",
+        "selectBrand": "Select brand",
+        "model": "Model",
+        "selectModel": "Select model",
+        "subModel": "Sub-model",
+        "notSelected": "Not selected",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe the car's condition, trim level, features..."
+      },
+      "engine": {
+        "engineType": "Engine Type",
+        "notSelected": "Not selected",
+        "petrol": "Petrol",
+        "diesel": "Diesel",
+        "hybrid": "Hybrid",
+        "electric": "Electric",
+        "volume": "Volume (L)",
+        "power": "Power (hp)",
+        "fuelCity": "Fuel consumption city (L/100km)",
+        "fuelHighway": "Fuel consumption highway (L/100km)"
+      },
+      "page": {
+        "createError": "Error creating car",
+        "cars": "Cars",
+        "addCar": "Add Car",
+        "successMessage": "Car successfully created! Redirecting..."
+      },
+      "priceYear": {
+        "price": "Price (AMD)",
+        "year": "Year",
+        "mileage": "Mileage (km)",
+        "isNew": "New car"
+      },
+      "appearance": {
+        "color": "Color",
+        "tireSize": "Tire size",
+        "wheelSize": "Wheel size"
+      },
+      "images": {
+        "delete": "Delete",
+        "addImages": "Add images"
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "creating": "Creating...",
+        "create": "Create car"
+      }
+    },
+    "filters": {
+      "brands": "Brands",
+      "allBrands": "All brands",
+      "body": "Body type"
+    },
+    "statistics": {
+      "title": "Statistics for",
+      "averagePrice": "Average market price",
+      "cheaper": "Below average",
+      "moreExpensive": "Above average",
+      "totalCars": "Total cars"
+    }
+  },
+  "sidebar": {
+    "title": "Specifications & Reviews",
+    "basicInfo": "Basic Information",
+    "article": "SKU",
+    "category": "Category",
+    "subcategory": "Subcategory",
+    "specs": "Specifications",
+    "description": "Description",
+    "additionalInfo": "Additional Information",
+    "price": "Price",
+    "dateAdded": "Date Added",
+    "reviews": "Reviews",
+    "noReviews": "No reviews yet. Be the first!"
+  },
+  "stripe": {
+    "processing": "Processing...",
+    "pay": "Pay {{amount}} ֏",
+    "errorSubmit": "Error submitting the form",
+    "errorConfirm": "Error confirming payment",
+    "errorNoIntentId": "Payment Intent ID not found",
+    "errorNotCompleted": "Payment not completed. Status: {{status}}",
+    "errorProcessing": "Error processing payment",
+    "errorGeneral": "An error occurred",
+    "orderDescription": "Payment for order totaling {{amount}} ֏",
+    "errorCreate": "Error creating payment",
+    "errorCreateFallback": "Failed to create payment. Please try again."
+  },
+  "commentCard": {
+    "buyer": "Buyer",
+    "pros": "Pros:",
+    "cons": "Cons:",
+    "comment": "Comment:",
+    "collapse": "collapse",
+    "expand": "more"
+  },
+  "companyPage": {
+    "loading": "Loading...",
+    "storeAddresses": "Store Addresses",
+    "catalogs": "Catalogs",
+    "noCatalogs": "This company has no catalogs yet"
+  },
+  "sortFilter": {
+    "title": "Sort",
+    "popularity": "By popularity",
+    "priceAsc": "Cheapest first",
+    "priceDesc": "Most expensive first",
+    "rating": "By rating",
+    "newest": "Newest first",
+    "discount": "By discount size"
+  },
+  "createComment": {
+    "writeReview": "Write a review",
+    "rateProduct": "Rate the product:",
+    "placeholder": "Share your opinion about the product...",
+    "photo": "Photo",
+    "sending": "Sending...",
+    "submit": "Submit review",
+    "successMessage": "Review successfully added!",
+    "errorMessage": "Error adding review"
+  },
+  "commentRating": {
+    "ratings": "Ratings",
+    "questions": "Questions",
+    "ratingsCount": "ratings"
+  },
+  "searchInput": {
+    "categories": "Categories",
+    "products": "Products",
+    "noResults": "Nothing found",
+    "catalog": "Catalog"
+  },
+  "subCategory": {
+    "count": "{{count}} products",
+    "allBrands": "All brands",
+    "priceFrom": "From",
+    "priceTo": "To",
+    "sortNewest": "Newest",
+    "sortPriceAsc": "Price: low to high",
+    "sortPriceDesc": "Price: high to low",
+    "reset": "Reset",
+    "empty": "No products in this subcategory yet"
+  },
+  "productPurchaseCard": {
+    "goodPrice": "Good Price",
+    "delivery": "Delivery",
+    "addToCart": "Add to Cart",
+    "buyNow": "Buy Now"
+  },
+  "categorySelector": {
+    "loadingCategories": "Loading categories...",
+    "loadError": "Failed to load categories. Please try again later.",
+    "noCategories": "No categories found",
+    "title": "Categories"
+  },
+  "productReviews": {
+    "attachFile": "Attach file"
+  },
+  "aiChat": {
+    "you": "You",
+    "placeholder": "Ask a question about the car...",
+    "send": "Send"
+  },
+  "shareButton": {
+    "linkCopied": "Link copied to clipboard",
+    "copyError": "Failed to copy link",
+    "title": "Share",
+    "copyLink": "Copy link"
+  },
+  "googleMap": {
+    "searchPlaceholder": "Search places and addresses",
+    "clearSearch": "Clear search",
+    "find": "Find",
+    "goToCatalogs": "Go to catalogs",
+    "addPickupPoint": "Add pickup point?",
+    "yes": "Yes"
+  },
+  "searchMobile": {
+    "placeholder": "Search products..."
+  },
+  "leftMenu": {
+    "closeMenu": "Close menu"
+  },
+  "carsBreadcrumbs": {
+    "cars": "Cars"
+  },
+  "productSizeSelector": {
+    "title": "Size chart"
+  },
+  "filterMenu": {
+    "closeFilters": "Close filters"
+  },
+  "tabs": {
+    "products": "Products"
+  },
+  "companyCatalog": {
+    "viewProduct": "View product"
+  },
+  "carGallery": {
+    "noImages": "No images available"
+  },
+  "brandChips": {
+    "all": "All"
+  },
+  "carSimilar": {
+    "title": "Similar cars"
+  },
+  "carAiDialog": {
+    "title": "AI Consultant for"
+  },
+  "carsGrid": {
+    "notFound": "No cars found"
+  },
+  "favoriteItems": {
+    "catalog": "Catalog"
+  },
+  "carInfo": {
+    "new": "New"
+  },
+  "companyAddressItem": {
+    "company": "Company"
+  },
+  "companyAddress": {
+    "coordinates": "Coordinates"
+  },
+  "modelChips": {
+    "models": "Models"
+  },
+  "about": {
+    "hero": {
+      "title": "About Us",
+      "subtitle": "We are a team of professionals creating the best online shopping experience for our customers."
+    },
+    "values": {
+      "mission": { "title": "Our Mission", "desc": "To provide every customer with access to quality products at fair prices." },
+      "vision": { "title": "Our Vision", "desc": "To become the leading e-commerce platform in Armenia and the region." },
+      "quality": { "title": "Quality", "desc": "We carefully select every product to guarantee you the best quality." }
+    },
+    "stats": {
+      "products": "products",
+      "customers": "happy customers",
+      "years": "years on market"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact Us",
+      "subtitle": "Have questions? We are always happy to help you."
+    },
+    "info": {
+      "address": { "label": "Address", "value": "Yerevan, Armenia" },
+      "phone": { "label": "Phone" },
+      "email": { "label": "Email" }
+    },
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "message": "Message",
+      "messagePlaceholder": "Write your message...",
+      "submit": "Send",
+      "success": "Your message has been sent! We will contact you shortly."
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Blog",
+      "subtitle": "News, tips and product reviews from our team."
+    },
+    "readMore": "Read",
+    "posts": {
+      "post1": { "tag": "News", "title": "Top 10 Smartphones of 2025", "excerpt": "We've gathered the best smartphones of this year by price-to-quality ratio." },
+      "post2": { "tag": "Tips", "title": "How to Choose a Work Laptop", "excerpt": "Breaking down the key specs to look for when choosing a work laptop." },
+      "post3": { "tag": "Review", "title": "Best Headphones for Sports", "excerpt": "A review of popular wireless headphones for an active lifestyle." }
+    }
   }
 }

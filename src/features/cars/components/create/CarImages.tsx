@@ -4,6 +4,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { IImagePreviews } from '@homeberris/features/cars/types';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
     mainImage: File | null;
@@ -22,6 +23,7 @@ export const CarImages: React.FC<Props> = ({
     removeGalleryImage,
     imagePreviews
 }) => {
+    const { t } = useTranslation('common');
 
     const onMainImageInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0] || null;
@@ -66,7 +68,7 @@ export const CarImages: React.FC<Props> = ({
                         sx={{ mt: 1 }}
                         fullWidth
                     >
-                        Удалить
+                        {t('cars.create.images.delete')}
                     </Button>
                 )}
             </Grid>
@@ -83,7 +85,7 @@ export const CarImages: React.FC<Props> = ({
                 />
                 <label htmlFor="gallery-images-upload">
                     <Button component="span" startIcon={<AddIcon />} fullWidth>
-                        Добавить изображения
+                        {t('cars.create.images.addImages')}
                     </Button>
                 </label>
 

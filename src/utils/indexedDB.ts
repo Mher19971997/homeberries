@@ -16,7 +16,7 @@ interface BasketItem {
 const initDB = (): Promise<IDBDatabase> => {
   return new Promise((resolve, reject) => {
     if (typeof window === 'undefined') {
-      reject(new Error('IndexedDB доступен только в браузере'));
+      reject(new Error('IndexedDB is only available in the browser'));
       return;
     }
 
@@ -177,7 +177,7 @@ export const updateBasketItemQuantity = async (uuid: string, quantity: number): 
 
           updateRequest.onerror = () => reject(updateRequest.error);
         } else {
-          reject(new Error('Товар не найден в корзине'));
+          reject(new Error('Item not found in basket'));
         }
       };
 

@@ -8,6 +8,7 @@ import {
 } from '@stripe/react-stripe-js';
 import { Box, Button, Typography, CircularProgress } from '@mui/material';
 import { createPaymentIntent, confirmPayment } from '@homeberris/http/paymentApi';
+import { useTranslation } from 'next-i18next';
 import styles from './index.module.css';
 
 // Инициализируем Stripe с публичным ключом
@@ -34,6 +35,7 @@ const PaymentFormContent: React.FC<{
 }> = ({ clientSecret, paymentIntentId, amount, orderUuid, basketUuids, onSuccess, onError }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const { t } = useTranslation('common');
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -51,7 +53,7 @@ const PaymentFormContent: React.FC<{
       // Валидируем форму
       const { error: submitError } = await elements.submit();
       if (submitError) {
-        setErrorMessage(submitError.message || 'Ошибка при отправке формы');
+        setErrorMessage(submitError.message || t('stripe.errorSubmit'));
         setIsProcessing(false);
         return;
       }
@@ -67,22 +69,22 @@ const PaymentFormContent: React.FC<{
       });
 
       if (confirmError) {
-        setErrorMessage(confirmError.message || 'Ошибка при подтверждении платежа');
-        onError?.(confirmError.message || 'Ошибка при подтверждении платежа');
+        setErrorMessage(confirmError.message || t('stripe.errorConfirm'));
+        onError?.(confirmError.message || t('stripe.errorConfirm'));
         setIsProcessing(false);
         return;
       }
 
       // Платеж успешен на Stripe
       if (!paymentIntentId) {
-        setErrorMessage('Payment Intent ID не найден');
+        setErrorMessage(t('stripe.errorNoIntentId'));
         setIsProcessing(false);
         return;
       }
 
       // Проверяем статус платежа
       if (paymentIntent?.status !== 'succeeded') {
-        setErrorMessage(`Платеж не завершен. Статус: ${paymentIntent?.status || 'unknown'}`);
+        setErrorMessage(t('stripe.errorNotCompleted', { status: paymentIntent?.status || 'unknown' }));
         setIsProcessing(false);
         return;
       }
@@ -111,12 +113,12 @@ const PaymentFormContent: React.FC<{
         // Передаем paymentIntentId в результат
         onSuccess?.({ ...result, paymentIntentId: paymentIntentId });
       } else {
-        setErrorMessage(result.message || 'Ошибка при обработке платежа');
-        onError?.(result.message || 'Ошибка при обработке платежа');
+        setErrorMessage(result.message || t('stripe.errorProcessing'));
+        onError?.(result.message || t('stripe.errorProcessing'));
       }
     } catch (error: any) {
-      setErrorMessage(error.message || 'Произошла ошибка');
-      onError?.(error.message || 'Произошла ошибка');
+      setErrorMessage(error.message || t('stripe.errorGeneral'));
+      onError?.(error.message || t('stripe.errorGeneral'));
     } finally {
       setIsProcessing(false);
     }
@@ -143,7 +145,7 @@ const PaymentFormContent: React.FC<{
           },
         }}
       >
-        {isProcessing ? 'Обработка...' : `Оплатить ${(amount / 100).toFixed(2)} ֏`}
+        {isProcessing ? t('stripe.processing') : t('stripe.pay', { amount: (amount / 100).toFixed(2) })}
       </Button>
     </form>
   );
@@ -156,6 +158,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
   onSuccess,
   onError,
 }) => {
+  const { t } = useTranslation('common');
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -171,12 +174,12 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
           currency: 'rub',
           orderUuid,
           basketUuids,
-          description: `Оплата заказа на сумму ${(amount / 100).toFixed(2)} ֏`,
+          description: t('stripe.orderDescription', { amount: (amount / 100).toFixed(2) }),
         });
         setClientSecret(response.clientSecret);
         setPaymentIntentId(response.paymentIntentId);
       } catch (error: any) {
-        const errorMsg = error.message || 'Ошибка при создании платежа';
+        const errorMsg = error.message || t('stripe.errorCreate');
         setErrorMessage(errorMsg);
         onError?.(errorMsg);
       } finally {
@@ -200,7 +203,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
     return (
       <Box sx={{ p: 3, textAlign: 'center' }}>
         <Typography color="error">
-          {errorMessage || 'Не удалось создать платеж. Попробуйте еще раз.'}
+          {errorMessage || t('stripe.errorCreateFallback')}
         </Typography>
       </Box>
     );

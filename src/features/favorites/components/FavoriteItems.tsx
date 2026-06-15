@@ -2,8 +2,10 @@ import React from 'react';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from './FavoriteItems.module.css';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useTranslation } from 'next-i18next';
 
 const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ catalog, sortPanelOne = false }) => {
+    const { t } = useTranslation('common');
     const router = useRouter();
 
     return (
@@ -14,7 +16,7 @@ const FavoriteItem: React.FC<{ catalog: any, sortPanelOne?: boolean }> = ({ cata
                     sortPanelOne={sortPanelOne}
                     catalog={catalog}
                     onNavigate={() => {
-                        const categoryName = catalog.category?.name || 'Каталог';
+                        const categoryName = catalog.category?.name || t('favoriteItems.catalog');
                         const subCategoryName = (catalog as any).subCategorie?.name;
                         if (subCategoryName) {
                             router.push(

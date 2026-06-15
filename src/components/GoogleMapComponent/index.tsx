@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'next-i18next';
 import {
   GoogleMap,
   useLoadScript,
@@ -54,6 +55,7 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
   markers,
   readOnly = false
 }) => {
+  const { t } = useTranslation('common');
   const center = {
     lat: (selectedAddress && selectedAddress.lat) || 43.6532,
     lng: (selectedAddress && selectedAddress.lng) || -79.3832
@@ -150,7 +152,7 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
                         size="small"
                         fullWidth
                       >
-                        Перейти к каталогам
+                        {t('googleMap.goToCatalogs')}
                       </Button>
                     </Box>
                   )}
@@ -159,7 +161,7 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
                 <>
                   <h2>
                     <span role='img' aria-label='bear'>
-                      добавить пункт выдача ?
+                      {t('googleMap.addPickupPoint')}
                     </span>
                   </h2>
                   <p>Spotted {selected.time ? formatRelative(selected.time, new Date()) : ''}</p>
@@ -177,7 +179,7 @@ const GoogleMapComponent: React.FC<GoogleMapComponentProps> = ({
                         variant='contained'
                         className={styles.btnGroupContained}
                       >
-                        да
+                        {t('googleMap.yes')}
                       </Button>
                     </Box>
                   )}

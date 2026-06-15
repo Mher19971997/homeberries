@@ -1,5 +1,6 @@
 import { Box, Chip, Typography } from '@mui/material';
 import { getBodyTypeLabel } from '@homeberris/features/cars/utils/bodyTypeLabel';
+import { useTranslation } from 'next-i18next';
 
 export const ModelChips = ({
   currentBrand,
@@ -9,12 +10,13 @@ export const ModelChips = ({
   subModelId,
   router,
 }: any) => {
+  const { t } = useTranslation('common');
   if (!currentBrand) return null;
 
   return (
     <>
       <Typography sx={{ display: { xs: 'block', md: 'none' }, mb: 1, fontWeight: 600 }}>
-        Модели
+        {t('modelChips.models')}
       </Typography>
 
       <Box

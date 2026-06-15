@@ -4,15 +4,17 @@ import { CompanyHeader } from "@homeberris/features/company/components/CompanyHe
 import { CompanyAddress } from "@homeberris/features/company/components/CompanyAddress";
 import { CompanyCatalog } from "@homeberris/features/company/components/CompanyCatalog";
 import { useRouter } from "next/router";
+import { useTranslation } from "next-i18next";
 
 export default function CompanyPage() {
   const router = useRouter();
   const { uuid } = router.query;
+  const { t } = useTranslation("common");
 
   const { data: companyResponse } = useCompany(uuid as string);
   const company = companyResponse?.data;
 
-  if (!company) return <Typography>Загрузка...</Typography>;
+  if (!company) return <Typography>{t('companyPage.loading')}</Typography>;
 
   return (
     <Box sx={{ p: 4, maxWidth: 1200, mx: "auto" }}>
@@ -21,7 +23,7 @@ export default function CompanyPage() {
       {company.addresses && company.addresses.length > 0 && (
         <Box mb={4}>
           <Typography variant="h5" mb={2}>
-            Адреса магазинов
+            {t('companyPage.storeAddresses')}
           </Typography>
           {company.addresses.map((address) => (
             <CompanyAddress key={address.uuid} address={address} />
@@ -32,7 +34,7 @@ export default function CompanyPage() {
       {company.catalogs && company.catalogs.length > 0 ? (
         <>
           <Typography variant="h5" mb={3}>
-            Каталоги
+            {t('companyPage.catalogs')}
           </Typography>
           <Grid container spacing={3}>
             {company.catalogs.map((catalog) => (
@@ -42,7 +44,7 @@ export default function CompanyPage() {
         </>
       ) : (
         <Typography variant="h6" color="text.secondary">
-          У этой компании пока нет каталогов
+          {t('companyPage.noCatalogs')}
         </Typography>
       )}
     </Box>

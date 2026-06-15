@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { useTranslation } from "next-i18next";
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
 import {
   Box,
@@ -29,6 +30,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
   onClose,
   catalog
 }) => {
+  const { t } = useTranslation("common");
   const { formatPrice } = useFormatPrice();
   const handleCopyArticle = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -53,7 +55,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
       <Box className={styles.drawerContent}>
         <Box className={styles.header}>
           <Typography variant="h6" className={styles.title}>
-            Характеристики и отзывы
+            {t('sidebar.title')}
           </Typography>
           <IconButton onClick={onClose} className={styles.closeButton}>
             <CloseIcon />
@@ -65,11 +67,11 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
         <Box className={styles.content}>
           {/* Основная информация */}
           <Box className={styles.section}>
-            <Typography className={styles.sectionTitle}>Основная информация</Typography>
+            <Typography className={styles.sectionTitle}>{t('sidebar.basicInfo')}</Typography>
             <List disablePadding>
               <ListItem className={styles.listItem}>
                 <ListItemText
-                  primary="Артикул"
+                  primary={t('sidebar.article')}
                   secondary={
                     <Box className={styles.articleRow}>
                       <Typography className={styles.articleText}>{catalog.uuid}</Typography>
@@ -87,7 +89,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
               {catalog.category && (
                 <ListItem className={styles.listItem}>
                   <ListItemText
-                    primary="Категория"
+                    primary={t('sidebar.category')}
                     secondary={catalog.category.name}
                   />
                 </ListItem>
@@ -95,7 +97,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
               {catalog.subCategorie && (
                 <ListItem className={styles.listItem}>
                   <ListItemText
-                    primary="Подкатегория"
+                    primary={t('sidebar.subcategory')}
                     secondary={catalog.subCategorie.name}
                   />
                 </ListItem>
@@ -110,7 +112,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
                 group.options && group.options.length > 0 && (
                   <Box key={groupIndex} className={styles.section}>
                     <Typography className={styles.sectionTitle}>
-                      {group.name || "Характеристики"}
+                      {group.name || t('sidebar.specs')}
                     </Typography>
                     <List disablePadding>
                       {group.options.map((option: any, optionIndex: number) => (
@@ -131,7 +133,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
           {/* Описание */}
           {catalog.description && (
             <Box className={styles.section}>
-              <Typography className={styles.sectionTitle}>Описание</Typography>
+              <Typography className={styles.sectionTitle}>{t('sidebar.description')}</Typography>
               <Typography className={styles.descriptionText}>
                 {catalog.description}
               </Typography>
@@ -140,18 +142,18 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
 
           {/* Дополнительная информация */}
           <Box className={styles.section}>
-            <Typography className={styles.sectionTitle}>Дополнительная информация</Typography>
+            <Typography className={styles.sectionTitle}>{t('sidebar.additionalInfo')}</Typography>
             <List disablePadding>
               <ListItem className={styles.listItem}>
                 <ListItemText
-                  primary="Цена"
+                  primary={t('sidebar.price')}
                   secondary={formatPrice(catalog.price)}
                 />
               </ListItem>
               {catalog.createdAt && (
                 <ListItem className={styles.listItem}>
                   <ListItemText
-                    primary="Дата добавления"
+                    primary={t('sidebar.dateAdded')}
                     secondary={new Date(catalog.createdAt).toLocaleDateString('ru-RU')}
                   />
                 </ListItem>
@@ -163,7 +165,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
 
           {/* Комментарии */}
           <Box className={styles.section}>
-            <Typography className={styles.sectionTitle}>Отзывы</Typography>
+            <Typography className={styles.sectionTitle}>{t('sidebar.reviews')}</Typography>
             
             {/* Форма создания комментария */}
             <Box sx={{ mb: 3 }}>
@@ -184,7 +186,7 @@ const ProductCharacteristicsSidebar: React.FC<ProductCharacteristicsSidebarProps
               </Box>
             ) : (
               <Typography className={styles.emptyComments}>
-                Пока нет отзывов. Будьте первым!
+                {t('sidebar.noReviews')}
               </Typography>
             )}
           </Box>

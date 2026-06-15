@@ -1,14 +1,15 @@
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
+import { useTranslation } from 'next-i18next';
 
 export const RecentOrdersAlert = ({ recentOrders }: { recentOrders: any }) => {
+    const { t } = useTranslation('common');
     return (
         <div className={styles.alertBox}>
             <p className={styles.alertTitle}>
-                Показаны только что купленные товары ({recentOrders.length})
+                {t('delivery.recentOrders.title', { count: recentOrders.length })}
             </p>
             <p className={styles.alertText}>
-                Ниже отображаются товары, которые вы только что оплатили.
-                Для просмотра всех заказов переключитесь на вкладку &quot;Все&quot;.
+                {t('delivery.recentOrders.text')}
             </p>
         </div>
     );

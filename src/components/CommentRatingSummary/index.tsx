@@ -2,12 +2,14 @@ import React, { useMemo } from 'react';
 import { Box, Typography, Rating } from '@mui/material';
 import { CommentItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
+import { useTranslation } from 'next-i18next';
 
 interface CommentRatingSummaryProps {
   comments: CommentItem[];
 }
 
 const CommentRatingSummary: React.FC<CommentRatingSummaryProps> = ({ comments }) => {
+  const { t } = useTranslation('common');
   const ratingData = useMemo(() => {
     if (!comments || comments.length === 0) {
       return {
@@ -72,13 +74,13 @@ const CommentRatingSummary: React.FC<CommentRatingSummaryProps> = ({ comments })
     <Box className={styles.container}>
       <Box className={styles.header}>
         <Typography className={styles.title}>
-          Оценки
+          {t('commentRating.ratings')}
           <Typography component="span" className={styles.count}>
             {ratingData.totalRatings}
           </Typography>
         </Typography>
         <Typography className={styles.questions}>
-          Вопросы
+          {t('commentRating.questions')}
           <Typography component="span" className={styles.questionsCount}>5</Typography>
         </Typography>
       </Box>
@@ -96,7 +98,7 @@ const CommentRatingSummary: React.FC<CommentRatingSummaryProps> = ({ comments })
             size="large"
           />
           <Typography className={styles.ratingsCount}>
-            {ratingData.totalRatings} {ratingData.totalRatings === 1 ? 'оценка' : ratingData.totalRatings < 5 ? 'оценки' : 'оценок'}
+            {ratingData.totalRatings} {t('commentRating.ratingsCount', { count: ratingData.totalRatings })}
           </Typography>
         </Box>
       </Box>

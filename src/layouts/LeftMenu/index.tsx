@@ -49,7 +49,7 @@ const LeftMenu: React.FC<Props> = ({ isOpen, closeMenu, openLeftMenu }) => {
               className={styles.closeBtn}
               onClick={closeMenu}
               size="small"
-              aria-label="Закрыть меню"
+              aria-label={t('leftMenu.closeMenu')}
             >
               <CloseIcon />
             </IconButton>

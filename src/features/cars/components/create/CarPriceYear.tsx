@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Grid, TextField, FormControlLabel, Checkbox, Box } from '@mui/material';
 import { IFormData } from '@homeberris/features/cars/types';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   formData: IFormData;
@@ -8,12 +9,13 @@ interface Props {
 }
 
 export const CarPriceYear: React.FC<Props> = ({ formData, handleChange }) => {
+  const { t } = useTranslation('common');
   return (
     <Grid item xs={12} md={6}>
       <Box>
         <TextField
           fullWidth
-          label="Цена (֏)"
+          label={t('cars.create.priceYear.price')}
           name="price"
           type="number"
           value={formData.price}
@@ -22,7 +24,7 @@ export const CarPriceYear: React.FC<Props> = ({ formData, handleChange }) => {
         />
         <TextField
           fullWidth
-          label="Год выпуска"
+          label={t('cars.create.priceYear.year')}
           name="year"
           type="number"
           value={formData.year}
@@ -32,7 +34,7 @@ export const CarPriceYear: React.FC<Props> = ({ formData, handleChange }) => {
         />
         <TextField
           fullWidth
-          label="Пробег (км)"
+          label={t('cars.create.priceYear.mileage')}
           name="mileage"
           type="number"
           value={formData.mileage}
@@ -47,7 +49,7 @@ export const CarPriceYear: React.FC<Props> = ({ formData, handleChange }) => {
               onChange={handleChange}
             />
           }
-          label="Новый автомобиль"
+          label={t('cars.create.priceYear.isNew')}
         />
       </Box>
     </Grid>

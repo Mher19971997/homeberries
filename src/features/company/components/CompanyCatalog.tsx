@@ -2,8 +2,10 @@
 import Link from "next/link";
 import { CompanyCatalog as CatalogType } from "@homeberris/features/company/types";
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
+import { useTranslation } from 'next-i18next';
 
 export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => {
+  const { t } = useTranslation('common');
   const { formatPrice } = useFormatPrice();
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -30,7 +32,7 @@ export const CompanyCatalog = ({ catalog }: { catalog: CatalogType }) => {
                 </Typography>
                 <Link href={`/catalog/${catalog.uuid}`} passHref>
                     <Button variant="contained" fullWidth>
-                        Посмотреть товар
+                        {t('companyCatalog.viewProduct')}
                     </Button>
                 </Link>
             </CardContent>

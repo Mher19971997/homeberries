@@ -8,9 +8,11 @@ import Link from 'next/link';
 import { createCar } from '@homeberris/http/carApi';
 import { checkToken } from '@homeberris/utils/auth';
 import { CarAppearance, CarEngineTransmission, CarImages, CarPriceYear, CreateCarActions, useCreateCarForm } from '@homeberris/features/cars';
+import { useTranslation } from 'next-i18next';
 
 
 export default function CreateCarPage() {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [cookies] = useCookies(['token']);
   const isAuth = checkToken();
@@ -36,7 +38,7 @@ export default function CreateCarPage() {
       setTimeout(() => router.push('/cars'), 2000);
     },
     onError: (err: any) =>
-      setError(err?.response?.data?.message || 'Ошибка при создании автомобиля'),
+      setError(err?.response?.data?.message || t('cars.create.page.createError')),
   });
 
   useEffect(() => {
@@ -64,9 +66,9 @@ export default function CreateCarPage() {
   return (
     <Box sx={{ p: 3 }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 3 }}>
-        <MuiLink component={Link} color="inherit" href="/">Главная</MuiLink>
-        <MuiLink component={Link} color="inherit" href="/cars">Автомобили</MuiLink>
-        <Typography color="text.primary">Добавить автомобиль</Typography>
+        <MuiLink component={Link} color="inherit" href="/">{t('nav.home')}</MuiLink>
+        <MuiLink component={Link} color="inherit" href="/cars">{t('cars.create.page.cars')}</MuiLink>
+        <Typography color="text.primary">{t('cars.create.page.addCar')}</Typography>
       </Breadcrumbs>
 
       {error && (
@@ -76,7 +78,7 @@ export default function CreateCarPage() {
       )}
       {success && (
         <Alert severity="success" sx={{ mb: 3 }}>
-          Автомобиль успешно создан! Перенаправление...
+          {t('cars.create.page.successMessage')}
         </Alert>
       )}
 

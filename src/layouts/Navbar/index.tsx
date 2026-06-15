@@ -154,13 +154,18 @@ const Navbar = () => {
 
         {/* Навигация */}
         <nav className={styles.navLinks}>
-          {[t('nav.home'), t('nav.about'), t('nav.contact'), t('nav.blog')].map((item) => (
+          {[
+            { label: t('nav.home'), href: '/' },
+            { label: t('nav.about'), href: '/about' },
+            { label: t('nav.contact'), href: '/contact' },
+            { label: t('nav.blog'), href: '/blog' },
+          ].map(({ label, href }) => (
             <span
-              key={item}
-              onClick={() => router.push('/')}
-              className={`${styles.navLink} ${item === 'Home' ? styles.navLinkActive : ''}`}
+              key={href}
+              onClick={() => router.push(href)}
+              className={styles.navLink}
             >
-              {item}
+              {label}
             </span>
           ))}
         </nav>
@@ -233,13 +238,18 @@ const Navbar = () => {
         </div>
 
         <nav className={styles.drawerNav}>
-          {[t('nav.home'), t('nav.about'), t('nav.contact'), t('nav.blog')].map((item) => (
+          {[
+            { label: t('nav.home'), href: '/' },
+            { label: t('nav.about'), href: '/about' },
+            { label: t('nav.contact'), href: '/contact' },
+            { label: t('nav.blog'), href: '/blog' },
+          ].map(({ label, href }) => (
             <span
-              key={item}
-              onClick={() => { router.push('/'); setMenuOpen(false); }}
+              key={href}
+              onClick={() => { router.push(href); setMenuOpen(false); }}
               className={styles.drawerNavLink}
             >
-              {item}
+              {label}
             </span>
           ))}
         </nav>

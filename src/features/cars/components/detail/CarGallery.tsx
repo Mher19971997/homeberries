@@ -1,8 +1,10 @@
 import { Box, Paper, Typography } from '@mui/material';
 import ImageGallery from 'react-image-gallery';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
+import { useTranslation } from 'next-i18next';
 
 export const CarGallery = ({ car }: any) => {
+  const { t } = useTranslation('common');
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
 
   const images: any[] = [];
@@ -37,7 +39,7 @@ export const CarGallery = ({ car }: any) => {
   if (!images.length) {
     return (
       <Paper className={styles.imageContainer}>
-        <Typography>Изображения отсутствуют</Typography>
+        <Typography>{t('carGallery.noImages')}</Typography>
       </Paper>
     );
   }

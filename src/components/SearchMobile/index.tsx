@@ -10,6 +10,7 @@ import styles from './index.module.css';
 import IClose from '../Icons/IClose';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
+import { useTranslation } from 'next-i18next';
 
 interface SearchMobileProps {
   icon: React.ReactNode;
@@ -17,6 +18,7 @@ interface SearchMobileProps {
 }
 
 const SearchMobile: React.FC<SearchMobileProps> = ({ icon, opened }) => {
+  const { t } = useTranslation('common');
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [searchQuery, setSearchQuery] = React.useState<string>('');
   const router = useRouter();
@@ -50,14 +52,14 @@ const SearchMobile: React.FC<SearchMobileProps> = ({ icon, opened }) => {
       <CustomModal
         open={openModal}
         handleClose={handleClose}
-        title="Поиск"
+        title={t('nav.search')}
         width="100%"
       >
         <Box className={styles.searchContent}>
           <form onSubmit={handleSearch} style={{ width: '100%' }}>
             <OutlinedInput
               fullWidth
-              placeholder="Поиск товаров..."
+              placeholder={t('searchMobile.placeholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               autoFocus

@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useRef, useState, Suspense, useEffect, useMemo, Component, ErrorInfo, ReactNode } from 'react';
+import { useTranslation } from "next-i18next";
 import { Canvas, useFrame } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations, Environment, ContactShadows } from '@react-three/drei';
 import { Mesh, Group, Object3D, Color, Box3, Vector3, AnimationClip, AnimationMixer } from 'three';
@@ -770,9 +771,9 @@ const Product3DObject: React.FC<{
   );
 };
 
-const Product3DViewer: React.FC<Product3DViewerProps> = ({ 
-  productName, 
-  onParameterChange, 
+const Product3DViewer: React.FC<Product3DViewerProps> = ({
+  productName,
+  onParameterChange,
   productType,
   productColor,
   modelUrl,
@@ -781,6 +782,7 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
   isSpeaking = false,
   focusOnFace = false
 }) => {
+  const { t } = useTranslation("common");
   const meshRef = useRef<Object3D>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
@@ -917,12 +919,12 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
       <MuiBox className={styles.container}>
         <Paper className={styles.viewerContainer}>
           <Typography variant="h6" fontWeight="bold" sx={{ mb: 2 }}>
-            {productName || '3D Просмотр товара'}
+            {productName || t('product3d.title')}
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '400px', gap: 2 }}>
             <CircularProgress size={60} />
             <Typography variant="body2" color="text.secondary">
-              Инициализация 3D просмотра...
+              {t('product3d.initLoading')}
             </Typography>
           </Box>
         </Paper>
@@ -936,16 +938,16 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
         {!compact && (
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="h6" fontWeight="bold">
-              {productName || '3D Просмотр товара'}
+              {productName || t('product3d.title')}
             </Typography>
             {modelUrl && (
-              <Button 
-                size="small" 
+              <Button
+                size="small"
                 variant="outlined"
                 onClick={() => setUseRealModel(!useRealModel)}
                 sx={{ ml: 2 }}
               >
-                {useRealModel ? 'Примитивы' : '3D Модель'}
+                {useRealModel ? t('product3d.primitives') : t('product3d.model')}
               </Button>
             )}
           </Box>
@@ -953,15 +955,15 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
         
         {modelError && (
           <Alert severity="warning" sx={{ mb: 2 }} onClose={() => setModelError(null)}>
-            Не удалось загрузить 3D модель. Используются примитивы.
+            {t('product3d.modelError')}
           </Alert>
         )}
         
         {modelUrl && !modelError && (
           <Alert severity="info" sx={{ mb: 2 }}>
-            {modelUrl.startsWith('/models/') 
-              ? 'Загружается локальная 3D модель с анимацией' 
-              : 'Загружается реалистичная 3D модель из интернета'}
+            {modelUrl.startsWith('/models/')
+              ? t('product3d.loadingLocal')
+              : t('product3d.loadingRemote')}
           </Alert>
         )}
 
@@ -998,10 +1000,10 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
                 {loadingProgress}%
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {loadingProgress < 30 && 'Инициализация WebGL...'}
-                {loadingProgress >= 30 && loadingProgress < 60 && 'Загрузка 3D сцены...'}
-                {loadingProgress >= 60 && loadingProgress < 90 && 'Создание 3D модели...'}
-                {loadingProgress >= 90 && 'Финальная обработка...'}
+                {loadingProgress < 30 && t('product3d.initWebGL')}
+                {loadingProgress >= 30 && loadingProgress < 60 && t('product3d.loadingScene')}
+                {loadingProgress >= 60 && loadingProgress < 90 && t('product3d.creatingModel')}
+                {loadingProgress >= 90 && t('product3d.finalizing')}
               </Typography>
               <Box sx={{ width: '80%', mt: 1 }}>
                 <LinearProgress 
@@ -1020,7 +1022,7 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
               </Box>
               {loadingProgress >= 90 && (
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1 }}>
-                  Если загрузка зависла, обновите страницу
+                  {t('product3d.refreshHint')}
                 </Typography>
               )}
             </Box>
@@ -1142,7 +1144,7 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
           <MuiBox className={styles.controlsContainer}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <Typography gutterBottom>Цвет</Typography>
+                <Typography gutterBottom>{t('product3d.controls.color')}</Typography>
                 <input
                   type="color"
                   value={params.color}
@@ -1152,7 +1154,7 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
               </Grid>
 
               <Grid item xs={12}>
-                <Typography gutterBottom>Размер: {params.size.toFixed(2)}</Typography>
+                <Typography gutterBottom>{`${t('product3d.controls.size')}: ${params.size.toFixed(2)}`}</Typography>
                 <Slider
                   value={params.size}
                   min={0.5}
@@ -1164,25 +1166,25 @@ const Product3DViewer: React.FC<Product3DViewerProps> = ({
               </Grid>
 
               <Grid item xs={12}>
-                <Typography gutterBottom>Форма</Typography>
+                <Typography gutterBottom>{t('product3d.controls.shape')}</Typography>
                 <MuiBox sx={{ display: 'flex', gap: 1 }}>
                   <button
                     className={params.shape === 'box' ? styles.activeButton : styles.button}
                     onClick={() => handleParamChange('shape', 'box')}
                   >
-                    Куб
+                    {t('product3d.shapes.box')}
                   </button>
                   <button
                     className={params.shape === 'sphere' ? styles.activeButton : styles.button}
                     onClick={() => handleParamChange('shape', 'sphere')}
                   >
-                    Сфера
+                    {t('product3d.shapes.sphere')}
                   </button>
                   <button
                     className={params.shape === 'cylinder' ? styles.activeButton : styles.button}
                     onClick={() => handleParamChange('shape', 'cylinder')}
                   >
-                    Цилиндр
+                    {t('product3d.shapes.cylinder')}
                   </button>
                 </MuiBox>
               </Grid>

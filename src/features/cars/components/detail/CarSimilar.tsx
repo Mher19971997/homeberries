@@ -1,13 +1,15 @@
 import { Box, Grid, Typography } from '@mui/material';
 import CarCard from '@homeberris/components/CarCard';
+import { useTranslation } from 'next-i18next';
 
 export const CarSimilar = ({ similarCars, router }: any) => {
+  const { t } = useTranslation('common');
   if (!similarCars?.length) return null;
 
   return (
     <Box sx={{ mt: 6 }}>
       <Typography variant="h5" sx={{ mb: 3 }}>
-        Похожие автомобили
+        {t('carSimilar.title')}
       </Typography>
 
       <Grid container spacing={3}>

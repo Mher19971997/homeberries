@@ -1,3 +1,4 @@
+import { useTranslation } from "next-i18next";
 import { Paper, Typography, Grid, Chip, Box, Button } from '@mui/material';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
@@ -8,35 +9,36 @@ interface CarSpecsProps {
 }
 
 export const CarSpecs = ({ car, setAiDialogOpen }: CarSpecsProps) => {
+  const { t } = useTranslation("common");
   const comfort = car.comfort_features || {};
   const multimedia = car.multimedia_features || {};
   const safety = car.safety_features || {};
 
   // Основные характеристики
   const specsData = [
-    { label: 'Год выпуска', value: car.year },
-    { label: 'Пробег', value: car.mileage ? `${new Intl.NumberFormat('ru-RU').format(car.mileage)} км` : null },
-    { label: 'Цвет', value: car.color },
-    { label: 'Тип двигателя', value: car.engine_type },
-    { label: 'Объем двигателя', value: car.engine_volume ? `${car.engine_volume} л` : null },
-    { label: 'Мощность', value: car.engine_power_hp ? `${car.engine_power_hp} л.с.` : null },
-    { label: 'КПП', value: car.transmission },
-    { label: 'Привод', value: car.drive_type },
-    { label: 'Размер шин', value: car.tire_size },
-    { label: 'Диски', value: car.wheel_size },
-    { label: 'Расход в городе', value: car.fuel_consumption_city ? `${car.fuel_consumption_city} л/100 км` : null },
-    { label: 'Расход по трассе', value: car.fuel_consumption_highway ? `${car.fuel_consumption_highway} л/100 км` : null },
+    { label: t('cars.specs.year'), value: car.year },
+    { label: t('cars.specs.mileage'), value: car.mileage ? `${new Intl.NumberFormat('ru-RU').format(car.mileage)} км` : null },
+    { label: t('cars.specs.color'), value: car.color },
+    { label: t('cars.specs.engineType'), value: car.engine_type },
+    { label: t('cars.specs.engineVolume'), value: car.engine_volume ? `${car.engine_volume} л` : null },
+    { label: t('cars.specs.power'), value: car.engine_power_hp ? `${car.engine_power_hp} л.с.` : null },
+    { label: t('cars.specs.transmission'), value: car.transmission },
+    { label: t('cars.specs.drive'), value: car.drive_type },
+    { label: t('cars.specs.tireSize'), value: car.tire_size },
+    { label: t('cars.specs.wheelSize'), value: car.wheel_size },
+    { label: t('cars.specs.fuelCity'), value: car.fuel_consumption_city ? `${car.fuel_consumption_city} л/100 км` : null },
+    { label: t('cars.specs.fuelHighway'), value: car.fuel_consumption_highway ? `${car.fuel_consumption_highway} л/100 км` : null },
   ].filter(spec => spec.value !== undefined && spec.value !== null);
 
   // Оснащение
   const featuresData = [
-    { value: comfort.sunroof, label: 'Люк' },
-    { value: comfort.panoramic_roof, label: 'Панорамная крыша' },
-    { value: comfort.heated_seats, label: 'Подогрев сидений' },
-    { value: multimedia.navigation, label: 'Навигация' },
-    { value: multimedia.premium_audio, label: 'Премиальная аудиосистема' },
-    { value: safety.turbo, label: 'Турбо' },
-    { value: safety.parking_sensors, label: 'Парктроники' },
+    { value: comfort.sunroof, label: t('cars.equipment.sunroof') },
+    { value: comfort.panoramic_roof, label: t('cars.equipment.panoramicRoof') },
+    { value: comfort.heated_seats, label: t('cars.equipment.heatedSeats') },
+    { value: multimedia.navigation, label: t('cars.equipment.navigation') },
+    { value: multimedia.premium_audio, label: t('cars.equipment.premiumAudio') },
+    { value: safety.turbo, label: t('cars.equipment.turbo') },
+    { value: safety.parking_sensors, label: t('cars.equipment.parkingSensors') },
   ].filter(f => f.value);
 
   return (
@@ -44,7 +46,7 @@ export const CarSpecs = ({ car, setAiDialogOpen }: CarSpecsProps) => {
       {/* Основные характеристики */}
       <Paper className={styles.specs} sx={{ mt: 3, p: 2 }}>
         <Typography variant="h6" className={styles.specsTitle} sx={{ mb: 2 }}>
-          Характеристики
+          {t('cars.specs.title')}
         </Typography>
         <Grid container spacing={2}>
           {specsData.map((spec, i) => (
@@ -60,7 +62,7 @@ export const CarSpecs = ({ car, setAiDialogOpen }: CarSpecsProps) => {
       {featuresData.length > 0 && (
         <Paper className={styles.specs} sx={{ mt: 3, p: 2 }}>
           <Typography variant="h6" className={styles.specsTitle} sx={{ mb: 1 }}>
-            Оснащение
+            {t('cars.equipment.title')}
           </Typography>
           <Grid container spacing={1}>
             {featuresData.map((f, i) => (
@@ -76,7 +78,7 @@ export const CarSpecs = ({ car, setAiDialogOpen }: CarSpecsProps) => {
       <Paper className={styles.specs} sx={{ mt: 3, p: 2 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
           <Typography variant="h6" className={styles.specsTitle}>
-            AI Помощник
+            {t('cars.aiHelper.title')}
           </Typography>
           <Button
             variant="contained"
@@ -84,12 +86,11 @@ export const CarSpecs = ({ car, setAiDialogOpen }: CarSpecsProps) => {
             startIcon={<SmartToyIcon />}
             onClick={() => setAiDialogOpen(true)}
           >
-            Получить совет
+            {t('cars.aiHelper.button')}
           </Button>
         </Box>
         <Typography variant="body2" color="text.secondary">
-          Получите персональную рекомендацию по этому автомобилю от нашего AI-помощника.
-          Узнайте о надёжности, стоимости обслуживания, популярности модели и многом другом.
+          {t('cars.aiHelper.description')}
         </Typography>
       </Paper>
     </>

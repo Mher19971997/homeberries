@@ -219,7 +219,7 @@ function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): Rea
               }}
             >
               <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                {(user as any)?.email?.split('@')[0] || 'Пользователь'}
+                {(user as any)?.email?.split('@')[0] || t('profile.user')}
               </span>
               <ArrowForwardIosIcon sx={{ fontSize: 14, color: '#868695' }} />
             </Typography>

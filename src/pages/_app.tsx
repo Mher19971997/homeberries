@@ -21,7 +21,7 @@ function App({ Component, pageProps }: AppProps) {
       <CookiesProvider>
         <HydrationBoundary state={pageProps.dehydratedState}>
           <FavoritesProvider>
-            <MainContainer title='StyleBox - Премиальный интернет-магазин модной одежды и обуви'>
+            <MainContainer title='StyleBox - Premium Online Fashion Store'>
               <Component {...pageProps} />
             </MainContainer>
           </FavoritesProvider>

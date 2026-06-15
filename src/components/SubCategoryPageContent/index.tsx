@@ -251,7 +251,7 @@ export default function SubCategoryPageContent({
       {/* Filter bar */}
       <div className={catalogStyles.filterBar}>
         <span className={catalogStyles.filterCount}>
-          {catalogs?.meta?.count || 0} товаров
+          {t('subCategory.count', { count: catalogs?.meta?.count || 0 })}
         </span>
 
         <select
@@ -259,7 +259,7 @@ export default function SubCategoryPageContent({
           value={selectedBrand}
           onChange={(e) => setSelectedBrand(e.target.value)}
         >
-          <option value="">Все бренды</option>
+          <option value="">{t('subCategory.allBrands')}</option>
           {brands.map((b: BrandItem) => (
             <option key={b.uuid} value={b.uuid}>
               {b.name}
@@ -271,7 +271,7 @@ export default function SubCategoryPageContent({
           <input
             className={catalogStyles.filterInput}
             type="number"
-            placeholder="От"
+            placeholder={t('subCategory.priceFrom')}
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
           />
@@ -279,7 +279,7 @@ export default function SubCategoryPageContent({
           <input
             className={catalogStyles.filterInput}
             type="number"
-            placeholder="До"
+            placeholder={t('subCategory.priceTo')}
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
           />
@@ -290,9 +290,9 @@ export default function SubCategoryPageContent({
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
-          <option value="newest">Новинки</option>
-          <option value="price_asc">Цена: по возрастанию</option>
-          <option value="price_desc">Цена: по убыванию</option>
+          <option value="newest">{t('subCategory.sortNewest')}</option>
+          <option value="price_asc">{t('subCategory.sortPriceAsc')}</option>
+          <option value="price_desc">{t('subCategory.sortPriceDesc')}</option>
         </select>
 
         {(selectedBrand || minPrice || maxPrice) && (
@@ -306,7 +306,7 @@ export default function SubCategoryPageContent({
               setDebouncedMax('');
             }}
           >
-            Сбросить
+            {t('subCategory.reset')}
           </button>
         )}
       </div>
@@ -314,7 +314,7 @@ export default function SubCategoryPageContent({
       {/* Product grid */}
       {!catalogs?.data || catalogs.data.length === 0 ? (
         <div className={catalogStyles.emptyBox}>
-          <p className={catalogStyles.emptyText}>В этой подкатегории пока нет товаров</p>
+          <p className={catalogStyles.emptyText}>{t('subCategory.empty')}</p>
         </div>
       ) : (
         <div className={catalogStyles.container}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 import {
   FacebookShareButton,
   FacebookIcon,
@@ -22,6 +23,7 @@ interface ShareButtonProps {
 }
 
 const ShareButton: React.FC<ShareButtonProps> = ({ shareUrl }) => {
+  const { t } = useTranslation('common');
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const { toast, showSuccess, showError, hideToast } = useToast();
 
@@ -30,11 +32,11 @@ const ShareButton: React.FC<ShareButtonProps> = ({ shareUrl }) => {
     navigator.clipboard
       .writeText(shareUrl)
       .then(() => {
-        showSuccess('Ссылка скопирована в буфер обмена');
+        showSuccess(t('shareButton.linkCopied'));
         handleClose();
       })
       .catch((error) => {
-        showError('Не удалось скопировать ссылку');
+        showError(t('shareButton.copyError'));
       });
   };
   return (
@@ -53,7 +55,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ shareUrl }) => {
         <CustomModal
           width={'25%'}
           open={openModal}
-          title={'Поделиться'}
+          title={t('shareButton.title')}
           handleClose={handleClose}
         >
           <Box className={styles.content}>
@@ -80,7 +82,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({ shareUrl }) => {
                 
               }}
             >
-              <Typography>Скопировать ссылку</Typography>
+              <Typography>{t('shareButton.copyLink')}</Typography>
               <ContentCopyIcon />
             </Box>
           </Box>

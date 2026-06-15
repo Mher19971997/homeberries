@@ -1,10 +1,12 @@
 import { Box, Chip } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 
 export const BrandChips = ({
     carMenu,
     brandId,
     router,
 }: any) => {
+    const { t } = useTranslation('common');
     return (
         <Box
             sx={{
@@ -17,7 +19,7 @@ export const BrandChips = ({
             }}
         >
             <Chip
-                label="Все"
+                label={t('brandChips.all')}
                 clickable
                 color={!brandId ? 'primary' : 'default'}
                 onClick={() => router.push('/cars')}

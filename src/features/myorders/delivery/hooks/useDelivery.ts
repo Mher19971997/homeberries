@@ -7,6 +7,7 @@ import * as qs from 'qs';
 import { getAllOrders, OrderItem } from '@homeberris/http/orderApi';
 import { getPaymentIntent } from '@homeberris/http/paymentApi';
 import { useToast } from '@homeberris/hooks/useToast';
+import { useTranslation } from 'next-i18next';
 
 const processingStatuses = new Set([
   'processing',
@@ -19,6 +20,7 @@ const deliveredStatuses = new Set(['delivered', 'completed']);
 const cancelledStatuses = new Set(['cancelled', 'canceled']);
 
 export const useDelivery = () => {
+  const { t } = useTranslation('common');
   const [cookies] = useCookies(['token']);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -115,14 +117,14 @@ export const useDelivery = () => {
   }, []);
 
   const handlePaymentSuccess = useCallback(async () => {
-    showToast('Платеж успешно обработан!', 'success');
+    showToast(t('delivery.success.title'), 'success');
     setOrderToPay(null);
     await queryClient.invalidateQueries({ queryKey: ['getAllOrders'] });
   }, [queryClient, showToast]);
 
   const handlePaymentError = useCallback(
     (err: string) => {
-      showToast(err || 'Ошибка оплаты', 'error');
+      showToast(err || t('delivery.paymentError'), 'error');
     },
     [showToast]
   );

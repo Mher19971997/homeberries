@@ -38,7 +38,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
 
   const title = isActive
     ? `${formatPrice(tempMin)} - ${formatPrice(tempMax)} ${currency}`
-    : `Цена, ${currency}`;
+    : `${t('sidebarFilters.price')}, ${currency}`;
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 0;
@@ -78,12 +78,12 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
       active={isActive}
     >
       <Box className={styles.popoverContent}>
-        <Typography className={styles.popoverTitle}>Цена</Typography>
+        <Typography className={styles.popoverTitle}>{t('sidebarFilters.price')}</Typography>
         <Divider sx={{ my: 1.5 }} />
         
         <Box className={styles.inputsContainer}>
           <TextField
-            label="От"
+            label={t('sidebarFilters.from')}
             type="number"
             value={tempMin}
             onChange={handleMinChange}
@@ -95,7 +95,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
           />
           <Typography className={styles.dash}>—</Typography>
           <TextField
-            label="До"
+            label={t('sidebarFilters.to')}
             type="number"
             value={tempMax}
             onChange={handleMaxChange}
@@ -137,7 +137,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
               onClick={handleReset}
               className={styles.resetButton}
             >
-              Сбросить
+              {t('sidebarFilters.reset')}
             </Button>
           )}
           <Button
@@ -146,7 +146,7 @@ const PriceFilter: React.FC<PriceFilterProps> = ({
             className={styles.applyButton}
               fullWidth={!isActive}
           >
-            Применить
+            {t('sidebarFilters.apply')}
           </Button>
         </Box>
       </Box>

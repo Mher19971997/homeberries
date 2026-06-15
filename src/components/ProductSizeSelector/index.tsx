@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styles from './index.module.css';
+import { useTranslation } from 'next-i18next';
 
 interface ProductSizeSelectorProps {
   sizes?: string[];
@@ -12,6 +13,7 @@ const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
   sizes = ['XXS (42)', 'XS (44)', 'S (46)', 'M (48)', 'L (50)', 'XL (52)', 'XXL (54)', '3XL (56)', '4XL (58)', '5XL (60)'],
   onSizeSelect
 }) => {
+  const { t } = useTranslation('common');
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [showSizeChart, setShowSizeChart] = useState(false);
 
@@ -23,13 +25,13 @@ const ProductSizeSelector: React.FC<ProductSizeSelectorProps> = ({
   return (
     <Box className={styles.container}>
       <Box className={styles.header}>
-        <Typography className={styles.title}>Таблица размеров</Typography>
+        <Typography className={styles.title}>{t('productSizeSelector.title')}</Typography>
         <Button
           className={styles.sizeChartButton}
           onClick={() => setShowSizeChart(!showSizeChart)}
           endIcon={<ArrowForwardIosIcon className={showSizeChart ? styles.rotated : ''} />}
         >
-          Таблица размеров
+          {t('productSizeSelector.title')}
         </Button>
       </Box>
       <Box className={styles.sizesGrid}>

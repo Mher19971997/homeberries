@@ -39,7 +39,7 @@ export const LoginForm: React.FC = () => {
         setTimeout(() => router.push('/'), 800);
       }
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Неверный email или пароль');
+      setError(err?.response?.data?.message || t('auth.errors.invalid'));
     } finally { setLoading(false); }
   };
 
@@ -62,7 +62,7 @@ export const LoginForm: React.FC = () => {
         setTimeout(() => router.push('/'), 800);
       }
     } catch (err: any) {
-      setError(err?.response?.data?.message || 'Ошибка при регистрации');
+      setError(err?.response?.data?.message || t('auth.errors.registerError'));
     } finally { setLoading(false); }
   };
 

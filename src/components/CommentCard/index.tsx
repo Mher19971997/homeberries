@@ -6,12 +6,14 @@ import styles from './index.module.css';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import { useTranslation } from 'next-i18next';
 
 interface CommentCardProps {
   comment: CommentItem;
 }
 
 const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
+  const { t } = useTranslation('common');
   const [isExpanded, setIsExpanded] = useState(false);
   
   // Парсим текст комментария для извлечения структурированных данных
@@ -72,7 +74,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
 
   // Генерируем имя пользователя из email
   const getUserName = (email?: string) => {
-    if (!email) return 'Покупатель';
+    if (!email) return t('commentCard.buyer');
     const name = email.split('@')[0];
     return name.charAt(0).toUpperCase() + name.slice(1);
   };
@@ -115,14 +117,14 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
       <Box className={styles.content}>
         {pros && (
           <Box className={styles.section}>
-            <Typography className={styles.sectionLabel}>Достоинства:</Typography>
+            <Typography className={styles.sectionLabel}>{t('commentCard.pros')}</Typography>
             <Typography className={styles.sectionText}>{pros}</Typography>
           </Box>
         )}
 
         {cons && (
           <Box className={styles.section}>
-            <Typography className={styles.sectionLabel}>Недостатки:</Typography>
+            <Typography className={styles.sectionLabel}>{t('commentCard.cons')}</Typography>
             <Typography className={styles.sectionText}>{cons}</Typography>
           </Box>
         )}
@@ -130,7 +132,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
         {commentText && (
           <Box className={styles.section}>
             {(!pros && !cons) && (
-              <Typography className={styles.sectionLabel}>Комментарий:</Typography>
+              <Typography className={styles.sectionLabel}>{t('commentCard.comment')}</Typography>
             )}
             <Typography className={styles.commentText}>{displayText}</Typography>
             {shouldShowExpand && (
@@ -139,7 +141,7 @@ const CommentCard: React.FC<CommentCardProps> = ({ comment }) => {
                 onClick={() => setIsExpanded(!isExpanded)}
                 size="small"
               >
-                {isExpanded ? 'свернуть' : 'ещё'}
+                {isExpanded ? t('commentCard.collapse') : t('commentCard.expand')}
               </Button>
             )}
           </Box>

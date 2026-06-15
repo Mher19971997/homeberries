@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 import {
   Combobox,
   ComboboxInput,
@@ -20,6 +21,7 @@ interface GoogleMapSearchInputProps {
 const GoogleMapSearchInput: React.FC<GoogleMapSearchInputProps> = ({
   panTo
 }) => {
+  const { t } = useTranslation('common');
   const {
     ready,
     value,
@@ -77,14 +79,14 @@ const GoogleMapSearchInput: React.FC<GoogleMapSearchInputProps> = ({
               value={value}
               onChange={handleInput}
               disabled={!ready}
-              placeholder='Поиск мест и адресов'
+              placeholder={t('googleMap.searchPlaceholder')}
             />
             {value && (
               <button
                 type='button'
                 className={styles.clearButton}
                 onClick={handleClear}
-                aria-label='Очистить поиск'
+                aria-label={t('googleMap.clearSearch')}
               >
                 ×
               </button>
@@ -96,7 +98,7 @@ const GoogleMapSearchInput: React.FC<GoogleMapSearchInputProps> = ({
             disabled={!ready || !value}
             onClick={() => value && handleSelect(value)}
           >
-            Найти
+            {t('googleMap.find')}
           </button>
         </Box>
         <ComboboxPopover className={styles.popover}>

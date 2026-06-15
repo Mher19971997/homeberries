@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { useTranslation } from "next-i18next";
 import { Box, Typography, Chip, IconButton } from '@mui/material';
 import Image from 'next/image';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,6 +17,7 @@ interface CarCardProps {
 }
 
 const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, onClick }) => {
+  const { t } = useTranslation("common");
   const { isFavorite, toggleFavorite } = useFavorites();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
   const mainImagePath = car.main_image
@@ -53,15 +55,15 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
   const getBodyTypeLabel = (type?: string) => {
     if (!type) return '';
     const bodyTypes: { [key: string]: string } = {
-      sedan: 'Седан',
-      hatchback: 'Хэтчбек',
-      wagon: 'Универсал',
-      coupe: 'Купе',
-      suv: 'Внедорожник',
-      crossover: 'Кроссовер',
-      minivan: 'Минивэн',
-      pickup: 'Пикап',
-      convertible: 'Кабриолет',
+      sedan: t('cars.bodyType.sedan'),
+      hatchback: t('cars.bodyType.hatchback'),
+      wagon: t('cars.bodyType.wagon'),
+      coupe: t('cars.bodyType.coupe'),
+      suv: t('cars.bodyType.suv'),
+      crossover: t('cars.bodyType.crossover'),
+      minivan: t('cars.bodyType.minivan'),
+      pickup: t('cars.bodyType.pickup'),
+      convertible: t('cars.bodyType.convertible'),
     };
     return bodyTypes[type.toLowerCase()] || type;
   };
@@ -78,9 +80,9 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
           />
         </Box>
         <Box className={styles.badgeRow}>
-          {car.is_new && <Chip size="small" color="primary" label="Новый" />}
+          {car.is_new && <Chip size="small" color="primary" label={t('cars.card.isNew')} />}
           {car.mileage === 0 && !car.is_new && (
-            <Chip size="small" color="secondary" label="Без пробега" />
+            <Chip size="small" color="secondary" label={t('cars.card.noMileage')} />
           )}
           {bodyType && (
             <Chip size="small" label={getBodyTypeLabel(bodyType)} sx={{ bgcolor: 'rgba(102, 126, 234, 0.9)', color: 'white' }} />
@@ -114,7 +116,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
             <Typography className={styles.subtitle}>
               {brandName && `${brandName} `}
               {modelName}
-              {car.year ? ` · ${car.year} г.` : ''}
+              {car.year ? ` · ${car.year} ${t('cars.units.year')}` : ''}
             </Typography>
           </Box>
         </Box>
@@ -128,28 +130,28 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
           {car.engine_volume && (
             <Chip
               size="small"
-              label={`${car.engine_volume} л`}
+              label={`${car.engine_volume} ${t('cars.units.litre')}`}
               variant="outlined"
             />
           )}
           {car.engine_power_hp && (
             <Chip
               size="small"
-              label={`${car.engine_power_hp} л.с.`}
+              label={`${car.engine_power_hp} ${t('cars.units.hp')}`}
               variant="outlined"
             />
           )}
           {car.transmission && (
             <Chip
               size="small"
-              label={car.transmission === 'automatic' ? 'Автомат' : car.transmission === 'manual' ? 'Механика' : car.transmission}
+              label={car.transmission === 'automatic' ? t('cars.card.transmission.automatic') : car.transmission === 'manual' ? t('cars.card.transmission.manual') : car.transmission}
               variant="outlined"
             />
           )}
           {car.drive_type && (
             <Chip
               size="small"
-              label={car.drive_type === 'awd' ? 'Полный привод' : car.drive_type === 'fwd' ? 'Передний привод' : car.drive_type === 'rwd' ? 'Задний привод' : car.drive_type}
+              label={car.drive_type === 'awd' ? t('cars.card.drive.awd') : car.drive_type === 'fwd' ? t('cars.card.drive.fwd') : car.drive_type === 'rwd' ? t('cars.card.drive.rwd') : car.drive_type}
               variant="outlined"
             />
           )}
@@ -158,27 +160,27 @@ const CarCard: React.FC<CarCardProps> = ({ car, brandName, modelName, bodyType, 
         <Box className={styles.specRow}>
           {car.mileage !== undefined && (
             <Box>
-              <Typography className={styles.specLabel}>Пробег</Typography>
+              <Typography className={styles.specLabel}>{t('cars.card.mileageLabel')}</Typography>
               <Typography className={styles.specValue}>
-                {formatNumber(car.mileage)} км
+                {formatNumber(car.mileage)} {t('cars.units.km')}
               </Typography>
             </Box>
           )}
           {car.color && (
             <Box>
-              <Typography className={styles.specLabel}>Цвет</Typography>
+              <Typography className={styles.specLabel}>{t('cars.card.colorLabel')}</Typography>
               <Typography className={styles.specValue}>{car.color}</Typography>
             </Box>
           )}
           {car.tire_size && (
             <Box>
-              <Typography className={styles.specLabel}>Шины</Typography>
+              <Typography className={styles.specLabel}>{t('cars.card.tiresLabel')}</Typography>
               <Typography className={styles.specValue}>{car.tire_size}</Typography>
             </Box>
           )}
           {car.wheel_size && (
             <Box>
-              <Typography className={styles.specLabel}>Диски</Typography>
+              <Typography className={styles.specLabel}>{t('cars.card.wheelsLabel')}</Typography>
               <Typography className={styles.specValue}>{car.wheel_size}</Typography>
             </Box>
           )}

@@ -22,25 +22,26 @@ const getStatusColor = (status: string) => {
     }
 };
 
-const getStatusLabel = (status: string) => {
+const getStatusLabel = (status: string, t?: (key: string) => string) => {
+    const tr = (key: string, fallback: string) => t ? t(`delivery.status.${key}`) : fallback;
     switch (status?.toLowerCase()) {
         case 'delivered':
         case 'completed':
-            return 'Доставлен';
+            return tr('delivered', 'Delivered');
         case 'cancelled':
         case 'canceled':
-            return 'Отменен';
+            return tr('cancelled', 'Cancelled');
         case 'processing':
         case 'in_progress':
-            return 'В обработке';
+            return tr('processing', 'Processing');
         case 'shipped':
-            return 'Отправлен';
+            return tr('shipped', 'Shipped');
         case 'pending':
-            return 'Ожидает';
+            return tr('pending', 'Pending');
         case 'paid':
-            return 'Оплачено';
+            return tr('paid', 'Paid');
         default:
-            return status || 'Неизвестно';
+            return status || tr('unknown', 'Unknown');
     }
 };
 

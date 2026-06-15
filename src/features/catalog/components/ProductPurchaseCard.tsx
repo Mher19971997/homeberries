@@ -24,6 +24,7 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import styles from '@homeberris/features/catalog/styles/purchase.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { useProductPurchase } from '../hooks/useProductPurchase';
+import { useTranslation } from 'next-i18next';
 
 interface ProductPurchaseCardProps {
     catalog: CatalogItem;
@@ -36,6 +37,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
     onAddToBasket,
     onBuyNow
 }) => {
+    const { t } = useTranslation('common');
     const {
         quantity,
         installmentAmount,
@@ -88,7 +90,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
 
                 <Chip
                     icon={<ThumbUpIcon />}
-                    label="Хорошая цена"
+                    label={t('productPurchaseCard.goodPrice')}
                     size="small"
                     sx={{ mt: 1 }}
                 />
@@ -100,7 +102,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
             <Box display="flex" alignItems="center" gap={1}>
                 <LocalShippingIcon fontSize="small" />
                 <Typography variant="body2">
-                    Доставка {deliveryDate}
+                    {t('productPurchaseCard.delivery')} {deliveryDate}
                 </Typography>
             </Box>
 
@@ -132,7 +134,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
                     onClick={handleAddToCart}
                     sx={{ height: 48 }}
                 >
-                    В корзину
+                    {t('productPurchaseCard.addToCart')}
                 </Button>
 
                 <Button
@@ -141,7 +143,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
                     onClick={handleBuyNow}
                     sx={{ height: 48 }}
                 >
-                    Купить сейчас
+                    {t('productPurchaseCard.buyNow')}
                 </Button>
             </Box>
         </Card>
@@ -165,7 +167,7 @@ const ProductPurchaseCard: React.FC<ProductPurchaseCardProps> = ({
                     className={styles.mobileCartButton}
                     onClick={handleAddToCart}
                 >
-                    В корзину
+                    {t('productPurchaseCard.addToCart')}
                 </Button>
             ) : (
                 <Box className={styles.mobileCounter}>

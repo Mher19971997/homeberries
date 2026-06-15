@@ -2,6 +2,7 @@
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
+import { useTranslation } from 'next-i18next';
 
 interface CarStatisticsProps {
   statistics: any;
@@ -10,6 +11,7 @@ interface CarStatisticsProps {
 }
 
 export const CarStatistics = ({ car, statistics, currency = '֏' }: CarStatisticsProps) => {
+  const { t } = useTranslation('common');
   if (!statistics) return null;
 
   return (
@@ -23,12 +25,12 @@ export const CarStatistics = ({ car, statistics, currency = '֏' }: CarStatistic
       }}
     >
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-        Статистика по {statistics.modelName}
+        {t('cars.statistics.title')} {statistics.modelName}
       </Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
           <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
-            Средняя цена на рынке
+            {t('cars.statistics.averagePrice')}
           </Typography>
           <Typography variant="h5" sx={{ color: 'white', fontWeight: 700 }}>
             {new Intl.NumberFormat('ru-RU').format(statistics.averagePrice)} {car.currency || '֏'}
@@ -43,7 +45,7 @@ export const CarStatistics = ({ car, statistics, currency = '֏' }: CarStatistic
             )}
             <Box>
               <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)' }}>
-                {statistics.isCheaper ? 'Дешевле среднего' : 'Дороже среднего'}
+                {statistics.isCheaper ? t('cars.statistics.cheaper') : t('cars.statistics.moreExpensive')}
               </Typography>
               <Typography variant="h6" sx={{ color: statistics.isCheaper ? '#4caf50' : '#f44336', fontWeight: 700 }}>
                 {statistics.isCheaper ? '-' : '+'}{Math.abs(statistics.priceDifferencePercent)}% (
@@ -54,7 +56,7 @@ export const CarStatistics = ({ car, statistics, currency = '֏' }: CarStatistic
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.8)', mt: 1 }}>
-            Всего автомобилей {statistics.modelName} на рынке: {statistics.totalCarsInModel}
+            {t('cars.statistics.totalCars')} {statistics.modelName}: {statistics.totalCarsInModel}
           </Typography>
         </Grid>
       </Grid>

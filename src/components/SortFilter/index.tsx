@@ -3,10 +3,11 @@ import { Box, Button, List, ListItem, ListItemButton, ListItemText, Divider, Typ
 import CheckIcon from '@mui/icons-material/Check';
 import BasicPopover from '../BasicPopover';
 import styles from './index.module.css';
+import { useTranslation } from 'next-i18next';
 
 interface SortOption {
   value: string;
-  label: string;
+  labelKey: string;
 }
 
 interface SortFilterProps {
@@ -14,18 +15,20 @@ interface SortFilterProps {
   onChange?: (value: string) => void;
 }
 
-const sortOptions: SortOption[] = [
-  { value: 'popularity', label: 'По популярности' },
-  { value: 'price_asc', label: 'Сначала дешевые' },
-  { value: 'price_desc', label: 'Сначала дорогие' },
-  { value: 'rating', label: 'По рейтингу' },
-  { value: 'newest', label: 'Сначала новые' },
-  { value: 'discount', label: 'По размеру скидки' },
+const sortOptionDefs: SortOption[] = [
+  { value: 'popularity', labelKey: 'sortFilter.popularity' },
+  { value: 'price_asc', labelKey: 'sortFilter.priceAsc' },
+  { value: 'price_desc', labelKey: 'sortFilter.priceDesc' },
+  { value: 'rating', labelKey: 'sortFilter.rating' },
+  { value: 'newest', labelKey: 'sortFilter.newest' },
+  { value: 'discount', labelKey: 'sortFilter.discount' },
 ];
 
 const SortFilter: React.FC<SortFilterProps> = ({ value = 'popularity', onChange }) => {
+  const { t } = useTranslation('common');
   const [selectedValue, setSelectedValue] = useState<string>(value);
-  const selectedLabel = sortOptions.find(opt => opt.value === selectedValue)?.label || 'По популярности';
+  const sortOptions = sortOptionDefs.map(opt => ({ value: opt.value, label: t(opt.labelKey) }));
+  const selectedLabel = sortOptions.find(opt => opt.value === selectedValue)?.label || t('sortFilter.popularity');
 
   const handleSelect = (optionValue: string) => {
     setSelectedValue(optionValue);
@@ -35,7 +38,7 @@ const SortFilter: React.FC<SortFilterProps> = ({ value = 'popularity', onChange 
   return (
     <BasicPopover title={selectedLabel} active={selectedValue !== 'popularity'}>
       <Box className={styles.popoverContent}>
-        <Typography className={styles.popoverTitle}>Сортировка</Typography>
+        <Typography className={styles.popoverTitle}>{t('sortFilter.title')}</Typography>
         <Divider sx={{ my: 1 }} />
         <List className={styles.optionsList}>
           {sortOptions.map((option) => (

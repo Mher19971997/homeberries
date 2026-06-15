@@ -1,34 +1,37 @@
 import React from 'react';
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import { IFormData } from '@homeberris/features/cars/types';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
   formData: IFormData;
   handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
-export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange }) => (
+export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange }) => {
+  const { t } = useTranslation('common');
+  return (
   <>
     <Grid item xs={12} md={6}>
       <FormControl fullWidth>
-        <InputLabel>Тип двигателя</InputLabel>
+        <InputLabel>{t('cars.create.engine.engineType')}</InputLabel>
         <Select
           name="engine_type"
           value={formData.engine_type}
           onChange={handleChange as any}
         >
-          <MenuItem value="">Не выбрано</MenuItem>
-          <MenuItem value="petrol">Бензин</MenuItem>
-          <MenuItem value="diesel">Дизель</MenuItem>
-          <MenuItem value="hybrid">Гибрид</MenuItem>
-          <MenuItem value="electric">Электрический</MenuItem>
+          <MenuItem value="">{t('cars.create.engine.notSelected')}</MenuItem>
+          <MenuItem value="petrol">{t('cars.create.engine.petrol')}</MenuItem>
+          <MenuItem value="diesel">{t('cars.create.engine.diesel')}</MenuItem>
+          <MenuItem value="hybrid">{t('cars.create.engine.hybrid')}</MenuItem>
+          <MenuItem value="electric">{t('cars.create.engine.electric')}</MenuItem>
         </Select>
       </FormControl>
     </Grid>
     <Grid item xs={12} md={3}>
       <TextField
         fullWidth
-        label="Объем (л)"
+        label={t('cars.create.engine.volume')}
         name="engine_volume"
         type="number"
         value={formData.engine_volume}
@@ -38,7 +41,7 @@ export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange 
     <Grid item xs={12} md={3}>
       <TextField
         fullWidth
-        label="Мощность (л.с.)"
+        label={t('cars.create.engine.power')}
         name="engine_power_hp"
         type="number"
         value={formData.engine_power_hp}
@@ -48,7 +51,7 @@ export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange 
     <Grid item xs={12} md={6}>
       <TextField
         fullWidth
-        label="Расход в городе (л/100км)"
+        label={t('cars.create.engine.fuelCity')}
         name="fuel_consumption_city"
         type="number"
         value={formData.fuel_consumption_city}
@@ -58,7 +61,7 @@ export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange 
     <Grid item xs={12} md={6}>
       <TextField
         fullWidth
-        label="Расход по трассе (л/100км)"
+        label={t('cars.create.engine.fuelHighway')}
         name="fuel_consumption_highway"
         type="number"
         value={formData.fuel_consumption_highway}
@@ -66,4 +69,5 @@ export const CarEngineTransmission: React.FC<Props> = ({ formData, handleChange 
       />
     </Grid>
   </>
-);
+  );
+};

@@ -2,6 +2,7 @@ import { Box, Typography } from '@mui/material';
 import React from 'react';
 import styles from '@homeberris/components/CompanyAddressItem/index.module.css';
 import { CompanyAddressData } from '@homeberris/http/companyAddressApi';
+import { useTranslation } from 'next-i18next';
 
 interface CompanyAddressItemProps {
   item: CompanyAddressData;
@@ -16,6 +17,7 @@ const CompanyAddressItem: React.FC<CompanyAddressItemProps> = ({
   selectedAddress,
   handleSelect
 }) => {
+  const { t } = useTranslation('common');
   const { uuid, address, company } = item;
 
   return (
@@ -27,7 +29,7 @@ const CompanyAddressItem: React.FC<CompanyAddressItemProps> = ({
       }}
     >
       <Typography variant="subtitle1" fontWeight="bold">
-        {company?.name || 'Компания'}
+        {company?.name || t('companyAddressItem.company')}
       </Typography>
       <Typography variant="body2" color="text.secondary">
         {address}

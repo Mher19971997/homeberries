@@ -22,6 +22,7 @@ import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import styles from './index.module.css';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 
 interface CreateCommentProps {
   catalogUuid: UUID;
@@ -29,6 +30,7 @@ interface CreateCommentProps {
 }
 
 const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess }) => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [cookies] = useCookies(['token']);
   const queryClient = useQueryClient();
@@ -53,11 +55,11 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
       setImagePreview(null);
       setIsExpanded(false);
       setIsSubmitting(false);
-      showSuccess('Отзыв успешно добавлен!');
+      showSuccess(t('createComment.successMessage'));
       onSuccess?.();
     },
     onError: (error: any) => {
-      showError(error?.response?.data?.message || 'Ошибка при добавлении отзыва');
+      showError(error?.response?.data?.message || t('createComment.errorMessage'));
       setIsSubmitting(false);
     },
   });
@@ -108,7 +110,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
           onClick={handleExpand}
         >
           <Typography className={styles.writeButtonText}>
-            Написать отзыв
+            {t('createComment.writeReview')}
           </Typography>
         </Button>
       </Box>
@@ -119,7 +121,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
     <Paper className={styles.formContainer} elevation={2}>
       <Box className={styles.formHeader}>
         <Typography variant="h6" className={styles.formTitle}>
-          Написать отзыв
+          {t('createComment.writeReview')}
         </Typography>
         <IconButton
           size="small"
@@ -138,7 +140,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
       <form onSubmit={handleSubmit} className={styles.form}>
         <Box className={styles.ratingContainer}>
           <Typography variant="body2" className={styles.ratingLabel}>
-            Оцените товар:
+            {t('createComment.rateProduct')}
           </Typography>
           <Rating
             value={rating}
@@ -151,7 +153,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
         <TextField
           multiline
           rows={6}
-          placeholder="Поделитесь своим мнением о товаре..."
+          placeholder={t('createComment.placeholder')}
           value={text}
           onChange={(e) => setText(e.target.value)}
           className={styles.textField}
@@ -191,7 +193,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
             >
               <PhotoCameraIcon />
               <Typography variant="body2" className={styles.imageButtonText}>
-                Фото
+                {t('createComment.photo')}
               </Typography>
             </IconButton>
           </label>
@@ -203,7 +205,7 @@ const CreateComment: React.FC<CreateCommentProps> = ({ catalogUuid, onSuccess })
             disabled={!text.trim() || isSubmitting}
             startIcon={isSubmitting ? <CircularProgress size={16} /> : <SendIcon />}
           >
-            {isSubmitting ? 'Отправка...' : 'Отправить отзыв'}
+            {isSubmitting ? t('createComment.sending') : t('createComment.submit')}
           </Button>
         </Box>
       </form>

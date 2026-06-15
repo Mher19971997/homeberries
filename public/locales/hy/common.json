@@ -92,7 +92,9 @@
     "noProductsTitle": "Այս ենթակատեգորիայում դեռ ապրանքներ չկան",
     "noProductsDesc": "Մենք աշխատում ենք տեսականու ավելացման վրա։ Խնդրում ենք այցելել ավելի ուշ։",
     "backToCategory": "Վերադառնալ կատեգորիա \"{{name}}\"",
-    "categories": "Կատեգորիաներ"
+    "categories": "Կատեգորիաներ",
+    "emptyFavoritesTitle": "Ընտրյալներում ապրանքներ չկան",
+    "emptyFavoritesDesc": "Ավելացրեք հավանած ապրանքները, որպեսզի չկորցնեք դրանք"
   },
   "basket": {
     "addedToBasket": "Ավելացվել է զամբյուղ",
@@ -215,7 +217,8 @@
     "price": "Գին",
     "from": "Սկզբից",
     "to": "Մինչև",
-    "apply": "Կիրառել"
+    "apply": "Կիրառել",
+    "reset": "Զրոյացնել"
   },
   "productDetails": {
     "title": "Մանրամասներ",
@@ -342,7 +345,26 @@
     "notViewed": "Դուք դեռ որևէ ապրանք չեք դիտել",
     "accountInfo": "Հաշվի տեղեկություններ",
     "email": "Էլ. փոստ",
-    "role": "Դեր"
+    "role": "Դեր",
+    "user": "Օգտատեր",
+    "discount": "Զեղչ",
+    "upTo": "Մինչ",
+    "paymentOnDelivery": "Վճարում առաքման ժամանակ",
+    "menu": {
+      "purchases": "Գնումներ",
+      "favorites": "Ընտրյալներ",
+      "brands": "Ապրանքանիշեր",
+      "orders": "Պատվերներ",
+      "certificates": "Վկայագրեր",
+      "wallet": "Դրամապանակ",
+      "paymentMethods": "Վճարման եղանակներ"
+    },
+    "chat": {
+      "title": "Չաթ",
+      "description": "Կապվել աջակցության հետ",
+      "reviews": "Կարծիքներ",
+      "business": "Բիզնես"
+    }
   },
   "delivery": {
     "pageTitle": "Իմ պատվերները",
@@ -394,7 +416,12 @@
       "status": "Կարգավիճակ",
       "description": "Նկարագրություն",
       "paid": "Վճարված"
-    }
+    },
+    "recentOrders": {
+      "title": "Վերջերս գնված ապրանքներ ({{count}})",
+      "text": "Այս ապրանքները գնվել են հենց նոր:"
+    },
+    "paymentError": "Վճարման սխալ"
   },
   "auth": {
     "login": {
@@ -424,7 +451,9 @@
       "passwordMismatch": "Գաղտնաբառերը չեն համընկնում",
       "passwordLength": "Գաղտնաբառը պետք է լինի առնվազն 8 նիշ",
       "invalid": "Սխալ էլ․ փոստ կամ գաղտնաբառ",
-      "registerError": "Գրանցման սխալ"
+      "registerError": "Գրանցման սխալ",
+      "serverError": "Թույլտվության սերվերի սխալ պատասխան",
+      "loginError": "Մուտքի սխալ"
     }
   },
   "notFound": {
@@ -441,5 +470,376 @@
   },
   "similarProducts": {
     "title": "Տես նաև"
+  },
+  "product3d": {
+    "title": "3D Ապրանքի դիտում",
+    "initLoading": "3D դիտարկիչը նախաձևում է...",
+    "primitives": "Պրիմիտիվներ",
+    "model": "3D Մոդել",
+    "modelError": "3D մոդելը չհաջողվեց բեռնել: Օգտագործվում են պրիմիտիվներ:",
+    "loadingLocal": "Բեռնվում է տեղական 3D մոդելը անիմացիայով",
+    "loadingRemote": "Բեռնվում է ռեալիստիկ 3D մոդելը ինտերնետից",
+    "initWebGL": "WebGL-ը նախաձևում է...",
+    "loadingScene": "Բեռնվում է 3D տեսարանը...",
+    "creatingModel": "Ստեղծվում է 3D մոդելը...",
+    "finalizing": "Վերջնական մշակում...",
+    "refreshHint": "Եթե բեռնումը կախված է, թարմացրեք էջը",
+    "controls": {
+      "color": "Գույն",
+      "size": "Չափ",
+      "shape": "Ձև"
+    },
+    "shapes": {
+      "box": "Խորանարդ",
+      "sphere": "Գնդակ",
+      "cylinder": "Գլան"
+    }
+  },
+  "cars": {
+    "units": {
+      "year": "թ.",
+      "km": "կմ",
+      "litre": "լ",
+      "hp": "ձ.ու.",
+      "per100km": "լ/100 կմ"
+    },
+    "specs": {
+      "title": "Բնութագրեր",
+      "year": "Արտադրման թվական",
+      "mileage": "Վազքուղի",
+      "color": "Գույն",
+      "engineType": "Շարժիչի տեսակ",
+      "engineVolume": "Շարժիչի ծավալ",
+      "power": "Հզորություն",
+      "transmission": "Փոխանցատուփ",
+      "drive": "Քաշ",
+      "tireSize": "Անվադողի չափ",
+      "wheelSize": "Անիվի չափ",
+      "fuelCity": "Վառելիքի սպառում (քաղաք)",
+      "fuelHighway": "Վառելիքի սպառում (մայրուղի)"
+    },
+    "equipment": {
+      "title": "Հագեցվածություն",
+      "sunroof": "Լյուկ",
+      "panoramicRoof": "Պանորամային տանիք",
+      "heatedSeats": "Նստատեղերի տաքացում",
+      "navigation": "Նավիգացիա",
+      "premiumAudio": "Պրեմիում ձայնային համակարգ",
+      "turbo": "Տուրբո",
+      "parkingSensors": "Կայանման տվիչներ"
+    },
+    "aiHelper": {
+      "title": "AI Օգնական",
+      "button": "Ստանալ խորհուրդ",
+      "description": "Ստացեք անհատական առաջարկություն այս ավտոմեքենայի վերաբերյալ մեր AI-օգնականից:"
+    },
+    "card": {
+      "isNew": "Նոր",
+      "noMileage": "Առանց վազքուղու",
+      "mileageLabel": "Վազքուղի",
+      "colorLabel": "Գույն",
+      "tiresLabel": "Անվադողեր",
+      "wheelsLabel": "Անիվներ",
+      "transmission": {
+        "automatic": "Ավտոմատ",
+        "manual": "Մեխանիկական"
+      },
+      "drive": {
+        "awd": "Լրիվ քաշ",
+        "fwd": "Առջևի քաշ",
+        "rwd": "Հետևի քաշ"
+      }
+    },
+    "bodyType": {
+      "sedan": "Սեդան",
+      "hatchback": "Հեչբեք",
+      "wagon": "Ունիվերսալ",
+      "coupe": "Կուպե",
+      "suv": "Ամենագնաց",
+      "crossover": "Կրոսովեր",
+      "minivan": "Մինիվեն",
+      "pickup": "Պիկափ",
+      "convertible": "Կաբրիոլետ"
+    },
+    "create": {
+      "basicInfo": {
+        "title": "Հիմնական տեղեկություններ",
+        "carName": "Ավտոմեքենայի անուն",
+        "brand": "Ապրանքանիշ",
+        "selectBrand": "Ընտրեք ապրանքանիշ",
+        "model": "Մոդել",
+        "selectModel": "Ընտրեք մոդել",
+        "subModel": "Ենթամոդել",
+        "notSelected": "Չի ընտրված",
+        "description": "Նկարագրություն",
+        "descriptionPlaceholder": "Նկարագրեք ավտոմեքենայի վիճակը, կոմպլեկտացիան, առանձնահատկությունները..."
+      },
+      "engine": {
+        "engineType": "Շարժիչի տեսակ",
+        "notSelected": "Չի ընտրված",
+        "petrol": "Բենզին",
+        "diesel": "Դիզել",
+        "hybrid": "Հիբրիդ",
+        "electric": "Էլեկտրական",
+        "volume": "Ծավալ (լ)",
+        "power": "Հզորություն (ձ.ու.)",
+        "fuelCity": "Վառելիքի սպառում քաղաքում (լ/100կմ)",
+        "fuelHighway": "Վառելիքի սպառում մայրուղում (լ/100կմ)"
+      },
+      "page": {
+        "createError": "Ավտոմոբիլի ստեղծման սխալ",
+        "cars": "Ավտոմոբիլներ",
+        "addCar": "Ավելացնել ավտոմոբիլ",
+        "successMessage": "Ավտոմոբիլը հաջողությամբ ստեղծվել է: Վերահղում..."
+      },
+      "priceYear": {
+        "price": "Գին (AMD)",
+        "year": "Արտադրության տարի",
+        "mileage": "Վազքուղի (կմ)",
+        "isNew": "Նոր ավտոմոբիլ"
+      },
+      "appearance": {
+        "color": "Գույն",
+        "tireSize": "Անվադողի չափ",
+        "wheelSize": "Սկավառակի չափ"
+      },
+      "images": {
+        "delete": "Ջնջել",
+        "addImages": "Ավելացնել պատկերներ"
+      },
+      "actions": {
+        "cancel": "Չեղարկել",
+        "creating": "Ստեղծվում է...",
+        "create": "Ստեղծել ավտոմոբիլ"
+      }
+    },
+    "filters": {
+      "brands": "Ապրանքանիշեր",
+      "allBrands": "Բոլոր ապրանքանիշերը",
+      "body": "Թափք"
+    },
+    "statistics": {
+      "title": "Վիճակագրություն",
+      "averagePrice": "Շուկայի միջին գինը",
+      "cheaper": "Միջինից ցածր",
+      "moreExpensive": "Միջինից բարձր",
+      "totalCars": "Ընդհանուր ավտոմոբիլ"
+    }
+  },
+  "sidebar": {
+    "title": "Բնութագրեր և կարծիքներ",
+    "basicInfo": "Հիմնական տեղեկություններ",
+    "article": "Հոդված",
+    "category": "Կատեգորիա",
+    "subcategory": "Ենթակատեգորիա",
+    "specs": "Բնութագրեր",
+    "description": "Նկարագրություն",
+    "additionalInfo": "Լրացուցիչ տեղեկություններ",
+    "price": "Գին",
+    "dateAdded": "Ավելացման ամսաթիվ",
+    "reviews": "Կարծիքներ",
+    "noReviews": "Դեռ կարծիքներ չկան: Եղեք առաջինը:"
+  },
+  "stripe": {
+    "processing": "Մշակվում է...",
+    "pay": "Վճարել {{amount}} ֏",
+    "errorSubmit": "Ձևի ուղարկման սխալ",
+    "errorConfirm": "Վճարման հաստատման սխալ",
+    "errorNoIntentId": "Payment Intent ID-ն չի գտնվել",
+    "errorNotCompleted": "Վճարումն ավարտված չէ: Կարգավիճակ՝ {{status}}",
+    "errorProcessing": "Վճարման մշակման սխալ",
+    "errorGeneral": "Սխալ է տեղի ունեցել",
+    "orderDescription": "Վճարում {{amount}} ֏ գումարի պատվերի համար",
+    "errorCreate": "Վճարման ստեղծման սխալ",
+    "errorCreateFallback": "Չհաջողվեց ստեղծել վճարում: Խնդրում ենք կրկին փորձել:"
+  },
+  "commentCard": {
+    "buyer": "Գնորդ",
+    "pros": "Առավելություններ:",
+    "cons": "Թերություններ:",
+    "comment": "Մեկնաբանություն:",
+    "collapse": "ծալել",
+    "expand": "ավելին"
+  },
+  "companyPage": {
+    "loading": "Բեռնվում է...",
+    "storeAddresses": "Խանութների հասցեներ",
+    "catalogs": "Կատալոգներ",
+    "noCatalogs": "Այս ընկերությունն դեռ կատալոգներ չունի"
+  },
+  "sortFilter": {
+    "title": "Դասավորում",
+    "popularity": "Ըստ ժողովրդականության",
+    "priceAsc": "Սկզբում էժան",
+    "priceDesc": "Սկզբում թանկ",
+    "rating": "Ըստ վարկանիշի",
+    "newest": "Սկզբում նոր",
+    "discount": "Ըստ զեղչի չափի"
+  },
+  "createComment": {
+    "writeReview": "Գրել կարծիք",
+    "rateProduct": "Գնահատեք ապրանքը:",
+    "placeholder": "Կիսվեք ձեր կարծիքով ապրանքի մասին...",
+    "photo": "Լուսանկար",
+    "sending": "Ուղարկվում է...",
+    "submit": "Ուղարկել կարծիք",
+    "successMessage": "Կարծիքը հաջողությամբ ավելացվեց!",
+    "errorMessage": "Սխալ կարծիք ավելացնելիս"
+  },
+  "commentRating": {
+    "ratings": "Գնահատականներ",
+    "questions": "Հարցեր",
+    "ratingsCount": "գնահատական"
+  },
+  "searchInput": {
+    "categories": "Կատեգորիաներ",
+    "products": "Ապրանքներ",
+    "noResults": "Ոչինչ չի գտնվել",
+    "catalog": "Կատալոգ"
+  },
+  "subCategory": {
+    "count": "{{count}} ապրանք",
+    "allBrands": "Բոլոր ապրանքանիշները",
+    "priceFrom": "Սկսած",
+    "priceTo": "Մինչև",
+    "sortNewest": "Նորեր",
+    "sortPriceAsc": "Գին՝ աճման կարգով",
+    "sortPriceDesc": "Գին՝ նվազման կարգով",
+    "reset": "Զրոյացնել",
+    "empty": "Այս ենթակատեգորիայում դեռ ապրանքներ չկան"
+  },
+  "productPurchaseCard": {
+    "goodPrice": "Լավ գին",
+    "delivery": "Առաքում",
+    "addToCart": "Ավելացնել զամբյուղ",
+    "buyNow": "Գնել հիմա"
+  },
+  "categorySelector": {
+    "loadingCategories": "Կատեգորիաների բեռնում...",
+    "loadError": "Կատեգորիաների բեռնման սխալ: Խնդրում ենք կրկին փորձել ավելի ուշ:",
+    "noCategories": "Կատեգորիաներ չեն գտնվել",
+    "title": "Կատեգորիաներ"
+  },
+  "productReviews": {
+    "attachFile": "Կցել ֆայл"
+  },
+  "aiChat": {
+    "you": "Դուք",
+    "placeholder": "Հարց տվեք ավտոմոբիլի մասին...",
+    "send": "Ուղարկել"
+  },
+  "shareButton": {
+    "linkCopied": "Հղումը պատճենվել է",
+    "copyError": "Հղումը չհաջողվեց պատճենել",
+    "title": "Կիսվել",
+    "copyLink": "Պատճենել հղումը"
+  },
+  "googleMap": {
+    "searchPlaceholder": "Փնտրել վայրեր և հասցեներ",
+    "clearSearch": "Մաքրել որոնումը",
+    "find": "Գտնել",
+    "goToCatalogs": "Անցնել կատալոգներ",
+    "addPickupPoint": "Ավելացնել ստացման կետ?",
+    "yes": "Այո"
+  },
+  "searchMobile": {
+    "placeholder": "Ապրանքների որոնում..."
+  },
+  "leftMenu": {
+    "closeMenu": "Փակել մենյուն"
+  },
+  "carsBreadcrumbs": {
+    "cars": "Ավտոմոբիլներ"
+  },
+  "productSizeSelector": {
+    "title": "Չափերի աղյուսակ"
+  },
+  "filterMenu": {
+    "closeFilters": "Փակել ֆիլտրերը"
+  },
+  "tabs": {
+    "products": "Ապրանքներ"
+  },
+  "companyCatalog": {
+    "viewProduct": "Տեսնել ապրանքը"
+  },
+  "carGallery": {
+    "noImages": "Պատկերներ չկան"
+  },
+  "brandChips": {
+    "all": "Բոլորը"
+  },
+  "carSimilar": {
+    "title": "Նմանատիպ ավտոմոբիլներ"
+  },
+  "carAiDialog": {
+    "title": "AI-խորհրդատու"
+  },
+  "carsGrid": {
+    "notFound": "Ավտոմոբիլներ չեն գտնվել"
+  },
+  "favoriteItems": {
+    "catalog": "Կատալոգ"
+  },
+  "carInfo": {
+    "new": "Նոր"
+  },
+  "companyAddressItem": {
+    "company": "Ընկերություն"
+  },
+  "companyAddress": {
+    "coordinates": "Կոորդինատներ"
+  },
+  "modelChips": {
+    "models": "Մոդելներ"
+  },
+  "about": {
+    "hero": {
+      "title": "Մեր մասին",
+      "subtitle": "Մենք մասնագետների թիմ ենք, ովքեր ստեղծում են լավագույն առցանց գնումների փորձը մեր հաճախորդների համար։"
+    },
+    "values": {
+      "mission": { "title": "Մեր առաքելությունը", "desc": "Ապահովել յուրաքանչյուր հաճախորդի մատչելիությունը որակյալ ապրանքների՝ արդար գներով։" },
+      "vision": { "title": "Մեր տեսլականը", "desc": "Դառնալ Հայաստանի և տարածաշրջանի առաջատար էլեկտրոնային առևտրի հարթակ։" },
+      "quality": { "title": "Որակ", "desc": "Մենք ուշադիր ընտրում ենք յուրաքանչյուր ապրանք՝ ձեզ ապահովելու լավագույն որակ։" }
+    },
+    "stats": {
+      "products": "ապրանք",
+      "customers": "գոհ հաճախորդ",
+      "years": "տարի շուկայում"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Կապ մեզ հետ",
+      "subtitle": "Հարցեր ունե՞ք։ Մենք միշտ ուրախ ենք օգնել ձեզ։"
+    },
+    "info": {
+      "address": { "label": "Հասցե", "value": "Երևան, Հայաuтան" },
+      "phone": { "label": "Հեռախոս" },
+      "email": { "label": "Էլ. փոստ" }
+    },
+    "form": {
+      "name": "Անուն",
+      "namePlaceholder": "Մուտքագրեք ձեր անունը",
+      "email": "Էլ. փոստ",
+      "emailPlaceholder": "Մուտքագրեք ձեր էլ. փոստը",
+      "message": "Հաղորդագրություն",
+      "messagePlaceholder": "Գրեք ձեր հաղորդագրությունը...",
+      "submit": "Ուղարկել",
+      "success": "Ձեր հաղորդագրությունն ուղարկված է։ Շուտով կապ կհաստատենք ձեզ հետ։"
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Բլոգ",
+      "subtitle": "Նորություններ, խորհուրդներ և ապրանքների ակնարկներ մեր թիմից։"
+    },
+    "readMore": "Կարդալ",
+    "posts": {
+      "post1": { "tag": "Նորություններ", "title": "2025 թ. լավագույն 10 սմարթֆոնները", "excerpt": "Հավաքել ենք այս տարվա լավագույն սմարթֆոնները ըստ գին-որակ հարաբերության։" },
+      "post2": { "tag": "Խորհուրդներ", "title": "Ինչպես ընտրել աշխատանքային նոութբուք", "excerpt": "Վերլուծում ենք աշխատանքային նոութբուք ընտրելու հիմնական բնութագրերը։" },
+      "post3": { "tag": "Ակնարկ", "title": "Լավագույն ականջակալները սպորտի համար", "excerpt": "Ակտիվ ապրելակերպի համար հանրաճանաչ անլար ականջակալների ակնարկ։" }
+    }
   }
 }

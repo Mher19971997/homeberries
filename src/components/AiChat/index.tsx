@@ -6,12 +6,14 @@ import {
     Typography,
     Paper,
 } from '@mui/material';
+import { useTranslation } from 'next-i18next';
 
 interface Props {
     car: any;
 }
 
 const AiChat = ({ car }: Props) => {
+    const { t } = useTranslation('common');
     const [messages, setMessages] = useState<
         { role: 'user' | 'ai'; text: string }[]
     >([]);
@@ -48,7 +50,7 @@ const AiChat = ({ car }: Props) => {
                         sx={{ mb: 1 }}
                     >
                         <strong>
-                            {msg.role === 'user' ? 'Вы' : 'AI'}:
+                            {msg.role === 'user' ? t('aiChat.you') : 'AI'}:
                         </strong>{' '}
                         {msg.text}
                     </Typography>
@@ -61,10 +63,10 @@ const AiChat = ({ car }: Props) => {
                     size="small"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Задайте вопрос об автомобиле..."
+                    placeholder={t('aiChat.placeholder')}
                 />
                 <Button variant="contained" onClick={handleSend}>
-                    Отправить
+                    {t('aiChat.send')}
                 </Button>
             </Box>
         </Box>

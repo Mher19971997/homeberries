@@ -1,8 +1,10 @@
 import { Box, Typography, Chip } from '@mui/material';
 import { useState } from 'react';
 import styles from '@homeberris/features/cars/styles/carDetail.module.css';
+import { useTranslation } from 'next-i18next';
 
 export const CarInfo = ({ car }: any) => {
+  const { t } = useTranslation('common');
   const [clicked, setClicked] = useState(false);
 
   const handleClick = () => {
@@ -25,7 +27,7 @@ export const CarInfo = ({ car }: any) => {
         </Typography>
 
         {car.is_new && (
-          <Chip label="Новый" color="primary" className={styles.chip} />
+          <Chip label={t('carInfo.new')} color="primary" className={styles.chip} />
         )}
       </Box>
 

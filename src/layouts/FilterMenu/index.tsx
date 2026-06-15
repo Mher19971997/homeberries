@@ -3,6 +3,7 @@ import styles from '@homeberris/layouts/FilterMenu/index.module.css';
 import { Box, Button, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import CategorySelector from '@homeberris/components/CategorySelector';
+import { useTranslation } from 'next-i18next';
 
 interface FilterMenuProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
   closeMenu,
   openRightMenu
 }) => {
+  const { t } = useTranslation('common');
   return (
     <Box className={(isOpen && styles.mainMenu) || ''}>
       <Box
@@ -24,13 +26,13 @@ const FilterMenu: React.FC<FilterMenuProps> = ({
         <Box className={styles.menuContent}>
           <Box className={styles.contentHeader}>
             <Typography className={styles.title} variant="h6">
-              Фильтры
+              {t('sidebarFilters.title')}
             </Typography>
             <IconButton
               className={isOpen ? styles.closeBtn : styles.closeBtnClose}
               onClick={closeMenu}
               size="small"
-              aria-label="Закрыть фильтры"
+              aria-label={t('filterMenu.closeFilters')}
             >
               <CloseIcon />
             </IconButton>

@@ -84,16 +84,6 @@
       "title": "Избранное"
     }
   },
-  "catalogFavorites": {
-    "home": "Главная",
-    "category": "Категория",
-    "products": "товаров",
-    "allFilters": "Все фильтры",
-    "noProductsTitle": "В этой подкатегории пока нет товаров",
-    "noProductsDesc": "Мы работаем над пополнением ассортимента. Загляните позже!",
-    "backToCategory": "Вернуться в категорию \"{{name}}\"",
-    "categories": "Категории"
-  },
   "basket": {
     "addedToBasket": "Добавлено в корзину",
     "view": "Перейти →",
@@ -205,6 +195,7 @@
     "from": "От",
     "to": "До",
     "apply": "Применить",
+    "reset": "Сбросить",
     "brand": "Бренд",
     "search": "Поиск",
     "noBrands": "Бренды отсутствуют",
@@ -342,7 +333,26 @@
     "notViewed": "Вы ещё не просматривали товары",
     "accountInfo": "Информация об аккаунте",
     "email": "Email",
-    "role": "Роль"
+    "role": "Роль",
+    "user": "Пользователь",
+    "discount": "Скидка",
+    "upTo": "До",
+    "paymentOnDelivery": "Оплата при доставке",
+    "menu": {
+      "purchases": "Покупки",
+      "favorites": "Избранное",
+      "brands": "Бренды",
+      "orders": "Заказы",
+      "certificates": "Сертификаты",
+      "wallet": "Кошелёк",
+      "paymentMethods": "Способы оплаты"
+    },
+    "chat": {
+      "title": "Чат",
+      "description": "Обратитесь в поддержку",
+      "reviews": "Отзывы",
+      "business": "Бизнес"
+    }
   },
   "delivery": {
     "pageTitle": "Мои заказы",
@@ -394,7 +404,12 @@
       "status": "Статус",
       "description": "Описание",
       "paid": "Оплачено"
-    }
+    },
+    "recentOrders": {
+      "title": "Показаны только что купленные товары ({{count}})",
+      "text": "Эти товары были куплены совсем недавно."
+    },
+    "paymentError": "Ошибка оплаты"
   },
   "auth": {
     "login": {
@@ -424,7 +439,9 @@
       "passwordMismatch": "Пароли не совпадают",
       "passwordLength": "Пароль минимум 8 символов",
       "invalid": "Неверный email или пароль",
-      "registerError": "Ошибка при регистрации"
+      "registerError": "Ошибка при регистрации",
+      "serverError": "Неверный ответ сервера авторизации",
+      "loginError": "Ошибка при входе в систему"
     }
   },
   "notFound": {
@@ -441,5 +458,388 @@
   },
   "similarProducts": {
     "title": "Смотрите также"
+  },
+  "product3d": {
+    "title": "3D Просмотр товара",
+    "initLoading": "Инициализация 3D просмотра...",
+    "primitives": "Примитивы",
+    "model": "3D Модель",
+    "modelError": "Не удалось загрузить 3D модель. Используются примитивы.",
+    "loadingLocal": "Загружается локальная 3D модель с анимацией",
+    "loadingRemote": "Загружается реалистичная 3D модель из интернета",
+    "initWebGL": "Инициализация WebGL...",
+    "loadingScene": "Загрузка 3D сцены...",
+    "creatingModel": "Создание 3D модели...",
+    "finalizing": "Финальная обработка...",
+    "refreshHint": "Если загрузка зависла, обновите страницу",
+    "controls": {
+      "color": "Цвет",
+      "size": "Размер",
+      "shape": "Форма"
+    },
+    "shapes": {
+      "box": "Куб",
+      "sphere": "Сфера",
+      "cylinder": "Цилиндр"
+    }
+  },
+  "cars": {
+    "units": {
+      "year": "г.",
+      "km": "км",
+      "litre": "л",
+      "hp": "л.с.",
+      "per100km": "л/100 км"
+    },
+    "specs": {
+      "title": "Характеристики",
+      "year": "Год выпуска",
+      "mileage": "Пробег",
+      "color": "Цвет",
+      "engineType": "Тип двигателя",
+      "engineVolume": "Объем двигателя",
+      "power": "Мощность",
+      "transmission": "КПП",
+      "drive": "Привод",
+      "tireSize": "Размер шин",
+      "wheelSize": "Диски",
+      "fuelCity": "Расход в городе",
+      "fuelHighway": "Расход по трассе"
+    },
+    "equipment": {
+      "sunroof": "Люк",
+      "panoramicRoof": "Панорамная крыша",
+      "heatedSeats": "Подогрев сидений",
+      "navigation": "Навигация",
+      "premiumAudio": "Премиальная аудиосистема",
+      "turbo": "Турбо",
+      "parkingSensors": "Парктроники",
+      "title": "Комплектация"
+    },
+    "create": {
+      "basicInfo": {
+        "title": "Основная информация",
+        "carName": "Название автомобиля",
+        "brand": "Бренд",
+        "selectBrand": "Выберите бренд",
+        "model": "Модель",
+        "selectModel": "Выберите модель",
+        "subModel": "Подмодель",
+        "notSelected": "Не выбрано",
+        "description": "Описание",
+        "descriptionPlaceholder": "Опишите состояние автомобиля, комплектацию, особенности..."
+      },
+      "engine": {
+        "engineType": "Тип двигателя",
+        "notSelected": "Не выбрано",
+        "petrol": "Бензин",
+        "diesel": "Дизель",
+        "hybrid": "Гибрид",
+        "electric": "Электрический",
+        "volume": "Объем (л)",
+        "power": "Мощность (л.с.)",
+        "fuelCity": "Расход в городе (л/100км)",
+        "fuelHighway": "Расход по трассе (л/100км)"
+      },
+      "page": {
+        "createError": "Ошибка при создании автомобиля",
+        "cars": "Автомобили",
+        "addCar": "Добавить автомобиль",
+        "successMessage": "Автомобиль успешно создан! Перенаправление..."
+      },
+      "priceYear": {
+        "price": "Цена (֏)",
+        "year": "Год выпуска",
+        "mileage": "Пробег (км)",
+        "isNew": "Новый автомобиль"
+      },
+      "appearance": {
+        "color": "Цвет",
+        "tireSize": "Размер шин",
+        "wheelSize": "Размер дисков"
+      },
+      "images": {
+        "delete": "Удалить",
+        "addImages": "Добавить изображения"
+      },
+      "actions": {
+        "cancel": "Отмена",
+        "creating": "Создание...",
+        "create": "Создать автомобиль"
+      }
+    },
+    "filters": {
+      "brands": "Бренды",
+      "allBrands": "Все бренды",
+      "body": "Кузов"
+    },
+    "statistics": {
+      "title": "Статистика по",
+      "averagePrice": "Средняя цена на рынке",
+      "cheaper": "Дешевле среднего",
+      "moreExpensive": "Дороже среднего",
+      "totalCars": "Всего автомобилей"
+    },
+    "aiHelper": {
+      "title": "AI Помощник",
+      "button": "Получить совет",
+      "description": "Получите персональную рекомендацию по этому автомобилю от нашего AI-помощника. Узнайте о надёжности, стоимости обслуживания, популярности модели и многом другом."
+    },
+    "card": {
+      "isNew": "Новый",
+      "noMileage": "Без пробега",
+      "mileageLabel": "Пробег",
+      "colorLabel": "Цвет",
+      "tiresLabel": "Шины",
+      "wheelsLabel": "Диски",
+      "transmission": {
+        "automatic": "Автомат",
+        "manual": "Механика"
+      },
+      "drive": {
+        "awd": "Полный привод",
+        "fwd": "Передний привод",
+        "rwd": "Задний привод"
+      }
+    },
+    "bodyType": {
+      "sedan": "Седан",
+      "hatchback": "Хэтчбек",
+      "wagon": "Универсал",
+      "coupe": "Купе",
+      "suv": "Внедорожник",
+      "crossover": "Кроссовер",
+      "minivan": "Минивэн",
+      "pickup": "Пикап",
+      "convertible": "Кабриолет"
+    }
+  },
+  "sidebar": {
+    "title": "Характеристики и отзывы",
+    "basicInfo": "Основная информация",
+    "article": "Артикул",
+    "category": "Категория",
+    "subcategory": "Подкатегория",
+    "specs": "Характеристики",
+    "description": "Описание",
+    "additionalInfo": "Дополнительная информация",
+    "price": "Цена",
+    "dateAdded": "Дата добавления",
+    "reviews": "Отзывы",
+    "noReviews": "Пока нет отзывов. Будьте первым!"
+  },
+  "stripe": {
+    "processing": "Обработка...",
+    "pay": "Оплатить {{amount}} ֏",
+    "errorSubmit": "Ошибка при отправке формы",
+    "errorConfirm": "Ошибка при подтверждении платежа",
+    "errorNoIntentId": "Payment Intent ID не найден",
+    "errorNotCompleted": "Платеж не завершен. Статус: {{status}}",
+    "errorProcessing": "Ошибка при обработке платежа",
+    "errorGeneral": "Произошла ошибка",
+    "orderDescription": "Оплата заказа на сумму {{amount}} ֏",
+    "errorCreate": "Ошибка при создании платежа",
+    "errorCreateFallback": "Не удалось создать платеж. Попробуйте еще раз."
+  },
+  "commentCard": {
+    "buyer": "Покупатель",
+    "pros": "Достоинства:",
+    "cons": "Недостатки:",
+    "comment": "Комментарий:",
+    "collapse": "свернуть",
+    "expand": "ещё"
+  },
+  "companyPage": {
+    "loading": "Загрузка...",
+    "storeAddresses": "Адреса магазинов",
+    "catalogs": "Каталоги",
+    "noCatalogs": "У этой компании пока нет каталогов"
+  },
+  "sortFilter": {
+    "title": "Сортировка",
+    "popularity": "По популярности",
+    "priceAsc": "Сначала дешевые",
+    "priceDesc": "Сначала дорогие",
+    "rating": "По рейтингу",
+    "newest": "Сначала новые",
+    "discount": "По размеру скидки"
+  },
+  "createComment": {
+    "writeReview": "Написать отзыв",
+    "rateProduct": "Оцените товар:",
+    "placeholder": "Поделитесь своим мнением о товаре...",
+    "photo": "Фото",
+    "sending": "Отправка...",
+    "submit": "Отправить отзыв",
+    "successMessage": "Отзыв успешно добавлен!",
+    "errorMessage": "Ошибка при добавлении отзыва"
+  },
+  "commentRating": {
+    "ratings": "Оценки",
+    "questions": "Вопросы",
+    "ratingsCount": "оценок"
+  },
+  "searchInput": {
+    "categories": "Категории",
+    "products": "Товары",
+    "noResults": "Ничего не найдено",
+    "catalog": "Каталог"
+  },
+  "subCategory": {
+    "count": "{{count}} товаров",
+    "allBrands": "Все бренды",
+    "priceFrom": "От",
+    "priceTo": "До",
+    "sortNewest": "Новинки",
+    "sortPriceAsc": "Цена: по возрастанию",
+    "sortPriceDesc": "Цена: по убыванию",
+    "reset": "Сбросить",
+    "empty": "В этой подкатегории пока нет товаров"
+  },
+  "productPurchaseCard": {
+    "goodPrice": "Хорошая цена",
+    "delivery": "Доставка",
+    "addToCart": "В корзину",
+    "buyNow": "Купить сейчас"
+  },
+  "categorySelector": {
+    "loadingCategories": "Загрузка категорий...",
+    "loadError": "Ошибка загрузки категорий. Пожалуйста, попробуйте позже.",
+    "noCategories": "Категории не найдены",
+    "title": "Категории"
+  },
+  "productReviews": {
+    "attachFile": "Прикрепить файл"
+  },
+  "aiChat": {
+    "you": "Вы",
+    "placeholder": "Задайте вопрос об автомобиле...",
+    "send": "Отправить"
+  },
+  "shareButton": {
+    "linkCopied": "Ссылка скопирована в буфер обмена",
+    "copyError": "Не удалось скопировать ссылку",
+    "title": "Поделиться",
+    "copyLink": "Скопировать ссылку"
+  },
+  "googleMap": {
+    "searchPlaceholder": "Поиск мест и адресов",
+    "clearSearch": "Очистить поиск",
+    "find": "Найти",
+    "goToCatalogs": "Перейти к каталогам",
+    "addPickupPoint": "Добавить пункт выдачи?",
+    "yes": "Да"
+  },
+  "searchMobile": {
+    "placeholder": "Поиск товаров..."
+  },
+  "catalogFavorites": {
+    "home": "Главная",
+    "category": "Категория",
+    "products": "товаров",
+    "allFilters": "Все фильтры",
+    "noProductsTitle": "В этой подкатегории пока нет товаров",
+    "noProductsDesc": "Мы работаем над пополнением ассортимента. Загляните позже!",
+    "backToCategory": "Вернуться в категорию \"{{name}}\"",
+    "categories": "Категории",
+    "emptyFavoritesTitle": "В избранном пока нет товаров",
+    "emptyFavoritesDesc": "Добавляйте понравившиеся товары, чтобы не потерять их"
+  },
+  "leftMenu": {
+    "closeMenu": "Закрыть меню"
+  },
+  "carsBreadcrumbs": {
+    "cars": "Автомобили"
+  },
+  "productSizeSelector": {
+    "title": "Таблица размеров"
+  },
+  "filterMenu": {
+    "closeFilters": "Закрыть фильтры"
+  },
+  "tabs": {
+    "products": "Товары"
+  },
+  "companyCatalog": {
+    "viewProduct": "Посмотреть товар"
+  },
+  "carGallery": {
+    "noImages": "Изображения отсутствуют"
+  },
+  "brandChips": {
+    "all": "Все"
+  },
+  "carSimilar": {
+    "title": "Похожие автомобили"
+  },
+  "carAiDialog": {
+    "title": "AI-консультант по"
+  },
+  "carsGrid": {
+    "notFound": "Автомобили не найдены"
+  },
+  "favoriteItems": {
+    "catalog": "Каталог"
+  },
+  "carInfo": {
+    "new": "Новый"
+  },
+  "companyAddressItem": {
+    "company": "Компания"
+  },
+  "companyAddress": {
+    "coordinates": "Координаты"
+  },
+  "modelChips": {
+    "models": "Модели"
+  },
+  "about": {
+    "hero": {
+      "title": "О нас",
+      "subtitle": "Мы — команда профессионалов, создающих лучший опыт онлайн-шопинга для наших клиентов."
+    },
+    "values": {
+      "mission": { "title": "Наша миссия", "desc": "Предоставить каждому покупателю доступ к качественным товарам по честным ценам." },
+      "vision": { "title": "Наш взгляд", "desc": "Стать ведущей платформой электронной коммерции в Армении и регионе." },
+      "quality": { "title": "Качество", "desc": "Мы тщательно отбираем каждый товар, чтобы гарантировать вам наилучшее качество." }
+    },
+    "stats": {
+      "products": "товаров",
+      "customers": "довольных клиентов",
+      "years": "лет на рынке"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Свяжитесь с нами",
+      "subtitle": "Есть вопросы? Мы всегда рады помочь вам."
+    },
+    "info": {
+      "address": { "label": "Адрес", "value": "Ереван, Армения" },
+      "phone": { "label": "Телефон" },
+      "email": { "label": "Email" }
+    },
+    "form": {
+      "name": "Имя",
+      "namePlaceholder": "Введите ваше имя",
+      "email": "Email",
+      "emailPlaceholder": "Введите ваш email",
+      "message": "Сообщение",
+      "messagePlaceholder": "Напишите ваше сообщение...",
+      "submit": "Отправить",
+      "success": "Ваше сообщение отправлено! Мы свяжемся с вами в ближайшее время."
+    }
+  },
+  "blog": {
+    "hero": {
+      "title": "Блог",
+      "subtitle": "Новости, советы и обзоры товаров от нашей команды."
+    },
+    "readMore": "Читать",
+    "posts": {
+      "post1": { "tag": "Новости", "title": "Топ-10 смартфонов 2025 года", "excerpt": "Собрали лучшие смартфоны этого года по соотношению цена-качество." },
+      "post2": { "tag": "Советы", "title": "Как выбрать ноутбук для работы", "excerpt": "Разбираем ключевые характеристики при выборе рабочего ноутбука." },
+      "post3": { "tag": "Обзор", "title": "Лучшие наушники для спорта", "excerpt": "Обзор популярных беспроводных наушников для активного образа жизни." }
+    }
   }
 }

@@ -17,6 +17,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getCategories, getSubCategories } from '@homeberris/http/categoryApi';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import styles from './index.module.css';
+import { useTranslation } from 'next-i18next';
 
 const getLoc = (val: any, locale = 'ru'): string => {
   if (!val) return '';
@@ -37,6 +38,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
   selectedCategoryUuid,
   selectedSubCategoryUuid
 }) => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [openCategories, setOpenCategories] = useState<{ [key: string]: boolean }>({});
   const [selectedCategory, setSelectedCategory] = useState<string | null>(
@@ -98,7 +100,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
       <Box display="flex" justifyContent="center" alignItems="center" p={3}>
         <CircularProgress size={24} />
         <Typography variant="body2" sx={{ ml: 2 }}>
-          Загрузка категорий...
+          {t('categorySelector.loadingCategories')}
         </Typography>
       </Box>
     );
@@ -108,7 +110,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
     return (
       <Box p={2}>
         <Typography color="error" variant="body2">
-          Ошибка загрузки категорий. Пожалуйста, попробуйте позже.
+          {t('categorySelector.loadError')}
         </Typography>
       </Box>
     );
@@ -118,7 +120,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
     return (
       <Box p={2}>
         <Typography variant="body2" color="text.secondary">
-          Категории не найдены
+          {t('categorySelector.noCategories')}
         </Typography>
       </Box>
     );
@@ -127,7 +129,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
   return (
     <Box className={styles.categorySelector}>
       <Typography variant="h6" className={styles.title} gutterBottom>
-        Категории
+        {t('categorySelector.title')}
       </Typography>
       <Divider sx={{ mb: 1 }} />
       <List component="nav" className={styles.categoryList}>
@@ -169,7 +171,7 @@ const CategorySelector: React.FC<CategorySelectorProps> = ({
                       <ListItem>
                         <CircularProgress size={20} />
                         <Typography variant="body2" sx={{ ml: 1 }}>
-                          Загрузка...
+                          {t('catalog.loading')}
                         </Typography>
                       </ListItem>
                     ) : (

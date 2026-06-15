@@ -164,7 +164,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
             <>
               <Box className={styles.sectionHeader}>
                 <FolderIcon className={styles.sectionIcon} />
-                <Typography className={styles.sectionTitle}>Категории</Typography>
+                <Typography className={styles.sectionTitle}>{t('searchInput.categories')}</Typography>
               </Box>
               {filterCategories.data.map((category: any, index: number) => (
                 <SarchAutoCompliteItem
@@ -188,7 +188,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
               {(!filterCategories?.data || filterCategories.data.length === 0) && (
                 <Box className={styles.sectionHeader}>
                   <InventoryIcon className={styles.sectionIcon} />
-                  <Typography className={styles.sectionTitle}>Товары</Typography>
+                  <Typography className={styles.sectionTitle}>{t('searchInput.products')}</Typography>
                 </Box>
               )}
               {(filterCatalogs as any).data.map((catalog: any, index: number) => (
@@ -196,7 +196,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
                   key={`catalog-${index}`}
                   name={catalog.name}
                   uuid={catalog.uuid}
-                  categoryName={catalog.category?.name || 'Каталог'}
+                  categoryName={catalog.category?.name || t('searchInput.catalog')}
                   subCategoryName={catalog.subCategorie?.name}
                   type="catalog"
                   checkSearch={checkSearch}
@@ -232,7 +232,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           {!hasResults && debaunceSearch.length > 0 && (
             <Box className={styles.noResults}>
               <Typography className={styles.noResultsText}>
-                Ничего не найдено
+                {t('searchInput.noResults')}
               </Typography>
             </Box>
           )}

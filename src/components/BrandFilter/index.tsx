@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import BasicPopover from '../BasicPopover';
 import styles from './index.module.css';
 import { BrandItem } from '@homeberris/types/brand';
+import { useTranslation } from 'next-i18next';
 
 interface BrandFilterProps {
   brands: BrandItem[];
@@ -12,12 +13,13 @@ interface BrandFilterProps {
 }
 
 const BrandFilter: React.FC<BrandFilterProps> = ({ brands, selectedBrands, onChange }) => {
+  const { t } = useTranslation('common');
   const hasFilter = selectedBrands.length > 0;
-  const title = hasFilter 
+  const title = hasFilter
     ? selectedBrands.length === 1
-      ? brands.find((b: BrandItem) => b.uuid === selectedBrands[0])?.name || 'Бренды'
-      : `Бренды (${selectedBrands.length})`
-    : 'Бренды';
+      ? brands.find((b: BrandItem) => b.uuid === selectedBrands[0])?.name || t('sidebarFilters.brand')
+      : `${t('sidebarFilters.brand')} (${selectedBrands.length})`
+    : t('sidebarFilters.brand');
 
   const handleToggle = (brandUuid: string) => {
     const newSelected = selectedBrands.includes(brandUuid)
@@ -36,7 +38,7 @@ const BrandFilter: React.FC<BrandFilterProps> = ({ brands, selectedBrands, onCha
       active={hasFilter}
     >
       <Box className={styles.popoverContent}>
-        <Typography className={styles.popoverTitle}>Бренды</Typography>
+        <Typography className={styles.popoverTitle}>{t('sidebarFilters.brand')}</Typography>
         <Divider sx={{ my: 1 }} />
         <List className={styles.optionsList}>
           {brands.map((brand: BrandItem) => {

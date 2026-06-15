@@ -83,9 +83,9 @@ function CommentInput({ isAuth, rating, setRating, text, setText, image, setImag
             ))}
           </div>
           {/* Image */}
-          <span onClick={() => fileRef.current?.click()} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: "#868695" }} title="Прикрепить файл">
+          <span onClick={() => fileRef.current?.click()} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: 4, color: "#868695" }} title={t('productReviews.attachFile')}>
             <Paperclip size={16} strokeWidth={1.8} />
-            {!image && <span style={{ fontSize: 12 }}>Прикрепить файл</span>}
+            {!image && <span style={{ fontSize: 12 }}>{t('productReviews.attachFile')}</span>}
           </span>
           <input ref={fileRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => setImage(e.target.files?.[0] || null)} />
           {image && <span style={{ fontSize: 12, color: "#868695" }}>{image.name}</span>}

@@ -7,6 +7,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import { getBodyTypeLabel } from '@homeberris/features/cars/utils/bodyTypeLabel';
+import { useTranslation } from 'next-i18next';
 
 export const CarsFiltersDesktop = ({
   carMenu,
@@ -15,6 +16,7 @@ export const CarsFiltersDesktop = ({
   subModelId,
   router,
 }: any) => {
+  const { t } = useTranslation('common');
   return (
     <Grid item md={3} sx={{ display: { xs: 'none', md: 'block' } }}>
       <Paper
@@ -27,7 +29,7 @@ export const CarsFiltersDesktop = ({
           variant="h6"
           sx={{ mb: 2, fontWeight: 600 }}
         >
-          Бренды
+          {t('cars.filters.brands')}
         </Typography>
 
         <List dense>
@@ -38,7 +40,7 @@ export const CarsFiltersDesktop = ({
             onClick={() => router.push('/cars')}
             sx={{ borderRadius: 2 }}
           >
-            <ListItemText primary="Все бренды" />
+            <ListItemText primary={t('cars.filters.allBrands')} />
           </ListItemButton>
 
           {carMenu?.map((brand: any) => (
@@ -106,7 +108,7 @@ export const CarsFiltersDesktop = ({
                             primary={sub.name}
                             secondary={
                               sub.body_type
-                                ? `Кузов: ${getBodyTypeLabel(
+                                ? `${t('cars.filters.body')}: ${getBodyTypeLabel(
                                   sub.body_type
                                 )}`
                                 : undefined
