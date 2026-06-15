@@ -1,3 +1,23 @@
 'use client';
 
-export { default } from '@homeberris/pages/ai-assistant/index';
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+import AiAssistant from '@homeberris/components/AiAssistant';
+import styles from '@homeberris/pages/ai-assistant/index.module.css';
+import { useTranslation } from 'react-i18next';
+
+export default function AiAssistantPage() {
+  const { t } = useTranslation('common');
+
+  return (
+    <Box className={styles.container}>
+      <Typography variant="h4" fontWeight="bold" sx={{ mb: 4, textAlign: 'center' }}>
+        {t('aiAssistant.title')}
+      </Typography>
+
+      <Box sx={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <AiAssistant />
+      </Box>
+    </Box>
+  );
+}

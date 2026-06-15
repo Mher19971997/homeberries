@@ -1,3 +1,7 @@
 'use client';
 
-export { default } from '@homeberris/pages/order/index';
+import CheckoutFlow from "@homeberris/components/CheckoutFlow";
+
+export default function OrderPage() {
+  return <CheckoutFlow />;
+}

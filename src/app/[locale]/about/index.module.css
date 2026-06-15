@@ -1,0 +1,111 @@
+.page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 80px;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 44px 0 0;
+}
+
+.breadcrumbLink {
+  text-decoration: none;
+  font-size: 14px;
+  color: #868695;
+  font-weight: 500;
+}
+
+.breadcrumbLink:hover { text-decoration: underline; }
+
+.sep { color: #868695; font-size: 14px; }
+
+.breadcrumbActive {
+  font-size: 14px;
+  color: #1a1a2e;
+  font-weight: 600;
+}
+
+.hero {
+  text-align: center;
+  padding: 64px 16px 48px;
+}
+
+.heroTitle {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 16px;
+}
+
+.heroSubtitle {
+  font-size: 18px;
+  color: #868695;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 0 16px 64px;
+}
+
+.valueCard {
+  background: #fff;
+  border: 1px solid #f0f0f5;
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  transition: box-shadow 0.2s;
+}
+
+.valueCard:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); }
+
+.valueIcon { font-size: 40px; display: block; margin-bottom: 16px; }
+
+.valueTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+}
+
+.valueDesc {
+  font-size: 15px;
+  color: #868695;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 64px;
+  flex-wrap: wrap;
+  background: #1a1a2e;
+  border-radius: 20px;
+  padding: 48px 32px;
+  margin: 0 16px;
+}
+
+.statItem { text-align: center; }
+
+.statNumber {
+  display: block;
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+}
