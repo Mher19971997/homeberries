@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { ChevronSepIcon } from "@homeberris/assets/icons/catalog";
+import Breadcrumb from "@homeberris/components/Breadcrumb";
 import {
   ScreenSizeIcon,
   CpuIcon,
@@ -286,33 +287,13 @@ export default function ProductPageContent({
   return (
     <div className={styles.body}>
       <div className={styles.contantHeader}>
-        <nav aria-label="breadcrumb" className={styles.breadcrumb}>
-          <Link href="/" className={styles.breadcrumbLink}>
-            {t('productPageContent.breadcrumb.home')}
-          </Link>
-          <ChevronSepIcon className={styles.breadcrumbSep} />
-          <Link href="/catalog" className={styles.breadcrumbLink}>
-            {t('productPageContent.breadcrumb.catalog')}
-          </Link>
-          <ChevronSepIcon className={styles.breadcrumbSep} />
-          <Link href={categoryPath} className={styles.breadcrumbLink}>
-            {finalCategoryName}
-          </Link>
-          {finalSubCategoryName && (
-            <>
-              <ChevronSepIcon className={styles.breadcrumbSep} />
-              <Link href={subCategoryPath} className={styles.breadcrumbLink}>
-                {finalSubCategoryName}
-              </Link>
-            </>
-          )}
-          <ChevronSepIcon className={styles.breadcrumbSep} />
-          <span
-            className={`${styles.breadcrumbLink} ${styles.breadcrumbLinkActive}`}
-          >
-            {getLoc(catalog?.name, locale)}
-          </span>
-        </nav>
+        <Breadcrumb items={[
+          { label: t('productPageContent.breadcrumb.home'), href: '/' },
+          { label: t('productPageContent.breadcrumb.catalog'), href: '/catalog' },
+          { label: finalCategoryName, href: categoryPath },
+          ...(finalSubCategoryName ? [{ label: finalSubCategoryName, href: subCategoryPath }] : []),
+          { label: getLoc(catalog?.name, locale) },
+        ]} />
       </div>
 
       {/* Основной контент товара */}

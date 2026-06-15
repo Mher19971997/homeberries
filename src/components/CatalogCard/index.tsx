@@ -16,6 +16,7 @@ import { HeartFilledIcon, HeartIcon } from '@homeberris/assets/icons/catalog';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'next/navigation';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
+import AuthModal from '@homeberris/components/AuthModal';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -35,6 +36,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   const locale = (params?.locale as string) ?? 'ru';
   const queryClient = useQueryClient();
   const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
   const [cookies] = useCookies(['token']);
   const { isFavorite, toggleFavorite } = useFavorites();
   const isAuth = checkToken();
@@ -54,14 +56,16 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     if (isAuth && cookies.token) {
       mutate(catalog.uuid);
     } else {
-      addToBasket(catalog, 1)
-        .then(() => setOpenSuccess(true))
-        .catch((err) => console.error(err));
+      setShowAuthModal(true);
     }
   };
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (!isAuth) {
+      setShowAuthModal(true);
+      return;
+    }
     toggleFavorite(catalog);
   };
 
@@ -73,6 +77,8 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
       : EmtpImg.src;
 
   return (
+    <>
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     <div className={styles.card} onClick={onNavigate}>
       <PositionedSnackbar
         open={openSuccess}
@@ -118,6 +124,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

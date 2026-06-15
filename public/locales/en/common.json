@@ -454,6 +454,16 @@
       "registerError": "Registration error",
       "serverError": "Invalid authorization server response",
       "loginError": "Login error"
+    },
+    "modal": {
+      "title": "Sign in to your account",
+      "subtitle": "To add items to favourites or basket, please sign in.",
+      "loginBtn": "Sign in",
+      "cancelBtn": "Cancel",
+      "basketTitle": "Your basket is empty",
+      "basketSubtitle": "Sign in to your account to see items in your basket.",
+      "favoritesTitle": "Favourites unavailable",
+      "favoritesSubtitle": "Sign in to your account to see your favourite items."
     }
   },
   "notFound": {

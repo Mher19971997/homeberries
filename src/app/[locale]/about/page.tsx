@@ -1,20 +1,19 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import styles from './index.module.css';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 const AboutPage: React.FC = () => {
   const { t } = useTranslation('common');
 
   return (
     <div className={styles.page}>
-      <nav className={styles.breadcrumb}>
-        <Link href="/" className={styles.breadcrumbLink}>{t('nav.home')}</Link>
-        <span className={styles.sep}>/</span>
-        <span className={styles.breadcrumbActive}>{t('nav.about')}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('nav.home'), href: '/' },
+        { label: t('nav.about') },
+      ]} />
     </div>
   );
 };

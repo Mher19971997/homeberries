@@ -1,0 +1,36 @@
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 44px 0;
+}
+
+.link {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #868695;
+  line-height: 16px;
+  letter-spacing: 0%;
+  font-family: var(--font-inter), Inter, sans-serif;
+  transition: color 0.15s;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: #555;
+}
+
+.active {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  line-height: 16px;
+  letter-spacing: 0%;
+  font-family: var(--font-inter), Inter, sans-serif;
+}
+
+.sep {
+  color: #868695;
+  flex-shrink: 0;
+}

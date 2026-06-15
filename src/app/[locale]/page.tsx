@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
 import * as qs from 'qs';
@@ -16,6 +16,7 @@ import BrowseByCategory from '@homeberris/components/BrowseByCategory';
 import ProductGridBanners from '@homeberris/components/ProductGridBanners';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import BigSummerSale from '@homeberris/components/BigSummerSale';
+import Spinner from '@homeberris/components/Spinner';
 
 const ITEMS_LIMIT = 8;
 const DISCOUNT_LIMIT = 4;
@@ -88,6 +89,10 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<'new' | 'bestseller' | 'featured'>('new');
   const [newPage, setNewPage] = useState(1);
   const [discountPage, setDiscountPage] = useState(1);
+  const catalogGridRef = useRef<HTMLDivElement>(null);
+  const discountGridRef = useRef<HTMLDivElement>(null);
+  const [catalogMinHeight, setCatalogMinHeight] = useState<number>(0);
+  const [discountMinHeight, setDiscountMinHeight] = useState<number>(0);
 
   const buildQuery = () => {
     const filters: any = {
@@ -128,6 +133,18 @@ export default function Home() {
   const catalogs: CatalogItem[] = data?.data || [];
   const discountCatalogs: CatalogItem[] = discountData?.data || [];
   const newTotalPages = data?.meta ? Math.max(1, Math.ceil(data.meta.count / ITEMS_LIMIT)) : 1;
+
+  useEffect(() => {
+    if (!isLoading && catalogGridRef.current) {
+      setCatalogMinHeight(catalogGridRef.current.offsetHeight);
+    }
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (!isDiscountLoading && discountGridRef.current) {
+      setDiscountMinHeight(discountGridRef.current.offsetHeight);
+    }
+  }, [isDiscountLoading]);
   const discountTotalPages = discountData?.meta ? Math.max(1, Math.ceil(discountData.meta.count / DISCOUNT_LIMIT)) : 1;
 
   return (
@@ -146,7 +163,7 @@ export default function Home() {
         }}
       >
         <span
-          onClick={() => setActiveTab('new')}
+          onClick={() => { setActiveTab('new'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
             cursor:'pointer',
@@ -157,7 +174,7 @@ export default function Home() {
           {t('home.tabs.new')}
         </span>
         <span
-          onClick={() => setActiveTab('bestseller')}
+          onClick={() => { setActiveTab('bestseller'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
             cursor:'pointer',
@@ -168,7 +185,7 @@ export default function Home() {
           {t('home.tabs.bestseller')}
         </span>
         <span
-          onClick={() => setActiveTab('featured')}
+          onClick={() => { setActiveTab('featured'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
             cursor:'pointer',
@@ -180,12 +197,9 @@ export default function Home() {
         </span>
       </div>
 
-      {isLoading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
-          <span suppressHydrationWarning>{t('catalog.loading')}</span>
-        </div>
-      ) : (
-        <div className={styles.catalogWrapper}>
+      <div ref={catalogGridRef} style={{ position: 'relative', minHeight: isLoading ? catalogMinHeight : undefined }}>
+        {isLoading && <Spinner overlay />}
+        <div className={styles.catalogWrapper} style={{ opacity: isLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
           <div className={styles.catalogGrid}>
             {catalogs.length > 0 ? (
               catalogs.map((catalog, index) => (
@@ -200,7 +214,7 @@ export default function Home() {
             )}
           </div>
         </div>
-      )}
+      </div>
       {renderPagination(newPage, newTotalPages, setNewPage)}
       <ProductGridBanners />
       <div style={{ width: '100%', maxWidth: '1120px', margin: '80px auto 80px auto', padding: '0 16px' }}>
@@ -217,12 +231,9 @@ export default function Home() {
           {t('home.discountsTitle')}
         </p>
 
-        {isDiscountLoading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: '32px' }}>
-            <span suppressHydrationWarning>{t('catalog.loading')}</span>
-          </div>
-        ) : (
-          <div className={styles.catalogGrid}>
+        <div ref={discountGridRef} style={{ position: 'relative', minHeight: isDiscountLoading ? discountMinHeight : undefined }}>
+          {isDiscountLoading && <Spinner overlay />}
+          <div className={styles.catalogGrid} style={{ opacity: isDiscountLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
             {discountCatalogs.length > 0 ? (
               discountCatalogs.map((catalog, index) => (
                 <div className={styles.catalogItem} key={`discount-${catalog?.uuid || index}`}>
@@ -235,7 +246,7 @@ export default function Home() {
               </div>
             )}
           </div>
-        )}
+        </div>
         {renderPagination(discountPage, discountTotalPages, setDiscountPage)}
       </div>
       <BigSummerSale />

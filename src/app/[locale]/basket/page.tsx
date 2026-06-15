@@ -24,6 +24,8 @@ import {
 } from '@homeberris/utils/indexedDB';
 import SelectPaymentMethod from '@homeberris/components/SelectPaymentMethod';
 import CheckoutFlow from '@homeberris/components/CheckoutFlow';
+import AuthGuard from '@homeberris/components/AuthGuard';
+import Spinner from '@homeberris/components/Spinner';
 
 export default function BasketPage() {
   const { t } = useTranslation('common');
@@ -40,7 +42,7 @@ export default function BasketPage() {
   const [promoCode, setPromoCode] = React.useState('');
   const [bonusCard, setBonusCard] = React.useState('');
 
-  const { data: baskets } = useQuery({
+  const { data: baskets, isLoading: isBasketsLoading } = useQuery({
     queryKey: ['getAllBaskets'],
     queryFn: () =>
       getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
@@ -103,13 +105,31 @@ export default function BasketPage() {
   const { formatPrice } = useFormatPrice();
 
 
+  if (!isAuth) {
+    return (
+      <AuthGuard
+        icon={
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        }
+        title={t('auth.modal.basketTitle')}
+        subtitle={t('auth.modal.basketSubtitle')}
+      />
+    );
+  }
+
   return (
     <>
     <div className={styles.page}>
       <div className={styles.left}>
         <h1 className={styles.title}>{t('basket.title')}</h1>
 
-        <div className={styles.itemsList}>
+        <div className={styles.itemsList} style={{ position: 'relative', minHeight: '300px' }}>
+          {isBasketsLoading && <Spinner overlay />}
+          <div style={{ opacity: isBasketsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
           {allBasketItems.length > 0 ? (
             pagedBasketItems.map((basket: BasketDataItem, index: number) => (
               <BasketItem
@@ -136,6 +156,7 @@ export default function BasketPage() {
           ) : (
             <p className={styles.emptyText}>{t('basket.empty')}</p>
           )}
+          </div>
         </div>
 
         {totalBasketPages > 1 && (

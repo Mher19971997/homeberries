@@ -17,6 +17,8 @@ import { CategoryItem } from "@homeberris/types/category";
 import SidebarFilters from "@homeberris/components/SidebarFilters";
 import StaticProductCard from "@homeberris/components/StaticProductCard";
 import MobileFilterDrawer from "@homeberris/components/MobileFilterDrawer";
+import Spinner from "@homeberris/components/Spinner";
+import Breadcrumb from "@homeberris/components/Breadcrumb";
 
 import { useQuery } from "@tanstack/react-query";
 import { ListResult } from "@homeberris/types/filter";
@@ -106,7 +108,7 @@ export default function CatalogPage() {
     return qs.stringify(filters);
   };
 
-  const { data: catalogs } = useQuery<{
+  const { data: catalogs, isLoading: isCatalogsLoading } = useQuery<{
     data: CatalogItem[];
     meta: ListResult;
   }>({
@@ -144,23 +146,11 @@ export default function CatalogPage() {
           setGroupFilters(gf);
         }}
       />
-      {/* Breadcrumb */}
-      <nav className={styles.breadcrumb} aria-label="breadcrumb">
-        <Link href="/" className={styles.breadcrumbLink}>
-          {t('catalogAll.breadcrumb.home')}
-        </Link>
-        <ChevronSepIcon className={styles.breadcrumbSep} />
-        <Link href="/catalog" className={styles.breadcrumbLink}>
-          {t('catalogAll.breadcrumb.catalog')}
-        </Link>
-        <ChevronSepIcon className={styles.breadcrumbSep} />
-        <Link
-          href={breadcrumbPath}
-          className={`${styles.breadcrumbLink} ${styles.breadcrumbLinkActive}`}
-        >
-          {categoryData ? getLoc(categoryData.name, locale) : categoryName}
-        </Link>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('catalogAll.breadcrumb.home'), href: '/' },
+        { label: t('catalogAll.breadcrumb.catalog'), href: '/catalog' },
+        { label: categoryData ? getLoc(categoryData.name, locale) : categoryName },
+      ]} />
 
       {/* Layout */}
       <div className={styles.pageLayout}>
@@ -208,17 +198,22 @@ export default function CatalogPage() {
           <div className={styles.productTotal}>
             <p>{t('catalogAll.products.result')} : <span>{catalogs?.meta?.count ?? 0}</span></p>
           </div>
-          <StaticProductCard
-            catalogs={catalogs?.data || []}
-            onNavigate={(item) => {
-              const cat = getLoc((item as any).category?.name, 'en') || categoryName;
-              const sub = getLoc((item as any).subCategorie?.name, 'en');
-              const url = sub
-                ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
-                : `/catalog/${encodeURIComponent(cat)}/${item.uuid}`;
-              router.push(url);
-            }}
-          />
+          <div style={{ position: 'relative', minHeight: '600px' }}>
+            {isCatalogsLoading && <Spinner overlay />}
+            <div style={{ opacity: isCatalogsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+              <StaticProductCard
+                catalogs={catalogs?.data || []}
+                onNavigate={(item) => {
+                  const cat = getLoc((item as any).category?.name, 'en') || categoryName;
+                  const sub = getLoc((item as any).subCategorie?.name, 'en');
+                  const url = sub
+                    ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
+                    : `/catalog/${encodeURIComponent(cat)}/${item.uuid}`;
+                  router.push(url);
+                }}
+              />
+            </div>
+          </div>
 
           {/* Пагинация */}
           {totalPages > 1 && (

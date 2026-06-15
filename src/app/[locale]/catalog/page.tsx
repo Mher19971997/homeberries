@@ -12,6 +12,7 @@ import { getBrands } from '@homeberris/http/brandApi';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import { useTranslation } from 'react-i18next';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 import styles from '@homeberris/pages/catalog/index.module.css';
 
@@ -129,13 +130,10 @@ export default function CatalogIndexPage() {
   return (
     <div className={styles.body}>
       {/* Breadcrumb */}
-      <nav aria-label="breadcrumb" className={styles.breadcrumb}>
-        <Link className={styles.breadcrumbLink} href="/">{t('catalogIndex.breadcrumbHome')}</Link>
-        <span className={styles.breadcrumbSep}>/</span>
-        <span className={styles.breadcrumbCurrent}>
-          {searchQuery ? `${t('catalogIndex.searchPrefix')}${searchQuery}` : t('catalogIndex.breadcrumbCatalog')}
-        </span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('catalogIndex.breadcrumbHome'), href: '/' },
+        { label: searchQuery ? `${t('catalogIndex.searchPrefix')}${searchQuery}` : t('catalogIndex.breadcrumbCatalog') },
+      ]} />
 
       {/* Горизонтальный фильтр */}
       <div className={styles.filterBar}>
@@ -185,10 +183,10 @@ export default function CatalogIndexPage() {
         </select>
 
         {/* Сброс */}
-        {(selectedBrand || minPrice || maxPrice) && (
+        {(selectedBrand || minPrice || maxPrice || sortBy !== 'newest') && (
           <button
             className={styles.resetBtn}
-            onClick={() => { setSelectedBrand(''); setMinPrice(''); setMaxPrice(''); setDebouncedMin(''); setDebouncedMax(''); }}
+            onClick={() => { setSelectedBrand(''); setMinPrice(''); setMaxPrice(''); setDebouncedMin(''); setDebouncedMax(''); setSortBy('newest'); }}
           >
             {t('catalogIndex.reset')}
           </button>

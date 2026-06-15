@@ -17,7 +17,9 @@ import { BrandItem } from '@homeberris/types/brand';
 import { ListResult } from '@homeberris/types/filter';
 
 import CatalogCard from '@homeberris/components/CatalogCard';
-import { PaginationLeft, PaginationRight, ChevronSepIcon } from '@homeberris/assets/icons/catalog';
+import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
+import Spinner from '@homeberris/components/Spinner';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 import catalogStyles from '@homeberris/pages/catalog/index.module.css';
 import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
@@ -134,7 +136,7 @@ export default function SubCategoryPageContent({
     return qs.stringify(filters);
   };
 
-  const { data: catalogs } = useQuery<{ data: CatalogItem[]; meta: ListResult }>({
+  const { data: catalogs, isLoading: isCatalogsLoading } = useQuery<{ data: CatalogItem[]; meta: ListResult }>({
     queryKey: [
       'getAllCatalogsBySubCategory',
       categoryName,
@@ -231,22 +233,12 @@ export default function SubCategoryPageContent({
 
   return (
     <div className={catalogStyles.body}>
-      {/* Breadcrumb */}
-      <nav className={catalogStyles.breadcrumb} aria-label="breadcrumb">
-        <Link href="/" className={catalogStyles.breadcrumbLink}>
-          {t('catalogAll.breadcrumb.home')}
-        </Link>
-        <ChevronSepIcon className={catalogStyles.breadcrumbSep} />
-        <Link href="/catalog" className={catalogStyles.breadcrumbLink}>
-          {t('catalogAll.breadcrumb.catalog')}
-        </Link>
-        <ChevronSepIcon className={catalogStyles.breadcrumbSep} />
-        <Link href={categoryPath} className={catalogStyles.breadcrumbLink}>
-          {localizedCategoryName}
-        </Link>
-        <ChevronSepIcon className={catalogStyles.breadcrumbSep} />
-        <span className={catalogStyles.breadcrumbCurrent}>{localizedSubCategoryName}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('catalogAll.breadcrumb.home'), href: '/' },
+        { label: t('catalogAll.breadcrumb.catalog'), href: '/catalog' },
+        { label: localizedCategoryName, href: categoryPath },
+        { label: localizedSubCategoryName },
+      ]} />
 
       {/* Filter bar */}
       <div className={catalogStyles.filterBar}>
@@ -317,17 +309,20 @@ export default function SubCategoryPageContent({
           <p className={catalogStyles.emptyText}>{t('subCategory.empty')}</p>
         </div>
       ) : (
-        <div className={catalogStyles.container}>
-          {catalogs.data.map((catalog: CatalogItem) => (
-            <div key={catalog.uuid} className={catalogStyles.cardWrap}>
-              <CatalogCard
-                catalog={catalog}
-                onNavigate={() =>
-                  router.push(`/catalog/${encodeURIComponent(getLoc((catalog as any).category?.name, 'en') || categoryName)}/${encodeURIComponent(getLoc((catalog as any).subCategorie?.name, 'en') || subCategoryName)}/${catalog.uuid}`)
-                }
-              />
-            </div>
-          ))}
+        <div style={{ position: 'relative', minHeight: '600px' }}>
+          {isCatalogsLoading && <Spinner overlay />}
+          <div className={catalogStyles.container} style={{ opacity: isCatalogsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+            {catalogs.data.map((catalog: CatalogItem) => (
+              <div key={catalog.uuid} className={catalogStyles.cardWrap}>
+                <CatalogCard
+                  catalog={catalog}
+                  onNavigate={() =>
+                    router.push(`/catalog/${encodeURIComponent(getLoc((catalog as any).category?.name, 'en') || categoryName)}/${encodeURIComponent(getLoc((catalog as any).subCategorie?.name, 'en') || subCategoryName)}/${catalog.uuid}`)
+                  }
+                />
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

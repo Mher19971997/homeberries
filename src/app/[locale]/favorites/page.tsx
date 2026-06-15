@@ -10,10 +10,14 @@ import EmptyFavorite from '@homeberris/features/favorites/components/EmptyFavori
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { pluralizeItems } from '@homeberris/utils/formatPlural';
 import { useTranslation } from 'react-i18next';
+import { checkToken } from '@homeberris/utils/auth';
+import AuthGuard from '@homeberris/components/AuthGuard';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 const FavoritesPage: React.FC = () => {
-  const { t } = useTranslation('common');
+  const { t, ready } = useTranslation('common');
   const { items } = useFavorites();
+  const isAuth = checkToken();
 
   const renderFavorites = () => {
     if (!items?.length) return <EmptyFavorite />;
@@ -23,17 +27,28 @@ const FavoritesPage: React.FC = () => {
     ));
   };
 
+  if (!ready) return null;
+
+  if (!isAuth) {
+    return (
+      <AuthGuard
+        icon={
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        }
+        title={t('auth.modal.favoritesTitle')}
+        subtitle={t('auth.modal.favoritesSubtitle')}
+      />
+    );
+  }
+
   return (
     <div className={styles.body}>
-      <nav className={styles.breadcrumb} aria-label="breadcrumb">
-        <Link href="/" className={styles.breadcrumbLink}>
-          {t('favorites.breadcrumb.home')}
-        </Link>
-        <span className={styles.breadcrumbSep}>/</span>
-        <span className={styles.breadcrumbActive}>
-          {t('favorites.breadcrumb.title')}
-        </span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('favorites.breadcrumb.home'), href: '/' },
+        { label: t('favorites.breadcrumb.title') },
+      ]} />
 
       <div className={styles.filterHeader}>
         <p className={styles.filterTitle}>{t('favorites.header.title')}</p>

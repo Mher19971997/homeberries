@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import styles from './index.module.css';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation('common');
@@ -17,11 +17,10 @@ const ContactPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <nav className={styles.breadcrumb}>
-        <Link href="/" className={styles.breadcrumbLink}>{t('nav.home')}</Link>
-        <span className={styles.sep}>/</span>
-        <span className={styles.breadcrumbActive}>{t('nav.contact')}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('nav.home'), href: '/' },
+        { label: t('nav.contact') },
+      ]} />
     </div>
   );
 };

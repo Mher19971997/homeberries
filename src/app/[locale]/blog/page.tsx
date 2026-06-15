@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import styles from './index.module.css';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 const POSTS = [
   { id: 1, tag: 'blog.posts.post1.tag', title: 'blog.posts.post1.title', excerpt: 'blog.posts.post1.excerpt', date: '2025-06-01', img: '/images/cardEmpty.png' },
@@ -16,11 +16,10 @@ const BlogPage: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <nav className={styles.breadcrumb}>
-        <Link href="/" className={styles.breadcrumbLink}>{t('nav.home')}</Link>
-        <span className={styles.sep}>/</span>
-        <span className={styles.breadcrumbActive}>{t('nav.blog')}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('nav.home'), href: '/' },
+        { label: t('nav.blog') },
+      ]} />
     </div>
   );
 };
