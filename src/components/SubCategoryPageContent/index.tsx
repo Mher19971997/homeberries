@@ -103,10 +103,7 @@ export default function SubCategoryPageContent({
   const buildQuery = () => {
     const filters: any = {
       includeMeta: [
-        {
-          association: 'category',
-          where: { name: categoryName },
-        },
+        { association: 'category' },
         {
           association: 'subCategorie',
           where: subCategoryUuid ? { uuid: subCategoryUuid } : { name: subCategoryName },

@@ -41,13 +41,20 @@ export default function Catalog() {
 
   const resolvedSubCategoryUuid = React.useMemo(() => {
     if (isProduct || !menuTree) return null;
-    const cat = menuTree.find(
-      (c: CategoryItem) => getLoc(c.name, 'en') === decodedCategoryName || getLoc(c.name, 'ru') === decodedCategoryName
-    );
+    const slug = slugStr.toLowerCase();
+    const cat = menuTree.find((c: CategoryItem) => {
+      const en = getLoc(c.name, 'en').toLowerCase();
+      const ru = getLoc(c.name, 'ru').toLowerCase();
+      const decoded = decodedCategoryName.toLowerCase();
+      return en === decoded || ru === decoded;
+    });
     if (!cat?.subCategories) return null;
-    const sub = cat.subCategories.find(
-      (s: any) => getLoc(s.name, 'en') === slugStr || getLoc(s.name, 'ru') === slugStr
-    );
+    const sub = cat.subCategories.find((s: any) => {
+      const en = getLoc(s.name, 'en').toLowerCase();
+      const ru = getLoc(s.name, 'ru').toLowerCase();
+      const hy = getLoc(s.name, 'hy').toLowerCase();
+      return en === slug || ru === slug || hy === slug;
+    });
     return sub?.uuid || null;
   }, [menuTree, decodedCategoryName, slugStr, isProduct]);
 

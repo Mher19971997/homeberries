@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import Breadcrumb from '@homeberris/components/Breadcrumb';
 import { useQuery } from '@tanstack/react-query';
 import * as qs from 'qs';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
@@ -36,13 +36,11 @@ const RecentlyViewedPage: React.FC = () => {
 
   return (
     <div className={styles.body}>
-      <nav className={styles.breadcrumb} aria-label="breadcrumb">
-        <Link href="/" className={styles.breadcrumbLink}>{t('recentlyViewedPage.breadcrumbHome')}</Link>
-        <span className={styles.breadcrumbSep}>/</span>
-        <Link href="/profile" className={styles.breadcrumbLink}>{t('recentlyViewedPage.breadcrumbProfile')}</Link>
-        <span className={styles.breadcrumbSep}>/</span>
-        <span className={styles.breadcrumbActive}>{t('recentlyViewedPage.breadcrumbCurrent')}</span>
-      </nav>
+      <Breadcrumb items={[
+        { label: t('recentlyViewedPage.breadcrumbHome'), href: '/' },
+        { label: t('recentlyViewedPage.breadcrumbProfile'), href: '/profile' },
+        { label: t('recentlyViewedPage.breadcrumbCurrent') },
+      ]} />
 
       <div className={styles.filterHeader}>
         <p className={styles.filterTitle}>{t('recentlyViewedPage.title')}</p>
