@@ -47,6 +47,7 @@
   align-items: center;
   gap: 12px;
   flex-wrap: wrap;
+  width: 100%;
   padding: 14px 0 20px;
   border-bottom: 1px solid #f0f0f0;
   margin-bottom: 24px;
@@ -58,6 +59,7 @@
   font-weight: 500;
   color: #868695;
   white-space: nowrap;
+  min-width: 90px;
   margin-right: 4px;
 }
 
