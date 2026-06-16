@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 
 import { useState, useRef, useEffect } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
 import * as qs from 'qs';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
-import styles from '@homeberris/pages/index.module.css';
+import styles from '@homeberris/app/[locale]/index.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CarouselCatalog from '@homeberris/components/CarouselCatalog';
 import { useQuery } from '@tanstack/react-query';
@@ -21,7 +21,7 @@ import Spinner from '@homeberris/components/Spinner';
 const ITEMS_LIMIT = 8;
 const DISCOUNT_LIMIT = 4;
 
-import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
+import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
 
 const renderPagination = (currentPage: number, totalPages: number, setPage: (p: number) => void) => {
   if (totalPages <= 1) return null;

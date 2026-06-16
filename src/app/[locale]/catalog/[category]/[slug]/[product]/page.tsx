@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { getCatalogByUud } from '@homeberris/http/catalogApi';
 import React from 'react';
@@ -9,7 +9,7 @@ import * as qs from 'qs';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import ProductPageContent from '@homeberris/components/ProductPageContent';
-import styles from '@homeberris/pages/catalog/[category]/[slug]/[product]/index.module.css';
+import styles from '@homeberris/app/[locale]/catalog/[category]/[slug]/[product]/index.module.css';
 
 const isUUID = (str: string): boolean => {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -11,7 +11,7 @@ import { UUID } from 'crypto';
 import styles from './index.module.css';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
-import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
+import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
 
 const ITEMS_PER_PAGE = 8;
 const FETCH_LIMIT = 9;

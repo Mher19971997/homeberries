@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { Suspense } from 'react';
 import React from 'react';
@@ -9,7 +9,7 @@ import {
   getCompanyAddressesPublic
 } from '@homeberris/http/companyAddressApi';
 import CompanyAddressItem from '@homeberris/components/CompanyAddressItem';
-import styles from '@homeberris/pages/services/address/index.module.css';
+import styles from '@homeberris/app/[locale]/services/address/index.module.css';
 import { CompanyAddressData } from '@homeberris/http/companyAddressApi';
 import { useLoadScript } from '@react-google-maps/api';
 import { useQuery } from '@tanstack/react-query';

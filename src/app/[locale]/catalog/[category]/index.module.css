@@ -81,15 +81,12 @@
   justify-content: center;
   gap: 8px;
   margin: 36px 0;
-  /* width: 32; */
-  /* height: 32; */
   border-radius: 5px;
   padding-top: 4px;
   padding-right: 12px;
   padding-bottom: 4px;
   padding-left: 12px;
   gap: 8px;
-  angle: 0 deg;
   opacity: 1;
 }
 
@@ -226,7 +223,6 @@
   gap: 32px;
   align-items: flex-start;
   margin-top: 19px;
-  /* padding: 0 16px; */
 }
 
 .sidebar {
@@ -249,7 +245,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-bottom: 17px; */
   padding: 12px 0;
   background: #fff;
   border-radius: 12px;
@@ -285,7 +280,6 @@
   color: #6c6c6c;
 }
 
-
 .productTotal > p > span {
   font-family: var(--font-inter);
   font-weight: 600;
@@ -297,7 +291,6 @@
   text-align: center;
   color: #000000;
 }
-
 
 .filterToggleBtn {
   display: none;

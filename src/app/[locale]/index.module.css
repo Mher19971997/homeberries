@@ -92,11 +92,6 @@
 }
 
 @media only screen and (max-width: 1400px) {
-  /* .body {
-        width: 100%;
-        padding: 24px 20px 80px;
-    } */
-
   .container {
     margin-top: 20px;
   }
@@ -108,10 +103,6 @@
 }
 
 @media only screen and (max-width: 1000px) {
-  /* .body {
-        padding: 20px 16px 60px;
-    } */
-
   .container {
     margin-top: 16px;
   }

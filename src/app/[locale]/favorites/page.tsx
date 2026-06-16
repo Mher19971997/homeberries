@@ -1,11 +1,11 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 
 import { useFavorites } from '@homeberris/context/favoritesContext';
-import styles from '@homeberris/pages/favorites/index.module.css';
+import styles from '@homeberris/app/[locale]/favorites/index.module.css';
 import EmptyFavorite from '@homeberris/features/favorites/components/EmptyFavorite';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
 import { pluralizeItems } from '@homeberris/utils/formatPlural';

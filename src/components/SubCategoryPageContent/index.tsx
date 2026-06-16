@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import * as qs from 'qs';
@@ -21,8 +21,8 @@ import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalo
 import Spinner from '@homeberris/components/Spinner';
 import Breadcrumb from '@homeberris/components/Breadcrumb';
 
-import catalogStyles from '@homeberris/pages/catalog/index.module.css';
-import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
+import catalogStyles from '@homeberris/app/[locale]/catalog/index.module.css';
+import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
 
 const getLoc = (val: any, locale = 'ru'): string => {
   if (!val) return '';

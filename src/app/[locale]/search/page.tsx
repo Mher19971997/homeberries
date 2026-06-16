@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { Box, Tab, Tabs } from '@mui/material';
 import { useMobileSearch } from '@homeberris/features/search/hooks/useMobileSearch';
-import styles from '@homeberris/pages/search/index.module.css';
+import styles from '@homeberris/app/[locale]/search/index.module.css';
 import MobileCatalogMenu from '@homeberris/features/search/components/MobileCatalogMenu';
 import { useState } from 'react';
 import MobileCarMenu from '@homeberris/features/search/components/MobileCarMenu';

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useRef, useCallback } from 'react';
 import * as qs from 'qs';
@@ -14,7 +14,7 @@ import CatalogCard from '@homeberris/components/CatalogCard';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from '@homeberris/components/Breadcrumb';
 
-import styles from '@homeberris/pages/catalog/index.module.css';
+import styles from '@homeberris/app/[locale]/catalog/index.module.css';
 
 const LIMIT = 12;
 

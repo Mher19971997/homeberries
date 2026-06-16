@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React, { useEffect, useRef } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
@@ -14,7 +14,7 @@ import { useFavorites } from '@homeberris/context/favoritesContext';
 import { useTranslation } from 'react-i18next';
 import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
-import styles from '@homeberris/pages/profile/index.module.css';
+import styles from '@homeberris/app/[locale]/profile/index.module.css';
 import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut } from 'lucide-react';
 import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
 

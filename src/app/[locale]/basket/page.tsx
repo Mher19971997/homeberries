@@ -1,9 +1,9 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
-import styles from '@homeberris/pages/basket/index.module.css';
-import paginationStyles from '@homeberris/pages/catalog/[category]/index.module.css';
+import styles from '@homeberris/app/[locale]/basket/index.module.css';
+import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
 import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
 import BasketItem from '@homeberris/components/BasketItem';
 import { BasketDataItem } from '@homeberris/types/basket';

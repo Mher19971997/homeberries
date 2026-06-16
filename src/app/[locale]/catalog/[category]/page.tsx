@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from "react";
 import * as qs from "qs";
@@ -23,7 +23,7 @@ import Breadcrumb from "@homeberris/components/Breadcrumb";
 import { useQuery } from "@tanstack/react-query";
 import { ListResult } from "@homeberris/types/filter";
 
-import styles from "@homeberris/pages/catalog/[category]/index.module.css";
+import styles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
 import { useTranslation } from "react-i18next";
 
 const getLoc = (val: any, locale: string): string => {

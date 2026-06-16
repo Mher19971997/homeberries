@@ -1,9 +1,9 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import AiAssistant from '@homeberris/components/AiAssistant';
-import styles from '@homeberris/pages/ai-assistant/index.module.css';
+import styles from '@homeberris/app/[locale]/ai-assistant/index.module.css';
 import { useTranslation } from 'react-i18next';
 
 export default function AiAssistantPage() {

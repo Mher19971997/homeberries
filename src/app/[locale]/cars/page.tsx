@@ -1,8 +1,8 @@
-'use client';
+﻿'use client';
 
 import { Box, Grid } from '@mui/material';
 import { BrandChips, CarsBreadcrumbs, CarsFiltersDesktop, CarsGrid, ModelChips, useCarsCatalog } from '@homeberris/features/cars';
-import styles from '@homeberris/pages/cars/index.module.css';
+import styles from '@homeberris/app/[locale]/cars/index.module.css';
 
 
 export default function CarsCatalog() {

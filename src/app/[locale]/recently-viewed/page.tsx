@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import React from 'react';
 import dynamic from 'next/dynamic';
@@ -9,7 +9,7 @@ import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedR
 import { useTranslation } from 'react-i18next';
 import { useCookies } from 'react-cookie';
 import CatalogCard from '@homeberris/components/CatalogCard';
-import styles from '@homeberris/pages/favorites/index.module.css';
+import styles from '@homeberris/app/[locale]/favorites/index.module.css';
 import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
 
 const buildCatalogUrl = (catalog: any) => {
