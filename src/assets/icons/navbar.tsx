@@ -26,8 +26,8 @@ export const SearchIcon = ({ className }: { className?: string }) => (
 
 export const GlobeIcon = ({ className }: { className?: string }) => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <line x1="6" y1="16" x2="26" y2="16" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M16 6a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <circle cx="16" cy="16" r="10" stroke="black" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
+    <line x1="6" y1="16" x2="26" y2="16" stroke="black" strokeWidth="1" strokeLinecap="round" />
+    <path d="M16 6a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="black" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

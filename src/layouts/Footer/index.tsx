@@ -24,24 +24,24 @@ export default function Footer() {
         <Box className={styles.linksColumn}>
           <Typography className={styles.columnTitle}>{t('footer.services.title')}</Typography>
           <Box className={styles.linksList}>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.bonusProgram')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.giftCards')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.creditPayment')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.serviceContracts')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.nonCashAccount')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.services.payment')}</Link>
+            {/* <Link href="/catalog" className={styles.footerLink}>{t('nav.catalog')}</Link> */}
+            <Link href="/about" className={styles.footerLink}>{t('nav.about')}</Link>
+            <Link href="/contact" className={styles.footerLink}>{t('nav.contact')}</Link>
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.bonusProgram')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.giftCards')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.creditPayment')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.serviceContracts')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.nonCashAccount')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.services.payment')}</Link> */}
           </Box>
         </Box>
 
         <Box className={styles.linksColumn}>
           <Typography className={styles.columnTitle}>{t('footer.buyerHelp.title')}</Typography>
           <Box className={styles.linksList}>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.findOrder')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.deliveryTerms')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.exchangeReturn')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.guarantee')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.faq')}</Link>
-            <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.termsOfUse')}</Link>
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.deliveryTerms')}</Link> */}
+            {/* <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.exchangeReturn')}</Link> */}
+            <Link href="/contact" className={styles.footerLink}>{t('footer.buyerHelp.faq')}</Link>
           </Box>
         </Box>
 
@@ -62,6 +62,16 @@ export default function Footer() {
         </Box>
 
       </Box>
+
+      <Box className={styles.bottomBar}>
+        <Typography className={styles.copyright}>
+          {t('footer.copyright', { year: new Date().getFullYear() })}
+        </Typography>
+        <Link href="/privacy-policy" className={styles.privacyLink}>
+          {t('privacyPolicy.breadcrumb')}
+        </Link>
+      </Box>
+
     </Box>
   );
 }

@@ -1,0 +1,102 @@
+.page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px 80px;
+  box-sizing: border-box;
+}
+
+.hero {
+  text-align: center;
+  padding: 64px 16px 48px;
+}
+
+.heroTitle {
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 12px;
+  font-family: var(--font-inter);
+}
+
+.heroDate {
+  font-size: 14px;
+  color: #868695;
+  margin: 0;
+  font-family: var(--font-inter);
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.intro {
+  font-size: 16px;
+  color: #868695;
+  line-height: 1.7;
+  margin: 0 0 48px;
+  padding: 24px 28px;
+  background: #f8f8fc;
+  border-left: 4px solid #1a1a2e;
+  border-radius: 0 12px 12px 0;
+  font-family: var(--font-inter);
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.section {
+  background: #fff;
+  border: 1px solid #f0f0f5;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s;
+}
+
+.section:hover {
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 14px;
+  font-family: var(--font-inter);
+}
+
+.sectionText {
+  font-size: 15px;
+  color: #868695;
+  line-height: 1.75;
+  margin: 0;
+  font-family: var(--font-inter);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 40px 8px 32px;
+  }
+
+  .intro {
+    font-size: 14px;
+    padding: 18px 20px;
+  }
+
+  .section {
+    padding: 24px 20px;
+  }
+
+  .sectionTitle {
+    font-size: 16px;
+  }
+
+  .sectionText {
+    font-size: 14px;
+  }
+}

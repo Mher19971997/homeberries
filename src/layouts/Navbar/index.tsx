@@ -156,9 +156,9 @@ const Navbar = () => {
         <nav className={styles.navLinks}>
           {[
             { label: t('nav.home'), href: '/' },
+            { label: t('nav.catalog'), href: '/catalog' },
             { label: t('nav.about'), href: '/about' },
             { label: t('nav.contact'), href: '/contact' },
-            // { label: t('nav.blog'), href: '/blog' },
           ].map(({ label, href }) => (
             <span
               key={href}

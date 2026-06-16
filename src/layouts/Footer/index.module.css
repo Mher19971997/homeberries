@@ -104,6 +104,41 @@
   color: #ffffff !important;
 }
 
+.bottomBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 32px 0;
+  margin-top: 48px;
+  max-width: 1120px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.copyright {
+  font-family: var(--font-inter) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #868695 !important;
+}
+
+.privacyLink {
+  font-family: var(--font-inter) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #868695 !important;
+  text-decoration: none !important;
+  transition: color 0.15s ease !important;
+}
+
+.privacyLink:hover {
+  color: #ffffff !important;
+}
+
 @media (max-width: 768px) {
   .socialIcon {
     font-size: 20px !important;

@@ -22,7 +22,7 @@ const isUUID = (str: string): boolean => {
 export default function Catalog() {
   const params = useParams();
   const decodedCategoryName = typeof params?.category === 'string' ? decodeURIComponent(params.category) : '';
-  const slugStr = typeof params?.slug === 'string' ? params.slug : '';
+  const slugStr = typeof params?.slug === 'string' ? decodeURIComponent(params.slug) : '';
   const isProduct = isUUID(slugStr);
 
   const { toast, showError, hideToast } = useToast();
