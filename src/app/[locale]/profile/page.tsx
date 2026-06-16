@@ -96,12 +96,11 @@ export default function Profile() {
     { label: t('profile.favorites'), icon: Heart, path: '/favorites' },
     { label: t('profile.basket'), icon: ShoppingCart, path: '/basket' },
     { label: t('profile.myAddresses'), icon: MapPin, path: '/order' },
+    { label: t('profile.support'), icon: MessageCircle, path: '/contact' },
+    { label: t('profile.faq'), icon: HelpCircle, path: '/contact' },
   ];
 
   const SERVICE_ITEMS = [
-    { label: t('profile.support'), icon: MessageCircle },
-    { label: t('profile.return'), icon: RotateCcw },
-    { label: t('profile.faq'), icon: HelpCircle },
   ];
 
   return (
@@ -165,9 +164,9 @@ export default function Profile() {
               ))}
             </div>
 
-            <div className={styles.sidebarCard}>
+            {/*<div className={styles.sidebarCard}>
               <p className={styles.sidebarTitle}>{t('profile.service')}</p>
-              {SERVICE_ITEMS.map((item) => (
+               {SERVICE_ITEMS.map((item) => (
                 <button key={item.label} className={styles.menuItem}>
                   <item.icon size={18} strokeWidth={1.8} color="#111" />
                   <span className={styles.menuLabel}>{item.label}</span>
@@ -175,6 +174,7 @@ export default function Profile() {
                 </button>
               ))}
             </div>
+               */}
           </div>
 
           {/* Main */}
@@ -184,7 +184,7 @@ export default function Profile() {
                 <p className={styles.cardTitle}>{t('profile.recentlyViewed')}</p>
                 <button className={styles.seeAll} onClick={() => router.push('/recently-viewed')}>{t('profile.seeAll')}</button>
               </div>
-                {recentlyViewed?.data && recentlyViewed.data.length > 0 ? (
+              {recentlyViewed?.data && recentlyViewed.data.length > 0 ? (
                 <div className={styles.catalogGrid}>
                   {recentlyViewed.data.slice(0, 4).map((item: any) => (
                     <div key={item.uuid} className={styles.catalogItem}>

@@ -90,7 +90,7 @@ const SmallerBanners: React.FC = () => {
             <p className={styles.desc}>{t('smallerBanners.macbook.desc')}</p>
             <button 
               className={styles.shopBtn}
-              onClick={() => router.push('/catalog')}
+              onClick={() => router.push('/catalog/Computers')}
             >
               {t('home.shopNow')}
             </button>
