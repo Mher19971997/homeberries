@@ -8,6 +8,9 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { insertContactMessage } from "@homeberris/http/contactMessagesApi";
+import { getToken } from "@homeberris/utils/auth";
+import { useCookies } from "react-cookie";
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation("common");
@@ -19,6 +22,9 @@ const ContactPage: React.FC = () => {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [cookies] = useCookies(['token']);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -26,9 +32,20 @@ const ContactPage: React.FC = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setError(false);
+    setLoading(true);
+    try {
+      const token = getToken() || cookies.token;
+      await insertContactMessage(form, token);
+      setSent(true);
+      setForm({ name: "", surname: "", phone: "", email: "", message: "" });
+    } catch (err) {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const faqItems = t("contact.faq.items", { returnObjects: true }) as {
@@ -137,8 +154,12 @@ const ContactPage: React.FC = () => {
                 />
               </div>
 
-              <button type="submit" className={styles.submit}>
-                {t("contact.form.submit")}
+              {error && (
+                <p className={styles.error}>{t("contact.form.error")}</p>
+              )}
+
+              <button type="submit" className={styles.submit} disabled={loading}>
+                {loading ? t("contact.form.submitting") : t("contact.form.submit")}
               </button>
             </form>
           )}
