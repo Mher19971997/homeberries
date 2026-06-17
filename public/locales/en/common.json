@@ -877,7 +877,8 @@
       "message": "Message",
       "messagePlaceholder": "Write your message...",
       "submit": "Send",
-      "success": "Your message has been sent! We will contact you shortly."
+      "success": "Your message has been sent! We will contact you shortly.",
+      "submitting": "Submitting..."
     }
   },
   "privacyPolicy": {
