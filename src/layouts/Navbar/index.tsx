@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedRouter";
 import { useFavorites } from "@homeberris/context/favoritesContext";
+import { useCompare } from "@homeberris/context/compareContext";
 import { useQuery } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import { useAuth } from "@homeberris/hooks/useAuth";
@@ -18,6 +19,7 @@ import {
   SearchIcon,
   UserIcon,
 } from "@homeberris/assets/icons/navbar";
+import { ScaleIcon } from "@homeberris/assets/icons/compare";
 import SelectLanguageInPopover from "@homeberris/components/SelectLanguageInPopover";
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "@homeberris/hooks/useDebounce";
@@ -37,6 +39,7 @@ const Navbar = () => {
   const isAuth = useAuth();
   const [cookies] = useCookies(["token"]);
   const { items: favorites } = useFavorites();
+  const { items: compareItems } = useCompare();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -222,6 +225,19 @@ const Navbar = () => {
         <div className={styles.navActions}>
           <button
             className={styles.iconBtn}
+            onClick={() => router.push("/compare")}
+          >
+            <div className={styles.badgeWrapper}>
+              <ScaleIcon size={28} />
+              {compareItems.length > 0 && (
+                <span key={compareItems.length} className={styles.badge}>
+                  {compareItems.length}
+                </span>
+              )}
+            </div>
+          </button>
+          <button
+            className={styles.iconBtn}
             onClick={() => router.push("/favorites")}
           >
             <div className={styles.badgeWrapper}>
@@ -336,6 +352,23 @@ const Navbar = () => {
         </nav>
 
         <div className={styles.drawerActions}>
+          <button
+            className={styles.drawerIconBtn}
+            onClick={() => {
+              router.push("/compare");
+              setMenuOpen(false);
+            }}
+          >
+            <div className={styles.badgeWrapper}>
+              <ScaleIcon size={28} />
+              {compareItems.length > 0 && (
+                <span className={styles.badge}>{compareItems.length}</span>
+              )}
+            </div>
+            <span className={styles.drawerIconLabel}>
+              {t("compare.title")}
+            </span>
+          </button>
           <button
             className={styles.drawerIconBtn}
             onClick={() => {

@@ -37,6 +37,8 @@ import AuthModal from "@homeberris/components/AuthModal";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { checkToken } from "@homeberris/utils/auth";
 import { useFavorites } from "@homeberris/context/favoritesContext";
+import { useCompare } from "@homeberris/context/compareContext";
+import { ScaleIcon } from "@homeberris/assets/icons/compare";
 import { useCookies } from "react-cookie";
 import { insertBasket } from "@homeberris/http/basketApi";
 import { useTranslation } from "react-i18next";
@@ -107,6 +109,7 @@ export default function ProductPageContent({
   const [openSuccess, setOpenSuccess] = React.useState(false);
   const [cookies] = useCookies(['token']);
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isInCompare, toggleCompare } = useCompare();
 
 
   const isAuth = checkToken();
@@ -136,6 +139,10 @@ export default function ProductPageContent({
       return;
     }
     catalog && toggleFavorite(catalog);
+  };
+
+  const handleCompareClick = () => {
+    catalog && toggleCompare(catalog);
   };
 
   const handleDragStart = (x: number) => {
@@ -493,6 +500,13 @@ export default function ProductPageContent({
               </button>
               <button className={styles.btnCart} onClick={handleAddToBasket}>
                 {isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
+              </button>
+              <button
+                className={styles.btnWishlist}
+                onClick={handleCompareClick}
+                style={isInCompare(catalog.uuid) ? { color: '#1e88e5', borderColor: '#1e88e5' } : undefined}
+              >
+                <ScaleIcon size={18} />
               </button>
             </div>
 

@@ -11,8 +11,10 @@ import { useCookies } from 'react-cookie';
 import { checkToken, getToken } from '@homeberris/utils/auth';
 import { addToBasket } from '@homeberris/utils/indexedDB';
 import { useFavorites } from '@homeberris/context/favoritesContext';
+import { useCompare } from '@homeberris/context/compareContext';
 import styles from './index.module.css';
 import { HeartFilledIcon, HeartIcon } from '@homeberris/assets/icons/catalog';
+import { ScaleIcon } from '@homeberris/assets/icons/compare';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'next/navigation';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
@@ -39,6 +41,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const [cookies] = useCookies(['token']);
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isInCompare, toggleCompare } = useCompare();
   const isAuth = checkToken();
 
   const { mutate } = useMutation({
@@ -69,6 +72,11 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     toggleFavorite(catalog);
   };
 
+  const handleCompareClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleCompare(catalog);
+  };
+
   const { formatPrice } = useFormatPrice();
 
   const imgSrc =
@@ -89,6 +97,14 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
 
       <div className={styles.inner}>
         <div className={styles.favoriteRow}>
+          <button
+            className={styles.favoriteButton}
+            onClick={handleCompareClick}
+            aria-label="Compare"
+            style={isInCompare(catalog.uuid) ? { color: '#1e88e5' } : undefined}
+          >
+            <ScaleIcon size={20} />
+          </button>
           <button className={styles.favoriteButton} onClick={handleFavoriteClick} aria-label="Favourite">
             {isFavorite(catalog.uuid)
               ? <HeartFilledIcon/>

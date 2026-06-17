@@ -119,6 +119,16 @@
       "checkout": "Checkout"
     }
   },
+  "compare": {
+    "title": "Compare",
+    "differentCategory": "You can't compare products from different categories",
+    "maxItems": "You can compare up to 4 products",
+    "empty": "Comparison list is empty",
+    "emptyHint": "Add products to compare by clicking the scale icon on a product card",
+    "models": "Models",
+    "price": "Price",
+    "addToCart": "Add to cart"
+  },
   "checkout": {
     "steps": {
       "address": "Address",

@@ -4,6 +4,7 @@ import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CookiesProvider } from 'react-cookie';
 import { FavoritesProvider } from '@homeberris/context/favoritesContext';
+import { CompareProvider } from '@homeberris/context/compareContext';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { createInstance } from 'i18next';
 import { i18nResources, i18nConfig } from '@homeberris/lib/i18n';
@@ -41,9 +42,11 @@ export default function Providers({ children, locale }: { children: React.ReactN
     <QueryClientProvider client={queryClient.current}>
       <CookiesProvider>
         <FavoritesProvider>
-          <I18nextProvider i18n={i18nRef.current.instance}>
-            {children}
-          </I18nextProvider>
+          <CompareProvider>
+            <I18nextProvider i18n={i18nRef.current.instance}>
+              {children}
+            </I18nextProvider>
+          </CompareProvider>
         </FavoritesProvider>
       </CookiesProvider>
     </QueryClientProvider>

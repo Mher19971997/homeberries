@@ -1,0 +1,136 @@
+.body {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #111111;
+  margin: 16px 0 24px;
+  font-family: var(--font-inter);
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 16px;
+  gap: 12px;
+  color: #a3a3a3;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #171717;
+  margin: 8px 0 0;
+}
+
+.emptyHint {
+  font-size: 14px;
+  color: #8b8b8b;
+  max-width: 360px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid #ededed;
+  border-radius: 12px;
+}
+
+.table {
+  width: 100%;
+  min-width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.table tr:not(:last-child) td {
+  border-bottom: 1px solid #ededed;
+}
+
+.table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  font-size: 13px;
+  font-family: var(--font-inter);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.rowLabel {
+  color: #8b8b8b;
+  background: #fafafa;
+  width: 160px;
+  position: sticky;
+  left: 0;
+}
+
+.productCell {
+  position: relative;
+  text-align: center;
+  min-width: 220px;
+}
+
+.removeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #a3a3a3;
+}
+
+.removeBtn:hover {
+  color: #e53935;
+}
+
+.productImg {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.cartBtn {
+  background: #f2f2f2;
+  border: none;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.productName {
+  font-weight: 600;
+  color: #171717;
+  white-space: normal;
+}
+
+.productPrice {
+  font-weight: 600;
+  color: #171717;
+}
+
+.specValue {
+  color: #545454;
+  white-space: normal;
+}
+
+.groupHeader {
+  background: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  padding-top: 24px;
+  border-bottom: none !important;
+}
