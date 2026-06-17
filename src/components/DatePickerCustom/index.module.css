@@ -1,0 +1,146 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #d1d1d8;
+  font-size: 14px;
+  font-family: var(--font-inter);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.triggerSelected {
+  color: #17183b;
+}
+
+.chevron {
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 260px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 12px;
+  cursor: default;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.monthLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #171717;
+  text-transform: capitalize;
+}
+
+.navBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #545454;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.navBtn:hover {
+  background: #f2f2f2;
+}
+
+.weekRow {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 2px;
+}
+
+.weekday {
+  text-align: center;
+  font-size: 11px;
+  color: #a3a3a3;
+  padding: 4px 0;
+}
+
+.day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: #171717;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.day:hover:not(:disabled) {
+  background: #f2f2f2;
+}
+
+.dayEmpty {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.dayToday {
+  font-weight: 700;
+}
+
+.daySelected {
+  background: #17183b;
+  color: #ffffff;
+}
+
+.daySelected:hover {
+  background: #17183b;
+}
+
+.dayDisabled {
+  color: #d1d1d8;
+  cursor: not-allowed;
+}
+
+.resetBtn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 8px 0;
+  border: none;
+  border-top: 1px solid #f0f0f0;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 500;
+  color: #545454;
+  cursor: pointer;
+  border-radius: 0 0 8px 8px;
+}
+
+.resetBtn:hover {
+  background: #f7f7f7;
+  color: #17183b;
+}

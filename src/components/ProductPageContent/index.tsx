@@ -33,12 +33,12 @@ import ProductSpecsGrid from "@homeberris/components/ProductSpecsGrid";
 import ProductDetailsSection from "@homeberris/components/ProductDetailsSection";
 import ProductReviewsSection from "@homeberris/components/ProductReviewsSection";
 import ProductColorSelector from "../ProductColorSelector";
+import AuthModal from "@homeberris/components/AuthModal";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { checkToken } from "@homeberris/utils/auth";
 import { useFavorites } from "@homeberris/context/favoritesContext";
 import { useCookies } from "react-cookie";
 import { insertBasket } from "@homeberris/http/basketApi";
-import { addToBasket } from "@homeberris/utils/indexedDB";
 import { useTranslation } from "react-i18next";
 import { addRecentlyViewed } from "@homeberris/utils/recentlyViewed";
 import { useTrackRecentlyViewed } from "@homeberris/hooks/useTrackRecentlyViewed";
@@ -110,6 +110,7 @@ export default function ProductPageContent({
 
 
   const isAuth = checkToken();
+  const [showAuthModal, setShowAuthModal] = React.useState(false);
   const { mutate } = useMutation({
     mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, cookies.token),
     onSuccess: () => {
@@ -122,13 +123,19 @@ export default function ProductPageContent({
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (isAuth && cookies.token) {
-      mutate(catalog!.uuid);
-    } else {
-      addToBasket(catalog, 1)
-        .then(() => setOpenSuccess(true))
-        .catch((err) => console.error(err));
+    if (!isAuth || !cookies.token) {
+      setShowAuthModal(true);
+      return;
     }
+    mutate(catalog!.uuid);
+  };
+
+  const handleWishlistClick = () => {
+    if (!isAuth) {
+      setShowAuthModal(true);
+      return;
+    }
+    catalog && toggleFavorite(catalog);
   };
 
   const handleDragStart = (x: number) => {
@@ -480,7 +487,7 @@ export default function ProductPageContent({
             <div className={styles.actionButtons}>
               <button
                 className={styles.btnWishlist}
-                onClick={() => catalog && toggleFavorite(catalog)}
+                onClick={handleWishlistClick}
               >
                 {t('productPageContent.actions.addToWishlist')}
               </button>
@@ -576,6 +583,8 @@ export default function ProductPageContent({
           />
         </div>
       </CustomModal>
+
+      <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
     </div>
   );
 }

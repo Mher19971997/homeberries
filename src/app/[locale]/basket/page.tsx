@@ -8,7 +8,11 @@ import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalo
 import BasketItem from '@homeberris/components/BasketItem';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getAllBaskets, removeBasketCatalog } from '@homeberris/http/basketApi';
+import {
+  getAllBaskets,
+  removeBasketCatalog,
+  updateBasketQuantity as updateRemoteBasketQuantity,
+} from '@homeberris/http/basketApi';
 import { getDeliveryAddressApi } from '@homeberris/http/deliveryAddressApi';
 import { getProfile } from '@homeberris/http/userApi';
 import qs from 'qs';
@@ -41,6 +45,8 @@ export default function BasketPage() {
   const BASKET_LIMIT = 3;
   const [promoCode, setPromoCode] = React.useState('');
   const [bonusCard, setBonusCard] = React.useState('');
+  const [bonusCardError, setBonusCardError] = React.useState(false);
+  const [emptyBasketError, setEmptyBasketError] = React.useState(false);
 
   const { data: baskets, isLoading: isBasketsLoading } = useQuery({
     queryKey: ['getAllBaskets'],
@@ -81,10 +87,17 @@ export default function BasketPage() {
   const total = allBasketItems.length > 0 ? subtotal + tax + SHIPPING : 0;
 
   const handleCheckout = () => {
-    // if (!isAuth) { router.push('/security/login'); return; }
-    // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
-    // setShowPaymentModal(true);
-      console.log('checkout clicked');
+    if (allBasketItems.length === 0) {
+      setEmptyBasketError(true);
+      showToast(t('basket.summary.emptyBasketCheckout'), 'warning');
+      return;
+    }
+    setEmptyBasketError(false);
+    if (!bonusCard.trim()) {
+      setBonusCardError(true);
+      showToast(t('basket.summary.bonusRequired'), 'warning');
+      return;
+    }
     router.push(`/order`);
   };
 
@@ -149,6 +162,9 @@ export default function BasketPage() {
                   if (!isAuth) {
                     await updateBasketItemQuantity(uuid, quantity);
                     setLocalBaskets(await getBasketItems());
+                  } else {
+                    await updateRemoteBasketQuantity(uuid, quantity, cookies.token);
+                    await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
                   }
                 }}
               />
@@ -223,16 +239,25 @@ export default function BasketPage() {
           </div>
 
           <div className={styles.field}>
-            <label className={styles.fieldLabel}>{t('basket.summary.bonusLabel')}</label>
+            <label className={styles.fieldLabel}>
+              {t('basket.summary.bonusLabel')} <span style={{ color: 'red' }}>*</span>
+            </label>
             <div className={styles.inputWrapper}>
               <input
                 className={styles.inputWithBtn}
                 placeholder={t('basket.summary.bonusPlaceholder')}
                 value={bonusCard}
-                onChange={(e) => setBonusCard(e.target.value)}
+                onChange={(e) => {
+                  setBonusCard(e.target.value);
+                  if (bonusCardError) setBonusCardError(false);
+                }}
+                required
               />
               <button className={styles.applyBtn}>{t('basket.summary.apply')}</button>
             </div>
+            {bonusCardError && (
+              <span className={styles.errorText}>{t('basket.summary.bonusRequired')}</span>
+            )}
           </div>
 
           <div className={styles.summaryRowsContainer}>
@@ -254,6 +279,10 @@ export default function BasketPage() {
               <span className={styles.totalPrice}>{formatPrice(total)}</span>
             </div>
           </div>
+
+          {emptyBasketError && (
+            <span className={styles.errorText}>{t('basket.summary.emptyBasketCheckout')}</span>
+          )}
 
           <button className={styles.checkoutBtn} onClick={handleCheckout}>
             {t('basket.summary.checkout')}

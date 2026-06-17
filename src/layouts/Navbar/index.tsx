@@ -1,59 +1,64 @@
-'use client';
-import React, { useState } from 'react';
-import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
-import { useFavorites } from '@homeberris/context/favoritesContext';
-import { useQuery } from '@tanstack/react-query';
-import { useCookies } from 'react-cookie';
-import { useAuth } from '@homeberris/hooks/useAuth';
-import { getAllBaskets } from '@homeberris/http/basketApi';
-import { getBasketCount } from '@homeberris/utils/indexedDB';
-import qs from 'qs';
-import styles from './index.module.css';
-import { getProfile } from '@homeberris/http/userApi';
-import { getAllCatalogs } from '@homeberris/http/catalogApi';
-import { CartIcon, FavoriteIcon, GlobeIcon, SearchIcon, UserIcon } from '@homeberris/assets/icons/navbar';
-import SelectLanguageInPopover from '@homeberris/components/SelectLanguageInPopover';
-import { useTranslation } from 'react-i18next';
-import { useDebounce } from '@homeberris/hooks/useDebounce';
-import { CatalogItem } from '@homeberris/types/catalog';
-import { useParams } from 'next/navigation';
+"use client";
+import React, { useState } from "react";
+import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedRouter";
+import { useFavorites } from "@homeberris/context/favoritesContext";
+import { useQuery } from "@tanstack/react-query";
+import { useCookies } from "react-cookie";
+import { useAuth } from "@homeberris/hooks/useAuth";
+import { getAllBaskets } from "@homeberris/http/basketApi";
+import { getBasketCount } from "@homeberris/utils/indexedDB";
+import qs from "qs";
+import styles from "./index.module.css";
+import { getProfile } from "@homeberris/http/userApi";
+import { getAllCatalogs } from "@homeberris/http/catalogApi";
+import {
+  CartIcon,
+  FavoriteIcon,
+  GlobeIcon,
+  SearchIcon,
+  UserIcon,
+} from "@homeberris/assets/icons/navbar";
+import SelectLanguageInPopover from "@homeberris/components/SelectLanguageInPopover";
+import { useTranslation } from "react-i18next";
+import { useDebounce } from "@homeberris/hooks/useDebounce";
+import { CatalogItem } from "@homeberris/types/catalog";
+import { useParams } from "next/navigation";
 
 const getLoc = (val: any, locale: string): string => {
-  if (!val || typeof val === 'string') return val ?? '';
-  return val[locale] || val.en || val.ru || '';
+  if (!val || typeof val === "string") return val ?? "";
+  return val[locale] || val.en || val.ru || "";
 };
 
-
 const Navbar = () => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const params = useParams();
-  const locale = (params?.locale as string) ?? 'en';
+  const locale = (params?.locale as string) ?? "en";
   const router = useRouter();
   const isAuth = useAuth();
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(["token"]);
   const { items: favorites } = useFavorites();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = React.useRef<HTMLDivElement>(null);
   const debouncedSearch = useDebounce(searchValue, 300);
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   React.useEffect(() => {
     const onOpenMenu = () => setMenuOpen(true);
-    window.addEventListener('openNavMenu', onOpenMenu);
-    return () => window.removeEventListener('openNavMenu', onOpenMenu);
+    window.addEventListener("openNavMenu", onOpenMenu);
+    return () => window.removeEventListener("openNavMenu", onOpenMenu);
   }, []);
 
   const { data: profile } = useQuery({
-    queryKey: ['getProfile', cookies.token],
+    queryKey: ["getProfile", cookies.token],
     queryFn: () => getProfile(cookies.token),
     enabled: !!isAuth && !!cookies.token,
   });
@@ -61,8 +66,14 @@ const Navbar = () => {
   const userLetter = profile?.email ? profile.email[0].toUpperCase() : null;
 
   const { data: searchResults } = useQuery({
-    queryKey: ['navbarSearch', debouncedSearch],
-    queryFn: () => getAllCatalogs(qs.stringify({ filterMeta: { name: { iLike: `%${debouncedSearch}%` } }, queryMeta: { paginate: true, limit: 8 } })),
+    queryKey: ["navbarSearch", debouncedSearch],
+    queryFn: () =>
+      getAllCatalogs(
+        qs.stringify({
+          filterMeta: { name: { iLike: `%${debouncedSearch}%` } },
+          queryMeta: { paginate: true, limit: 8 },
+        }),
+      ),
     enabled: debouncedSearch.length >= 2,
   });
 
@@ -72,38 +83,62 @@ const Navbar = () => {
         setShowDropdown(false);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-  const userAvatar = profile?.avatar ? `http://localhost:6001/${profile.avatar}` : null;
+  const userAvatar = profile?.avatar
+    ? `http://localhost:6001/${profile.avatar}`
+    : null;
 
   const { data: basket } = useQuery({
-    queryKey: ['basketCount', cookies.token],
-    queryFn: () => getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
+    queryKey: ["basketCount", cookies.token],
+    queryFn: () =>
+      getAllBaskets(
+        qs.stringify({ queryMeta: { paginate: true } }),
+        cookies.token,
+      ),
     enabled: !!isAuth && !!cookies.token,
   });
 
   React.useEffect(() => {
     if (!isAuth) {
-      getBasketCount().then(setLocalBasketCount).catch(() => setLocalBasketCount(0));
+      getBasketCount()
+        .then(setLocalBasketCount)
+        .catch(() => setLocalBasketCount(0));
 
       const handleBasketUpdated = () => {
-        getBasketCount().then(setLocalBasketCount).catch(() => setLocalBasketCount(0));
+        getBasketCount()
+          .then(setLocalBasketCount)
+          .catch(() => setLocalBasketCount(0));
       };
 
-      window.addEventListener('basketUpdated', handleBasketUpdated);
-      return () => window.removeEventListener('basketUpdated', handleBasketUpdated);
+      window.addEventListener("basketUpdated", handleBasketUpdated);
+      return () =>
+        window.removeEventListener("basketUpdated", handleBasketUpdated);
     }
   }, [isAuth]);
 
-  const basketCount = isAuth ? (basket?.meta?.count || 0) : localBasketCount;
+  React.useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
+  const basketCount = isAuth ? basket?.meta?.count || 0 : localBasketCount;
 
   return (
-    <div className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ''}`}>
+    <div
+      className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""}`}
+    >
       <div className={styles.navbarInner}>
-
         {/* Лого */}
-        <span className={styles.logo} onClick={() => router.push('/')}>
+        <span className={styles.logo} onClick={() => router.push("/")}>
           cyber
         </span>
 
@@ -112,16 +147,21 @@ const Navbar = () => {
           <div className={styles.searchBox}>
             <SearchIcon className={styles.searchIcon} />
             <input
-              placeholder={t('nav.search')}
+              placeholder={t("nav.search")}
               className={styles.searchInput}
               suppressHydrationWarning
               value={searchValue}
-              onChange={(e) => { setSearchValue(e.target.value); setShowDropdown(true); }}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+                setShowDropdown(true);
+              }}
               onFocus={() => searchValue.length >= 2 && setShowDropdown(true)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' && searchValue.trim()) {
+                if (e.key === "Enter" && searchValue.trim()) {
                   setShowDropdown(false);
-                  router.push(`/catalog?search=${encodeURIComponent(searchValue.trim())}`);
+                  router.push(
+                    `/catalog?search=${encodeURIComponent(searchValue.trim())}`,
+                  );
                 }
               }}
             />
@@ -132,21 +172,30 @@ const Navbar = () => {
                 searchResults.data.map((item: CatalogItem) => {
                   const cat = getLoc((item as any).category?.name, locale);
                   const sub = getLoc((item as any).subCategorie?.name, locale);
-                  const href = cat && sub
-                    ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
-                    : cat ? `/catalog/${encodeURIComponent(cat)}/${item.uuid}` : `/catalog`;
+                  const href =
+                    cat && sub
+                      ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
+                      : cat
+                        ? `/catalog/${encodeURIComponent(cat)}/${item.uuid}`
+                        : `/catalog`;
                   return (
                     <div
                       key={item.uuid}
                       className={styles.searchDropdownItem}
-                      onClick={() => { setShowDropdown(false); setSearchValue(''); router.push(href); }}
+                      onClick={() => {
+                        setShowDropdown(false);
+                        setSearchValue("");
+                        router.push(href);
+                      }}
                     >
                       {getLoc(item.name, locale)}
                     </div>
                   );
                 })
               ) : (
-                <div className={styles.searchDropdownEmpty}>{t('catalog.empty')}</div>
+                <div className={styles.searchDropdownEmpty}>
+                  {t("catalog.empty")}
+                </div>
               )}
             </div>
           )}
@@ -155,10 +204,10 @@ const Navbar = () => {
         {/* Навигация */}
         <nav className={styles.navLinks}>
           {[
-            { label: t('nav.home'), href: '/' },
-            { label: t('nav.catalog'), href: '/catalog' },
-            { label: t('nav.about'), href: '/about' },
-            { label: t('nav.contact'), href: '/contact' },
+            { label: t("nav.home"), href: "/" },
+            { label: t("nav.catalog"), href: "/catalog" },
+            { label: t("nav.about"), href: "/about" },
+            { label: t("nav.contact"), href: "/contact" },
           ].map(({ label, href }) => (
             <span
               key={href}
@@ -171,22 +220,46 @@ const Navbar = () => {
         </nav>
 
         <div className={styles.navActions}>
-          <button className={styles.iconBtn} onClick={() => router.push('/favorites')}>
+          <button
+            className={styles.iconBtn}
+            onClick={() => router.push("/favorites")}
+          >
             <div className={styles.badgeWrapper}>
               <FavoriteIcon />
-              {favorites.length > 0 && <span key={favorites.length} className={styles.badge}>{favorites.length}</span>}
+              {favorites.length > 0 && (
+                <span key={favorites.length} className={styles.badge}>
+                  {favorites.length}
+                </span>
+              )}
             </div>
           </button>
-          <button className={styles.iconBtn} onClick={() => router.push('/basket')}>
+          <button
+            className={styles.iconBtn}
+            onClick={() => router.push("/basket")}
+          >
             <div className={styles.badgeWrapper}>
               <CartIcon />
-              {basketCount > 0 && <span key={basketCount} className={styles.badge}>{basketCount}</span>}
+              {basketCount > 0 && (
+                <span key={basketCount} className={styles.badge}>
+                  {basketCount}
+                </span>
+              )}
             </div>
           </button>
-          <button className={styles.iconBtn} onClick={() => router.push(isAuth ? '/profile' : '/security/login')}>
+          <button
+            className={styles.iconBtn}
+            onClick={() => router.push(isAuth ? "/profile" : "/security/login")}
+          >
             {isAuth && userAvatar ? (
-              <div className={styles.avatarCircle} style={{ padding: 0, overflow: 'hidden' }}>
-                <img src={userAvatar} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div
+                className={styles.avatarCircle}
+                style={{ padding: 0, overflow: "hidden" }}
+              >
+                <img
+                  src={userAvatar}
+                  alt="avatar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               </div>
             ) : isAuth && userLetter ? (
               <div className={styles.avatarCircle}>{userLetter}</div>
@@ -207,23 +280,28 @@ const Navbar = () => {
           onClick={() => setMenuOpen(true)}
           aria-label="open menu"
         >
-          <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="25"
+            height="17"
+            viewBox="0 0 25 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <rect width="25" height="2.5" rx="1.25" fill="#080341" />
             <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341" />
             <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341" />
           </svg>
         </button>
-
       </div>
 
       {/* Overlay */}
       <div
-        className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ''}`}
+        className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ""}`}
         onClick={() => setMenuOpen(false)}
       />
 
       {/* Drawer */}
-      <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ''}`}>
+      <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}>
         <div className={styles.drawerHeader}>
           <span className={styles.drawerLogo}>cyber</span>
           <button
@@ -239,14 +317,17 @@ const Navbar = () => {
 
         <nav className={styles.drawerNav}>
           {[
-            { label: t('nav.home'), href: '/' },
-            { label: t('nav.about'), href: '/about' },
-            { label: t('nav.contact'), href: '/contact' },
-            { label: t('nav.blog'), href: '/blog' },
+            { label: t("nav.home"), href: "/" },
+            { label: t("nav.about"), href: "/about" },
+            { label: t("nav.contact"), href: "/contact" },
+            { label: t("nav.blog"), href: "/blog" },
           ].map(({ label, href }) => (
             <span
               key={href}
-              onClick={() => { router.push(href); setMenuOpen(false); }}
+              onClick={() => {
+                router.push(href);
+                setMenuOpen(false);
+              }}
               className={styles.drawerNavLink}
             >
               {label}
@@ -255,36 +336,73 @@ const Navbar = () => {
         </nav>
 
         <div className={styles.drawerActions}>
-          <button className={styles.drawerIconBtn} onClick={() => { router.push('/favorites'); setMenuOpen(false); }}>
+          <button
+            className={styles.drawerIconBtn}
+            onClick={() => {
+              router.push("/favorites");
+              setMenuOpen(false);
+            }}
+          >
             <div className={styles.badgeWrapper}>
               <FavoriteIcon />
-              {favorites.length > 0 && <span className={styles.badge}>{favorites.length}</span>}
+              {favorites.length > 0 && (
+                <span className={styles.badge}>{favorites.length}</span>
+              )}
             </div>
-            <span className={styles.drawerIconLabel}>{t('profile.favorites')}</span>
+            <span className={styles.drawerIconLabel}>
+              {t("profile.favorites")}
+            </span>
           </button>
-          <button className={styles.drawerIconBtn} onClick={() => { router.push('/basket'); setMenuOpen(false); }}>
+          <button
+            className={styles.drawerIconBtn}
+            onClick={() => {
+              router.push("/basket");
+              setMenuOpen(false);
+            }}
+          >
             <div className={styles.badgeWrapper}>
               <CartIcon />
-              {basketCount > 0 && <span className={styles.badge}>{basketCount}</span>}
+              {basketCount > 0 && (
+                <span className={styles.badge}>{basketCount}</span>
+              )}
             </div>
-            <span className={styles.drawerIconLabel}>{t('profile.basket')}</span>
+            <span className={styles.drawerIconLabel}>
+              {t("profile.basket")}
+            </span>
           </button>
-          <button className={styles.drawerIconBtn} onClick={() => { router.push(isAuth ? '/profile' : '/security/login'); setMenuOpen(false); }}>
+          <button
+            className={styles.drawerIconBtn}
+            onClick={() => {
+              router.push(isAuth ? "/profile" : "/security/login");
+              setMenuOpen(false);
+            }}
+          >
             {isAuth && userAvatar ? (
-              <div className={styles.avatarCircle} style={{ padding: 0, overflow: 'hidden' }}>
-                <img src={userAvatar} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <div
+                className={styles.avatarCircle}
+                style={{ padding: 0, overflow: "hidden" }}
+              >
+                <img
+                  src={userAvatar}
+                  alt="avatar"
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
               </div>
             ) : isAuth && userLetter ? (
               <div className={styles.avatarCircle}>{userLetter}</div>
             ) : (
               <UserIcon />
             )}
-            <span className={styles.drawerIconLabel}>{isAuth ? t('nav.profile') : t('nav.login')}</span>
+            <span className={styles.drawerIconLabel}>
+              {isAuth ? t("nav.profile") : t("nav.login")}
+            </span>
           </button>
           <SelectLanguageInPopover>
             <button className={styles.drawerIconBtn}>
               <GlobeIcon />
-              <span className={styles.drawerIconLabel}>{t('nav.language')}</span>
+              <span className={styles.drawerIconLabel}>
+                {t("nav.language")}
+              </span>
             </button>
           </SelectLanguageInPopover>
         </div>

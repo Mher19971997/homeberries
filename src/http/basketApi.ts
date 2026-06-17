@@ -29,7 +29,7 @@ const incrementBasketCatalog = async (
   uuid: any,
   token: string
 ): Promise<BasketDataItem> => {
-  const { data } = await $host.patch(`/api/v1/basket/incremant/${uuid}`, undefined, {
+  const { data } = await $host.patch(`/api/v1/basket/incremant/${uuid}`, {}, {
     headers: authHeader(token)
   });
   return data;
@@ -39,7 +39,18 @@ const decrementBasketCatalog = async (
   uuid: string,
   token: string
 ): Promise<BasketDataItem> => {
-  const { data } = await $host.patch(`/api/v1/basket/decrement/${uuid}`, undefined, {
+  const { data } = await $host.patch(`/api/v1/basket/decrement/${uuid}`, {}, {
+    headers: authHeader(token)
+  });
+  return data;
+};
+
+const updateBasketQuantity = async (
+  uuid: string,
+  quantity: number,
+  token: string
+): Promise<BasketDataItem> => {
+  const { data } = await $host.patch(`/api/v1/basket/${uuid}`, { quantity }, {
     headers: authHeader(token)
   });
   return data;
@@ -55,4 +66,4 @@ const removeBasketCatalog = async (
   return data;
 };
 
-export { getAllBaskets, insertBasket, decrementBasketCatalog, incrementBasketCatalog, removeBasketCatalog };
+export { getAllBaskets, insertBasket, decrementBasketCatalog, incrementBasketCatalog, updateBasketQuantity, removeBasketCatalog };

@@ -10,5 +10,6 @@ declare module '*.module.scss' {
 
 // swipper js
 
-declare module "swiper/modules" 
+declare module "swiper/modules"
 declare module "swiper/css"
+declare module "swiper/css/grid"

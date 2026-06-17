@@ -33,6 +33,7 @@ import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocom
 import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
 import { useTranslation } from "react-i18next";
 import CustomModal from "@homeberris/components/CustomModal";
+import DatePickerCustom from "@homeberris/components/DatePickerCustom";
 
 const GOOGLE_LIBRARIES: ("places")[] = ["places"];
 
@@ -319,6 +320,7 @@ function ShippingStep({
   onSelect: (id: string) => void;
 }) {
   const { t } = useTranslation('common');
+  const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
   const SHIPMENT_METHODS: ShipmentMethod[] = [
     {
       id: "free",
@@ -377,21 +379,19 @@ function ShippingStep({
             <div className={styles.shipmentDate}>
               {method.date ? (
                 <span>{method.date}</span>
-              ) : (
-                <span className={styles.selectDate}>
-                  {t('checkout.shipping.date')}
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#a3a3a3"
-                    strokeWidth="2"
-                  >
-                    <polyline points="6 9 12 15 18 9" />
-                  </svg>
-                </span>
-              )}
+              ) : method.id === "schedule" ? (
+                <DatePickerCustom
+                  value={scheduledDate}
+                  placeholder={t('checkout.shipping.date')}
+                  disablePast
+                  selected={selected === method.id}
+                  onChange={(newDate) => {
+                    setScheduledDate(newDate);
+                    onSelect(method.id);
+                  }}
+                  onReset={() => setScheduledDate(null)}
+                />
+              ) : null}
             </div>
           </label>
         ))}

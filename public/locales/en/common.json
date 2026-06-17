@@ -109,6 +109,8 @@
       "promoPlaceholder": "Code",
       "bonusLabel": "Your bonus card number",
       "bonusPlaceholder": "Enter Card Number",
+      "bonusRequired": "Enter your bonus card number to place the order",
+      "emptyBasketCheckout": "Your basket is empty, add items to place the order",
       "apply": "Apply",
       "subtotal": "Subtotal",
       "tax": "Estimated Tax",
