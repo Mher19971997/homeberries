@@ -18,6 +18,7 @@ import Breadcrumb from '@homeberris/components/Breadcrumb';
 import { ScaleIcon } from '@homeberris/assets/icons/compare';
 import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
+import { CartIcon } from '@homeberris/assets/icons/navbar';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -177,7 +178,7 @@ function ComparePage() {
                       onClick={() => addToCart(p)}
                       aria-label="add to cart"
                     >
-                      🛒
+                      <CartIcon/>
                     </button>
                   </td>
                 );
