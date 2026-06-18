@@ -68,7 +68,7 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
           return prev;
         }
 
-        return [...prev, item];
+        return [item, ...prev];
       });
     },
     [showToast, t],

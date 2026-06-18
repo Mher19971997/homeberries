@@ -96,7 +96,7 @@ export default function Home() {
 
   const buildQuery = () => {
     const filters: any = {
-      queryMeta: { paginate: true, limit: ITEMS_LIMIT, page: newPage },
+      queryMeta: { paginate: true, limit: ITEMS_LIMIT, page: newPage, order: { createdAt: 'DESC' } },
     };
 
     if (activeTab === 'featured') {
@@ -127,7 +127,7 @@ export default function Home() {
 
   const { data: discountData, isLoading: isDiscountLoading } = useQuery({
     queryKey: ['getDiscountCatalogs', discountPage],
-    queryFn: () => getAllCatalogs(qs.stringify({ filterMeta: { isDiscount: true }, queryMeta: { paginate: true, limit: DISCOUNT_LIMIT, page: discountPage } })),
+    queryFn: () => getAllCatalogs(qs.stringify({ filterMeta: { isDiscount: true }, queryMeta: { paginate: true, limit: DISCOUNT_LIMIT, page: discountPage, order: { createdAt: 'DESC' } } })),
   });
 
   const catalogs: CatalogItem[] = data?.data || [];

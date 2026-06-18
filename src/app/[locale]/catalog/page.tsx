@@ -85,6 +85,7 @@ export default function CatalogIndexPage() {
     }
     if (sortBy === 'price_asc') filters.queryMeta.order = { price: 'ASC' };
     else if (sortBy === 'price_desc') filters.queryMeta.order = { price: 'DESC' };
+    else filters.queryMeta.order = { createdAt: 'DESC' };
 
     return qs.stringify(filters);
   };
