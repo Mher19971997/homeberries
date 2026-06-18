@@ -1,6 +1,7 @@
 'use client'
 
 import { Box, Typography, Link } from '@mui/material';
+import NextLink from 'next/link';
 import styles from './index.module.css';
 import { FacebookIcon, InstagramIcon, TikTokIcon, TwitterIcon } from '@homeberris/assets/icons/footer';
 import { useTranslation } from 'react-i18next';
@@ -25,8 +26,8 @@ export default function Footer() {
           <Typography className={styles.columnTitle}>{t('footer.services.title')}</Typography>
           <Box className={styles.linksList}>
             {/* <Link href="/catalog" className={styles.footerLink}>{t('nav.catalog')}</Link> */}
-            <Link href="/about" className={styles.footerLink}>{t('nav.about')}</Link>
-            <Link href="/contact" className={styles.footerLink}>{t('nav.contact')}</Link>
+            <Link component={NextLink} href="/about" className={styles.footerLink}>{t('nav.about')}</Link>
+            <Link component={NextLink} href="/contact" className={styles.footerLink}>{t('nav.contact')}</Link>
             {/* <Link href="#" className={styles.footerLink}>{t('footer.services.bonusProgram')}</Link> */}
             {/* <Link href="#" className={styles.footerLink}>{t('footer.services.giftCards')}</Link> */}
             {/* <Link href="#" className={styles.footerLink}>{t('footer.services.creditPayment')}</Link> */}
@@ -41,7 +42,7 @@ export default function Footer() {
           <Box className={styles.linksList}>
             {/* <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.deliveryTerms')}</Link> */}
             {/* <Link href="#" className={styles.footerLink}>{t('footer.buyerHelp.exchangeReturn')}</Link> */}
-            <Link href="/contact" className={styles.footerLink}>{t('footer.buyerHelp.faq')}</Link>
+            <Link component={NextLink} href="/contact#faq" className={styles.footerLink} scroll={false}>{t('footer.buyerHelp.faq')}</Link>
           </Box>
         </Box>
 
@@ -67,7 +68,7 @@ export default function Footer() {
         <Typography className={styles.copyright}>
           {t('footer.copyright', { year: new Date().getFullYear() })}
         </Typography>
-        <Link href="/privacy-policy" className={styles.privacyLink}>
+        <Link component={NextLink} href="/privacy-policy" className={styles.privacyLink}>
           {t('privacyPolicy.breadcrumb')}
         </Link>
       </Box>

@@ -501,13 +501,13 @@ export default function ProductPageContent({
               <button className={styles.btnCart} onClick={handleAddToBasket}>
                 {isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
               </button>
-              <button
+              {/* <button
                 className={styles.btnWishlist}
                 onClick={handleCompareClick}
                 style={isInCompare(catalog.uuid) ? { color: '#1e88e5', borderColor: '#1e88e5' } : undefined}
               >
                 <ScaleIcon size={18} />
-              </button>
+              </button> */}
             </div>
 
             {/* Доставка */}

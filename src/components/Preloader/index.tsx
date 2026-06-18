@@ -49,6 +49,8 @@ export default function Preloader() {
     const removeTimer = setTimeout(() => {
       setVisible(false);
       document.body.style.overflow = '';
+      (window as any).__preloaderDone = true;
+      window.dispatchEvent(new Event('preloaderDone'));
     }, MIN_DISPLAY_MS + 400);
 
     return () => {

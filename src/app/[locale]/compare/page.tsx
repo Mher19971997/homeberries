@@ -225,6 +225,61 @@ function ComparePage() {
           </tbody>
         </table>
       </div>
+
+      {/* Мобильная раскладка: товары друг под другом, без горизонтального скролла */}
+      <div className={styles.mobileList}>
+        {products.map((p) => {
+          const imgSrc = p.images?.length
+            ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
+            : '';
+          return (
+            <div key={p.uuid} className={styles.mobileCard}>
+              <button
+                className={styles.removeBtn}
+                onClick={() => removeFromCompare(p.uuid as any)}
+                aria-label="remove"
+              >
+                ✕
+              </button>
+
+              <div className={styles.mobileHeader}>
+                {imgSrc && (
+                  <img
+                    src={imgSrc}
+                    alt={getLoc(p.name, locale)}
+                    className={styles.mobileImg}
+                    onClick={() => router.push(buildCatalogUrl(p))}
+                  />
+                )}
+                <div className={styles.mobileHeaderInfo}>
+                  <p className={styles.mobileName}>{getLoc(p.name, locale)}</p>
+                  <p className={styles.mobilePrice}>{formatPrice(p.price)}</p>
+                  <button className={styles.mobileCartBtn} onClick={() => addToCart(p)}>
+                    <CartIcon />
+                    {t('compare.addToCart')}
+                  </button>
+                </div>
+              </div>
+
+              {specGroups.map(({ groupKey, groupLabel, rows }) => {
+                const filledRows = rows.filter(([rowKey]) => getSpecValue(p, groupKey, rowKey));
+                if (filledRows.length === 0) return null;
+                return (
+                  <div key={groupKey} className={styles.mobileGroup}>
+                    <p className={styles.mobileGroupTitle}>{groupLabel}</p>
+                    {filledRows.map(([rowKey, rowLabel]) => (
+                      <div key={rowKey} className={styles.mobileRow}>
+                        <span className={styles.mobileRowLabel}>{rowLabel}</span>
+                        <span className={styles.mobileRowValue}>{getSpecValue(p, groupKey, rowKey)}</span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

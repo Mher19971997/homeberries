@@ -1,6 +1,6 @@
 .page {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 16px 80px;
   box-sizing: border-box;
@@ -14,7 +14,7 @@
 .heroTitle {
   font-size: clamp(28px, 5vw, 48px);
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 12px;
   font-family: var(--font-inter);
 }
@@ -38,7 +38,7 @@
   margin: 0 0 48px;
   padding: 24px 28px;
   background: #f8f8fc;
-  border-left: 4px solid #1a1a2e;
+  border-left: 4px solid #000000;
   border-radius: 0 12px 12px 0;
   font-family: var(--font-inter);
 }
@@ -65,7 +65,7 @@
 .sectionTitle {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 14px;
   font-family: var(--font-inter);
 }

@@ -1,6 +1,6 @@
 .page {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   padding-bottom: 80px;
 }
@@ -25,7 +25,7 @@
 
 .breadcrumbActive {
   font-size: 14px;
-  color: #1a1a2e;
+  color: #000000;
   font-weight: 600;
 }
 
@@ -37,7 +37,7 @@
 .heroTitle {
   font-size: clamp(28px, 5vw, 44px);
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 12px;
 }
 
@@ -102,7 +102,7 @@
 .cardTitle {
   font-size: 18px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 10px;
   line-height: 1.4;
 }
@@ -128,5 +128,5 @@
 .readMore {
   font-size: 14px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #000000;
 }

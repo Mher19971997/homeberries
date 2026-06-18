@@ -61,7 +61,7 @@
 .title {
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 8px;
   font-family: var(--font-inter), sans-serif;
 }
@@ -103,7 +103,7 @@
   width: 100%;
   height: 46px;
   background: transparent;
-  color: #1a1a2e;
+  color: #000000;
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   font-size: 15px;

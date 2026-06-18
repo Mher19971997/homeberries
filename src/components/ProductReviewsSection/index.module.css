@@ -9,7 +9,7 @@
 /* ─── Block 1: Rating ────────────────────────────────── */
 .ratingBlock {
   background-color: #ffffff;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
   padding: 0 0;
@@ -160,7 +160,7 @@
 /* ─── Block 2: Reviews ───────────────────────────────── */
 .reviewsBlock {
   background-color: #ffffff;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   width: 100%;
   padding: 0px 0px;

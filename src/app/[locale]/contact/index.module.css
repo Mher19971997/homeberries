@@ -1,6 +1,6 @@
 .page {
   width: 100%;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 16px 80px;
   box-sizing: border-box;
@@ -13,7 +13,7 @@
 .heroTitle {
   font-size: clamp(28px, 5vw, 44px);
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 12px;
   font-family: var(--font-inter);
 }
@@ -81,7 +81,7 @@
 .label {
   font-size: 13px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #000000;
   font-family: var(--font-inter);
 }
 
@@ -92,7 +92,7 @@
   border-radius: 10px;
   padding: 11px 14px;
   font-size: 14px;
-  color: #1a1a2e;
+  color: #000000;
   outline: none;
   box-sizing: border-box;
   font-family: var(--font-inter);
@@ -108,7 +108,7 @@
 
 .input:focus,
 .textarea:focus {
-  border-color: #1a1a2e;
+  border-color: #000000;
   background: #fff;
 }
 
@@ -116,7 +116,7 @@
 
 .submit {
   width: 100%;
-  background: #1a1a2e;
+  background: #000000;
   color: #fff;
   border: none;
   border-radius: 10px;
@@ -146,7 +146,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: #1a1a2e;
+  background: #000000;
   color: #fff;
   font-size: 24px;
   display: flex;
@@ -157,7 +157,7 @@
 .successText {
   font-size: 16px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0;
   text-align: center;
   font-family: var(--font-inter);
@@ -165,12 +165,13 @@
 
 .faqSection {
   margin-top: 64px;
+  scroll-margin-top: 100px;
 }
 
 .faqTitle {
   font-size: clamp(22px, 4vw, 32px);
   font-weight: 700;
-  color: #1a1a2e;
+  color: #000000;
   margin: 0 0 10px;
   font-family: var(--font-inter);
 }
@@ -197,7 +198,7 @@
 .accordionQ {
   font-size: 15px;
   font-weight: 600;
-  color: #1a1a2e;
+  color: #000000;
   font-family: var(--font-inter);
 }
 

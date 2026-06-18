@@ -10,7 +10,7 @@
   display: flex;
   width: 100%;
   justify-content: space-between;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 16px;
   margin-bottom: 112px;
@@ -50,7 +50,7 @@
   gap: 48px;
   align-items: flex-start;
   width: 100%;
-  max-width: 1120px;
+  max-width: 1400px;
   margin: 0 auto;
   margin-bottom: 112px;
   justify-content: space-between;

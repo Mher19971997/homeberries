@@ -1,7 +1,9 @@
 .body {
-  max-width: 1120px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 24px 16px 80px;
+  padding: 0 16px 80px;
+  box-sizing: border-box;
 }
 
 .title {
@@ -40,6 +42,10 @@
   overflow-x: auto;
   border: 1px solid #ededed;
   border-radius: 12px;
+}
+
+.mobileList {
+  display: none;
 }
 
 .table {
@@ -136,4 +142,194 @@
   color: #111111;
   padding-top: 24px;
   border-bottom: none !important;
+}
+
+@media (max-width: 1280px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .productCell {
+    min-width: 190px;
+  }
+
+  .productImg {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .table {
+    min-width: 700px;
+  }
+
+  .rowLabel {
+    width: 140px;
+  }
+
+  .productCell {
+    min-width: 170px;
+  }
+}
+
+@media (max-width: 768px) {
+  .body {
+    padding: 0 12px 60px;
+  }
+
+  .title {
+    font-size: 20px;
+    margin: 12px 0 16px;
+  }
+
+  .table {
+    min-width: 560px;
+  }
+
+  .table td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  .rowLabel {
+    width: 110px;
+  }
+
+  .productCell {
+    min-width: 150px;
+  }
+
+  .productImg {
+    width: 90px;
+    height: 90px;
+  }
+
+  .groupHeader {
+    font-size: 14px;
+    padding-top: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .emptyState {
+    padding: 56px 12px;
+  }
+
+  .emptyTitle {
+    font-size: 16px;
+  }
+
+  .emptyHint {
+    font-size: 13px;
+  }
+
+  .tableWrap {
+    display: none;
+  }
+
+  .mobileList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .mobileCard {
+    position: relative;
+    border: 1px solid #ededed;
+    border-radius: 14px;
+    padding: 16px;
+    background: #ffffff;
+  }
+
+  .mobileHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 4px;
+  }
+
+  .mobileImg {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .mobileHeaderInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .mobileName {
+    font-size: 14px;
+    font-weight: 600;
+    color: #171717;
+    margin: 0;
+  }
+
+  .mobilePrice {
+    font-size: 14px;
+    font-weight: 600;
+    color: #171717;
+    margin: 0;
+  }
+
+  .mobileCartBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    background: #f2f2f2;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-family: var(--font-inter);
+    color: #171717;
+    cursor: pointer;
+  }
+
+  .mobileCartBtn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .mobileGroup {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid #f3f3f3;
+  }
+
+  .mobileGroupTitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111111;
+    margin: 0 0 8px;
+  }
+
+  .mobileRow {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 12px;
+  }
+
+  .mobileRow:not(:last-child) {
+    border-bottom: 1px solid #f7f7f7;
+  }
+
+  .mobileRowLabel {
+    color: #8b8b8b;
+    flex-shrink: 0;
+  }
+
+  .mobileRowValue {
+    color: #545454;
+    text-align: right;
+  }
 }

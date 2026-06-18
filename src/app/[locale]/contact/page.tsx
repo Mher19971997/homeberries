@@ -26,6 +26,22 @@ const ContactPage: React.FC = () => {
   const [error, setError] = useState(false);
   const [cookies] = useCookies(['token']);
 
+  React.useEffect(() => {
+    if (window.location.hash !== '#faq') return;
+
+    const scrollToFaq = () => {
+      document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    if ((window as any).__preloaderDone) {
+      scrollToFaq();
+      return;
+    }
+
+    window.addEventListener('preloaderDone', scrollToFaq, { once: true });
+    return () => window.removeEventListener('preloaderDone', scrollToFaq);
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -176,7 +192,7 @@ const ContactPage: React.FC = () => {
         </div>
       </div>
 
-      <div className={styles.faqSection}>
+      <div id="faq" className={styles.faqSection}>
         <h2 className={styles.faqTitle}>{t("contact.faq.title")}</h2>
         <p className={styles.faqSubtitle}>{t("contact.faq.subtitle")}</p>
         <div className={styles.faqList}>
@@ -195,7 +211,7 @@ const ContactPage: React.FC = () => {
                 }}
               >
                 <AccordionSummary
-                  expandIcon={<ExpandMoreIcon sx={{ color: "#1a1a2e" }} />}
+                  expandIcon={<ExpandMoreIcon sx={{ color: "#000000" }} />}
                   sx={{
                     padding: "0 20px",
                     minHeight: "56px",
