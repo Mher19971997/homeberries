@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.css";
 import Breadcrumb from "@homeberris/components/Breadcrumb";
@@ -12,6 +12,34 @@ import { insertContactMessage } from "@homeberris/http/contactMessagesApi";
 import { getToken } from "@homeberris/utils/auth";
 import { useCookies } from "react-cookie";
 
+const Fallback = ({ t, styles, onHide }: {
+  t: any;
+  styles: any;
+  onHide: () => void;
+}) => {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setShow(true);
+
+    const timer = setTimeout(() => {
+      setShow(false);
+      onHide();
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, [onHide]);
+
+  if (!show) return null;
+
+  return (
+    <div className={styles.success}>
+      <span className={styles.successIcon}>✓</span>
+      <p className={styles.successText}>{t("contact.form.success")}</p>
+    </div>
+  );
+};
+
 const ContactPage: React.FC = () => {
   const { t } = useTranslation("common");
   const [form, setForm] = useState({
@@ -21,16 +49,18 @@ const ContactPage: React.FC = () => {
     email: "",
     message: "",
   });
+
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(["token"]);
 
+  // Scroll to FAQ if hash is present
   React.useEffect(() => {
-    if (window.location.hash !== '#faq') return;
+    if (window.location.hash !== "#faq") return;
 
     const scrollToFaq = () => {
-      document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
     };
 
     if ((window as any).__preloaderDone) {
@@ -38,12 +68,12 @@ const ContactPage: React.FC = () => {
       return;
     }
 
-    window.addEventListener('preloaderDone', scrollToFaq, { once: true });
-    return () => window.removeEventListener('preloaderDone', scrollToFaq);
+    window.addEventListener("preloaderDone", scrollToFaq, { once: true });
+    return () => window.removeEventListener("preloaderDone", scrollToFaq);
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -52,12 +82,15 @@ const ContactPage: React.FC = () => {
     e.preventDefault();
     setError(false);
     setLoading(true);
+
     try {
       const token = getToken() || cookies.token;
       await insertContactMessage(form, token);
+
       setSent(true);
       setForm({ name: "", surname: "", phone: "", email: "", message: "" });
     } catch (err) {
+      console.error(err);
       setError(true);
     } finally {
       setLoading(false);
@@ -86,10 +119,11 @@ const ContactPage: React.FC = () => {
       <div className={styles.layout}>
         <div className={styles.formCard}>
           {sent ? (
-            <div className={styles.success}>
-              <span className={styles.successIcon}>✓</span>
-              <p className={styles.successText}>{t("contact.form.success")}</p>
-            </div>
+            <Fallback
+              t={t}
+              styles={styles}
+              onHide={() => setSent(false)}
+            />
           ) : (
             <form onSubmit={handleSubmit} className={styles.form}>
               <div className={styles.row}>
@@ -125,11 +159,11 @@ const ContactPage: React.FC = () => {
 
               <div className={styles.row}>
                 <div className={styles.field}>
-                  <label htmlFor="phoneNumber" className={styles.label}>
+                  <label htmlFor="phone" className={styles.label}>
                     {t("contact.form.phone")}
                   </label>
                   <input
-                    id="phoneNumber"
+                    id="phone"
                     className={styles.input}
                     name="phone"
                     value={form.phone}
@@ -139,10 +173,11 @@ const ContactPage: React.FC = () => {
                   />
                 </div>
                 <div className={styles.field}>
-                  <label className={styles.label}>
+                  <label htmlFor="email" className={styles.label}>
                     {t("contact.form.email")}
                   </label>
                   <input
+                    id="email"
                     className={styles.input}
                     name="email"
                     value={form.email}
@@ -174,8 +209,14 @@ const ContactPage: React.FC = () => {
                 <p className={styles.error}>{t("contact.form.error")}</p>
               )}
 
-              <button type="submit" className={styles.submit} disabled={loading}>
-                {loading ? t("contact.form.submitting") : t("contact.form.submit")}
+              <button
+                type="submit"
+                className={styles.submit}
+                disabled={loading}
+              >
+                {loading
+                  ? t("contact.form.submitting")
+                  : t("contact.form.submit")}
               </button>
             </form>
           )}
@@ -188,6 +229,7 @@ const ContactPage: React.FC = () => {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
+            title="Location Map"
           />
         </div>
       </div>
