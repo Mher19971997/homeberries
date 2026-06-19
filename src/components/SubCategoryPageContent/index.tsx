@@ -2,7 +2,6 @@
 
 import React from 'react';
 import * as qs from 'qs';
-import Link from 'next/link';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
@@ -23,6 +22,7 @@ import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 import catalogStyles from '@homeberris/app/[locale]/catalog/index.module.css';
 import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
+import SelectOptions from '../SelectOptions';
 
 const getLoc = (val: any, locale = 'ru'): string => {
   if (!val) return '';
@@ -103,11 +103,6 @@ export default function SubCategoryPageContent({
   const buildQuery = () => {
     const filters: any = {
       includeMeta: [
-        { association: 'category' },
-        {
-          association: 'subCategorie',
-          where: subCategoryUuid ? { uuid: subCategoryUuid } : { name: subCategoryName },
-        },
         { association: 'brand' },
       ],
       queryMeta: {
@@ -117,6 +112,10 @@ export default function SubCategoryPageContent({
       },
       filterMeta: {} as any,
     };
+
+    if (subCategoryUuid) {
+      filters.filterMeta.subCategoryUuid = { eq: subCategoryUuid };
+    }
 
     if (selectedBrand) filters.filterMeta.brandUuid = { eq: selectedBrand };
     if (debouncedMin || debouncedMax) {
@@ -208,9 +207,8 @@ export default function SubCategoryPageContent({
           ) : (
             <button
               key={page}
-              className={`${paginationStyles.pageBtn} ${
-                currentPage === page ? paginationStyles.pageBtnActive : ''
-              }`}
+              className={`${paginationStyles.pageBtn} ${currentPage === page ? paginationStyles.pageBtnActive : ''
+                }`}
               onClick={() => setCurrentPage(page as number)}
             >
               {page}
@@ -242,19 +240,18 @@ export default function SubCategoryPageContent({
         <span className={catalogStyles.filterCount}>
           {t('subCategory.count', { count: catalogs?.meta?.count || 0 })}
         </span>
-
-        <select
-          className={catalogStyles.filterSelect}
+        <SelectOptions
           value={selectedBrand}
-          onChange={(e) => setSelectedBrand(e.target.value)}
-        >
-          <option value="">{t('subCategory.allBrands')}</option>
-          {brands.map((b: BrandItem) => (
-            <option key={b.uuid} value={b.uuid}>
-              {b.name}
-            </option>
-          ))}
-        </select>
+          onChange={setSelectedBrand}
+          placeholder={t('subCategory.allBrands')}
+          options={[
+            { label: t('subCategory.allBrands'), value: '' },
+            ...brands.map(b => ({
+              label: b.name,
+              value: b.uuid,
+            })),
+          ]}
+        />
 
         <div className={catalogStyles.priceRange}>
           <input
@@ -274,15 +271,15 @@ export default function SubCategoryPageContent({
           />
         </div>
 
-        <select
-          className={catalogStyles.filterSelect}
+        <SelectOptions
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-        >
-          <option value="newest">{t('subCategory.sortNewest')}</option>
-          <option value="price_asc">{t('subCategory.sortPriceAsc')}</option>
-          <option value="price_desc">{t('subCategory.sortPriceDesc')}</option>
-        </select>
+          onChange={setSortBy}
+          options={[
+            { label: t('subCategory.sortNewest'), value: 'newest' },
+            { label: t('subCategory.sortPriceAsc'), value: 'price_asc' },
+            { label: t('subCategory.sortPriceDesc'), value: 'price_desc' },
+          ]}
+        />
 
         {(selectedBrand || minPrice || maxPrice) && (
           <button

@@ -25,6 +25,7 @@ import { ListResult } from "@homeberris/types/filter";
 
 import styles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
 import { useTranslation } from "react-i18next";
+import SelectOptions from "@homeberris/components/SelectOptions";
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -181,17 +182,18 @@ export default function CatalogPage() {
             <p className={styles.selectedCount}>
               {t('catalogAll.filters.selectedProducts')}: <strong>{catalogs?.meta?.count || 0}</strong>
             </p>
-            <select
-              className={styles.sortSelect}
+            <SelectOptions
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-            >
-              <option value="rating">{t('catalogAll.sort.rating')}</option>
-              <option value="popularity">{t('catalogAll.sort.popularity')}</option>
-              <option value="price_asc">{t('catalogAll.sort.priceAsc')}</option>
-              <option value="price_desc">{t('catalogAll.sort.priceDesc')}</option>
-              <option value="newest">{t('catalogAll.sort.newest')}</option>
-            </select>
+              onChange={setSortBy}
+              placeholder={t('catalogAll.sort.title')}
+              options={[
+                { label: t('catalogAll.sort.rating'), value: 'rating' },
+                { label: t('catalogAll.sort.popularity'), value: 'popularity' },
+                { label: t('catalogAll.sort.priceAsc'), value: 'price_asc' },
+                { label: t('catalogAll.sort.priceDesc'), value: 'price_desc' },
+                { label: t('catalogAll.sort.newest'), value: 'newest' },
+              ]}
+            />
           </div>
 
           {/* Грид товаров */}

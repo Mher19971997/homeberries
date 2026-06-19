@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import Breadcrumb from '@homeberris/components/Breadcrumb';
 
 import styles from '@homeberris/app/[locale]/catalog/index.module.css';
+import SelectOptions from '@homeberris/components/SelectOptions';
 
 const LIMIT = 12;
 
@@ -142,16 +143,18 @@ export default function CatalogIndexPage() {
         <span className={styles.filterCount}>{t('catalogIndex.count', { count: totalCount })}</span>
 
         {/* Бренд */}
-        <select
-          className={styles.filterSelect}
+        <SelectOptions
           value={selectedBrand}
-          onChange={e => setSelectedBrand(e.target.value)}
-        >
-          <option value="">{t('catalogIndex.allBrands')}</option>
-          {brands.map((b: any) => (
-            <option key={b.uuid} value={b.uuid}>{b.name}</option>
-          ))}
-        </select>
+          onChange={setSelectedBrand}
+          placeholder={t('catalogIndex.allBrands')}
+          options={[
+            { label: t('catalogIndex.allBrands'), value: '' },
+            ...brands.map((b: any) => ({
+              label: b.name,
+              value: b.uuid,
+            })),
+          ]}
+        />
 
         {/* Цена */}
         <div className={styles.priceRange}>
@@ -173,15 +176,15 @@ export default function CatalogIndexPage() {
         </div>
 
         {/* Сортировка */}
-        <select
-          className={styles.filterSelect}
+        <SelectOptions
           value={sortBy}
-          onChange={e => setSortBy(e.target.value)}
-        >
-          <option value="newest">{t('catalogIndex.sortNewest')}</option>
-          <option value="price_asc">{t('catalogIndex.sortPriceAsc')}</option>
-          <option value="price_desc">{t('catalogIndex.sortPriceDesc')}</option>
-        </select>
+          onChange={setSortBy}
+          options={[
+            { label: t('catalogIndex.sortNewest'), value: 'newest' },
+            { label: t('catalogIndex.sortPriceAsc'), value: 'price_asc' },
+            { label: t('catalogIndex.sortPriceDesc'), value: 'price_desc' },
+          ]}
+        />
 
         {/* Сброс */}
         {(selectedBrand || minPrice || maxPrice || sortBy !== 'newest') && (

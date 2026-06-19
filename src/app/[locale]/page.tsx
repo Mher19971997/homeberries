@@ -96,7 +96,11 @@ export default function Home() {
 
   const buildQuery = () => {
     const filters: any = {
-      queryMeta: { paginate: true, limit: ITEMS_LIMIT, page: newPage, order: { createdAt: 'DESC' } },
+      queryMeta: {
+        paginate: true, limit: ITEMS_LIMIT, page: newPage, order: {
+          createdAt: 'DESC',
+        },
+      },
     };
 
     if (activeTab === 'featured') {
@@ -127,7 +131,13 @@ export default function Home() {
 
   const { data: discountData, isLoading: isDiscountLoading } = useQuery({
     queryKey: ['getDiscountCatalogs', discountPage],
-    queryFn: () => getAllCatalogs(qs.stringify({ filterMeta: { isDiscount: true }, queryMeta: { paginate: true, limit: DISCOUNT_LIMIT, page: discountPage, order: { createdAt: 'DESC' } } })),
+    queryFn: () => getAllCatalogs(qs.stringify({
+      filterMeta: { isDiscount: true }, queryMeta: {
+        paginate: true, limit: DISCOUNT_LIMIT, page: discountPage, order: {
+          createdAt: 'DESC',
+        },
+      }
+    })),
   });
 
   const catalogs: CatalogItem[] = data?.data || [];
@@ -166,7 +176,7 @@ export default function Home() {
           onClick={() => { setActiveTab('new'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
-            cursor:'pointer',
+            cursor: 'pointer',
             color: activeTab === 'new' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'new' ? '2px solid #000000' : '2px solid transparent',
           }}
@@ -177,7 +187,7 @@ export default function Home() {
           onClick={() => { setActiveTab('bestseller'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
-            cursor:'pointer',
+            cursor: 'pointer',
             color: activeTab === 'bestseller' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'bestseller' ? '2px solid #000000' : '2px solid transparent',
           }}
@@ -188,7 +198,7 @@ export default function Home() {
           onClick={() => { setActiveTab('featured'); setNewPage(1); }}
           className={styles.tabItem}
           style={{
-            cursor:'pointer',
+            cursor: 'pointer',
             color: activeTab === 'featured' ? '#000000' : '#8b8b8b',
             borderBottom: activeTab === 'featured' ? '2px solid #000000' : '2px solid transparent',
           }}
