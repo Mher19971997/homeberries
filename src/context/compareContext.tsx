@@ -13,6 +13,7 @@ type CompareState = {
   toggleCompare: (item: CatalogItem) => void;
   removeFromCompare: (uuid: string) => void;
   clearCompare: () => void;
+  loadFromShare: (uuids: string[]) => void;
 };
 
 const CompareContext = createContext<CompareState | undefined>(undefined);
@@ -52,18 +53,15 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
           return prev.filter((i) => i.uuid !== item.uuid);
         }
 
+        // Лимит считается отдельно для каждой категории — товары разных
+        // категорий можно держать в сравнении одновременно (см. вкладки на /compare).
         const itemCategoryUuid = item.category?.uuid || item.categoryUuid;
-        const conflictingCategory = prev.find((i) => {
+        const sameCategoryCount = prev.filter((i) => {
           const prevCategoryUuid = i.category?.uuid || i.categoryUuid;
-          return prevCategoryUuid && itemCategoryUuid && prevCategoryUuid !== itemCategoryUuid;
-        });
+          return prevCategoryUuid === itemCategoryUuid;
+        }).length;
 
-        if (conflictingCategory) {
-          showToast(t('compare.differentCategory'), 'warning');
-          return prev;
-        }
-
-        if (prev.length >= MAX_ITEMS) {
+        if (sameCategoryCount >= MAX_ITEMS) {
           showToast(t('compare.maxItems'), 'warning');
           return prev;
         }
@@ -80,8 +78,12 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
 
   const clearCompare = useCallback(() => setItems([]), []);
 
+  const loadFromShare = useCallback((uuids: string[]) => {
+    setItems(uuids.slice(0, MAX_ITEMS).map((uuid) => ({ uuid } as CatalogItem)));
+  }, []);
+
   return (
-    <CompareContext.Provider value={{ items, isInCompare, toggleCompare, removeFromCompare, clearCompare }}>
+    <CompareContext.Provider value={{ items, isInCompare, toggleCompare, removeFromCompare, clearCompare, loadFromShare }}>
       {children}
     </CompareContext.Provider>
   );

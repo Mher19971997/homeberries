@@ -223,10 +223,11 @@
   gap: 32px;
   align-items: flex-start;
   margin-top: 19px;
+  justify-content: space-between;
 }
 
 .sidebar {
-  width: 256px;
+  width: 350px;
   min-width: 256px;
   display: flex;
   flex-direction: column;

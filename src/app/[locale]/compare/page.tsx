@@ -2,17 +2,20 @@
 
 import React from 'react';
 import dynamic from 'next/dynamic';
-import { useQueries, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useQueries, useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
+import { useParams, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { useTranslation } from 'react-i18next';
+import * as qs from 'qs';
 
 import { useCompare } from '@homeberris/context/compareContext';
-import { getCatalogByUud } from '@homeberris/http/catalogApi';
+import { getCatalogByUud, getAllCatalogs } from '@homeberris/http/catalogApi';
 import { insertBasket } from '@homeberris/http/basketApi';
 import { addToBasket } from '@homeberris/utils/indexedDB';
 import { checkToken, getToken } from '@homeberris/utils/auth';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
+import { useDebounce } from '@homeberris/hooks/useDebounce';
+import { useToast } from '@homeberris/hooks/useToast';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import Breadcrumb from '@homeberris/components/Breadcrumb';
 import { ScaleIcon } from '@homeberris/assets/icons/compare';
@@ -35,16 +38,42 @@ const buildCatalogUrl = (catalog: CatalogItem): string => {
   return `/catalog`;
 };
 
+// Пытается выделить ведущее число из строки характеристики (например "5000mAh" -> 5000)
+const parseLeadingNumber = (val: string): number | null => {
+  const match = val?.match(/^[\s]*([\d]+(?:[.,]\d+)?)/);
+  if (!match) return null;
+  return parseFloat(match[1].replace(',', '.'));
+};
+
 function ComparePage() {
   const { t } = useTranslation('common');
   const params = useParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const locale = (params?.locale as string) ?? 'ru';
   const [cookies] = useCookies(['token']);
   const queryClient = useQueryClient();
   const { formatPrice } = useFormatPrice();
-  const { items, removeFromCompare } = useCompare();
+  const { items, removeFromCompare, clearCompare, toggleCompare, loadFromShare } = useCompare();
+  const { showToast } = useToast();
   const isAuth = checkToken();
+
+  const [diffOnly, setDiffOnly] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState('');
+  const [showSearchDropdown, setShowSearchDropdown] = React.useState(false);
+  const searchRef = React.useRef<HTMLDivElement>(null);
+  const debouncedSearch = useDebounce(searchValue, 300);
+
+  // Загрузка списка сравнения из ссылки (?ids=uuid1,uuid2,...)
+  const sharedLoadedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (sharedLoadedRef.current) return;
+    const idsParam = searchParams?.get('ids');
+    if (idsParam) {
+      sharedLoadedRef.current = true;
+      loadFromShare(idsParam.split(',').filter(Boolean));
+    }
+  }, [searchParams, loadFromShare]);
 
   const queries = useQueries({
     queries: items.map((item) => ({
@@ -57,6 +86,75 @@ function ComparePage() {
   const products: CatalogItem[] = queries
     .map((q) => q.data)
     .filter(Boolean) as CatalogItem[];
+
+  // Вкладки-фильтры по категориям (как на domey.cz/compare): товары разных
+  // категорий хранятся в общем списке сравнения одновременно, но сравниваются
+  // только в рамках одной выбранной категории.
+  const categories = React.useMemo(() => {
+    const map = new Map<string, { uuid: string; label: string; count: number }>();
+    products.forEach((p) => {
+      const uuid = (p as any).category?.uuid || (p as any).categoryUuid;
+      if (!uuid) return;
+      const label = getLoc((p as any).category?.name, locale) || uuid;
+      const entry = map.get(uuid);
+      if (entry) entry.count += 1;
+      else map.set(uuid, { uuid, label, count: 1 });
+    });
+    return Array.from(map.values());
+  }, [products, locale]);
+
+  const [activeCategoryUuid, setActiveCategoryUuid] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (categories.length === 0) {
+      setActiveCategoryUuid(null);
+      return;
+    }
+    if (!categories.some((c) => c.uuid === activeCategoryUuid)) {
+      setActiveCategoryUuid(categories[0].uuid);
+    }
+  }, [categories, activeCategoryUuid]);
+
+  const displayedProducts = React.useMemo(
+    () => products.filter((p) => ((p as any).category?.uuid || (p as any).categoryUuid) === activeCategoryUuid),
+    [products, activeCategoryUuid],
+  );
+
+  const { data: searchResults } = useQuery({
+    queryKey: ['compareSearch', debouncedSearch],
+    queryFn: () => getAllCatalogs(qs.stringify({
+      filterMeta: { name: { iLike: `%${debouncedSearch}%` } },
+      queryMeta: { paginate: true, limit: 8 },
+    })),
+    enabled: debouncedSearch.length >= 2,
+  });
+
+  React.useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSearchDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleAddFromSearch = (catalog: CatalogItem) => {
+    toggleCompare(catalog);
+    setSearchValue('');
+    setShowSearchDropdown(false);
+  };
+
+  const handleShare = async () => {
+    if (displayedProducts.length === 0) return;
+    const url = `${window.location.origin}${window.location.pathname}?ids=${displayedProducts.map((p) => p.uuid).join(',')}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast(t('compare.linkCopied'), 'success');
+    } catch {
+      showToast(url, 'success');
+    }
+  };
 
   const { mutate: addToCart } = useMutation({
     mutationFn: async (product: CatalogItem) => {
@@ -81,7 +179,7 @@ function ComparePage() {
     const groupOrder: string[] = [];
     const groupRows = new Map<string, Map<string, string>>(); // groupKey -> (rowKey -> rowLabel)
 
-    products.forEach((p) => {
+    displayedProducts.forEach((p) => {
       ((p as any).groupOption || []).forEach((g: any) => {
         const groupKey = typeof g.name === 'string' ? g.name : (g.name?.ru || getLoc(g.name, locale));
         const groupLabel = getLoc(g.name, locale);
@@ -102,14 +200,14 @@ function ComparePage() {
     return groupOrder.map((groupKey) => ({
       groupKey,
       groupLabel: getLoc(
-        products.flatMap((p: any) => p.groupOption || []).find((g: any) =>
+        displayedProducts.flatMap((p: any) => p.groupOption || []).find((g: any) =>
           (typeof g.name === 'string' ? g.name : g.name?.ru) === groupKey
         )?.name,
         locale,
       ),
       rows: Array.from(groupRows.get(groupKey)!.entries()),
     }));
-  }, [products, locale]);
+  }, [displayedProducts, locale]);
 
   const getSpecValue = (product: CatalogItem, groupKey: string, rowKey: string): string => {
     const group = ((product as any).groupOption || []).find((g: any) =>
@@ -122,6 +220,55 @@ function ComparePage() {
     return option ? getLoc(option.value, locale) : '';
   };
 
+  // Строка считается "отличающейся", если хотя бы у одного товара значение
+  // отличается от остальных (пустые значения в расчёт не берём как "совпадение").
+  const isRowDifferent = (groupKey: string, rowKey: string): boolean => {
+    const values = displayedProducts.map((p) => getSpecValue(p, groupKey, rowKey));
+    return new Set(values).size > 1;
+  };
+
+  // Если все значения в строке — числа, подсвечиваем товар с наибольшим значением.
+  const getBestUuid = (groupKey: string, rowKey: string): string | null => {
+    const parsed = displayedProducts.map((p) => ({
+      uuid: p.uuid,
+      num: parseLeadingNumber(getSpecValue(p, groupKey, rowKey)),
+    }));
+    if (parsed.some((v) => v.num === null) || parsed.length < 2) return null;
+    const max = Math.max(...parsed.map((v) => v.num as number));
+    const maxCount = parsed.filter((v) => v.num === max).length;
+    if (maxCount !== 1) return null;
+    return parsed.find((v) => v.num === max)!.uuid as string;
+  };
+
+  const searchBox = (
+    <div className={styles.searchWrap} ref={searchRef}>
+      <input
+        className={styles.searchInput}
+        placeholder={t('compare.searchPlaceholder')}
+        value={searchValue}
+        onChange={(e) => { setSearchValue(e.target.value); setShowSearchDropdown(true); }}
+        onFocus={() => searchValue.length >= 2 && setShowSearchDropdown(true)}
+      />
+      {showSearchDropdown && debouncedSearch.length >= 2 && (
+        <div className={styles.searchDropdown}>
+          {searchResults?.data && searchResults.data.length > 0 ? (
+            searchResults.data.map((item: CatalogItem) => (
+              <div
+                key={item.uuid}
+                className={styles.searchDropdownItem}
+                onClick={() => handleAddFromSearch(item)}
+              >
+                {getLoc(item.name, locale)}
+              </div>
+            ))
+          ) : (
+            <div className={styles.searchDropdownEmpty}>{t('catalog.empty')}</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
   if (items.length === 0) {
     return (
       <div className={styles.body}>
@@ -133,6 +280,7 @@ function ComparePage() {
           <ScaleIcon size={48} />
           <p className={styles.emptyTitle}>{t('compare.empty')}</p>
           <p className={styles.emptyHint}>{t('compare.emptyHint')}</p>
+          {searchBox}
         </div>
       </div>
     );
@@ -147,12 +295,45 @@ function ComparePage() {
 
       <h1 className={styles.title}>{t('compare.title')}</h1>
 
+      {categories.length > 0 && (
+        <div className={styles.categoryFilter}>
+          <span className={styles.categoryFilterLabel}>{t('compare.categoryFilter')}</span>
+          <div className={styles.categoryTabs}>
+            {categories.map((c) => (
+              <button
+                key={c.uuid}
+                className={`${styles.categoryTab} ${activeCategoryUuid === c.uuid ? styles.categoryTabActive : ''}`}
+                onClick={() => setActiveCategoryUuid(c.uuid)}
+              >
+                {c.label} ({c.count})
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className={styles.toolbar}>
+        {searchBox}
+        <div className={styles.toolbarActions}>
+          <label className={styles.diffToggle}>
+            <input type="checkbox" checked={diffOnly} onChange={(e) => setDiffOnly(e.target.checked)} />
+            {t('compare.diffOnly')}
+          </label>
+          <button className={styles.toolbarBtn} onClick={handleShare}>
+            {t('compare.share')}
+          </button>
+          <button className={styles.toolbarBtnDanger} onClick={clearCompare}>
+            {t('compare.clearAll')}
+          </button>
+        </div>
+      </div>
+
       <div className={styles.tableWrap}>
         <table className={styles.table}>
           <tbody>
-            <tr>
+            <tr className={styles.stickyRow}>
               <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {products.map((p) => {
+              {displayedProducts.map((p) => {
                 const imgSrc = p.images?.length
                   ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
                   : '';
@@ -187,7 +368,7 @@ function ComparePage() {
 
             <tr>
               <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {products.map((p) => (
+              {displayedProducts.map((p) => (
                 <td key={p.uuid} className={styles.productName}>
                   {getLoc(p.name, locale)}
                 </td>
@@ -196,39 +377,49 @@ function ComparePage() {
 
             <tr>
               <td className={styles.rowLabel}>{t('compare.price')}</td>
-              {products.map((p) => (
+              {displayedProducts.map((p) => (
                 <td key={p.uuid} className={styles.productPrice}>
                   {formatPrice(p.price)}
                 </td>
               ))}
             </tr>
 
-            {specGroups.map(({ groupKey, groupLabel, rows }) => (
-              <React.Fragment key={groupKey}>
-                <tr>
-                  <td className={styles.groupHeader} colSpan={products.length + 1}>
-                    {groupLabel}
-                  </td>
-                </tr>
-                {rows.map(([rowKey, rowLabel]) => (
-                  <tr key={rowKey}>
-                    <td className={styles.rowLabel}>{rowLabel}</td>
-                    {products.map((p) => (
-                      <td key={p.uuid} className={styles.specValue}>
-                        {getSpecValue(p, groupKey, rowKey)}
-                      </td>
-                    ))}
+            {specGroups.map(({ groupKey, groupLabel, rows }) => {
+              const visibleRows = diffOnly ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey)) : rows;
+              if (visibleRows.length === 0) return null;
+              return (
+                <React.Fragment key={groupKey}>
+                  <tr>
+                    <td className={styles.groupHeader} colSpan={displayedProducts.length + 1}>
+                      {groupLabel}
+                    </td>
                   </tr>
-                ))}
-              </React.Fragment>
-            ))}
+                  {visibleRows.map(([rowKey, rowLabel]) => {
+                    const bestUuid = getBestUuid(groupKey, rowKey);
+                    return (
+                      <tr key={rowKey}>
+                        <td className={styles.rowLabel}>{rowLabel}</td>
+                        {displayedProducts.map((p) => (
+                          <td
+                            key={p.uuid}
+                            className={`${styles.specValue} ${bestUuid === p.uuid ? styles.specValueBest : ''}`}
+                          >
+                            {getSpecValue(p, groupKey, rowKey)}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </React.Fragment>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       {/* Мобильная раскладка: товары друг под другом, без горизонтального скролла */}
       <div className={styles.mobileList}>
-        {products.map((p) => {
+        {displayedProducts.map((p) => {
           const imgSrc = p.images?.length
             ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
             : '';
@@ -262,17 +453,23 @@ function ComparePage() {
               </div>
 
               {specGroups.map(({ groupKey, groupLabel, rows }) => {
-                const filledRows = rows.filter(([rowKey]) => getSpecValue(p, groupKey, rowKey));
+                let filledRows = rows.filter(([rowKey]) => getSpecValue(p, groupKey, rowKey));
+                if (diffOnly) filledRows = filledRows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey));
                 if (filledRows.length === 0) return null;
                 return (
                   <div key={groupKey} className={styles.mobileGroup}>
                     <p className={styles.mobileGroupTitle}>{groupLabel}</p>
-                    {filledRows.map(([rowKey, rowLabel]) => (
-                      <div key={rowKey} className={styles.mobileRow}>
-                        <span className={styles.mobileRowLabel}>{rowLabel}</span>
-                        <span className={styles.mobileRowValue}>{getSpecValue(p, groupKey, rowKey)}</span>
-                      </div>
-                    ))}
+                    {filledRows.map(([rowKey, rowLabel]) => {
+                      const isBest = getBestUuid(groupKey, rowKey) === p.uuid;
+                      return (
+                        <div key={rowKey} className={styles.mobileRow}>
+                          <span className={styles.mobileRowLabel}>{rowLabel}</span>
+                          <span className={`${styles.mobileRowValue} ${isBest ? styles.specValueBest : ''}`}>
+                            {getSpecValue(p, groupKey, rowKey)}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 );
               })}
