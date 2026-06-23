@@ -253,6 +253,35 @@
   text-decoration: line-through;
 }
 
+.articuleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.articuleText {
+  font-family: var(--font-inter);
+  font-size: 15px;
+  font-weight: 400;
+  color: #868695;
+}
+
+.articuleCopyBtn {
+  background: transparent;
+  border: none;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #868695;
+  transition: color 0.15s;
+}
+
+.articuleCopyBtn:hover {
+  color: #000;
+}
+
 /* ─── Color selector ─────────────────────────────────── */
 .colorSelector {
   display: flex;

@@ -9,6 +9,7 @@ export interface CatalogItem {
   name: string;
   description: string;
   price: number;
+  articule?: string;
   oldPrice?: string;
   categoryUuid: UUID;
   subCategoryUuid: UUID;

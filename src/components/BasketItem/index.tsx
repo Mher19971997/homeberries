@@ -3,6 +3,8 @@ import styles from './index.module.css';
 import { BasketDataItem } from '@homeberris/types/basket';
 import { useParams } from 'next/navigation';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
+import { Copy, Check } from 'lucide-react';
+import { useToast } from '@homeberris/hooks/useToast';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -29,6 +31,19 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
   const quantity = basket.quantity || 1;
 
   const { formatPrice } = useFormatPrice();
+  const { showToast } = useToast();
+  const articule = (basket?.catalog as any)?.articule || '';
+  const [copied, setCopied] = React.useState(false);
+
+  const handleCopyArticule = async () => {
+    if (!articule) return;
+    try {
+      await navigator.clipboard.writeText(articule);
+      setCopied(true);
+      showToast('Артикул скопирован', 'success');
+      setTimeout(() => setCopied(false), 1500);
+    } catch { }
+  };
 
   const [inputValue, setInputValue] = React.useState(String(quantity));
 
@@ -77,7 +92,19 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
       />
       <div className={styles.info}>
         <p className={styles.name}>{getLoc(basket?.catalog?.name, locale) || '—'}</p>
-        <p className={styles.sku}>#121286541212</p>
+        {articule && (
+          <p className={styles.sku}>
+            #{articule}
+            <button
+              type="button"
+              className={styles.copyBtn}
+              onClick={handleCopyArticule}
+              aria-label="Copy articule"
+            >
+              {copied ? <Check size={13} /> : <Copy size={13} />}
+            </button>
+          </p>
+        )}
       </div>
       <div className={styles.controlsRight}>
         <div className={styles.qty}>

@@ -44,6 +44,8 @@ import { insertBasket } from "@homeberris/http/basketApi";
 import { useTranslation } from "react-i18next";
 import { addRecentlyViewed } from "@homeberris/utils/recentlyViewed";
 import { useTrackRecentlyViewed } from "@homeberris/hooks/useTrackRecentlyViewed";
+import { Copy, Check } from "lucide-react";
+import { useToast } from "@homeberris/hooks/useToast";
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -84,6 +86,19 @@ export default function ProductPageContent({
   const [isDragging, setIsDragging] = React.useState(false);
 
   const { t } = useTranslation('common');
+  const { showToast } = useToast();
+  const [articuleCopied, setArticuleCopied] = React.useState(false);
+
+  const articule = (catalog as any)?.articule || '';
+  const handleCopyArticule = async () => {
+    if (!articule) return;
+    try {
+      await navigator.clipboard.writeText(articule);
+      setArticuleCopied(true);
+      showToast(t('productPageContent.articuleCopied'), 'success');
+      setTimeout(() => setArticuleCopied(false), 1500);
+    } catch { }
+  };
 
   const trackRecentlyViewed = useTrackRecentlyViewed();
 
@@ -385,6 +400,19 @@ export default function ProductPageContent({
                 </span>
               )}
             </div>
+            {articule && (
+              <div className={styles.articuleRow}>
+                <span className={styles.articuleText}>#{articule}</span>
+                <button
+                  type="button"
+                  className={styles.articuleCopyBtn}
+                  onClick={handleCopyArticule}
+                  aria-label="Copy articule"
+                >
+                  {articuleCopied ? <Check size={15} /> : <Copy size={15} />}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Блок 2: Color + Storage + Specs + Описание */}

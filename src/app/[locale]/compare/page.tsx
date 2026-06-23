@@ -10,6 +10,7 @@ import * as qs from 'qs';
 
 import { useCompare } from '@homeberris/context/compareContext';
 import { getCatalogByUud, getAllCatalogs } from '@homeberris/http/catalogApi';
+import { getCategories } from '@homeberris/http/categoryApi';
 import { insertBasket } from '@homeberris/http/basketApi';
 import { addToBasket } from '@homeberris/utils/indexedDB';
 import { checkToken, getToken } from '@homeberris/utils/auth';
@@ -37,6 +38,8 @@ const buildCatalogUrl = (catalog: CatalogItem): string => {
   if (cat) return `/catalog/${encodeURIComponent(cat)}/${uuid}`;
   return `/catalog`;
 };
+
+const MAX_SLOTS = 4;
 
 // Пытается выделить ведущее число из строки характеристики (например "5000mAh" -> 5000)
 const parseLeadingNumber = (val: string): number | null => {
@@ -87,21 +90,27 @@ function ComparePage() {
     .map((q) => q.data)
     .filter(Boolean) as CatalogItem[];
 
-  // Вкладки-фильтры по категориям (как на domey.cz/compare): товары разных
-  // категорий хранятся в общем списке сравнения одновременно, но сравниваются
-  // только в рамках одной выбранной категории.
+  // Вкладки-фильтры по категориям (как на domey.cz/compare): показываем ВСЕ
+  // категории каталога (со счётчиком 0, если в сравнении пока ничего нет),
+  // а не только те, что уже добавлены.
+  const { data: allCategoriesData } = useQuery({
+    queryKey: ['allCategoriesForCompare'],
+    queryFn: getCategories,
+  });
+
   const categories = React.useMemo(() => {
-    const map = new Map<string, { uuid: string; label: string; count: number }>();
+    const counts = new Map<string, number>();
     products.forEach((p) => {
       const uuid = (p as any).category?.uuid || (p as any).categoryUuid;
       if (!uuid) return;
-      const label = getLoc((p as any).category?.name, locale) || uuid;
-      const entry = map.get(uuid);
-      if (entry) entry.count += 1;
-      else map.set(uuid, { uuid, label, count: 1 });
+      counts.set(uuid, (counts.get(uuid) || 0) + 1);
     });
-    return Array.from(map.values());
-  }, [products, locale]);
+    return (allCategoriesData?.data || []).map((c: any) => ({
+      uuid: c.uuid,
+      label: getLoc(c.name, locale) || c.uuid,
+      count: counts.get(c.uuid) || 0,
+    }));
+  }, [allCategoriesData, products, locale]);
 
   const [activeCategoryUuid, setActiveCategoryUuid] = React.useState<string | null>(null);
 
@@ -111,7 +120,8 @@ function ComparePage() {
       return;
     }
     if (!categories.some((c) => c.uuid === activeCategoryUuid)) {
-      setActiveCategoryUuid(categories[0].uuid);
+      const firstWithItems = categories.find((c) => c.count > 0);
+      setActiveCategoryUuid((firstWithItems || categories[0]).uuid);
     }
   }, [categories, activeCategoryUuid]);
 
@@ -119,6 +129,13 @@ function ComparePage() {
     () => products.filter((p) => ((p as any).category?.uuid || (p as any).categoryUuid) === activeCategoryUuid),
     [products, activeCategoryUuid],
   );
+
+  // Всегда показываем MAX_SLOTS колонок — занятые товаром или пустые плейсхолдеры.
+  const slots: (CatalogItem | null)[] = React.useMemo(() => {
+    const arr: (CatalogItem | null)[] = [...displayedProducts];
+    while (arr.length < MAX_SLOTS) arr.push(null);
+    return arr.slice(0, MAX_SLOTS);
+  }, [displayedProducts]);
 
   const { data: searchResults } = useQuery({
     queryKey: ['compareSearch', debouncedSearch],
@@ -269,22 +286,7 @@ function ComparePage() {
     </div>
   );
 
-  if (items.length === 0) {
-    return (
-      <div className={styles.body}>
-        <Breadcrumb items={[
-          { label: t('productPageContent.breadcrumb.home'), href: '/' },
-          { label: t('compare.title') },
-        ]} />
-        <div className={styles.emptyState}>
-          <ScaleIcon size={48} />
-          <p className={styles.emptyTitle}>{t('compare.empty')}</p>
-          <p className={styles.emptyHint}>{t('compare.emptyHint')}</p>
-          {searchBox}
-        </div>
-      </div>
-    );
-  }
+  const handleGoToCatalog = () => router.push('/catalog');
 
   return (
     <div className={styles.body}>
@@ -294,6 +296,7 @@ function ComparePage() {
       ]} />
 
       <h1 className={styles.title}>{t('compare.title')}</h1>
+      <p className={styles.subtitle}>{t('compare.subtitle')}</p>
 
       {categories.length > 0 && (
         <div className={styles.categoryFilter}>
@@ -312,6 +315,17 @@ function ComparePage() {
         </div>
       )}
 
+      {displayedProducts.length === 0 ? (
+        <div className={styles.emptyState}>
+          <ScaleIcon size={48} />
+          <p className={styles.emptyTitle}>{t('compare.empty')}</p>
+          <p className={styles.emptyHint}>{t('compare.emptyHint')}</p>
+          <button className={styles.searchCatalogBtn} onClick={handleGoToCatalog}>
+            {t('compare.searchProducts')}
+          </button>
+        </div>
+      ) : (
+        <>
       <div className={styles.toolbar}>
         {searchBox}
         <div className={styles.toolbarActions}>
@@ -333,7 +347,8 @@ function ComparePage() {
           <tbody>
             <tr className={styles.stickyRow}>
               <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {displayedProducts.map((p) => {
+              {slots.map((p, i) => {
+                if (!p) return <td key={`empty-${i}`} className={styles.productCell}><div className={styles.placeholderBox} /></td>;
                 const imgSrc = p.images?.length
                   ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
                   : '';
@@ -368,18 +383,18 @@ function ComparePage() {
 
             <tr>
               <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {displayedProducts.map((p) => (
-                <td key={p.uuid} className={styles.productName}>
-                  {getLoc(p.name, locale)}
+              {slots.map((p, i) => (
+                <td key={p?.uuid || `empty-${i}`} className={styles.productName}>
+                  {p ? getLoc(p.name, locale) : ''}
                 </td>
               ))}
             </tr>
 
             <tr>
               <td className={styles.rowLabel}>{t('compare.price')}</td>
-              {displayedProducts.map((p) => (
-                <td key={p.uuid} className={styles.productPrice}>
-                  {formatPrice(p.price)}
+              {slots.map((p, i) => (
+                <td key={p?.uuid || `empty-${i}`} className={styles.productPrice}>
+                  {p ? formatPrice(p.price) : ''}
                 </td>
               ))}
             </tr>
@@ -390,7 +405,7 @@ function ComparePage() {
               return (
                 <React.Fragment key={groupKey}>
                   <tr>
-                    <td className={styles.groupHeader} colSpan={displayedProducts.length + 1}>
+                    <td className={styles.groupHeader} colSpan={MAX_SLOTS + 1}>
                       {groupLabel}
                     </td>
                   </tr>
@@ -399,12 +414,12 @@ function ComparePage() {
                     return (
                       <tr key={rowKey}>
                         <td className={styles.rowLabel}>{rowLabel}</td>
-                        {displayedProducts.map((p) => (
+                        {slots.map((p, i) => (
                           <td
-                            key={p.uuid}
-                            className={`${styles.specValue} ${bestUuid === p.uuid ? styles.specValueBest : ''}`}
+                            key={p?.uuid || `empty-${i}`}
+                            className={`${styles.specValue} ${p && bestUuid === p.uuid ? styles.specValueBest : ''}`}
                           >
-                            {getSpecValue(p, groupKey, rowKey)}
+                            {p ? getSpecValue(p, groupKey, rowKey) : ''}
                           </td>
                         ))}
                       </tr>
@@ -477,6 +492,8 @@ function ComparePage() {
           );
         })}
       </div>
+        </>
+      )}
     </div>
   );
 }

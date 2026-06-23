@@ -121,11 +121,13 @@
   },
   "compare": {
     "title": "Compare",
+    "subtitle": "Compare key features and get smart recommendations. Up to 4 products can be compared at once.",
     "categoryFilter": "Category Filter",
     "differentCategory": "You can't compare products from different categories",
     "maxItems": "You can compare up to 4 products per category",
     "empty": "Comparison list is empty",
     "emptyHint": "Add products to compare by clicking the scale icon on a product card",
+    "searchProducts": "Search products",
     "models": "Models",
     "price": "Price",
     "addToCart": "Add to cart",
@@ -287,6 +289,7 @@
     }
   },
   "productPageContent": {
+    "articuleCopied": "Article number copied",
     "breadcrumb": {
       "home": "Home",
       "catalog": "Catalog"

@@ -58,6 +58,23 @@
     color: #000;
     margin: 0;
     font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.copyBtn {
+    background: transparent;
+    border: none;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #767676;
+}
+
+.copyBtn:hover {
+    color: #000;
 }
 
 .controlsRight {

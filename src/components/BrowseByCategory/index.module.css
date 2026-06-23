@@ -100,6 +100,14 @@
   white-space: nowrap;
 }
 
+/* На десктопе карточка занимает всю ширину слайда, чтобы крайние карточки
+   прилегали к краям контейнера (без зазоров по бокам). */
+@media (min-width: 920px) {
+  .card {
+    max-width: none;
+  }
+}
+
 @media (max-width: 900px) {
   .card {
     padding: 8px;
