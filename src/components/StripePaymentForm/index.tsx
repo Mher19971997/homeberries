@@ -13,7 +13,7 @@ import styles from './index.module.css';
 
 // Инициализируем Stripe с публичным ключом
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_51QKxXxExampleKey'
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_Example'
 );
 
 interface StripePaymentFormProps {

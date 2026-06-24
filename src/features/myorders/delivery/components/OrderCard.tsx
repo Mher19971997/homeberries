@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react';
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
 import { OrderItem } from '@homeberris/http/orderApi';
@@ -10,9 +12,15 @@ interface Props {
   onPay: (order: OrderItem) => void;
 }
 
+const getLoc = (val: any, locale = 'en'): string => {
+  if (!val) return '';
+  if (typeof val === 'string') return val;
+  return val[locale] || val.en || val.ru || '';
+};
+
 export const OrderCard = React.memo(
   ({ order, onMenuOpen, onPay }: Props) => {
-    const { t } = useTranslation('common');
+    const { t, i18n } = useTranslation('common');
     const status = order.status?.toLowerCase() || '';
 
     const getStatusLabel = (s: string) => {
@@ -53,7 +61,7 @@ export const OrderCard = React.memo(
 
         <div className={styles.divider} />
 
-        <p className={styles.productName}>{order.catalog?.name}</p>
+        <p className={styles.productName}>{getLoc(order.catalog?.name, i18n.language)}</p>
         <p className={styles.orderQty}>{t('delivery.card.qty')} {order.quantity}</p>
         <p className={styles.orderPrice}>{formatPrice(order.price)}</p>
 

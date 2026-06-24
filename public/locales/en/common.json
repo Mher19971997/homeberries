@@ -177,7 +177,14 @@
       "cvv": "CVV",
       "sameAsBilling": "Same as billing address",
       "back": "Back",
-      "pay": "Pay"
+      "pay": "Pay",
+      "basketNotReady": "Basket is not loaded. Please go back to the previous step.",
+      "intentError": "Failed to initialize payment",
+      "errorConfirm": "Failed to confirm payment",
+      "errorNotCompleted": "Payment not completed: {{status}}",
+      "errorProcessing": "Payment processing error",
+      "errorGeneral": "An error occurred",
+      "processing": "Processing..."
     },
     "buttons": {
       "next": "Next",

@@ -23,7 +23,7 @@ function DeliveryPage() {
   return (
     <div className={styles.body}>
       <div className={styles.container}>
-      <TopNav />
+      {/* <TopNav /> */}
 
       <h4 className={styles.pageTitle}>{t('delivery.pageTitle')}</h4>
 
