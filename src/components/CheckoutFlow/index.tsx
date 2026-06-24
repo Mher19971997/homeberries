@@ -799,7 +799,6 @@ export default function CheckoutFlow() {
 
   const steps = [t("checkout.steps.address"), t("checkout.steps.shipping"), t("checkout.steps.payment")];
 
-
   const { data: baskets } = useQuery({
     queryKey: ["getAllBaskets"],
     queryFn: () =>

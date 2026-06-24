@@ -94,7 +94,7 @@ const Navbar = () => {
     : null;
 
   const { data: basket } = useQuery({
-    queryKey: ["basketCount", cookies.token],
+    queryKey: ["getAllBaskets", cookies.token],
     queryFn: () =>
       getAllBaskets(
         qs.stringify({ queryMeta: { paginate: true } }),
