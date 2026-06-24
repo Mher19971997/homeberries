@@ -17,7 +17,24 @@ export const LoginForm: React.FC = () => {
   const [success, setSuccess] = useState('');
 
   const { t } = useTranslation('common');
-  
+
+  // Бэкенд может вернуть message как строку, как объект ошибки или как массив
+  // AJV-ошибок ({ instancePath, message, ... }). Приводим всё к читаемой строке,
+  // иначе React падает при попытке отрендерить объект как children.
+  const extractError = (err: any, fallback: string): string => {
+    const msg = err?.response?.data?.message;
+    if (typeof msg === 'string') return msg;
+    if (Array.isArray(msg)) {
+      const parts = msg
+        .map((m: any) => (typeof m === 'string' ? m : m?.message))
+        .filter(Boolean);
+      if (parts.length) return parts.join(', ');
+    } else if (msg && typeof msg === 'object' && typeof msg.message === 'string') {
+      return msg.message;
+    }
+    return fallback;
+  };
+
   const flip = (toRegister: boolean) => {
     setError('');
     setSuccess('');
@@ -39,7 +56,7 @@ export const LoginForm: React.FC = () => {
         setTimeout(() => router.push('/'), 800);
       }
     } catch (err: any) {
-      setError(err?.response?.data?.message || t('auth.errors.invalid'));
+      setError(extractError(err, t('auth.errors.invalid')));
     } finally { setLoading(false); }
   };
 
@@ -62,7 +79,7 @@ export const LoginForm: React.FC = () => {
         setTimeout(() => router.push('/'), 800);
       }
     } catch (err: any) {
-      setError(err?.response?.data?.message || t('auth.errors.registerError'));
+      setError(extractError(err, t('auth.errors.registerError')));
     } finally { setLoading(false); }
   };
 
