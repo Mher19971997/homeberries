@@ -460,27 +460,35 @@ function ComparePage() {
                 <div className={styles.mobileHeaderInfo}>
                   <p className={styles.mobileName}>{getLoc(p.name, locale)}</p>
                   <p className={styles.mobilePrice}>{formatPrice(p.price)}</p>
-                  <button className={styles.mobileCartBtn} onClick={() => addToCart(p)}>
+                  <button
+                    className={styles.mobileCartBtn}
+                    onClick={() => addToCart(p)}
+                    aria-label={t('compare.addToCart')}
+                  >
                     <CartIcon />
-                    {t('compare.addToCart')}
                   </button>
                 </div>
               </div>
 
               {specGroups.map(({ groupKey, groupLabel, rows }) => {
-                let filledRows = rows.filter(([rowKey]) => getSpecValue(p, groupKey, rowKey));
-                if (diffOnly) filledRows = filledRows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey));
-                if (filledRows.length === 0) return null;
+                // Показываем ВСЕ строки группы (даже пустые для этого товара),
+                // чтобы строки совпадали между всеми карточками — товары встают
+                // на одну линию. Пустое значение помечаем прочерком.
+                const visibleRows = diffOnly
+                  ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey))
+                  : rows;
+                if (visibleRows.length === 0) return null;
                 return (
                   <div key={groupKey} className={styles.mobileGroup}>
                     <p className={styles.mobileGroupTitle}>{groupLabel}</p>
-                    {filledRows.map(([rowKey, rowLabel]) => {
+                    {visibleRows.map(([rowKey, rowLabel]) => {
+                      const value = getSpecValue(p, groupKey, rowKey);
                       const isBest = getBestUuid(groupKey, rowKey) === p.uuid;
                       return (
                         <div key={rowKey} className={styles.mobileRow}>
                           <span className={styles.mobileRowLabel}>{rowLabel}</span>
                           <span className={`${styles.mobileRowValue} ${isBest ? styles.specValueBest : ''}`}>
-                            {getSpecValue(p, groupKey, rowKey)}
+                            {value || '—'}
                           </span>
                         </div>
                       );

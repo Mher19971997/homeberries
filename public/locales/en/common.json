@@ -829,7 +829,7 @@
   "about": {
     "hero": {
       "title": "About Us",
-      "subtitle": "We are a team of professionals creating the best online shopping experience for our customers."
+      "subtitle": "Homeberries is a marketplace that brings together thousands of trusted sellers and millions of products in one convenient place. We build a space where every shopper can easily find exactly what they need at a fair price and with fast delivery. Our team of professionals works every day to make online shopping simple, secure and enjoyable for all of our customers."
     },
     "values": {
       "mission": { "title": "Our Mission", "desc": "To provide every customer with access to quality products at fair prices." },
@@ -840,7 +840,8 @@
       "products": "products",
       "customers": "happy customers",
       "years": "years on market"
-    }
+    },
+    "cta": "Browse catalog"
   },
   "contact": {
     "hero": {

@@ -265,13 +265,133 @@
 }
 
 .tableWrap {
-  overflow-x: auto;
-  border: 1px solid #ededed;
-  border-radius: 12px;
+  display: none;
 }
 
 .mobileList {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.mobileCard {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ededed;
+  border-radius: 16px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 0 29px 0 rgba(0, 0, 0, 0.2);
+  background: var(--main-white);
+}
+
+.mobileHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.mobileImg {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.mobileHeaderInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  width: 100%;
+}
+
+.mobileName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #171717;
+  margin: 0;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.mobilePrice {
+  font-size: 15px;
+  font-weight: 700;
+  color: #171717;
+  margin: 0;
+}
+
+.mobileCartBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4px;
+  width: 36px;
+  height: 36px;
+  background: #f2f2f2;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.mobileCartBtn:hover {
+  background: #e7e7e7;
+}
+
+.mobileCartBtn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.mobileGroup {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #d9d9d9;
+}
+
+.mobileGroupTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+  margin: 0 0 8px;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.mobileRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  font-size: 13px;
+}
+
+.mobileRow:not(:last-child) {
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.mobileRowLabel {
+  color: #8b8b8b;
+  flex-shrink: 0;
+}
+
+.mobileRowValue {
+  color: #545454;
+  text-align: right;
 }
 
 .table {
@@ -282,7 +402,7 @@
 }
 
 .table tr:not(:last-child) td {
-  border-bottom: 1px solid #ededed;
+  border-bottom: 1px solid #d9d9d9;
 }
 
 .table td {
@@ -450,112 +570,13 @@
     font-size: 13px;
   }
 
-  .tableWrap {
-    display: none;
-  }
-
   .mobileList {
-    display: flex;
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 16px;
   }
 
-  .mobileCard {
-    position: relative;
-    border: 1px solid #ededed;
-    border-radius: 14px;
-    padding: 16px;
-    background: #ffffff;
-  }
-
-  .mobileHeader {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 4px;
-  }
-
   .mobileImg {
-    width: 84px;
-    height: 84px;
-    object-fit: contain;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-
-  .mobileHeaderInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    min-width: 0;
-  }
-
-  .mobileName {
-    font-size: 14px;
-    font-weight: 600;
-    color: #171717;
-    margin: 0;
-  }
-
-  .mobilePrice {
-    font-size: 14px;
-    font-weight: 600;
-    color: #171717;
-    margin: 0;
-  }
-
-  .mobileCartBtn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    width: fit-content;
-    background: #f2f2f2;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 12px;
-    font-family: var(--font-inter);
-    color: #171717;
-    cursor: pointer;
-  }
-
-  .mobileCartBtn svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .mobileGroup {
-    margin-top: 14px;
-    padding-top: 10px;
-    border-top: 1px solid #f3f3f3;
-  }
-
-  .mobileGroupTitle {
-    font-size: 13px;
-    font-weight: 600;
-    color: #111111;
-    margin: 0 0 8px;
-  }
-
-  .mobileRow {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 6px 0;
-    font-size: 12px;
-  }
-
-  .mobileRow:not(:last-child) {
-    border-bottom: 1px solid #f7f7f7;
-  }
-
-  .mobileRowLabel {
-    color: #8b8b8b;
-    flex-shrink: 0;
-  }
-
-  .mobileRowValue {
-    color: #545454;
-    text-align: right;
+    width: 120px;
+    height: 120px;
   }
 }
