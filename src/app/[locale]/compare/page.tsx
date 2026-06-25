@@ -23,6 +23,7 @@ import { ScaleIcon } from '@homeberris/assets/icons/compare';
 import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
 import { CartIcon } from '@homeberris/assets/icons/navbar';
+import { Sparkles, Lock } from 'lucide-react';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -499,6 +500,38 @@ function ComparePage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Smart Recommendations: гость → замок с входом, залогинен → заголовок (логика позже) */}
+      <div className={styles.recommendations}>
+        {!isAuth ? (
+          <div className={styles.recLock}>
+            <span className={styles.recLockIcon}>
+              <Lock size={22} strokeWidth={1.75} />
+            </span>
+            <p className={styles.recLockTitle}>{t('compare.recommendations.lock.title')}</p>
+            <p className={styles.recLockSubtitle}>{t('compare.recommendations.lock.subtitle')}</p>
+            <div className={styles.recLockActions}>
+              <button
+                className={styles.recLockLoginBtn}
+                onClick={() => router.push('/security/login?redirect=/compare')}
+              >
+                {t('compare.recommendations.lock.login')}
+              </button>
+              <button
+                className={styles.recLockRegisterBtn}
+                onClick={() => router.push('/security/login?mode=register&redirect=/compare')}
+              >
+                {t('compare.recommendations.lock.createAccount')}
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.recommendationsHeader}>
+            <Sparkles size={20} strokeWidth={1.75} />
+            <h2 className={styles.recommendationsTitle}>{t('compare.recommendations.title')}</h2>
+          </div>
+        )}
       </div>
         </>
       )}

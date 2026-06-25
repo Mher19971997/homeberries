@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { login, register } from '@homeberris/http/authApi';
 import { setToken } from '@homeberris/utils/auth';
@@ -9,7 +10,9 @@ import { EyeOff, EyeOpen } from '@homeberris/assets/icons/login';
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
-  const [flipped, setFlipped] = useState(false);
+  const searchParams = useSearchParams();
+  // ?mode=register → открываем форму сразу на вкладке регистрации
+  const [flipped, setFlipped] = useState(searchParams?.get('mode') === 'register');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -17,6 +20,9 @@ export const LoginForm: React.FC = () => {
   const [success, setSuccess] = useState('');
 
   const { t } = useTranslation('common');
+
+  // Куда вести после успешного входа/регистрации: ?redirect=... или на главную.
+  const redirectTo = searchParams?.get('redirect') || '/';
 
   // Бэкенд может вернуть message как строку, как объект ошибки или как массив
   // AJV-ошибок ({ instancePath, message, ... }). Приводим всё к читаемой строке,
@@ -53,7 +59,7 @@ export const LoginForm: React.FC = () => {
       if (res?.data?.access_token) {
         setToken(res.data.access_token);
         setSuccess(t('auth.login.welcome'));
-        setTimeout(() => router.push('/'), 800);
+        setTimeout(() => router.push(redirectTo), 800);
       }
     } catch (err: any) {
       setError(extractError(err, t('auth.errors.invalid')));
@@ -76,7 +82,7 @@ export const LoginForm: React.FC = () => {
       if (res?.data?.access_token) {
         setToken(res.data.access_token);
         setSuccess(t('auth.register.success'));
-        setTimeout(() => router.push('/'), 800);
+        setTimeout(() => router.push(redirectTo), 800);
       }
     } catch (err: any) {
       setError(extractError(err, t('auth.errors.registerError')));

@@ -135,7 +135,16 @@
     "diffOnly": "Differences only",
     "share": "Share",
     "linkCopied": "Link copied",
-    "clearAll": "Clear all"
+    "clearAll": "Clear all",
+    "recommendations": {
+      "title": "Smart Recommendations",
+      "lock": {
+        "title": "Please sign in to get smart recommendations",
+        "subtitle": "Sign in to unlock smarter product recommendations, personalized comparison insights, and tailored picks for your goals.",
+        "login": "Login",
+        "createAccount": "Create account"
+      }
+    }
   },
   "checkout": {
     "steps": {
