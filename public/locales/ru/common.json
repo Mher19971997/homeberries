@@ -104,7 +104,14 @@
       "tax": "Предполагаемый налог",
       "shipping": "Доставка и обработка",
       "total": "Итого",
-      "checkout": "Оформить заказ"
+      "checkout": "Оформить заказ",
+      "summary": {
+        "promoAlreadyUsed": "Promo code has already been used",
+        "promoInvalid": "Invalid promo code",
+        "promoApplied": "Promo code applied ({{discount}}% discount)",
+        "discount": "Discount",
+        "remove": "Remove"
+      }
     }
   },
   "compare": {

@@ -116,7 +116,12 @@
       "tax": "Հաշվարկված հարկ",
       "shipping": "Առաքում և սպասարկում",
       "total": "Ընդհանուր",
-      "checkout": "Վճարել"
+      "checkout": "Վճարել",
+      "promoAlreadyUsed": "Պրոմոկոդն արդեն օգտագործվել է",
+      "promoInvalid": "Անվավեր պրոմոկոդ",
+      "promoApplied": "Պրոմոկոդը կիրառվել է ({{discount}}% զեղչ)",
+      "discount": "Զեղչ",
+      "remove": "Հեռացնել"
     }
   },
   "compare": {

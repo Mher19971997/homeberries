@@ -9,7 +9,7 @@
     "profile": "Profile",
     "login": "Login",
     "language": "Language",
-    "catalog":"Catalog"
+    "catalog": "Catalog"
   },
   "categories": {
     "title": "Browse By Category",
@@ -116,7 +116,12 @@
       "tax": "Estimated Tax",
       "shipping": "Estimated shipping & Handling",
       "total": "Total",
-      "checkout": "Checkout"
+      "checkout": "Checkout",
+      "promoAlreadyUsed": "Promo code has already been used",
+      "promoInvalid": "Invalid promo code",
+      "promoApplied": "Promo code applied ({{discount}}% discount)",
+      "discount": "Discount",
+      "remove": "Remove"
     }
   },
   "compare": {
@@ -848,9 +853,18 @@
       "subtitle": "Homeberries is a marketplace that brings together thousands of trusted sellers and millions of products in one convenient place. We build a space where every shopper can easily find exactly what they need at a fair price and with fast delivery. Our team of professionals works every day to make online shopping simple, secure and enjoyable for all of our customers."
     },
     "values": {
-      "mission": { "title": "Our Mission", "desc": "To provide every customer with access to quality products at fair prices." },
-      "vision": { "title": "Our Vision", "desc": "To become the leading e-commerce platform in Armenia and the region." },
-      "quality": { "title": "Quality", "desc": "We carefully select every product to guarantee you the best quality." }
+      "mission": {
+        "title": "Our Mission",
+        "desc": "To provide every customer with access to quality products at fair prices."
+      },
+      "vision": {
+        "title": "Our Vision",
+        "desc": "To become the leading e-commerce platform in Armenia and the region."
+      },
+      "quality": {
+        "title": "Quality",
+        "desc": "We carefully select every product to guarantee you the best quality."
+      }
     },
     "stats": {
       "products": "products",
@@ -865,9 +879,16 @@
       "subtitle": "Have questions? We are always happy to help you."
     },
     "info": {
-      "address": { "label": "Address", "value": "Yerevan, Armenia" },
-      "phone": { "label": "Phone" },
-      "email": { "label": "Email" }
+      "address": {
+        "label": "Address",
+        "value": "Yerevan, Armenia"
+      },
+      "phone": {
+        "label": "Phone"
+      },
+      "email": {
+        "label": "Email"
+      }
     },
     "faq": {
       "title": "Frequently Asked Questions",
@@ -948,9 +969,21 @@
     },
     "readMore": "Read",
     "posts": {
-      "post1": { "tag": "News", "title": "Top 10 Smartphones of 2025", "excerpt": "We've gathered the best smartphones of this year by price-to-quality ratio." },
-      "post2": { "tag": "Tips", "title": "How to Choose a Work Laptop", "excerpt": "Breaking down the key specs to look for when choosing a work laptop." },
-      "post3": { "tag": "Review", "title": "Best Headphones for Sports", "excerpt": "A review of popular wireless headphones for an active lifestyle." }
+      "post1": {
+        "tag": "News",
+        "title": "Top 10 Smartphones of 2025",
+        "excerpt": "We've gathered the best smartphones of this year by price-to-quality ratio."
+      },
+      "post2": {
+        "tag": "Tips",
+        "title": "How to Choose a Work Laptop",
+        "excerpt": "Breaking down the key specs to look for when choosing a work laptop."
+      },
+      "post3": {
+        "tag": "Review",
+        "title": "Best Headphones for Sports",
+        "excerpt": "A review of popular wireless headphones for an active lifestyle."
+      }
     }
   }
 }

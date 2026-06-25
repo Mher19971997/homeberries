@@ -92,13 +92,13 @@ const PaymentFormContent: React.FC<{
       // Получаем payment method из payment intent (может быть строкой или объектом)
       const paymentMethodId = paymentIntent?.payment_method;
       let paymentMethodIdString = '';
-      
+
       if (paymentMethodId) {
-        paymentMethodIdString = typeof paymentMethodId === 'string' 
-          ? paymentMethodId 
+        paymentMethodIdString = typeof paymentMethodId === 'string'
+          ? paymentMethodId
           : (paymentMethodId as any)?.id || '';
       }
-      
+
       // Подтверждаем платеж на backend
       // Если orderUuid передан, обновим статус заказа на 'paid'
       const result = await confirmPayment(
@@ -227,15 +227,15 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
 
   return (
     <Elements stripe={stripePromise} options={options}>
-        <PaymentFormContent
-          clientSecret={clientSecret}
-          paymentIntentId={paymentIntentId}
-          amount={amount}
-          orderUuid={orderUuid}
-          basketUuids={basketUuids}
-          onSuccess={onSuccess}
-          onError={onError}
-        />
+      <PaymentFormContent
+        clientSecret={clientSecret}
+        paymentIntentId={paymentIntentId}
+        amount={amount}
+        orderUuid={orderUuid}
+        basketUuids={basketUuids}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
     </Elements>
   );
 };
