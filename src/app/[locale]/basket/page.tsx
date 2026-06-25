@@ -44,8 +44,8 @@ export default function BasketPage() {
   const [basketPage, setBasketPage] = React.useState(1);
   const BASKET_LIMIT = 3;
   const [promoCode, setPromoCode] = React.useState('');
-  const [bonusCard, setBonusCard] = React.useState('');
-  const [bonusCardError, setBonusCardError] = React.useState(false);
+  // const [bonusCard, setBonusCard] = React.useState('');
+  // const [bonusCardError, setBonusCardError] = React.useState(false);
   const [emptyBasketError, setEmptyBasketError] = React.useState(false);
 
   const { data: baskets, isLoading: isBasketsLoading } = useQuery({
@@ -93,11 +93,11 @@ export default function BasketPage() {
       return;
     }
     setEmptyBasketError(false);
-    if (!bonusCard.trim()) {
-      setBonusCardError(true);
-      showToast(t('basket.summary.bonusRequired'), 'warning');
-      return;
-    }
+    // if (!bonusCard.trim()) {
+    //   setBonusCardError(true);
+    //   showToast(t('basket.summary.bonusRequired'), 'warning');
+    //   return;
+    // }
     router.push(`/order`);
   };
 
@@ -238,7 +238,7 @@ export default function BasketPage() {
             />
           </div>
 
-          <div className={styles.field}>
+          {/* <div className={styles.field}>
             <label className={styles.fieldLabel}>
               {t('basket.summary.bonusLabel')} <span style={{ color: 'red' }}>*</span>
             </label>
@@ -258,7 +258,7 @@ export default function BasketPage() {
             {bonusCardError && (
               <span className={styles.errorText}>{t('basket.summary.bonusRequired')}</span>
             )}
-          </div>
+          </div> */}
 
           <div className={styles.summaryRowsContainer}>
             <div className={styles.summaryRow}>
