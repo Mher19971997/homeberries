@@ -88,6 +88,8 @@ export default function ProductPageContent({
   const { t } = useTranslation('common');
   const { showToast } = useToast();
   const [articuleCopied, setArticuleCopied] = React.useState(false);
+  // Выбранные значения вариантов (память/мощность/...) для пересчёта цены.
+  const [selectedVariantValues, setSelectedVariantValues] = React.useState<Record<string, string>>({});
 
   const articule = (catalog as any)?.articule || '';
   const handleCopyArticule = async () => {
@@ -130,7 +132,8 @@ export default function ProductPageContent({
   const isAuth = checkToken();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const { mutate } = useMutation({
-    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, cookies.token),
+    mutationFn: (payload: { catalogUuid: string; selectedVariant?: any }) =>
+      insertBasket({ catalogUuid: payload.catalogUuid, quantity: 1, selectedVariant: payload.selectedVariant }, cookies.token),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['basketCount'] });
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
@@ -139,13 +142,30 @@ export default function ProductPageContent({
     onError: (error) => console.error(error),
   });
 
+  // Считает выбранный вариант (значения + цена) для отправки в корзину.
+  const computeSelectedVariant = (): any => {
+    const vd: any = (catalog as any)?.variants;
+    if (!vd || Array.isArray(vd) || !Array.isArray(vd.params) || !vd.params.length) return undefined;
+    const eff: Record<string, string> = {};
+    vd.params.forEach((p: any) => {
+      const key = typeof p.name === 'string' ? p.name : (p.name?.ru || '');
+      eff[key] = selectedVariantValues[key] || p.options?.[0] || '';
+    });
+    const combos = Array.isArray(vd.combinations) ? vd.combinations : [];
+    const m = combos.find((c: any) => {
+      const keys = Object.keys(c.values || {});
+      return keys.length > 0 && keys.every((k) => eff[k] === c.values[k]);
+    });
+    return { values: eff, price: m ? m.price : (catalog as any).price };
+  };
+
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (!isAuth || !cookies.token) {
       setShowAuthModal(true);
       return;
     }
-    mutate(catalog!.uuid);
+    mutate({ catalogUuid: catalog!.uuid, selectedVariant: computeSelectedVariant() });
   };
 
   const handleWishlistClick = () => {
@@ -258,6 +278,28 @@ export default function ProductPageContent({
 
   const finalCategoryName = getLoc(catalog?.category?.name, locale) || categoryName || "";
   const finalSubCategoryName = getLoc(catalog?.subCategorie?.name, locale) || subCategoryName || "";
+
+  // --- Универсальные варианты с ценой: { params:[{name,options}], combinations:[{values,price,inStock}] } ---
+  const variantsData: any = (catalog as any).variants;
+  const vParams: Array<{ name: any; options: string[] }> =
+    (variantsData && !Array.isArray(variantsData) && Array.isArray(variantsData.params)) ? variantsData.params : [];
+  const vCombos: Array<{ values: Record<string, string>; price: number; inStock?: boolean }> =
+    (variantsData && !Array.isArray(variantsData) && Array.isArray(variantsData.combinations)) ? variantsData.combinations : [];
+
+  const variantLocName = (n: any): string => typeof n === 'string' ? n : (n?.[locale] || n?.ru || n?.en || n?.hy || '');
+  // Стабильный ключ параметра — по ru (комбинации хранятся по нему).
+  const variantKeyName = (n: any): string => typeof n === 'string' ? n : (n?.ru || n?.en || n?.hy || '');
+  // Эффективный выбор: что выбрал пользователь, иначе первое значение параметра.
+  const effectiveVariantValues: Record<string, string> = {};
+  vParams.forEach((p) => {
+    const key = variantKeyName(p.name);
+    effectiveVariantValues[key] = selectedVariantValues[key] || (p.options?.[0] ?? '');
+  });
+  const matchedCombo = vCombos.find((c) => {
+    const keys = Object.keys(c.values || {});
+    return keys.length > 0 && keys.every((k) => effectiveVariantValues[k] === c.values[k]);
+  });
+  const displayPrice = matchedCombo ? matchedCombo.price : catalog.price;
 
   const decodedCategory =
     typeof routeParams?.category === "string"
@@ -392,7 +434,7 @@ export default function ProductPageContent({
             <h1 className={styles.productTitle}>{getLoc(catalog.name, locale)}</h1>
             <div className={styles.priceRow}>
               <span className={styles.currentPrice}>
-                {formatPriceHook(catalog.price)}
+                {formatPriceHook(displayPrice)}
               </span>
               {catalog.oldPrice && (
                 <span className={styles.oldPrice}>
@@ -447,6 +489,36 @@ export default function ProductPageContent({
                 </div>
               );
             })()}
+
+            {/* Универсальные варианты с ценой (память/мощность/обороты…) */}
+            {vParams.length > 0 && (
+              <div className={styles.variantParams}>
+                {vParams.map((p, pi) => {
+                  const keyName = variantKeyName(p.name);
+                  const label = variantLocName(p.name);
+                  return (
+                    <div key={pi} className={styles.variantParamRow}>
+                      <span className={styles.variantParamLabel}>{label}:</span>
+                      <div className={styles.variantOptions}>
+                        {(p.options || []).map((opt, oi) => {
+                          const active = effectiveVariantValues[keyName] === opt;
+                          return (
+                            <button
+                              key={oi}
+                              type="button"
+                              className={`${styles.storageBtn} ${active ? styles.storageBtnActive : ''}`}
+                              onClick={() => setSelectedVariantValues((prev) => ({ ...prev, [keyName]: opt }))}
+                            >
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
             {/* Выбор памяти/хранилища */}
             {(() => {

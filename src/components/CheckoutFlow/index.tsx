@@ -889,10 +889,16 @@ export default function CheckoutFlow() {
 
       const imgSrc = images?.[0]?.imgPath || "/images/cardEmpty.png";
 
+      // Цена позиции — по выбранному варианту, если он есть, иначе базовая.
+      const sv = (item as any)?.selectedVariant;
+      const unitPrice = (sv && typeof sv.price === "number")
+        ? sv.price
+        : (Number((item as any).catalog?.price) || 0);
+
       return {
         uuid: (item as any).uuid ?? String(index),
         name: getLoc((item as any).catalog?.name) || "Product",
-        price: Number((item as any).catalog?.price) || 0,
+        price: unitPrice,
         image: imgSrc,
       };
     });

@@ -24,7 +24,11 @@ interface Props {
 export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props) {
   const routeParams = useParams();
   const locale = (routeParams?.locale as string) || 'ru';
-  const originalPrice = Number(basket?.catalog?.price) || 0;
+  // Если выбран вариант (память/мощность…), берём его цену вместо базовой.
+  const selectedVariant = (basket as any)?.selectedVariant;
+  const originalPrice = (selectedVariant && typeof selectedVariant.price === 'number')
+    ? selectedVariant.price
+    : (Number(basket?.catalog?.price) || 0);
   const discount = (basket?.catalog as any)?.discountPercent || 0;
   const isDiscount = (basket?.catalog as any)?.isDiscount && discount > 0;
   const price = isDiscount ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
@@ -92,6 +96,11 @@ export default function BasketItem({ basket, onRemove, onUpdateQuantity }: Props
       />
       <div className={styles.info}>
         <p className={styles.name}>{getLoc(basket?.catalog?.name, locale) || '—'}</p>
+        {selectedVariant?.values && Object.keys(selectedVariant.values).length > 0 && (
+          <p style={{ fontSize: 13, color: '#868695', margin: '2px 0 0', fontWeight: 500 }}>
+            {Object.entries(selectedVariant.values).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+          </p>
+        )}
         {articule && (
           <p className={styles.sku}>
             #{articule}

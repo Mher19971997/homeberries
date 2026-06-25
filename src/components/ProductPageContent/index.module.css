@@ -347,6 +347,33 @@
   color: #000000;
 }
 
+/* ─── Универсальные варианты (память/мощность/обороты) ─── */
+.variantParams {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.variantParamRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.variantParamLabel {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 14px;
+  color: #868695;
+}
+
+.variantOptions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
 /* ─── Description ────────────────────────────────────── */
 .descriptionSection {
   display: flex;
