@@ -22,6 +22,7 @@ interface StripePaymentFormProps {
   basketUuids?: string[];
   onSuccess?: (paymentResult: any) => void;
   onError?: (error: string) => void;
+  promocode?: string
 }
 
 const PaymentFormContent: React.FC<{
@@ -157,6 +158,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
   basketUuids,
   onSuccess,
   onError,
+  promocode
 }) => {
   const { t } = useTranslation('common');
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -174,6 +176,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
           currency: 'rub',
           orderUuid,
           basketUuids,
+          promocode,
           description: t('stripe.orderDescription', { amount: (amount / 100).toFixed(2) }),
         });
         setClientSecret(response.clientSecret);
@@ -189,7 +192,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
 
     createIntent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount, orderUuid, basketUuids]);
+  }, [amount, orderUuid, basketUuids, promocode]);
 
   if (isLoading) {
     return (

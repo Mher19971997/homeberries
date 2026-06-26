@@ -10,6 +10,7 @@ interface SelectPaymentMethodProps {
   amount?: number;
   orderUuid?: string;
   basketUuids?: string[];
+  promocode?: string;
   onPaymentSuccess?: (result: any) => void;
   onPaymentError?: (error: string) => void;
   open?: boolean;
@@ -24,6 +25,7 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
   onPaymentError,
   open: externalOpen,
   onClose: externalOnClose,
+  promocode
 }) => {
   const { t } = useTranslation('common');
   const [internalOpen, setInternalOpen] = React.useState<boolean>(false);
@@ -73,6 +75,7 @@ const SelectPaymentMethod: React.FC<SelectPaymentMethodProps> = ({
               basketUuids={basketUuids}
               onSuccess={handlePaymentSuccess}
               onError={handlePaymentError}
+              promocode={promocode}
             />
           ) : (
             <Typography color="text.secondary" textAlign="center">

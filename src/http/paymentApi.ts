@@ -6,6 +6,7 @@ export interface CreatePaymentIntentRequest {
   orderUuid?: string;
   basketUuids?: string[];
   description?: string;
+  promocode?: string
 }
 
 export interface PaymentIntentResponse {

@@ -585,6 +585,7 @@ function PaymentStep({
   onPaymentError,
   onBack,
   // onNext,
+  promocode
 }: {
   items: CheckoutItem[];
   subtotal: number;
@@ -597,6 +598,7 @@ function PaymentStep({
   onPaymentError: (error: string) => void;
   onBack: () => void;
   // onNext: () => void;
+  promocode?: string
 }) {
   const [tab, setTab] = useState<PaymentTab>("Credit Card");
   // const [cardNumber, setCardNumber] = useState("");
@@ -624,6 +626,7 @@ function PaymentStep({
       amount: Math.round(total * 100),
       currency: "rub",
       basketUuids: items.map((i) => i.uuid).filter(Boolean) as string[],
+      promocode
     })
       .then((res) => {
         if (!active) return;
@@ -638,7 +641,7 @@ function PaymentStep({
       active = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab, hasRealBasketItems, total]);
+  }, [tab, hasRealBasketItems, total, promocode]);
 
   const fmt = (n: number) => `$${n}`;
   const TABS: PaymentTab[] = ["Credit Card", "PayPal", "PayPal Credit"];
@@ -906,12 +909,17 @@ export default function CheckoutFlow() {
 
   const TAX_RATE = 0.021;
   const SHIPPING = 29;
+
+  const appliedPromo = queryClient.getQueryData<{ code: string; discountPercent: number }>(['appliedPromo']); // ADD
+
   const subtotal = useMemo(
     () => basketItems.reduce((sum, item) => sum + item.price, 0),
     [basketItems],
   );
+  const discountAmount = Math.round(subtotal * ((appliedPromo?.discountPercent || 0) / 100)); // ADD
+
   const tax = 50; // Жестко под макет или Math.round(subtotal * TAX_RATE);
-  const total = subtotal + tax + SHIPPING;
+  const total = subtotal - discountAmount + tax + SHIPPING;
 
   const currentAddr = addresses.find((a) => a.uuid === selectedAddress);
   const addressString = currentAddr ? currentAddr.street.split("\n")[0] : "";
@@ -927,6 +935,7 @@ export default function CheckoutFlow() {
 
   const handlePaymentSuccess = async (result: any) => {
     showToast("Payment successful!", "success");
+    queryClient.removeQueries({ queryKey: ["appliedPromo"] });
     await queryClient.invalidateQueries({ queryKey: ["getAllBaskets"] });
     setTimeout(() => {
       router.push(`/myorders/delivery?paymentSuccess=true`);
@@ -966,6 +975,7 @@ export default function CheckoutFlow() {
               total={total}
               address={addressString}
               shipmentMethod={selectedShipment}
+              promocode={appliedPromo?.code}
               onPaymentSuccess={handlePaymentSuccess}
               onPaymentError={handlePaymentError}
               onBack={handleBack}
