@@ -105,9 +105,7 @@
   cursor: pointer;
 }
 
-.categoryTab:hover {
-  background: #f7f7f7;
-}
+
 
 .categoryTabActive {
   background: #000;
