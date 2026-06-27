@@ -25,6 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "@homeberris/hooks/useDebounce";
 import { CatalogItem } from "@homeberris/types/catalog";
 import { useParams } from "next/navigation";
+import { getUnreadPromos, usePromoSocket } from "@homeberris/hooks/usePromoSocket";
+import PromoNotification from "@homeberris/components/PromoNotification";
 
 const getLoc = (val: any, locale: string): string => {
   if (!val || typeof val === "string") return val ?? "";
@@ -41,6 +43,8 @@ const Navbar = () => {
   const { items: favorites } = useFavorites();
   const { items: compareItems } = useCompare();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
+  const [unreadPromos, setUnreadPromos] = React.useState(0);
+  const [promoNotif, setPromoNotif] = React.useState<{ code: string; discountPercent: number } | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -52,6 +56,13 @@ const Navbar = () => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  React.useEffect(() => {
+    setUnreadPromos(getUnreadPromos());
+    const onPromoNotif = () => setUnreadPromos(getUnreadPromos());
+    window.addEventListener('promoNotification', onPromoNotif);
+    return () => window.removeEventListener('promoNotification', onPromoNotif);
   }, []);
 
   React.useEffect(() => {
@@ -67,6 +78,10 @@ const Navbar = () => {
   });
 
   const userLetter = profile?.email ? profile.email[0].toUpperCase() : null;
+
+  usePromoSocket(profile?.uuid, (payload) => {
+    setPromoNotif(payload);
+  });
 
   const { data: searchResults } = useQuery({
     queryKey: ["navbarSearch", debouncedSearch],
@@ -136,6 +151,7 @@ const Navbar = () => {
   const basketCount = isAuth ? basket?.meta?.count || 0 : localBasketCount;
 
   return (
+    <>
     <div
       className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""}`}
     >
@@ -266,22 +282,27 @@ const Navbar = () => {
             className={styles.iconBtn}
             onClick={() => router.push(isAuth ? "/profile" : "/security/login")}
           >
-            {isAuth && userAvatar ? (
-              <div
-                className={styles.avatarCircle}
-                style={{ padding: 0, overflow: "hidden" }}
-              >
-                <img
-                  src={userAvatar}
-                  alt="avatar"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-            ) : isAuth && userLetter ? (
-              <div className={styles.avatarCircle}>{userLetter}</div>
-            ) : (
-              <UserIcon />
-            )}
+            <div className={styles.badgeWrapper}>
+              {isAuth && userAvatar ? (
+                <div
+                  className={styles.avatarCircle}
+                  style={{ padding: 0, overflow: "hidden" }}
+                >
+                  <img
+                    src={userAvatar}
+                    alt="avatar"
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                </div>
+              ) : isAuth && userLetter ? (
+                <div className={styles.avatarCircle}>{userLetter}</div>
+              ) : (
+                <UserIcon />
+              )}
+              {unreadPromos > 0 && (
+                <span className={styles.badge}>{unreadPromos}</span>
+              )}
+            </div>
           </button>
           <SelectLanguageInPopover>
             <button className={styles.iconBtn}>
@@ -441,6 +462,15 @@ const Navbar = () => {
         </div>
       </div>
     </div>
+
+    {promoNotif && (
+      <PromoNotification
+        code={promoNotif.code}
+        discountPercent={promoNotif.discountPercent}
+        onClose={() => setPromoNotif(null)}
+      />
+    )}
+    </>
   );
 };
 

@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
@@ -16,9 +16,10 @@ import { useTranslation } from 'react-i18next';
 import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/app/[locale]/profile/index.module.css';
-import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut, Ticket, X } from 'lucide-react';
+import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut, Ticket, X, Copy, Check } from 'lucide-react';
 import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
 import { getMyPromocodes } from '@homeberris/http/promocodeApi';
+import { clearUnreadPromos } from '@homeberris/hooks/usePromoSocket';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -33,7 +34,6 @@ export default function Profile() {
   const router = useRouter();
   const { items: favorites } = useFavorites();
   const { t } = useTranslation('common');
-
   useEffect(() => {
     if (!cookies.token) router.replace('/security/login');
   }, [cookies.token, router]);
@@ -71,6 +71,13 @@ export default function Profile() {
 
 
   const [promoModalOpen, setPromoModalOpen] = React.useState(false);
+  const [copiedCode, setCopiedCode] = useState<string | null>(null);
+
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(code);
+    setTimeout(() => setCopiedCode(null), 2000);
+  };
 
   const { data: myPromocodes } = useQuery({
     queryKey: ['myPromocodes', cookies.token],
@@ -143,7 +150,7 @@ export default function Profile() {
             <p className={styles.userName}>{userName}</p>
             <p className={styles.userEmail}>{user?.email}</p>
           </div>
-          <button className={styles.promoBtn} onClick={() => setPromoModalOpen(true)}>
+          <button className={styles.promoBtn} onClick={() => { setPromoModalOpen(true); clearUnreadPromos(); }}>
             <Ticket size={16} strokeWidth={1.8} />
             {t('profile.promocodes')}
           </button>
@@ -266,6 +273,18 @@ export default function Profile() {
                       <div className={styles.promoStatus}>
                         {used ? t('profile.promoUsed') : t('profile.promoActive')}
                       </div>
+                      {!used && (
+                        <button
+                          className={styles.promoCopyBtn}
+                          onClick={() => handleCopyCode(promo.code)}
+                          title="Копировать"
+                        >
+                          {copiedCode === promo.code
+                            ? <Check size={15} strokeWidth={2.5} color="#2e7d32" />
+                            : <Copy size={15} strokeWidth={1.8} />
+                          }
+                        </button>
+                      )}
                     </div>
                   );
                 })

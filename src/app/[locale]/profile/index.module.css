@@ -105,7 +105,7 @@
   border-radius: 8px; transition: background 0.15s;
 }
 .promoModalClose:hover { background: #f5f5f8; }
-.promoList { display: flex; flex-direction: column; gap: 10px; }
+.promoList { display: flex; flex-direction: column; gap: 10px; max-height: 420px; overflow-y: auto; padding-right: 4px; }
 .promoEmpty { color: #868695; font-size: 14px; text-align: center; padding: 20px 0; }
 .promoItem {
   display: flex; align-items: center; gap: 12px;
@@ -124,6 +124,12 @@
 }
 .promoUsed .promoDiscount { color: #868695; background: #f5f5f8; }
 .promoStatus { font-size: 12px; color: #868695; }
+.promoCopyBtn {
+  background: none; border: none; cursor: pointer; padding: 4px;
+  color: #868695; display: flex; align-items: center;
+  border-radius: 6px; transition: all 0.15s; flex-shrink: 0;
+}
+.promoCopyBtn:hover { background: #f0f0f0; color: #111; }
 
 .logoutBtn {
   height: 40px;
