@@ -69,7 +69,7 @@ export default function CatalogIndexPage() {
   const buildQuery = (page: number) => {
     const filters: any = {
       queryMeta: { paginate: true, limit: LIMIT, page },
-      filterMeta: {},
+      filterMeta: { isActive: true },
     };
 
     if (searchQuery) {

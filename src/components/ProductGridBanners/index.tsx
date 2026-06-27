@@ -37,7 +37,7 @@ export default function ProductGridBanners() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const query = qs.stringify({
-    filterMeta: { isPopular: true },
+    filterMeta: { isPopular: true, isActive: true },
     queryMeta: { paginate: true, limit: 20, page: 1 },
   });
 

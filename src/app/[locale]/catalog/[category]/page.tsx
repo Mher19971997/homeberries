@@ -97,7 +97,7 @@ export default function CatalogPage() {
       queryMeta: { paginate: true, limit: ITEMS_PER_PAGE, page: currentPage },
     };
     const catFilter = catUuid ? { categoryUuid: catUuid } : { categoryUuid: { like: "%" } };
-    let baseMeta: any = catFilter;
+    let baseMeta: any = { ...catFilter, isActive: true };
     if (selectedBrands.length > 0) baseMeta = { ...baseMeta, brandUuid: { in: selectedBrands } };
     if (hasGroupFilters && matchingCatalogUuids?.length) baseMeta = { ...baseMeta, uuid: { in: matchingCatalogUuids } };
     filters.filterMeta = baseMeta;

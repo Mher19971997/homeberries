@@ -110,7 +110,7 @@ export default function SubCategoryPageContent({
         limit: ITEMS_PER_PAGE,
         page: currentPage,
       },
-      filterMeta: {} as any,
+      filterMeta: { isActive: true } as any,
     };
 
     if (subCategoryUuid) {

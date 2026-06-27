@@ -104,7 +104,9 @@ export default function Home() {
     };
 
     if (activeTab === 'featured') {
-      filters.filterMeta = { isFeatured: true };
+      filters.filterMeta = { isFeatured: true, isActive: true };
+    } else {
+      filters.filterMeta = { isActive: true };
     }
 
     if (selectedCategory) {
