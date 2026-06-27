@@ -410,7 +410,12 @@
       "description": "Contact support",
       "reviews": "Reviews",
       "business": "Business"
-    }
+    },
+    "promocodes": "Promocodes",
+    "myPromocodes": "My Promocodes",
+    "noPromocodes": "You have no promocodes",
+    "promoActive": "Active",
+    "promoUsed": "Used"
   },
   "delivery": {
     "pageTitle": "My Orders",

@@ -105,6 +105,9 @@
       "shipping": "Доставка и обработка",
       "total": "Итого",
       "checkout": "Оформить заказ",
+      "remove": "Убрать",
+      "promoApplied": "Промокод применён (скидка {{discount}}%)",
+      "discount": "Скидка",
       "summary": {
         "promoAlreadyUsed": "Promo code has already been used",
         "promoInvalid": "Invalid promo code",
@@ -400,7 +403,12 @@
       "description": "Обратитесь в поддержку",
       "reviews": "Отзывы",
       "business": "Бизнес"
-    }
+    },
+    "promocodes": "Промокоды",
+    "myPromocodes": "Мои промокоды",
+    "noPromocodes": "У вас нет промокодов",
+    "promoActive": "Активен",
+    "promoUsed": "Использован"
   },
   "delivery": {
     "pageTitle": "Мои заказы",

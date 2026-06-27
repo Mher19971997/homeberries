@@ -40,4 +40,11 @@ const validatePromocode = async (
     return data;
 };
 
-export { getAllPromocodeUsages, validatePromocode };
+const getMyPromocodes = async (token: string) => {
+    const { data } = await $host.get(`/api/v1/promocode/my`, {
+        headers: authHeader(token),
+    });
+    return data;
+};
+
+export { getAllPromocodeUsages, validatePromocode, getMyPromocodes };

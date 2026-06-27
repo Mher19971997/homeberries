@@ -78,7 +78,9 @@ export default function BasketPage() {
   const subtotal = React.useMemo(() => {
     if (!currentBaskets?.data) return 0;
     return currentBaskets.data.reduce((sum: number, item: BasketDataItem) => {
-      return sum + (Number(item?.catalog?.price) || 0) * (item.quantity || 1);
+      const variantPrice = item?.selectedVariant?.price;
+      const price = variantPrice != null ? Number(variantPrice) : (Number(item?.catalog?.price) || 0);
+      return sum + price * (item.quantity || 1);
     }, 0);
   }, [currentBaskets?.data]);
 

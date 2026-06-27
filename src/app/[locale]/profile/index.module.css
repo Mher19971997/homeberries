@@ -61,6 +61,70 @@
   margin: 0;
 }
 
+.promoBtn {
+  height: 40px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px;
+  border: 1.5px solid #e8e8e8;
+  background: #fff;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #111;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.promoBtn:hover { background: #f5f5f8; border-color: #111; }
+
+/* Промокод модалка */
+.promoOverlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 1000; display: flex; align-items: center; justify-content: center;
+}
+.promoModal {
+  background: #fff; border-radius: 20px; width: 100%; max-width: 440px;
+  padding: 28px; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  display: flex; flex-direction: column; gap: 16px;
+}
+.promoModalHeader {
+  display: flex; align-items: center; justify-content: space-between;
+}
+.promoModalTitle {
+  font-size: 18px; font-weight: 700; color: #111;
+  display: flex; align-items: center; gap: 8px;
+}
+.promoModalClose {
+  background: none; border: none; cursor: pointer; color: #868695;
+  display: flex; align-items: center; padding: 4px;
+  border-radius: 8px; transition: background 0.15s;
+}
+.promoModalClose:hover { background: #f5f5f8; }
+.promoList { display: flex; flex-direction: column; gap: 10px; }
+.promoEmpty { color: #868695; font-size: 14px; text-align: center; padding: 20px 0; }
+.promoItem {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border-radius: 12px;
+  border: 1.5px solid #ebebeb; background: #fafafa;
+}
+.promoUsed { opacity: 0.45; }
+.promoCode {
+  font-size: 16px; font-weight: 700; color: #111;
+  letter-spacing: 2px; flex: 1;
+}
+.promoUsed .promoCode { text-decoration: line-through; }
+.promoDiscount {
+  font-size: 14px; font-weight: 700; color: #2e7d32;
+  background: rgba(46,125,50,0.08); border-radius: 8px; padding: 4px 10px;
+}
+.promoUsed .promoDiscount { color: #868695; background: #f5f5f8; }
+.promoStatus { font-size: 12px; color: #868695; }
+
 .logoutBtn {
   height: 40px;
   padding: 0 20px;

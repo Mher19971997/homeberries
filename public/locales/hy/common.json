@@ -410,7 +410,12 @@
       "description": "Կապվել աջակցության հետ",
       "reviews": "Կարծիքներ",
       "business": "Բիզնես"
-    }
+    },
+    "promocodes": "Պրոմոկոդներ",
+    "myPromocodes": "Իմ պրոմոկոդները",
+    "noPromocodes": "Դուք չունեք պրոմոկոդներ",
+    "promoActive": "Ակտիվ",
+    "promoUsed": "Օգտագործված"
   },
   "delivery": {
     "pageTitle": "Իմ պատվերները",

@@ -16,8 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/app/[locale]/profile/index.module.css';
-import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut } from 'lucide-react';
+import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut, Ticket, X } from 'lucide-react';
 import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
+import { getMyPromocodes } from '@homeberris/http/promocodeApi';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -68,6 +69,14 @@ export default function Profile() {
     enabled: !!cookies.token,
   });
 
+
+  const [promoModalOpen, setPromoModalOpen] = React.useState(false);
+
+  const { data: myPromocodes } = useQuery({
+    queryKey: ['myPromocodes', cookies.token],
+    queryFn: () => getMyPromocodes(cookies.token),
+    enabled: !!cookies.token && promoModalOpen,
+  });
 
   const handleLogout = () => {
     removeToken();
@@ -134,6 +143,10 @@ export default function Profile() {
             <p className={styles.userName}>{userName}</p>
             <p className={styles.userEmail}>{user?.email}</p>
           </div>
+          <button className={styles.promoBtn} onClick={() => setPromoModalOpen(true)}>
+            <Ticket size={16} strokeWidth={1.8} />
+            {t('profile.promocodes')}
+          </button>
           <button className={styles.logoutBtn} onClick={handleLogout}>
             <LogOut size={16} strokeWidth={1.8} />
             {t('profile.logout')}
@@ -227,6 +240,40 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {/* Модалка промокодов */}
+      {promoModalOpen && (
+        <div className={styles.promoOverlay} onClick={() => setPromoModalOpen(false)}>
+          <div className={styles.promoModal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.promoModalHeader}>
+              <span className={styles.promoModalTitle}>
+                <Ticket size={18} strokeWidth={1.8} /> {t('profile.myPromocodes')}
+              </span>
+              <button className={styles.promoModalClose} onClick={() => setPromoModalOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+            <div className={styles.promoList}>
+              {!myPromocodes?.data?.length ? (
+                <p className={styles.promoEmpty}>{t('profile.noPromocodes')}</p>
+              ) : (
+                myPromocodes.data.map((promo: any) => {
+                  const used = promo.usages?.some((u: any) => u.userUuid === user?.uuid);
+                  return (
+                    <div key={promo.uuid} className={`${styles.promoItem} ${used ? styles.promoUsed : ''}`}>
+                      <div className={styles.promoCode}>{promo.code}</div>
+                      <div className={styles.promoDiscount}>-{promo.discountPercent}%</div>
+                      <div className={styles.promoStatus}>
+                        {used ? t('profile.promoUsed') : t('profile.promoActive')}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
