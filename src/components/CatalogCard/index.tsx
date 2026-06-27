@@ -45,7 +45,13 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   const isAuth = checkToken();
 
   const { mutate } = useMutation({
-    mutationFn: (catalogUuid: string) => insertBasket({ catalogUuid, quantity: 1 }, getToken() || cookies.token),
+    mutationFn: (catalogUuid: string) => {
+      const firstVariant = getFirstVariant();
+      return insertBasket(
+        { catalogUuid, quantity: 1, ...(firstVariant ? { selectedVariant: firstVariant } : {}) } as any,
+        getToken() || cookies.token
+      );
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['basketCount'] });
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
@@ -53,6 +59,15 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     },
     onError: (error) => console.error(error),
   });
+
+  // первая комбинация вариантов (для корзины)
+  const getFirstVariant = () => {
+    const v = (catalog as any).variants;
+    if (v && !Array.isArray(v) && Array.isArray(v.combinations) && v.combinations.length > 0) {
+      return v.combinations[0];
+    }
+    return null;
+  };
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -78,6 +93,16 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
   };
 
   const { formatPrice } = useFormatPrice();
+
+  // Если есть варианты — показываем цену первой комбинации, иначе базовую
+  const getDisplayPrice = (): number => {
+    const v = (catalog as any).variants;
+    if (v && !Array.isArray(v) && Array.isArray(v.combinations) && v.combinations.length > 0) {
+      return v.combinations[0].price ?? catalog.price;
+    }
+    return catalog.price;
+  };
+  const displayPrice = getDisplayPrice();
 
   const imgSrc =
     catalog?.images?.length > 0
@@ -125,14 +150,14 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
           <p className={styles.name}>{getLoc(catalog?.name, locale)}</p>
           {catalog?.isDiscount && catalog?.discountPercent > 0 ? (
             <div className={styles.priceBlock}>
-              <p className={styles.priceOld}>{formatPrice(catalog?.price)}</p>
+              <p className={styles.priceOld}>{formatPrice(displayPrice)}</p>
               <p className={styles.price}>
-                {formatPrice(Math.round(Number(catalog.price) * (1 - catalog.discountPercent / 100)))}
+                {formatPrice(Math.round(Number(displayPrice) * (1 - catalog.discountPercent / 100)))}
               </p>
               <span className={styles.discountBadge}>-{catalog.discountPercent}%</span>
             </div>
           ) : (
-            <p className={styles.price}>{formatPrice(catalog?.price)}</p>
+            <p className={styles.price}>{formatPrice(displayPrice)}</p>
           )}
           <button className={styles.buyBtn} onClick={handleAddToBasket}>
             {t('home.buyNow')}
