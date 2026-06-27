@@ -498,7 +498,15 @@
       "confirmPlaceholder": "Repeat password",
       "submit": "Create account",
       "loading": "Creating account...",
-      "success": "Account created!"
+      "success": "Account created!",
+      "codeSent": "Code sent to your email",
+      "verifyTitle": "Verify your email",
+      "verifyHint": "We sent a 6-digit code to",
+      "code": "Code from email",
+      "verify": "Verify",
+      "back": "Back",
+      "codeExpires": "Code expires in:",
+      "resend": "Resend"
     },
     "errors": {
       "fillFields": "Please fill in all fields",
@@ -507,7 +515,11 @@
       "invalid": "Invalid email or password",
       "registerError": "Registration error",
       "serverError": "Invalid authorization server response",
-      "loginError": "Login error"
+      "loginError": "Login error",
+      "emailExists": "This email is already registered",
+      "wrongCode": "Wrong code. Try again",
+      "codeExpired": "Code expired.",
+      "codeCooldown": "Please wait {{s}} sec. before resending"
     },
     "modal": {
       "title": "Sign in to your account",

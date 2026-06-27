@@ -185,6 +185,59 @@
   cursor: default;
 }
 
+.inputCode {
+  font-size: 22px;
+  letter-spacing: 10px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.verifyHint {
+  font-size: 13px;
+  color: #868695;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  color: #868695;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+  text-align: center;
+  transition: color 0.15s;
+}
+
+.backBtn:hover { color: #111; }
+
+.codeTimer {
+  font-size: 13px;
+  color: #2e7d32;
+  margin: 0;
+  font-weight: 600;
+}
+
+.codeExpired {
+  font-size: 13px;
+  color: #e53935;
+  margin: 0;
+}
+
+.resendBtn {
+  background: none;
+  border: none;
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  font-family: var(--font-inter), sans-serif;
+}
+
 @media (max-width: 480px) {
   .card { padding: 32px 24px; border-radius: 20px; }
   .logo { font-size: 24px; }

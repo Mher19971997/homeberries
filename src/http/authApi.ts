@@ -9,4 +9,12 @@ const register = async (formData: { email: string; password: string }) => {
   return await $host.post('/api/v1/auth/register', formData);
 };
 
-export { login, register };
+const checkContact = async (formData: { email: string }) => {
+  return await $host.patch('/api/v1/auth/checkContact', { ...formData, type: 'verify-contact' });
+};
+
+const verifyContact = async (formData: { email: string; code: string }) => {
+  return await $host.patch('/api/v1/auth/verifyContact', { ...formData, type: 'verify-contact' });
+};
+
+export { login, register, checkContact, verifyContact };
