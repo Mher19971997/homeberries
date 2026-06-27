@@ -8,3 +8,4 @@ export * from './OrderCard';
 export * from './OrderList';
 export * from './OrderMenu';
 export * from './PaymentModal';
+export * from './OrderDetailModal';

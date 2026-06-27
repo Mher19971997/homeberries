@@ -210,7 +210,9 @@
       "save": "Save",
       "cancel": "Cancel",
       "loading": "Loading...",
-      "myAddress": "My address"
+      "myAddress": "My address",
+      "tagHome": "Home",
+      "tagOffice": "Office"
     },
     "confirm": {
       "title": "Delete address?",
@@ -443,6 +445,14 @@
     "menu": {
       "details": "Details",
       "cancel": "Cancel"
+    },
+    "detail": {
+      "title": "Order Details",
+      "orderNum": "Order number",
+      "status": "Status",
+      "qty": "Quantity",
+      "price": "Total",
+      "date": "Date"
     },
     "status": {
       "delivered": "Delivered",

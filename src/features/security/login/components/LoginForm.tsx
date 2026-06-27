@@ -11,8 +11,7 @@ import { EyeOff, EyeOpen } from '@homeberris/assets/icons/login';
 export const LoginForm: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // ?mode=register → открываем форму сразу на вкладке регистрации
-  const [flipped, setFlipped] = useState(searchParams?.get('mode') === 'register');
+  const [isRegister, setIsRegister] = useState(searchParams?.get('mode') === 'register');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,20 +19,13 @@ export const LoginForm: React.FC = () => {
   const [success, setSuccess] = useState('');
 
   const { t } = useTranslation('common');
-
-  // Куда вести после успешного входа/регистрации: ?redirect=... или на главную.
   const redirectTo = searchParams?.get('redirect') || '/';
 
-  // Бэкенд может вернуть message как строку, как объект ошибки или как массив
-  // AJV-ошибок ({ instancePath, message, ... }). Приводим всё к читаемой строке,
-  // иначе React падает при попытке отрендерить объект как children.
   const extractError = (err: any, fallback: string): string => {
     const msg = err?.response?.data?.message;
     if (typeof msg === 'string') return msg;
     if (Array.isArray(msg)) {
-      const parts = msg
-        .map((m: any) => (typeof m === 'string' ? m : m?.message))
-        .filter(Boolean);
+      const parts = msg.map((m: any) => (typeof m === 'string' ? m : m?.message)).filter(Boolean);
       if (parts.length) return parts.join(', ');
     } else if (msg && typeof msg === 'object' && typeof msg.message === 'string') {
       return msg.message;
@@ -41,10 +33,10 @@ export const LoginForm: React.FC = () => {
     return fallback;
   };
 
-  const flip = (toRegister: boolean) => {
+  const switchTab = (toRegister: boolean) => {
     setError('');
     setSuccess('');
-    setFlipped(toRegister);
+    setIsRegister(toRegister);
   };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -91,83 +83,79 @@ export const LoginForm: React.FC = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.scene}>
-        <div className={`${styles.cardFlip} ${flipped ? styles.cardFlipFlipped : ''}`}>
+      <div className={styles.card}>
+        <div className={styles.logo}>cyber</div>
+        <p className={styles.logoSub}>
+          {isRegister ? t('auth.register.title') : t('auth.login.title')}
+        </p>
 
-          {/* FRONT — Login */}
-          <div className={styles.face}>
-            <div className={styles.logo}>cyber</div>
-            <p className={styles.logoSub}>{t('auth.login.title')}</p>
-
-            <div className={styles.tabs}>
-              <button className={`${styles.tabBtn} ${styles.tabActive}`} onClick={() => flip(false)}>{t('auth.login.tabLogin')}</button>
-              <button className={styles.tabBtn} onClick={() => flip(true)}>{t('auth.login.tabRegister')}</button>
-            </div>
-
-            <form onSubmit={handleLogin} className={styles.form}>
-              <div className={styles.field}>
-                <label className={styles.label}>{t('auth.login.email')}</label>
-                <input name="email" type="email" className={styles.input} placeholder="your@email.com" autoComplete="email" />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>{t('auth.login.password')}</label>
-                <div className={styles.inputWrap}>
-                  <input name="password" type={showPassword ? 'text' : 'password'} className={styles.input} placeholder={t('auth.login.passwordPlaceholder')} autoComplete="current-password" />
-                  <button type="button" className={styles.eyeBtn} onClick={() => setShowPassword(v => !v)}>
-                    {showPassword ? <EyeOff /> : <EyeOpen />}
-                  </button>
-                </div>
-              </div>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.successMsg}>{success}</p>}
-              <button type="submit" className={styles.submitBtn} disabled={loading}>
-                {loading ? t('auth.login.loading') : t('auth.login.submit')}
-              </button>
-            </form>
-          </div>
-
-          {/* BACK — Register */}
-          <div className={`${styles.face} ${styles.faceBack}`}>
-            <div className={styles.logo}>cyber</div>
-            <p className={styles.logoSub}>{t('auth.register.title')}</p>
-
-            <div className={styles.tabs}>
-              <button className={styles.tabBtn} onClick={() => flip(false)}>{t('auth.login.submit')}</button>
-              <button className={`${styles.tabBtn} ${styles.tabActive}`} onClick={() => flip(true)}>{t('auth.login.tabRegister')}</button>
-            </div>
-
-            <form onSubmit={handleRegister} className={styles.form}>
-              <div className={styles.field}>
-                <label className={styles.label}>{t('auth.register.email')}</label>
-                <input name="email" type="email" className={styles.input} placeholder="your@email.com" autoComplete="email" />
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>{t('auth.register.password')}</label>
-                <div className={styles.inputWrap}>
-                  <input name="password" type={showPassword ? 'text' : 'password'} className={styles.input} placeholder={t('auth.register.passwordPlaceholder')} autoComplete="new-password" />
-                  <button type="button" className={styles.eyeBtn} onClick={() => setShowPassword(v => !v)}>
-                    {showPassword ? <EyeOff /> : <EyeOpen />}
-                  </button>
-                </div>
-              </div>
-              <div className={styles.field}>
-                <label className={styles.label}>{t('auth.register.confirmPassword')}</label>
-                <div className={styles.inputWrap}>
-                  <input name="confirm" type={showConfirm ? 'text' : 'password'} className={styles.input} placeholder={t('auth.register.confirmPlaceholder')} autoComplete="new-password" />
-                  <button type="button" className={styles.eyeBtn} onClick={() => setShowConfirm(v => !v)}>
-                    {showConfirm ? <EyeOff /> : <EyeOpen />}
-                  </button>
-                </div>
-              </div>
-              {error && <p className={styles.error}>{error}</p>}
-              {success && <p className={styles.successMsg}>{success}</p>}
-              <button type="submit" className={styles.submitBtn} disabled={loading}>
-                {loading ? t('auth.register.loading') : t('auth.register.submit')}
-              </button>
-            </form>
-          </div>
-
+        <div className={styles.tabs}>
+          <button
+            className={`${styles.tabBtn} ${!isRegister ? styles.tabActive : ''}`}
+            onClick={() => switchTab(false)}
+          >
+            {t('auth.login.tabLogin')}
+          </button>
+          <button
+            className={`${styles.tabBtn} ${isRegister ? styles.tabActive : ''}`}
+            onClick={() => switchTab(true)}
+          >
+            {t('auth.login.tabRegister')}
+          </button>
         </div>
+
+        {!isRegister ? (
+          <form key="login" onSubmit={handleLogin} className={styles.form}>
+            <div className={styles.field}>
+              <label className={styles.label}>{t('auth.login.email')}</label>
+              <input name="email" type="email" className={styles.input} placeholder="your@email.com" autoComplete="email" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>{t('auth.login.password')}</label>
+              <div className={styles.inputWrap}>
+                <input name="password" type={showPassword ? 'text' : 'password'} className={styles.input} placeholder={t('auth.login.passwordPlaceholder')} autoComplete="current-password" />
+                <button type="button" className={styles.eyeBtn} onClick={() => setShowPassword(v => !v)}>
+                  {showPassword ? <EyeOff /> : <EyeOpen />}
+                </button>
+              </div>
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+            {success && <p className={styles.successMsg}>{success}</p>}
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
+              {loading ? t('auth.login.loading') : t('auth.login.submit')}
+            </button>
+          </form>
+        ) : (
+          <form key="register" onSubmit={handleRegister} className={styles.form}>
+            <div className={styles.field}>
+              <label className={styles.label}>{t('auth.register.email')}</label>
+              <input name="email" type="email" className={styles.input} placeholder="your@email.com" autoComplete="email" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>{t('auth.register.password')}</label>
+              <div className={styles.inputWrap}>
+                <input name="password" type={showPassword ? 'text' : 'password'} className={styles.input} placeholder={t('auth.register.passwordPlaceholder')} autoComplete="new-password" />
+                <button type="button" className={styles.eyeBtn} onClick={() => setShowPassword(v => !v)}>
+                  {showPassword ? <EyeOff /> : <EyeOpen />}
+                </button>
+              </div>
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>{t('auth.register.confirmPassword')}</label>
+              <div className={styles.inputWrap}>
+                <input name="confirm" type={showConfirm ? 'text' : 'password'} className={styles.input} placeholder={t('auth.register.confirmPlaceholder')} autoComplete="new-password" />
+                <button type="button" className={styles.eyeBtn} onClick={() => setShowConfirm(v => !v)}>
+                  {showConfirm ? <EyeOff /> : <EyeOpen />}
+                </button>
+              </div>
+            </div>
+            {error && <p className={styles.error}>{error}</p>}
+            {success && <p className={styles.successMsg}>{success}</p>}
+            <button type="submit" className={styles.submitBtn} disabled={loading}>
+              {loading ? t('auth.register.loading') : t('auth.register.submit')}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

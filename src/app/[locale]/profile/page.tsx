@@ -8,6 +8,7 @@ import * as qs from 'qs';
 import { getProfile, uploadAvatar } from '@homeberris/http/userApi';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { getAllBaskets } from '@homeberris/http/basketApi';
+import { getAllOrders } from '@homeberris/http/orderApi';
 import { getRecentlyViewed } from '@homeberris/utils/recentlyViewed';
 import { removeToken } from '@homeberris/utils/auth';
 import { useFavorites } from '@homeberris/context/favoritesContext';
@@ -49,6 +50,14 @@ export default function Profile() {
   });
 
   const basketCount = basket?.meta?.count || 0;
+
+  const { data: ordersData } = useQuery({
+    queryKey: ['ordersCount', cookies.token],
+    queryFn: () => getAllOrders(qs.stringify({ queryMeta: { paginate: true, limit: 1, page: 1 } }), cookies.token),
+    enabled: !!cookies.token,
+  });
+
+  const ordersCount = ordersData?.meta?.count || 0;
 
   const { data: recentlyViewed } = useQuery({
     queryKey: ['recentlyViewed', cookies.token],
@@ -140,7 +149,7 @@ export default function Profile() {
           </div>
           <div className={styles.statCard} onClick={() => router.push('/myorders/delivery')}>
             <Package size={28} strokeWidth={1.8} color="#111" />
-            <p className={styles.statValue}>—</p>
+            <p className={styles.statValue}>{ordersCount}</p>
             <p className={styles.statLabel}>{t('profile.orders')}</p>
           </div>
           <div className={styles.statCard} onClick={() => router.push('/basket')}>

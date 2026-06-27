@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
   order: OrderItem;
-  onMenuOpen: (e: React.MouseEvent<HTMLElement>) => void;
+  onMenuOpen: (e: React.MouseEvent<HTMLElement>, order: OrderItem) => void;
   onPay: (order: OrderItem) => void;
 }
 
@@ -49,7 +49,7 @@ export const OrderCard = React.memo(
             <span className={`${styles.statusChip} ${styles[`status_${status}`] || styles.status_default}`}>
               {getStatusLabel(status)}
             </span>
-            <button className={styles.menuBtn} onClick={onMenuOpen}>
+            <button className={styles.menuBtn} onClick={(e) => onMenuOpen(e, order)}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="12" cy="5" r="1.5" />
                 <circle cx="12" cy="12" r="1.5" />

@@ -1,6 +1,5 @@
 .page {
   width: 100%;
-  align-self: stretch;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -18,27 +17,9 @@
   100% { background-position: 0% 50%; }
 }
 
-/* 3D scene */
-.scene {
-  perspective: 1200px;
+.card {
   width: 100%;
   max-width: 440px;
-}
-
-.cardFlip {
-  width: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
-}
-
-.cardFlipFlipped {
-  transform: rotateY(180deg);
-}
-
-/* Card faces */
-.face {
-  width: 100%;
   background: rgba(255, 255, 255, 0.97);
   border-radius: 24px;
   padding: 44px 40px;
@@ -46,18 +27,8 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 }
 
-.faceBack {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: rotateY(180deg);
-}
-
-/* Logo */
 .logo {
   font-size: 28px;
   font-weight: 700;
@@ -72,7 +43,6 @@
   margin: 0 0 20px;
 }
 
-/* Tabs */
 .tabs {
   display: flex;
   background: #f6f6f6;
@@ -101,11 +71,16 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
 }
 
-/* Form */
 .form {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .field {
@@ -211,6 +186,6 @@
 }
 
 @media (max-width: 480px) {
-  .face { padding: 32px 24px; border-radius: 20px; }
+  .card { padding: 32px 24px; border-radius: 20px; }
   .logo { font-size: 24px; }
 }

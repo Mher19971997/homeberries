@@ -19,6 +19,8 @@ const processingStatuses = new Set([
 const deliveredStatuses = new Set(['delivered', 'completed']);
 const cancelledStatuses = new Set(['cancelled', 'canceled']);
 
+const PAGE_SIZE = 10;
+
 export const useDelivery = () => {
   const { t } = useTranslation('common');
   const [cookies] = useCookies(['token']);
@@ -27,8 +29,11 @@ export const useDelivery = () => {
   const { showToast } = useToast();
 
   const [tabValue, setTabValue] = useState(0);
+  const [page, setPage] = useState(1);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [menuOrder, setMenuOrder] = useState<OrderItem | null>(null);
   const [orderToPay, setOrderToPay] = useState<OrderItem | null>(null);
+  const [detailOrder, setDetailOrder] = useState<OrderItem | null>(null);
 
   const searchParams = useSearchParams();
   const paymentSuccess = searchParams?.get('paymentSuccess');
@@ -36,13 +41,35 @@ export const useDelivery = () => {
   const isPaymentSuccess =
     paymentSuccess === 'true' && Boolean(paymentIntentId);
 
+  // При смене таба сбрасываем страницу
+  const handleTabChange = useCallback(
+    (_: React.SyntheticEvent, value: number) => {
+      setTabValue(value);
+      setPage(1);
+    },
+    []
+  );
+
+  const statusFilter: Record<number, string | null> = {
+    0: null,
+    1: 'processing,in_progress,pending,paid',
+    2: 'shipped',
+    3: 'delivered,completed',
+    4: 'cancelled,canceled',
+  };
+
   const { data: orders, isLoading } = useQuery({
-    queryKey: ['getAllOrders'],
-    queryFn: () =>
-      getAllOrders(
-        qs.stringify({ queryMeta: { paginate: true } }),
+    queryKey: ['getAllOrders', page, tabValue],
+    queryFn: () => {
+      const filter = statusFilter[tabValue];
+      return getAllOrders(
+        qs.stringify({
+          queryMeta: { paginate: true, limit: PAGE_SIZE, page, order: { createdAt: 'DESC' } },
+          ...(filter ? { filterMeta: { status: { in: filter.split(',') } } } : {}),
+        }),
         cookies.token
-      ),
+      );
+    },
     enabled: !!cookies.token,
     refetchOnWindowFocus: false,
   });
@@ -68,48 +95,24 @@ export const useDelivery = () => {
 
   const filteredOrders = useMemo(() => {
     if (!orders?.data) return [];
+    if (isPaymentSuccess && recentOrders.length > 0) return recentOrders;
+    return orders.data;
+  }, [orders?.data, isPaymentSuccess, recentOrders]);
 
-    if (isPaymentSuccess && recentOrders.length > 0)
-      return recentOrders;
-
-    switch (tabValue) {
-      case 1:
-        return orders.data.filter(o =>
-          processingStatuses.has(o.status?.toLowerCase() || '')
-        );
-      case 2:
-        return orders.data.filter(
-          o => o.status?.toLowerCase() === 'shipped'
-        );
-      case 3:
-        return orders.data.filter(o =>
-          deliveredStatuses.has(o.status?.toLowerCase() || '')
-        );
-      case 4:
-        return orders.data.filter(o =>
-          cancelledStatuses.has(o.status?.toLowerCase() || '')
-        );
-      default:
-        return orders.data;
-    }
-  }, [orders?.data, tabValue, isPaymentSuccess, recentOrders]);
-
-  const handleTabChange = useCallback(
-    (_: React.SyntheticEvent, value: number) => {
-      setTabValue(value);
-    },
-    []
-  );
+  const totalCount = orders?.meta?.count ?? 0;
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
 
   const handleMenuOpen = useCallback(
-    (e: React.MouseEvent<HTMLElement>) => {
+    (e: React.MouseEvent<HTMLElement>, order: OrderItem) => {
       setAnchorEl(e.currentTarget);
+      setMenuOrder(order);
     },
     []
   );
 
   const handleMenuClose = useCallback(() => {
     setAnchorEl(null);
+    setMenuOrder(null);
   }, []);
 
   const handlePayOrder = useCallback((order: OrderItem) => {
@@ -148,8 +151,15 @@ export const useDelivery = () => {
     recentOrders,
     isPaymentSuccess,
     anchorEl,
+    menuOrder,
     orderToPay,
     setOrderToPay,
+    detailOrder,
+    setDetailOrder,
+    page,
+    setPage,
+    totalPages,
+    totalCount,
     handleTabChange,
     handleMenuOpen,
     handleMenuClose,

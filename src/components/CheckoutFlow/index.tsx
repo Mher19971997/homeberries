@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import { Home, Briefcase } from "lucide-react";
 
 import styles from "./index.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -98,7 +99,7 @@ function AddressForm({
   onCancel,
   isLoaded,
 }: {
-  initial?: { uuid: string; address: string; lat: string; lng: string };
+  initial?: { uuid: string; address: string; lat: string; lng: string; tag?: string };
   token: string;
   onSave: () => void;
   onCancel: () => void;
@@ -117,6 +118,9 @@ function AddressForm({
 
   const [lat, setLat] = React.useState(initial?.lat || "");
   const [lng, setLng] = React.useState(initial?.lng || "");
+  const [tag, setTag] = React.useState<"HOME" | "OFFICE">(
+    (initial?.tag as "HOME" | "OFFICE") || "HOME"
+  );
   const [saving, setSaving] = React.useState(false);
   const [showSuggestions, setShowSuggestions] = React.useState(false);
   const { t } = useTranslation('common');
@@ -141,9 +145,9 @@ function AddressForm({
     try {
       const authToken = token || (typeof window !== 'undefined' ? (document.cookie.match(/token=([^;]+)/)?.[1] || '') : '');
       if (initial?.uuid) {
-        await updateDeliveryAddress(initial.uuid, { address: value, lat, lng }, authToken);
+        await updateDeliveryAddress(initial.uuid, { address: value, lat, lng, tag }, authToken);
       } else {
-        await createDeliveryAddress({ address: value, lat, lng }, authToken);
+        await createDeliveryAddress({ address: value, lat, lng, tag }, authToken);
       }
       qc.invalidateQueries({ queryKey: ["getDeliveryAddresses"] });
       onSave();
@@ -156,6 +160,32 @@ function AddressForm({
 
   return (
     <div className={styles.addressFormBox}>
+      <div className={styles.tagRadioGroup}>
+        <label className={`${styles.tagRadioLabel} ${tag === "HOME" ? styles.tagRadioActive : ""}`}>
+          <input
+            type="radio"
+            name="addressTag"
+            value="HOME"
+            checked={tag === "HOME"}
+            onChange={() => setTag("HOME")}
+            className={styles.tagRadioInput}
+          />
+          <Home size={15} strokeWidth={2} />
+          {t('checkout.form.tagHome')}
+        </label>
+        <label className={`${styles.tagRadioLabel} ${tag === "OFFICE" ? styles.tagRadioActive : ""}`}>
+          <input
+            type="radio"
+            name="addressTag"
+            value="OFFICE"
+            checked={tag === "OFFICE"}
+            onChange={() => setTag("OFFICE")}
+            className={styles.tagRadioInput}
+          />
+          <Briefcase size={15} strokeWidth={2} />
+          {t('checkout.form.tagOffice')}
+        </label>
+      </div>
       <div style={{ position: "relative" }}>
         <input
           className={styles.addressInput}
@@ -277,7 +307,7 @@ function AddressStep({
         {showForm ? (
           <AddressForm
             token={token}
-            initial={editAddr ? { uuid: editAddr.uuid, address: editAddr.street, lat: "", lng: "" } : undefined}
+            initial={editAddr ? { uuid: editAddr.uuid, address: editAddr.street, lat: "", lng: "", tag: editAddr.tag } : undefined}
             onSave={handleFormClose}
             onCancel={handleFormClose}
             isLoaded={isLoaded}
@@ -802,7 +832,7 @@ export default function CheckoutFlow() {
 
   const steps = [t("checkout.steps.address"), t("checkout.steps.shipping"), t("checkout.steps.payment")];
 
-  const { data: baskets } = useQuery({
+  const { data: baskets, isLoading: basketsLoading } = useQuery({
     queryKey: ["getAllBaskets"],
     queryFn: () =>
       getAllBaskets(
@@ -867,7 +897,7 @@ export default function CheckoutFlow() {
     return deliveryAddresses.data.map((a: any) => ({
       uuid: a.uuid,
       label: a.address?.split(',')?.[0]?.trim() || t('checkout.form.myAddress'),
-      tag: "HOME",
+      tag: a.tag || "HOME",
       street: a.address ?? "",
       phone: "",
     }));
@@ -875,12 +905,7 @@ export default function CheckoutFlow() {
 
   const basketItems: CheckoutItem[] = useMemo(() => {
     if (!currentBaskets?.data || currentBaskets.data.length === 0) {
-      // Моки под Step 3 со скриншота
-      return [
-        { uuid: "1", name: "Apple iPhone 14 Pro Max 128GB", price: 1399 },
-        { uuid: "2", name: "AirPods Max Silver", price: 549 },
-        { uuid: "3", name: "Apple Watch Series 9 GPS 41mm", price: 399 },
-      ];
+      return [];
     }
     return currentBaskets.data.map((item: BasketDataItem, index: number) => {
       const images =
@@ -967,20 +992,27 @@ export default function CheckoutFlow() {
             />
           )}
           {step === 2 && (
-            <PaymentStep
-              items={basketItems}
-              subtotal={subtotal}
-              tax={tax}
-              shippingCost={SHIPPING}
-              total={total}
-              address={addressString}
-              shipmentMethod={selectedShipment}
-              promocode={appliedPromo?.code}
-              onPaymentSuccess={handlePaymentSuccess}
-              onPaymentError={handlePaymentError}
-              onBack={handleBack}
-            // onNext={handleNext}
-            />
+            basketsLoading ? (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '24px 0' }}>
+                {[1, 2, 3].map(i => (
+                  <Skeleton key={i} variant="rounded" height={52} sx={{ borderRadius: '10px' }} />
+                ))}
+              </div>
+            ) : (
+              <PaymentStep
+                items={basketItems}
+                subtotal={subtotal}
+                tax={tax}
+                shippingCost={SHIPPING}
+                total={total}
+                address={addressString}
+                shipmentMethod={selectedShipment}
+                promocode={appliedPromo?.code}
+                onPaymentSuccess={handlePaymentSuccess}
+                onPaymentError={handlePaymentError}
+                onBack={handleBack}
+              />
+            )
           )}
         </div>
         {step !== 2 && (

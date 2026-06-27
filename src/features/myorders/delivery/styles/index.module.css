@@ -344,6 +344,161 @@
 }
 
 
+/* Order Detail Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modalBox {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modalTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #888;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.modalClose:hover { background: #f5f5f5; }
+
+.modalBody {
+  padding: 20px 24px 24px;
+}
+
+.modalImageWrap {
+  width: 100%;
+  height: 180px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f8f8f8;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modalProductName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+  margin: 0 0 20px 0;
+}
+
+.modalRows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modalRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.modalRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.modalRowLabel {
+  font-size: 13px;
+  color: #888;
+}
+
+.modalRowValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 32px;
+}
+
+.pageBtn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: #f5f5f5;
+  border-color: #bbb;
+}
+
+.pageBtn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pageBtnActive {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.pageDots {
+  font-size: 14px;
+  color: #888;
+  padding: 0 4px;
+}
+
 @media only screen and (max-width: 768px) {
   .topNav {
     gap: 16px;
