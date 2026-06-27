@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Home, Briefcase } from "lucide-react";
+import { useFormatPrice } from "@homeberris/utils/formatPrice";
 
 import styles from "./index.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -354,6 +355,7 @@ function ShippingStep({
   onSelect: (id: string) => void;
 }) {
   const { t } = useTranslation('common');
+  const { formatPrice } = useFormatPrice();
   const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
   const SHIPMENT_METHODS: ShipmentMethod[] = [
     {
@@ -365,7 +367,7 @@ function ShippingStep({
     },
     {
       id: "fast",
-      label: "$8.50",
+      label: formatPrice(8.5),
       description: `${t('checkout.shipping.descriptionFast')}`,
       price: 8.5,
       date: "1 Oct, 2023",
@@ -638,6 +640,7 @@ function PaymentStep({
   // const [sameAsBilling, setSameAsBilling] = useState(true);
   // const [showStripe, setShowStripe] = useState(false);
   const { t } = useTranslation('common');
+  const { formatPrice } = useFormatPrice();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [intentError, setIntentError] = useState<string | null>(null);
@@ -654,7 +657,7 @@ function PaymentStep({
 
     createPaymentIntent({
       amount: Math.round(total * 100),
-      currency: "rub",
+      currency: "amd",
       basketUuids: items.map((i) => i.uuid).filter(Boolean) as string[],
       promocode
     })
@@ -673,13 +676,13 @@ function PaymentStep({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab, hasRealBasketItems, total, promocode]);
 
-  const fmt = (n: number) => `$${n}`;
+  const fmt = (n: number) => formatPrice(n);
   const TABS: PaymentTab[] = ["Credit Card", "PayPal", "PayPal Credit"];
   const shipLabel =
     shipmentMethod === "free"
       ? `${t('checkout.shipping.free')}`
       : shipmentMethod === "fast"
-        ? "$8.50"
+        ? formatPrice(8.5)
         : "Scheduled";
 
   return (

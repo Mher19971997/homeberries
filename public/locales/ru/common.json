@@ -107,13 +107,15 @@
       "checkout": "Оформить заказ",
       "remove": "Убрать",
       "promoApplied": "Промокод применён (скидка {{discount}}%)",
+      "promoAlreadyUsed": "Промокод уже был использован",
+      "promoInvalid": "Неверный промокод",
       "discount": "Скидка",
       "summary": {
-        "promoAlreadyUsed": "Promo code has already been used",
-        "promoInvalid": "Invalid promo code",
-        "promoApplied": "Promo code applied ({{discount}}% discount)",
-        "discount": "Discount",
-        "remove": "Remove"
+        "promoAlreadyUsed": "Промокод уже был использован",
+        "promoInvalid": "Неверный промокод",
+        "promoApplied": "Промокод применён (скидка {{discount}}%)",
+        "discount": "Скидка",
+        "remove": "Убрать"
       }
     }
   },

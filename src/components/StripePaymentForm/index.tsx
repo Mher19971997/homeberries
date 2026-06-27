@@ -173,7 +173,7 @@ const StripePaymentForm: React.FC<StripePaymentFormProps> = ({
       try {
         const response = await createPaymentIntent({
           amount,
-          currency: 'rub',
+          currency: 'amd',
           orderUuid,
           basketUuids,
           promocode,
