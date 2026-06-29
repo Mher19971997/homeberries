@@ -8,11 +8,13 @@ import { setToken } from '@homeberris/utils/auth';
 import styles from '@homeberris/features/security/login/styles/index.module.css';
 import { useTranslation } from 'react-i18next';
 import { EyeOff, EyeOpen } from '@homeberris/assets/icons/login';
+import { useCompare } from '@homeberris/context/compareContext';
 
 // step: 'login' | 'reg_form' | 'reg_verify' | 'reg_done'
 type Step = 'login' | 'reg_form' | 'reg_verify';
 
 export const LoginForm: React.FC = () => {
+  const { clearCompare } = useCompare();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>(
@@ -73,6 +75,7 @@ export const LoginForm: React.FC = () => {
       const res = await login({ email, password });
       if (res?.data?.access_token) {
         setToken(res.data.access_token);
+        clearCompare();
         setSuccess(t('auth.login.welcome'));
         setTimeout(() => router.push(redirectTo), 800);
       }
@@ -141,6 +144,7 @@ export const LoginForm: React.FC = () => {
       const token = regRes?.data?.access_token;
       if (token) {
         setToken(token);
+        clearCompare();
         setSuccess(t('auth.register.success'));
         setTimeout(() => router.push(redirectTo), 900);
       }

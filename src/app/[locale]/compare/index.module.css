@@ -385,6 +385,9 @@
 .mobileRowLabel {
   color: #8b8b8b;
   flex-shrink: 0;
+  max-width: 150px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .mobileRowValue {
@@ -418,6 +421,7 @@
   width: 160px;
   position: sticky;
   left: 0;
+  z-index: 1;
 }
 
 .productCell {

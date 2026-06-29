@@ -17,6 +17,7 @@ import {
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useCookies } from 'react-cookie';
 import { removeToken } from '@homeberris/utils/auth';
+import { useCompare } from '@homeberris/context/compareContext';
 import { useQuery } from '@tanstack/react-query';
 import { getProfile } from '@homeberris/http/userApi';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
@@ -44,6 +45,7 @@ function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): Rea
   const { t } = useTranslation('common');
   const router = useRouter();
   const [cookies] = useCookies(['token']);
+  const { clearCompare } = useCompare();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const { data: user } = useQuery({
@@ -77,6 +79,7 @@ function ProfileDropdown({ anchorEl, open, onClose }: ProfileDropdownProps): Rea
 
   const handleLogout = () => {
     removeToken();
+    clearCompare();
     onClose();
     router.push('/');
   };

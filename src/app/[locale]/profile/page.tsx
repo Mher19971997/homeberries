@@ -12,6 +12,7 @@ import { getAllOrders } from '@homeberris/http/orderApi';
 import { getRecentlyViewed } from '@homeberris/utils/recentlyViewed';
 import { removeToken } from '@homeberris/utils/auth';
 import { useFavorites } from '@homeberris/context/favoritesContext';
+import { useCompare } from '@homeberris/context/compareContext';
 import { useTranslation } from 'react-i18next';
 import { User } from '@homeberris/types/user';
 import CatalogCard from '@homeberris/components/CatalogCard';
@@ -33,6 +34,7 @@ export default function Profile() {
   const [cookies] = useCookies(['token']);
   const router = useRouter();
   const { items: favorites } = useFavorites();
+  const { clearCompare } = useCompare();
   const { t } = useTranslation('common');
   useEffect(() => {
     if (!cookies.token) router.replace('/security/login');
@@ -87,6 +89,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     removeToken();
+    clearCompare();
     router.push('/');
   };
 
@@ -122,7 +125,7 @@ export default function Profile() {
     { label: t('profile.basket'), icon: ShoppingCart, path: '/basket' },
     { label: t('profile.myAddresses'), icon: MapPin, path: '/order' },
     { label: t('profile.support'), icon: MessageCircle, path: '/contact' },
-    { label: t('profile.faq'), icon: HelpCircle, path: '/contact' },
+    { label: t('profile.faq'), icon: HelpCircle, path: '/contact#faq' },
   ];
 
   const SERVICE_ITEMS = [

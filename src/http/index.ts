@@ -19,7 +19,13 @@ const onResponseError = (error: any) => {
   if ((status === 400 || status === 401) && typeof message === 'string' && message.startsWith('jwt')) {
     removeToken();
   }
-  // 403 = нет прав, но не разлогиниваем пользователя
+  if (status === 403) {
+    removeToken();
+    if (typeof window !== 'undefined') {
+      window.location.href = '/security/login';
+      return new Promise(() => {});
+    }
+  }
   return Promise.reject(error);
 };
 

@@ -433,12 +433,18 @@ export default function ProductPageContent({
           <div className={styles.infoBlock1}>
             <h1 className={styles.productTitle}>{getLoc(catalog.name, locale)}</h1>
             <div className={styles.priceRow}>
-              <span className={styles.currentPrice}>
-                {formatPriceHook(displayPrice)}
-              </span>
-              {catalog.oldPrice && (
-                <span className={styles.oldPrice}>
-                  {formatPriceHook(catalog.oldPrice)}
+              {(catalog as any).isDiscount && (catalog as any).discountPercent > 0 ? (
+                <>
+                  <span className={styles.currentPrice}>
+                    {formatPriceHook(Math.round(Number(displayPrice) * (1 - (catalog as any).discountPercent / 100)))}
+                  </span>
+                  <span className={styles.oldPrice}>
+                    {formatPriceHook(displayPrice)}
+                  </span>
+                </>
+              ) : (
+                <span className={styles.currentPrice}>
+                  {formatPriceHook(displayPrice)}
                 </span>
               )}
             </div>
@@ -499,7 +505,7 @@ export default function ProductPageContent({
                   return (
                     <div key={pi} className={styles.variantParamRow}>
                       <span className={styles.variantParamLabel}>{label}:</span>
-                      <div className={styles.variantOptions}>
+                      <div className={styles.variantOptions} style={{ justifyContent: (p.options || []).length >= 4 ? 'space-between' : 'flex-start' }}>
                         {(p.options || []).map((opt, oi) => {
                           const active = effectiveVariantValues[keyName] === opt;
                           return (
@@ -540,7 +546,7 @@ export default function ProductPageContent({
                   : [];
               if (storageItems.length === 0) return null;
               return (
-                <div className={styles.storageSelector}>
+                <div className={styles.storageSelector} style={{ justifyContent: storageItems.length >= 4 ? 'space-between' : 'flex-start' }}>
                   {storageItems.map((val: string, i: number) => (
                     <button
                       key={i}

@@ -33,6 +33,7 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
     setLoaded(true);
   }, []);
 
+
   useEffect(() => {
     if (!loaded) return;
     try {
