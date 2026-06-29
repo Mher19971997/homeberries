@@ -249,7 +249,22 @@ export const LoginForm: React.FC = () => {
             ) : (
               <p className={styles.codeExpired}>
                 {t('auth.errors.codeExpired')}{' '}
-                <button type="button" className={styles.resendBtn} onClick={() => { setStep('reg_form'); setError(''); }}>
+                <button type="button" className={styles.resendBtn} disabled={loading} onClick={async () => {
+                  setError(''); setSuccess('');
+                  setLoading(true);
+                  try {
+                    const res = await checkContact({ email: pendingEmail });
+                    if (res?.data?.after) {
+                      setError(t('auth.errors.codeCooldown', { s: res.data.after }));
+                      return;
+                    }
+                    setCodeExpiry(120);
+                    setSuccess(t('auth.register.codeSent'));
+                    setTimeout(() => setSuccess(''), 2000);
+                  } catch (err: any) {
+                    setError(extractError(err, t('auth.errors.registerError')));
+                  } finally { setLoading(false); }
+                }}>
                   {t('auth.register.resend')}
                 </button>
               </p>
