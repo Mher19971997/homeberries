@@ -20,6 +20,8 @@ const CarouselCatalog: React.FC = () => {
   const locale = (params?.locale as string) ?? 'ru';
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const isProgrammaticScroll = useRef(false);
+  const programmaticScrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: banners = [] } = useQuery<BannerItem[]>({
     queryKey: ['activeBanners'],
@@ -27,6 +29,7 @@ const CarouselCatalog: React.FC = () => {
   });
 
   const handleScroll = () => {
+    if (isProgrammaticScroll.current) return;
     const el = scrollRef.current;
     if (!el) return;
     const idx = Math.round(el.scrollLeft / el.clientWidth);
@@ -36,8 +39,13 @@ const CarouselCatalog: React.FC = () => {
   const scrollTo = (index: number) => {
     const el = scrollRef.current;
     if (!el) return;
-    el.scrollTo({ left: el.clientWidth * index, behavior: 'smooth' });
+    if (programmaticScrollTimeout.current) clearTimeout(programmaticScrollTimeout.current);
+    isProgrammaticScroll.current = true;
     setActiveIndex(index);
+    el.scrollTo({ left: el.clientWidth * index, behavior: 'smooth' });
+    programmaticScrollTimeout.current = setTimeout(() => {
+      isProgrammaticScroll.current = false;
+    }, 600);
   };
 
   if (!banners.length) return null;
