@@ -966,8 +966,8 @@ export default function CheckoutFlow() {
     queryClient.removeQueries({ queryKey: ["appliedPromo"] });
     await queryClient.invalidateQueries({ queryKey: ["getAllBaskets"] });
     setTimeout(() => {
-      router.push(`/myorders/delivery?paymentSuccess=true`);
-    }, 2000);
+      router.replace(`/myorders/delivery?paymentSuccess=true`);
+    }, 0);
   };
 
   const handlePaymentError = (error: string) => {

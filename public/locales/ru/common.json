@@ -1,5 +1,9 @@
 {
   "currency": "драм",
+  "promoNotification": {
+    "title": "Вам отправлен промокод!",
+    "discount": "Скидка {{percent}}%"
+  },
   "nav": {
     "home": "Главная",
     "about": "О нас",

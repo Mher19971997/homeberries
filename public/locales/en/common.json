@@ -1,5 +1,9 @@
 {
   "currency": "AMD",
+  "promoNotification": {
+    "title": "You've received a promo code!",
+    "discount": "{{percent}}% discount"
+  },
   "nav": {
     "home": "Home",
     "about": "About",

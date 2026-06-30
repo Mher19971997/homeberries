@@ -79,7 +79,10 @@ export default function BasketPage() {
     if (!currentBaskets?.data) return 0;
     return currentBaskets.data.reduce((sum: number, item: BasketDataItem) => {
       const variantPrice = item?.selectedVariant?.price;
-      const price = variantPrice != null ? Number(variantPrice) : (Number(item?.catalog?.price) || 0);
+      const originalPrice = variantPrice != null ? Number(variantPrice) : (Number(item?.catalog?.price) || 0);
+      const discount = (item?.catalog as any)?.discountPercent || 0;
+      const isDiscount = (item?.catalog as any)?.isDiscount && discount > 0;
+      const price = isDiscount ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
       return sum + price * (item.quantity || 1);
     }, 0);
   }, [currentBaskets?.data]);

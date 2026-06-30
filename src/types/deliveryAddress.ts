@@ -3,6 +3,7 @@ export interface deliveryAddressData {
   address: string;
   lat: string;
   lng: string;
+  tag?: string;
   // дополнительные поля для отображения информации о пункте выдачи
   title?: string;
   description?: string;

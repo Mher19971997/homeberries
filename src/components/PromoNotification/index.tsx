@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Ticket, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import styles from './index.module.css';
 
 interface PromoNotificationProps {
@@ -11,6 +12,7 @@ interface PromoNotificationProps {
 }
 
 const PromoNotification: React.FC<PromoNotificationProps> = ({ code, discountPercent, onClose }) => {
+  const { t } = useTranslation('common');
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -28,9 +30,9 @@ const PromoNotification: React.FC<PromoNotificationProps> = ({ code, discountPer
         <Ticket size={22} strokeWidth={1.8} />
       </div>
       <div className={styles.content}>
-        <div className={styles.title}>Вам отправлен промокод!</div>
+        <div className={styles.title}>{t('promoNotification.title')}</div>
         <div className={styles.code}>{code}</div>
-        <div className={styles.discount}>Скидка {discountPercent}%</div>
+        <div className={styles.discount}>{t('promoNotification.discount', { percent: discountPercent })}</div>
       </div>
       <button className={styles.close} onClick={() => { setVisible(false); setTimeout(onClose, 350); }}>
         <X size={16} />

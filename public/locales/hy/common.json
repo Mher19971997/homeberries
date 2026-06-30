@@ -1,5 +1,9 @@
 {
   "currency": "դրամ",
+  "promoNotification": {
+    "title": "Ձեզ ուղարկվել է պրոմոկոդ!",
+    "discount": "Զեղչ {{percent}}%"
+  },
   "nav": {
     "home": "Գլխավոր",
     "about": "Մեր մասին",
