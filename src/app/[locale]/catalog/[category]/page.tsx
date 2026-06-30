@@ -127,6 +127,26 @@ export default function CatalogPage() {
     enabled: !!categoryName && !!categoryUuid && (!hasGroupFilters || (matchingCatalogUuids !== undefined && matchingCatalogUuids.length > 0)),
   });
 
+  const { data: allCategoryCatalogs } = useQuery<{
+    data: CatalogItem[];
+    meta: ListResult;
+  }>({
+    queryKey: ["getAllCatalogsByCategoryForFilters", categoryUuid],
+    queryFn: () =>
+      getAllCatalogs(
+        qs.stringify({
+          includeMeta: [
+            { association: "category" },
+            { association: "brand" },
+            { association: "groupOption", include: [{ association: "options" }] },
+          ],
+          filterMeta: { categoryUuid, isActive: true },
+          queryMeta: { paginate: false },
+        }),
+      ),
+    enabled: !!categoryUuid,
+  });
+
   const totalPages = catalogs?.meta
     ? Math.max(1, Math.ceil(catalogs.meta.count / ITEMS_PER_PAGE))
     : 0;
@@ -139,7 +159,7 @@ export default function CatalogPage() {
         brands={brands}
         selectedBrands={selectedBrands}
         priceRange={priceRange}
-        catalogs={catalogs?.data || []}
+        catalogs={allCategoryCatalogs?.data || []}
         initialGroupFilters={groupFilters}
         onApply={(brands, price, gf) => {
           setSelectedBrands(brands);
@@ -163,7 +183,7 @@ export default function CatalogPage() {
             onBrandsChange={setSelectedBrands}
             categoryName={categoryName}
             categoryUuid={categoryUuid}
-            catalogs={catalogs?.data || []}
+            catalogs={allCategoryCatalogs?.data || []}
             onFiltersChange={setGroupFilters}
           />
         </div>
