@@ -336,15 +336,24 @@
     "delivery": {
       "free": {
         "title": "Անվճար առաքում",
-        "subtitle": "1-2 օր"
+        "subtitle": "1-2 օր",
+        "days": "օր"
+      },
+      "paid": {
+        "title": "Վճարովի առաքում"
       },
       "stock": {
         "title": "Առկա է",
-        "subtitle": "Այսօր"
+        "subtitle": "Այսօր",
+        "underOrder": "Պատվերով",
+        "outOfStock": "Առկա չէ"
       },
       "guarantee": {
         "title": "Երաշխիք",
-        "subtitle": "1 տարի"
+        "subtitle": "1 տարի",
+        "year": "տ.",
+        "month": "ամ.",
+        "noWarranty": "Առանց երաշխիքի"
       }
     },
     "comments": {

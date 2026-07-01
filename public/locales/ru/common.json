@@ -331,15 +331,24 @@
     "delivery": {
       "free": {
         "title": "Бесплатная доставка",
-        "subtitle": "1-2 дня"
+        "subtitle": "1-2 дня",
+        "days": "дн."
+      },
+      "paid": {
+        "title": "Платная доставка"
       },
       "stock": {
         "title": "В наличии",
-        "subtitle": "Сегодня"
+        "subtitle": "Сегодня",
+        "underOrder": "Под заказ",
+        "outOfStock": "Нет в наличии"
       },
       "guarantee": {
         "title": "Гарантия",
-        "subtitle": "1 год"
+        "subtitle": "1 год",
+        "year": "г.",
+        "month": "мес.",
+        "noWarranty": "Без гарантии"
       }
     },
     "comments": {

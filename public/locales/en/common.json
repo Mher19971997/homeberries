@@ -336,15 +336,24 @@
     "delivery": {
       "free": {
         "title": "Free Delivery",
-        "subtitle": "1-2 day"
+        "subtitle": "1-2 day",
+        "days": "day(s)"
+      },
+      "paid": {
+        "title": "Paid Delivery"
       },
       "stock": {
         "title": "In Stock",
-        "subtitle": "Today"
+        "subtitle": "Today",
+        "underOrder": "Under Order",
+        "outOfStock": "Out of Stock"
       },
       "guarantee": {
         "title": "Guaranteed",
-        "subtitle": "1 year"
+        "subtitle": "1 year",
+        "year": "yr.",
+        "month": "mo.",
+        "noWarranty": "No warranty"
       }
     },
     "comments": {

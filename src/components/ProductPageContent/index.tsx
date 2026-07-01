@@ -617,41 +617,67 @@ export default function ProductPageContent({
             </div>
 
             {/* Доставка */}
-            <div className={styles.deliveryStrip}>
-              <div className={styles.deliveryItem}>
-                <div className={styles.boxDeliveryIcon}>
-                  <div className={styles.deliveryIcon}>
-                    <DeliveryIcon />
+            {(() => {
+              const cat = catalog as any;
+              const hasFreeDelivery = cat?.hasFreeDelivery !== false;
+              const deliveryDays = cat?.deliveryDays ?? 2;
+              const warrantyMonths = Number(cat?.warrantyMonths ?? 12);
+              const stockStatus: string = cat?.stockStatus ?? 'inStock';
+
+              const stockLabel = stockStatus === 'inStock'
+                ? t('productPageContent.delivery.stock.subtitle')
+                : stockStatus === 'underOrder'
+                ? t('productPageContent.delivery.stock.underOrder')
+                : t('productPageContent.delivery.stock.outOfStock');
+
+              const warrantyLabel = warrantyMonths === 0
+                ? t('productPageContent.delivery.guarantee.noWarranty')
+                : warrantyMonths >= 12
+                ? `${Math.floor(warrantyMonths / 12)} ${t('productPageContent.delivery.guarantee.year')}`
+                : `${warrantyMonths} ${t('productPageContent.delivery.guarantee.month')}`;
+
+              return (
+                <div className={styles.deliveryStrip}>
+                  <div className={styles.deliveryItem}>
+                    <div className={styles.boxDeliveryIcon}>
+                      <div className={styles.deliveryIcon}>
+                        <DeliveryIcon />
+                      </div>
+                    </div>
+                    <div className={styles.deliveryText}>
+                      <span className={styles.deliveryTitle}>
+                        {hasFreeDelivery ? t('productPageContent.delivery.free.title') : t('productPageContent.delivery.paid.title')}
+                      </span>
+                      <span className={styles.deliverySubtitle}>
+                        {deliveryDays}-{deliveryDays + 1} {t('productPageContent.delivery.free.days')}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.deliveryItem}>
+                    <div className={styles.boxDeliveryIcon}>
+                      <div className={styles.deliveryIcon}>
+                        <InStockIcon />
+                      </div>
+                    </div>
+                    <div className={styles.deliveryText}>
+                      <span className={styles.deliveryTitle}>{t('productPageContent.delivery.stock.title')}</span>
+                      <span className={styles.deliverySubtitle}>{stockLabel}</span>
+                    </div>
+                  </div>
+                  <div className={styles.deliveryItem}>
+                    <div className={styles.boxDeliveryIcon}>
+                      <div className={styles.deliveryIcon}>
+                        <GuaranteedIcon />
+                      </div>
+                    </div>
+                    <div className={styles.deliveryText}>
+                      <span className={styles.deliveryTitle}>{t('productPageContent.delivery.guarantee.title')}</span>
+                      <span className={styles.deliverySubtitle}>{warrantyLabel}</span>
+                    </div>
                   </div>
                 </div>
-                <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.free.title')}</span>
-                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.free.subtitle')}</span>
-                </div>
-              </div>
-              <div className={styles.deliveryItem}>
-                <div className={styles.boxDeliveryIcon}>
-                  <div className={styles.deliveryIcon}>
-                    <InStockIcon />
-                  </div>
-                </div>
-                <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.stock.title')}</span>
-                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.stock.subtitle')}</span>
-                </div>
-              </div>
-              <div className={styles.deliveryItem}>
-                <div className={styles.boxDeliveryIcon}>
-                  <div className={styles.deliveryIcon}>
-                    <GuaranteedIcon />
-                  </div>
-                </div>
-                <div className={styles.deliveryText}>
-                  <span className={styles.deliveryTitle}>{t('productPageContent.delivery.guarantee.title')}</span>
-                  <span className={styles.deliverySubtitle}>{t('productPageContent.delivery.guarantee.subtitle')}</span>
-                </div>
-              </div>
-            </div>
+              );
+            })()}
           </div>
         </div>
       </div>
