@@ -48,12 +48,21 @@ export const LoginForm: React.FC = () => {
   }, [step, codeExpiry]);
 
   const extractError = (err: any, fallback: string): string => {
+    if (err?.response?.status === 429) return t('auth.errors.tooMany');
     const msg = err?.response?.data?.message;
-    if (typeof msg === 'string') return msg;
-    if (Array.isArray(msg)) {
-      return msg.map((m: any) => (typeof m === 'string' ? m : m?.message)).filter(Boolean).join(', ');
+    if (typeof msg === 'string') {
+      const lower = msg.toLowerCase();
+      if (lower.includes('wrong password') || lower.includes('invalid') || lower.includes('not found')) {
+        return t('auth.errors.invalid');
+      }
+      if (lower.includes('throttle') || lower.includes('too many')) {
+        return t('auth.errors.tooMany');
+      }
+      return fallback;
     }
-    if (msg && typeof msg === 'object' && typeof msg.message === 'string') return msg.message;
+    if (Array.isArray(msg)) {
+      return fallback;
+    }
     return fallback;
   };
 
@@ -94,6 +103,10 @@ export const LoginForm: React.FC = () => {
     if (!email || !password || !confirm) { setError(t('auth.errors.fillFields')); return; }
     if (password !== confirm) { setError(t('auth.errors.passwordMismatch')); return; }
     if (password.length < 8) { setError(t('auth.errors.passwordLength')); return; }
+    if (!/[A-Z]/.test(password)) { setError(t('auth.errors.passwordWeak')); return; }
+    if (!/[a-z]/.test(password)) { setError(t('auth.errors.passwordWeak')); return; }
+    if (!/[0-9]/.test(password)) { setError(t('auth.errors.passwordWeak')); return; }
+    if (!/[!?@#$%^&*()\-_+=,./]/.test(password)) { setError(t('auth.errors.passwordWeak')); return; }
     setLoading(true);
     try {
       const res = await checkContact({ email });

@@ -530,6 +530,7 @@
       "fillFields": "Please fill in all fields",
       "passwordMismatch": "Passwords do not match",
       "passwordLength": "Password must be at least 8 characters",
+      "passwordWeak": "Password must contain uppercase, lowercase letters, numbers and special characters (!?@#$%^&*()-_+=,./)",
       "invalid": "Invalid email or password",
       "registerError": "Registration error",
       "serverError": "Invalid authorization server response",
@@ -537,7 +538,8 @@
       "emailExists": "This email is already registered",
       "wrongCode": "Wrong code. Try again",
       "codeExpired": "Code expired.",
-      "codeCooldown": "Please wait {{s}} sec. before resending"
+      "codeCooldown": "Please wait {{s}} sec. before resending",
+      "tooMany": "Too many attempts. Please wait a minute and try again."
     },
     "modal": {
       "title": "Sign in to your account",
@@ -965,7 +967,9 @@
       "messagePlaceholder": "Write your message...",
       "submit": "Send",
       "success": "Your message has been sent! We will contact you shortly.",
-      "submitting": "Submitting..."
+      "submitting": "Submitting...",
+      "error": "An error occurred. Please try again.",
+      "tooMany": "Too many requests. Please wait a minute and try again."
     }
   },
   "privacyPolicy": {

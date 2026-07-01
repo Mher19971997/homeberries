@@ -52,7 +52,7 @@ const ContactPage: React.FC = () => {
 
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<"error" | "tooMany" | null>(null);
   const [cookies] = useCookies(["token"]);
 
   // Scroll to FAQ if hash is present
@@ -80,7 +80,7 @@ const ContactPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(false);
+    setError(null);
     setLoading(true);
 
     try {
@@ -89,9 +89,8 @@ const ContactPage: React.FC = () => {
 
       setSent(true);
       setForm({ name: "", surname: "", phone: "", email: "", message: "" });
-    } catch (err) {
-      console.error(err);
-      setError(true);
+    } catch (err: any) {
+      setError(err?.response?.status === 429 ? "tooMany" : "error");
     } finally {
       setLoading(false);
     }
@@ -206,7 +205,7 @@ const ContactPage: React.FC = () => {
               </div>
 
               {error && (
-                <p className={styles.error}>{t("contact.form.error")}</p>
+                <p className={styles.error}>{t(`contact.form.${error}`)}</p>
               )}
 
               <button
