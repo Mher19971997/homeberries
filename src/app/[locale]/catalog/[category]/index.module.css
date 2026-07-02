@@ -224,6 +224,7 @@
   align-items: flex-start;
   margin-top: 19px;
   justify-content: space-between;
+  padding-bottom: 40px;
 }
 
 .sidebar {

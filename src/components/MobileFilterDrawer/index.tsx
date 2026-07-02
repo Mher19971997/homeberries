@@ -21,10 +21,11 @@ interface MobileFilterDrawerProps {
   onApply: (brands: string[], price: { min: number; max: number } | null, groupFilters: Record<string, string[]>) => void;
   catalogs?: any[];
   initialGroupFilters?: Record<string, string[]>;
+  priceBounds?: { min: number; max: number };
 }
 
-const PRICE_MIN = 0;
-const PRICE_MAX = 100000000;
+const DEFAULT_PRICE_MIN = 0;
+const DEFAULT_PRICE_MAX = 100000000;
 
 export default function MobileFilterDrawer({
   open,
@@ -35,10 +36,13 @@ export default function MobileFilterDrawer({
   onApply,
   catalogs = [],
   initialGroupFilters = {},
+  priceBounds,
 }: MobileFilterDrawerProps) {
   const { t } = useTranslation('common');
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
+  const PRICE_MIN = priceBounds?.min ?? DEFAULT_PRICE_MIN;
+  const PRICE_MAX = priceBounds?.max ?? DEFAULT_PRICE_MAX;
   const [brandSearch, setBrandSearch] = React.useState('');
   const [localBrands, setLocalBrands] = React.useState<string[]>(initialBrands);
   const [tempMin, setTempMin] = React.useState<number>(initialPrice?.min ?? PRICE_MIN);
@@ -204,7 +208,7 @@ export default function MobileFilterDrawer({
                   }}
                   min={PRICE_MIN}
                   max={PRICE_MAX}
-                  step={1000}
+                  step={Math.max(1, Math.round((PRICE_MAX - PRICE_MIN) / 100))}
                   sx={{
                     color: '#000000',
                     height: 3,

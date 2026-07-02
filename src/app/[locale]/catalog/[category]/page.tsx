@@ -7,7 +7,7 @@ import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedR
 import { ChevronSepIcon, PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
 import { useParams } from "next/navigation";
 
-import { getAllCatalogs } from "@homeberris/http/catalogApi";
+import { getAllCatalogs, getPriceRange } from "@homeberris/http/catalogApi";
 import { getMenuTree } from "@homeberris/http/categoryApi";
 import { getBrandsByCategory } from "@homeberris/http/brandApi";
 import { getCatalogUuidsByOptionValues } from "@homeberris/http/groupOptionApi";
@@ -78,6 +78,12 @@ export default function CatalogPage() {
   });
   const brands = brandsData?.data || [];
 
+  const { data: priceBounds } = useQuery({
+    queryKey: ["getPriceRange", categoryUuid],
+    queryFn: () => getPriceRange(categoryUuid),
+    enabled: !!categoryUuid,
+  });
+
   const allSelectedValues = Object.values(groupFilters).flat().filter(Boolean);
   const hasGroupFilters = allSelectedValues.length > 0;
 
@@ -100,9 +106,8 @@ export default function CatalogPage() {
     let baseMeta: any = { ...catFilter, isActive: true };
     if (selectedBrands.length > 0) baseMeta = { ...baseMeta, brandUuid: { in: selectedBrands } };
     if (hasGroupFilters && matchingCatalogUuids?.length) baseMeta = { ...baseMeta, uuid: { in: matchingCatalogUuids } };
+    if (priceRange) baseMeta = { ...baseMeta, price: { gte: priceRange.min, lte: priceRange.max } };
     filters.filterMeta = baseMeta;
-    if (priceRange)
-      filters.where = { price: { $gte: priceRange.min, $lte: priceRange.max } };
     if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
     else if (sortBy === "price_desc") filters.queryMeta.order = { price: "DESC" };
     else if (sortBy === "newest") filters.queryMeta.order = { createdAt: "DESC" };
@@ -159,6 +164,7 @@ export default function CatalogPage() {
         brands={brands}
         selectedBrands={selectedBrands}
         priceRange={priceRange}
+        priceBounds={priceBounds}
         catalogs={allCategoryCatalogs?.data || []}
         initialGroupFilters={groupFilters}
         onApply={(brands, price, gf) => {

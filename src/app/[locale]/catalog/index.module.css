@@ -181,7 +181,7 @@
   background-color: #ffffff;
   color: #111111;
   padding: 12px;
-  position: absolute
+  position: absolute;
 }
 
 @keyframes spin {
@@ -280,5 +280,11 @@
 
   .filterSelect {
     font-size: 14px;
+  }
+}
+@media (max-width: 370px) {
+  .container {
+    grid-template-columns: repeat(2, 145px);
+    justify-content: center;
   }
 }

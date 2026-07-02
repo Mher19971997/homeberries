@@ -30,4 +30,11 @@ const searchCatalog = async (query: any): Promise<{ data: CatalogItem[]; meta: L
   return data;
 };
 
-export { getAllCatalogs, getCatalogByUud, searchCatalog };
+const getPriceRange = async (categoryUuid?: string): Promise<{ min: number; max: number }> => {
+  const { data } = await $host.get(`/api/v1/catalog/price-range`, {
+    params: categoryUuid ? { categoryUuid } : {},
+  });
+  return data;
+};
+
+export { getAllCatalogs, getCatalogByUud, searchCatalog, getPriceRange };
