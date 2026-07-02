@@ -106,11 +106,11 @@ export default function CatalogPage() {
     let baseMeta: any = { ...catFilter, isActive: true };
     if (selectedBrands.length > 0) baseMeta = { ...baseMeta, brandUuid: { in: selectedBrands } };
     if (hasGroupFilters && matchingCatalogUuids?.length) baseMeta = { ...baseMeta, uuid: { in: matchingCatalogUuids } };
-    if (priceRange) baseMeta = { ...baseMeta, price: { gte: priceRange.min, lte: priceRange.max } };
+    if (priceRange) baseMeta = { ...baseMeta, priceRange: { gte: priceRange.min, lte: priceRange.max } };
     filters.filterMeta = baseMeta;
     if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
     else if (sortBy === "price_desc") filters.queryMeta.order = { price: "DESC" };
-    else if (sortBy === "newest") filters.queryMeta.order = { createdAt: "DESC" };
+    else filters.queryMeta.order = { createdAt: "DESC" };
     return qs.stringify(filters);
   };
 
