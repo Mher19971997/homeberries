@@ -59,13 +59,6 @@ const Navbar = () => {
   }, []);
 
   React.useEffect(() => {
-    setUnreadPromos(getUnreadPromos());
-    const onPromoNotif = () => setUnreadPromos(getUnreadPromos());
-    window.addEventListener('promoNotification', onPromoNotif);
-    return () => window.removeEventListener('promoNotification', onPromoNotif);
-  }, []);
-
-  React.useEffect(() => {
     const onOpenMenu = () => setMenuOpen(true);
     window.addEventListener("openNavMenu", onOpenMenu);
     return () => window.removeEventListener("openNavMenu", onOpenMenu);
@@ -78,6 +71,13 @@ const Navbar = () => {
   });
 
   const userLetter = profile?.email ? profile.email[0].toUpperCase() : null;
+
+  React.useEffect(() => {
+    setUnreadPromos(getUnreadPromos(profile?.uuid));
+    const onPromoNotif = () => setUnreadPromos(getUnreadPromos(profile?.uuid));
+    window.addEventListener('promoNotification', onPromoNotif);
+    return () => window.removeEventListener('promoNotification', onPromoNotif);
+  }, [profile?.uuid]);
 
   usePromoSocket(profile?.uuid, (payload) => {
     setPromoNotif(payload);
@@ -355,9 +355,10 @@ const Navbar = () => {
         <nav className={styles.drawerNav}>
           {[
             { label: t("nav.home"), href: "/" },
+            { label: t("nav.catalog"), href: "/catalog" },
             { label: t("nav.about"), href: "/about" },
             { label: t("nav.contact"), href: "/contact" },
-            { label: t("nav.blog"), href: "/blog" },
+            // { label: t("nav.blog"), href: "/blog" },
           ].map(({ label, href }) => (
             <span
               key={href}

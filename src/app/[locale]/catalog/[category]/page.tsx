@@ -110,6 +110,7 @@ export default function CatalogPage() {
     filters.filterMeta = baseMeta;
     if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
     else if (sortBy === "price_desc") filters.queryMeta.order = { price: "DESC" };
+    else if (sortBy === "rating") filters.queryMeta.order = { rating: "DESC" };
     else filters.queryMeta.order = { createdAt: "DESC" };
     return qs.stringify(filters);
   };
@@ -214,7 +215,7 @@ export default function CatalogPage() {
               placeholder={t('catalogAll.sort.title')}
               options={[
                 { label: t('catalogAll.sort.rating'), value: 'rating' },
-                { label: t('catalogAll.sort.popularity'), value: 'popularity' },
+                // { label: t('catalogAll.sort.popularity'), value: 'popularity' },
                 { label: t('catalogAll.sort.priceAsc'), value: 'price_asc' },
                 { label: t('catalogAll.sort.priceDesc'), value: 'price_desc' },
                 { label: t('catalogAll.sort.newest'), value: 'newest' },

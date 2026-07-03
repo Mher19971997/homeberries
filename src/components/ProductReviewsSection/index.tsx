@@ -35,7 +35,9 @@ function CommentInput({ isAuth, rating, setRating, text, setText, image, setImag
         type="text"
         className={styles.leaveCommentInput}
         placeholder={t('reviews.leaveComment')}
+        value=""
         readOnly
+        onChange={() => {}}
         onClick={() => setShowWarning(true)}
         onBlur={() => setShowWarning(false)}
         style={{ cursor: 'not-allowed', opacity: 0.6 }}

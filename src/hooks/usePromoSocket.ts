@@ -5,21 +5,21 @@ import { io, Socket } from 'socket.io-client';
 
 let socket: Socket | null = null;
 
-export const PROMO_NOTIF_KEY = 'unreadPromos';
+const promoNotifKey = (userUuid: string) => `unreadPromos_${userUuid}`;
 
-export const getUnreadPromos = (): number => {
-  if (typeof window === 'undefined') return 0;
-  return Number(localStorage.getItem(PROMO_NOTIF_KEY) || 0);
+export const getUnreadPromos = (userUuid?: string): number => {
+  if (typeof window === 'undefined' || !userUuid) return 0;
+  return Number(localStorage.getItem(promoNotifKey(userUuid)) || 0);
 };
 
-export const incrementUnreadPromos = () => {
-  const current = getUnreadPromos();
-  localStorage.setItem(PROMO_NOTIF_KEY, String(current + 1));
+export const incrementUnreadPromos = (userUuid: string) => {
+  const current = getUnreadPromos(userUuid);
+  localStorage.setItem(promoNotifKey(userUuid), String(current + 1));
   window.dispatchEvent(new Event('promoNotification'));
 };
 
-export const clearUnreadPromos = () => {
-  localStorage.setItem(PROMO_NOTIF_KEY, '0');
+export const clearUnreadPromos = (userUuid: string) => {
+  localStorage.setItem(promoNotifKey(userUuid), '0');
   window.dispatchEvent(new Event('promoNotification'));
 };
 
@@ -33,7 +33,7 @@ export const usePromoSocket = (userUuid: string | undefined, onPromoReceived: (p
     });
 
     socket.on('promocode:received', (payload) => {
-      incrementUnreadPromos();
+      incrementUnreadPromos(userUuid);
       onPromoReceived(payload);
     });
 

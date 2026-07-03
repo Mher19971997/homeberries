@@ -212,6 +212,8 @@ export default function MobileFilterDrawer({
                   sx={{
                     color: '#000000',
                     height: 3,
+                    width: '98%',
+                    display: 'block',
                     '& .MuiSlider-thumb': {
                       width: 16,
                       height: 16,

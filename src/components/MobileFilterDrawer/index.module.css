@@ -27,6 +27,7 @@
 }
 
 .drawerOpen {
+  overflow: scroll;
   transform: translateX(0);
 }
 

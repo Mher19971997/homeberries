@@ -991,6 +991,9 @@
   .navButtons {
     justify-content: center;
   }
+  .cardVisual{
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 600px) {

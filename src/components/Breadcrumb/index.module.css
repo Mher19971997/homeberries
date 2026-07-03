@@ -34,3 +34,21 @@
   color: #868695;
   flex-shrink: 0;
 }
+
+@media (max-width:520px){
+  .breadcrumb{
+    gap: 5px;
+  }
+}
+
+@media (max-width:480px){
+  .breadcrumb{
+    gap: 1px;
+  }
+}
+
+@media (max-width:400px){
+  .breadcrumb{
+    flex-wrap: wrap;
+  }
+}

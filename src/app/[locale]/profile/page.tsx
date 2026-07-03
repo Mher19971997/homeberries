@@ -153,7 +153,7 @@ export default function Profile() {
             <p className={styles.userName}>{userName}</p>
             <p className={styles.userEmail}>{user?.email}</p>
           </div>
-          <button className={styles.promoBtn} onClick={() => { setPromoModalOpen(true); clearUnreadPromos(); }}>
+          <button className={styles.promoBtn} onClick={() => { setPromoModalOpen(true); if (user?.uuid) clearUnreadPromos(user.uuid); }}>
             <Ticket size={16} strokeWidth={1.8} />
             {t('profile.promocodes')}
           </button>

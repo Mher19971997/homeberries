@@ -18,7 +18,6 @@ import CatalogCard from '@homeberris/components/CatalogCard';
 import BigSummerSale from '@homeberris/components/BigSummerSale';
 import Spinner from '@homeberris/components/Spinner';
 
-const ITEMS_LIMIT = 8;
 const DISCOUNT_LIMIT = 4;
 
 import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
@@ -94,10 +93,28 @@ export default function Home() {
   const [catalogMinHeight, setCatalogMinHeight] = useState<number>(0);
   const [discountMinHeight, setDiscountMinHeight] = useState<number>(0);
 
+  // На ширинах с 3 колонками (600px–1280px) 8 не делится нацело на 3 и оставляет
+  // неполный последний ряд — запрашиваем 6 товаров вместо 8, чтобы ряды были полными.
+  const [itemsLimit, setItemsLimit] = useState(8);
+
+  useEffect(() => {
+    const updateItemsLimit = () => {
+      const w = window.innerWidth;
+      setItemsLimit(w > 599 && w <= 1280 ? 6 : 8);
+    };
+    updateItemsLimit();
+    window.addEventListener('resize', updateItemsLimit);
+    return () => window.removeEventListener('resize', updateItemsLimit);
+  }, []);
+
+  useEffect(() => {
+    setNewPage(1);
+  }, [itemsLimit]);
+
   const buildQuery = () => {
     const filters: any = {
       queryMeta: {
-        paginate: true, limit: ITEMS_LIMIT, page: newPage, order: {
+        paginate: true, limit: itemsLimit, page: newPage, order: {
           createdAt: 'DESC',
         },
       },
@@ -127,7 +144,7 @@ export default function Home() {
   };
 
   const { data, isLoading } = useQuery({
-    queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid, newPage, activeTab],
+    queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid, newPage, activeTab, itemsLimit],
     queryFn: () => getAllCatalogs(buildQuery()),
   });
 
@@ -144,7 +161,7 @@ export default function Home() {
 
   const catalogs: CatalogItem[] = data?.data || [];
   const discountCatalogs: CatalogItem[] = discountData?.data || [];
-  const newTotalPages = data?.meta ? Math.max(1, Math.ceil(data.meta.count / ITEMS_LIMIT)) : 1;
+  const newTotalPages = data?.meta ? Math.max(1, Math.ceil(data.meta.count / itemsLimit)) : 1;
 
   useEffect(() => {
     if (!isLoading && catalogGridRef.current) {
