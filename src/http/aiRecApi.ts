@@ -31,12 +31,27 @@ export interface HealthResponse {
 }
 
 export interface CompareRequest {
-  uuids: string[];
+  products: any[];
   locale?: string;
+  criteriaCount?: number;
+}
+
+export interface ComparisonCriterion {
+  title: string;
+  winnerIndex: number;
+  values: string[];
+  explanation: string;
+}
+
+export interface ComparisonResult {
+  criteria: ComparisonCriterion[];
+  overallWinnerIndex: number;
+  overallReason: string;
+  finalRecommendation: string;
 }
 
 export interface CompareResponse {
-  response: string;
+  response: ComparisonResult | string;
   products: any[];
 }
 
@@ -56,7 +71,7 @@ const checkHealth = async (): Promise<HealthResponse> => {
 };
 
 const compare = async (request: CompareRequest): Promise<CompareResponse> => {
-  const { data } = await $authHost.post('/api/v1/aiRec/compare', request);  
+  const { data } = await $authHost.post('/api/v1/aiRec/compare', request);
   return data;
 };
 

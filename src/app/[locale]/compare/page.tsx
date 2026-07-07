@@ -24,7 +24,7 @@ import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
 import { CartIcon } from '@homeberris/assets/icons/navbar';
 import { Sparkles, Lock } from 'lucide-react';
-import { compare } from '@homeberris/http/aiRecApi';
+import { compare, ComparisonResult } from '@homeberris/http/aiRecApi';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -139,7 +139,7 @@ function ComparePage() {
 
   const { data: aiComparison, isLoading: aiLoading, isFetching: aiFetching } = useQuery({
     queryKey: ['aiCompare', locale, ...compareUuids],
-    queryFn: () => compare({ uuids: compareUuids, locale }),
+    queryFn: () => compare({ products: displayedProducts, locale }),
     enabled: isAuth && compareUuids.length >= 2 && !!cookies.token,
     staleTime: 5 * 60 * 1000,
   });
@@ -301,6 +301,9 @@ function ComparePage() {
   );
 
   const handleGoToCatalog = () => router.push('/catalog');
+
+  const isStructuredResult = (r: any): r is ComparisonResult =>
+    r && typeof r === 'object' && Array.isArray(r.criteria);
 
   return (
     <div className={styles.body}>
@@ -546,8 +549,47 @@ function ComparePage() {
                 </div>
                 {aiLoading ? (
                   <p className={styles.recommendationsText}>{t('compare.recommendations.loading')}</p>
+                ) : isStructuredResult(aiComparison?.response) ? (
+                  <div className={styles.aiComparisonResult}>
+                    <div className={styles.aiCardsContainer}>
+                      {aiComparison!.response.criteria.map((criterion, idx) => {
+
+                        return (
+                          <div
+                            key={idx}
+                            className={styles.aiRecommendationCard}
+                          >
+                            <div className={styles.aiCardNumber}>
+                              {idx + 1}
+                            </div>
+
+                            <h3 className={styles.aiCardTitle}>
+                              {criterion.title}
+                            </h3>
+
+                            <p className={styles.aiCardText}>
+                              {criterion.explanation}
+                            </p>
+
+                            {criterion.values?.length > 0 && (
+                              <div className={styles.aiValues}>
+                                {criterion.values.map((value, i) => (
+                                  <span
+                                    key={i}
+                                    className={styles.aiValue}
+                                  >
+                                    {value}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
                 ) : (
-                  <p className={styles.recommendationsText}>{aiComparison?.response}</p>
+                  <p className={styles.recommendationsText}>{aiComparison?.response as string}</p>
                 )}
               </div>
             )}

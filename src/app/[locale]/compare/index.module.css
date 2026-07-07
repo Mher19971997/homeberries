@@ -259,7 +259,6 @@
 
 .specValueBest {
   color: #2e7d32;
-  font-weight: 600;
 }
 
 .tableWrap {
@@ -607,9 +606,68 @@
 
 .recommendationsText {
   font-size: 16px;
-  color: #111111;
+  color: #ffffff;
   margin: 25px 0 0 0;
   font-family: var(--font-inter);
+}
+
+.aiCardsContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  margin-top: 24px;
+}
+
+.aiRecommendationCard {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  min-height: 200px;
+}
+
+.aiCardNumber {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+  color: white;
+  font-weight: 600;
+}
+
+.aiCardTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.aiWinner {
+  font-weight: 600;
+}
+
+.aiCardText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #545454;
+  margin-top: 12px;
+}
+
+.aiValues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aiValue {
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: #f3f4f6;
+  font-size: 13px;
+  margin-top: 10px
 }
 
 /* Карточка с результатом AI-сравнения */
@@ -670,6 +728,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -679,6 +738,11 @@
   .recommendationsResult {
     padding: 20px 18px;
     border-radius: 14px;
+  }
+
+  .aiCardsContainer {
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 
@@ -764,4 +828,28 @@
 
 .recLockRegisterBtn:hover {
   background: #f7f7f7;
+}
+
+@media (max-width: 1024px) {
+  .table {
+    min-width: 700px;
+  }
+
+  .rowLabel {
+    width: 140px;
+  }
+
+  .productCell {
+    min-width: 170px;
+  }
+
+  .aiCardsContainer {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .aiRecommendationCard {
+    min-height: auto;
+    padding: 18px;
+  }
 }
