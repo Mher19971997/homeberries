@@ -24,6 +24,7 @@ import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
 import { CartIcon } from '@homeberris/assets/icons/navbar';
 import { Sparkles, Lock } from 'lucide-react';
+import { compare } from '@homeberris/http/aiRecApi';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -130,6 +131,18 @@ function ComparePage() {
     () => products.filter((p) => ((p as any).category?.uuid || (p as any).categoryUuid) === activeCategoryUuid),
     [products, activeCategoryUuid],
   );
+
+  const compareUuids = React.useMemo(
+    () => displayedProducts.map((p) => p.uuid).slice().sort(),
+    [displayedProducts],
+  );
+
+  const { data: aiComparison, isLoading: aiLoading, isFetching: aiFetching } = useQuery({
+    queryKey: ['aiCompare', ...compareUuids],
+    queryFn: () => compare({ uuids: compareUuids }),
+    enabled: isAuth && compareUuids.length >= 2 && !!cookies.token,
+    staleTime: 5 * 60 * 1000,
+  });
 
   // Всегда показываем MAX_SLOTS колонок — занятые товаром или пустые плейсхолдеры.
   const slots: (CatalogItem | null)[] = React.useMemo(() => {
@@ -327,212 +340,218 @@ function ComparePage() {
         </div>
       ) : (
         <>
-      <div className={styles.toolbar}>
-        {searchBox}
-        <div className={styles.toolbarActions}>
-          <label className={styles.diffToggle}>
-            <input type="checkbox" checked={diffOnly} onChange={(e) => setDiffOnly(e.target.checked)} />
-            {t('compare.diffOnly')}
-          </label>
-          <button className={styles.toolbarBtn} onClick={handleShare}>
-            {t('compare.share')}
-          </button>
-          <button className={styles.toolbarBtnDanger} onClick={clearCompare}>
-            {t('compare.clearAll')}
-          </button>
-        </div>
-      </div>
+          <div className={styles.toolbar}>
+            {searchBox}
+            <div className={styles.toolbarActions}>
+              <label className={styles.diffToggle}>
+                <input type="checkbox" checked={diffOnly} onChange={(e) => setDiffOnly(e.target.checked)} />
+                {t('compare.diffOnly')}
+              </label>
+              <button className={styles.toolbarBtn} onClick={handleShare}>
+                {t('compare.share')}
+              </button>
+              <button className={styles.toolbarBtnDanger} onClick={clearCompare}>
+                {t('compare.clearAll')}
+              </button>
+            </div>
+          </div>
 
-      <div className={styles.tableWrap}>
-        <table className={styles.table}>
-          <tbody>
-            <tr className={styles.stickyRow}>
-              <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {slots.map((p, i) => {
-                if (!p) return <td key={`empty-${i}`} className={styles.productCell}><div className={styles.placeholderBox} /></td>;
-                const imgSrc = p.images?.length
-                  ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
-                  : '';
-                return (
-                  <td key={p.uuid} className={styles.productCell}>
-                    <button
-                      className={styles.removeBtn}
-                      onClick={() => removeFromCompare(p.uuid as any)}
-                      aria-label="remove"
-                    >
-                      ✕
-                    </button>
+          <div className={styles.tableWrap}>
+            <table className={styles.table}>
+              <tbody>
+                <tr className={styles.stickyRow}>
+                  <td className={styles.rowLabel}>{t('compare.models')}</td>
+                  {slots.map((p, i) => {
+                    if (!p) return <td key={`empty-${i}`} className={styles.productCell}><div className={styles.placeholderBox} /></td>;
+                    const imgSrc = p.images?.length
+                      ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
+                      : '';
+                    return (
+                      <td key={p.uuid} className={styles.productCell}>
+                        <button
+                          className={styles.removeBtn}
+                          onClick={() => removeFromCompare(p.uuid as any)}
+                          aria-label="remove"
+                        >
+                          ✕
+                        </button>
+                        {imgSrc && (
+                          <img
+                            src={imgSrc}
+                            alt={getLoc(p.name, locale)}
+                            className={styles.productImg}
+                            onClick={() => router.push(buildCatalogUrl(p))}
+                          />
+                        )}
+                        <button
+                          className={styles.cartBtn}
+                          onClick={() => addToCart(p)}
+                          aria-label="add to cart"
+                        >
+                          <CartIcon />
+                        </button>
+                      </td>
+                    );
+                  })}
+                </tr>
+
+                <tr>
+                  <td className={styles.rowLabel}>{t('compare.models')}</td>
+                  {slots.map((p, i) => (
+                    <td key={p?.uuid || `empty-${i}`} className={styles.productName}>
+                      {p ? getLoc(p.name, locale) : ''}
+                    </td>
+                  ))}
+                </tr>
+
+                <tr>
+                  <td className={styles.rowLabel}>{t('compare.price')}</td>
+                  {slots.map((p, i) => (
+                    <td key={p?.uuid || `empty-${i}`} className={styles.productPrice}>
+                      {p ? formatPrice(p.price) : ''}
+                    </td>
+                  ))}
+                </tr>
+
+                {specGroups.map(({ groupKey, groupLabel, rows }) => {
+                  const visibleRows = diffOnly ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey)) : rows;
+                  if (visibleRows.length === 0) return null;
+                  return (
+                    <React.Fragment key={groupKey}>
+                      <tr>
+                        <td className={styles.groupHeader} colSpan={MAX_SLOTS + 1}>
+                          {groupLabel}
+                        </td>
+                      </tr>
+                      {visibleRows.map(([rowKey, rowLabel]) => {
+                        const bestUuid = getBestUuid(groupKey, rowKey);
+                        return (
+                          <tr key={rowKey}>
+                            <td className={styles.rowLabel}>{rowLabel}</td>
+                            {slots.map((p, i) => (
+                              <td
+                                key={p?.uuid || `empty-${i}`}
+                                className={`${styles.specValue} ${p && bestUuid === p.uuid ? styles.specValueBest : ''}`}
+                              >
+                                {p ? getSpecValue(p, groupKey, rowKey) : ''}
+                              </td>
+                            ))}
+                          </tr>
+                        );
+                      })}
+                    </React.Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Мобильная раскладка: товары друг под другом, без горизонтального скролла */}
+          <div className={styles.mobileList}>
+            {displayedProducts.map((p) => {
+              const imgSrc = p.images?.length
+                ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
+                : '';
+              return (
+                <div key={p.uuid} className={styles.mobileCard}>
+                  <button
+                    className={styles.removeBtn}
+                    onClick={() => removeFromCompare(p.uuid as any)}
+                    aria-label="remove"
+                  >
+                    ✕
+                  </button>
+
+                  <div className={styles.mobileHeader}>
                     {imgSrc && (
                       <img
                         src={imgSrc}
                         alt={getLoc(p.name, locale)}
-                        className={styles.productImg}
+                        className={styles.mobileImg}
                         onClick={() => router.push(buildCatalogUrl(p))}
                       />
                     )}
-                    <button
-                      className={styles.cartBtn}
-                      onClick={() => addToCart(p)}
-                      aria-label="add to cart"
-                    >
-                      <CartIcon/>
-                    </button>
-                  </td>
-                );
-              })}
-            </tr>
+                    <div className={styles.mobileHeaderInfo}>
+                      <p className={styles.mobileName}>{getLoc(p.name, locale)}</p>
+                      <p className={styles.mobilePrice}>{formatPrice(p.price)}</p>
+                      <button
+                        className={styles.mobileCartBtn}
+                        onClick={() => addToCart(p)}
+                        aria-label={t('compare.addToCart')}
+                      >
+                        <CartIcon />
+                      </button>
+                    </div>
+                  </div>
 
-            <tr>
-              <td className={styles.rowLabel}>{t('compare.models')}</td>
-              {slots.map((p, i) => (
-                <td key={p?.uuid || `empty-${i}`} className={styles.productName}>
-                  {p ? getLoc(p.name, locale) : ''}
-                </td>
-              ))}
-            </tr>
-
-            <tr>
-              <td className={styles.rowLabel}>{t('compare.price')}</td>
-              {slots.map((p, i) => (
-                <td key={p?.uuid || `empty-${i}`} className={styles.productPrice}>
-                  {p ? formatPrice(p.price) : ''}
-                </td>
-              ))}
-            </tr>
-
-            {specGroups.map(({ groupKey, groupLabel, rows }) => {
-              const visibleRows = diffOnly ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey)) : rows;
-              if (visibleRows.length === 0) return null;
-              return (
-                <React.Fragment key={groupKey}>
-                  <tr>
-                    <td className={styles.groupHeader} colSpan={MAX_SLOTS + 1}>
-                      {groupLabel}
-                    </td>
-                  </tr>
-                  {visibleRows.map(([rowKey, rowLabel]) => {
-                    const bestUuid = getBestUuid(groupKey, rowKey);
+                  {specGroups.map(({ groupKey, groupLabel, rows }) => {
+                    // Показываем ВСЕ строки группы (даже пустые для этого товара),
+                    // чтобы строки совпадали между всеми карточками — товары встают
+                    // на одну линию. Пустое значение помечаем прочерком.
+                    const visibleRows = diffOnly
+                      ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey))
+                      : rows;
+                    if (visibleRows.length === 0) return null;
                     return (
-                      <tr key={rowKey}>
-                        <td className={styles.rowLabel}>{rowLabel}</td>
-                        {slots.map((p, i) => (
-                          <td
-                            key={p?.uuid || `empty-${i}`}
-                            className={`${styles.specValue} ${p && bestUuid === p.uuid ? styles.specValueBest : ''}`}
-                          >
-                            {p ? getSpecValue(p, groupKey, rowKey) : ''}
-                          </td>
-                        ))}
-                      </tr>
+                      <div key={groupKey} className={styles.mobileGroup}>
+                        <p className={styles.mobileGroupTitle}>{groupLabel}</p>
+                        {visibleRows.map(([rowKey, rowLabel]) => {
+                          const value = getSpecValue(p, groupKey, rowKey);
+                          const isBest = getBestUuid(groupKey, rowKey) === p.uuid;
+                          return (
+                            <div key={rowKey} className={styles.mobileRow}>
+                              <span className={styles.mobileRowLabel}>{rowLabel}</span>
+                              <span className={`${styles.mobileRowValue} ${isBest ? styles.specValueBest : ''}`}>
+                                {value || '—'}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
                     );
                   })}
-                </React.Fragment>
+                </div>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+          </div>
 
-      {/* Мобильная раскладка: товары друг под другом, без горизонтального скролла */}
-      <div className={styles.mobileList}>
-        {displayedProducts.map((p) => {
-          const imgSrc = p.images?.length
-            ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)
-            : '';
-          return (
-            <div key={p.uuid} className={styles.mobileCard}>
-              <button
-                className={styles.removeBtn}
-                onClick={() => removeFromCompare(p.uuid as any)}
-                aria-label="remove"
-              >
-                ✕
-              </button>
-
-              <div className={styles.mobileHeader}>
-                {imgSrc && (
-                  <img
-                    src={imgSrc}
-                    alt={getLoc(p.name, locale)}
-                    className={styles.mobileImg}
-                    onClick={() => router.push(buildCatalogUrl(p))}
-                  />
-                )}
-                <div className={styles.mobileHeaderInfo}>
-                  <p className={styles.mobileName}>{getLoc(p.name, locale)}</p>
-                  <p className={styles.mobilePrice}>{formatPrice(p.price)}</p>
-                  <button
-                    className={styles.mobileCartBtn}
-                    onClick={() => addToCart(p)}
-                    aria-label={t('compare.addToCart')}
-                  >
-                    <CartIcon />
+          {/* Smart Recommendations: гость → замок с входом, залогинен → заголовок (логика позже) */}
+          <div className={styles.recommendations}>
+            {!isAuth ? (
+              <div className={styles.recLock}>
+                <span className={styles.recLockIcon}>
+                  <Lock size={22} strokeWidth={1.75} />
+                </span>
+                <p className={styles.recLockTitle}>{t('compare.recommendations.lock.title')}</p>
+                <p className={styles.recLockSubtitle}>{t('compare.recommendations.lock.subtitle')}</p>
+                <div className={styles.recLockActions}>
+                  <button className={styles.recLockLoginBtn} onClick={() => router.push('/security/login?redirect=/compare')}>
+                    {t('compare.recommendations.lock.login')}
+                  </button>
+                  <button className={styles.recLockRegisterBtn} onClick={() => router.push('/security/login?mode=register&redirect=/compare')}>
+                    {t('compare.recommendations.lock.createAccount')}
                   </button>
                 </div>
               </div>
-
-              {specGroups.map(({ groupKey, groupLabel, rows }) => {
-                // Показываем ВСЕ строки группы (даже пустые для этого товара),
-                // чтобы строки совпадали между всеми карточками — товары встают
-                // на одну линию. Пустое значение помечаем прочерком.
-                const visibleRows = diffOnly
-                  ? rows.filter(([rowKey]) => isRowDifferent(groupKey, rowKey))
-                  : rows;
-                if (visibleRows.length === 0) return null;
-                return (
-                  <div key={groupKey} className={styles.mobileGroup}>
-                    <p className={styles.mobileGroupTitle}>{groupLabel}</p>
-                    {visibleRows.map(([rowKey, rowLabel]) => {
-                      const value = getSpecValue(p, groupKey, rowKey);
-                      const isBest = getBestUuid(groupKey, rowKey) === p.uuid;
-                      return (
-                        <div key={rowKey} className={styles.mobileRow}>
-                          <span className={styles.mobileRowLabel}>{rowLabel}</span>
-                          <span className={`${styles.mobileRowValue} ${isBest ? styles.specValueBest : ''}`}>
-                            {value || '—'}
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Smart Recommendations: гость → замок с входом, залогинен → заголовок (логика позже) */}
-      <div className={styles.recommendations}>
-        {!isAuth ? (
-          <div className={styles.recLock}>
-            <span className={styles.recLockIcon}>
-              <Lock size={22} strokeWidth={1.75} />
-            </span>
-            <p className={styles.recLockTitle}>{t('compare.recommendations.lock.title')}</p>
-            <p className={styles.recLockSubtitle}>{t('compare.recommendations.lock.subtitle')}</p>
-            <div className={styles.recLockActions}>
-              <button
-                className={styles.recLockLoginBtn}
-                onClick={() => router.push('/security/login?redirect=/compare')}
-              >
-                {t('compare.recommendations.lock.login')}
-              </button>
-              <button
-                className={styles.recLockRegisterBtn}
-                onClick={() => router.push('/security/login?mode=register&redirect=/compare')}
-              >
-                {t('compare.recommendations.lock.createAccount')}
-              </button>
-            </div>
+            ) : compareUuids.length < 2 ? (
+              <div className={styles.recommendationsHeader}>
+                <Sparkles size={20} strokeWidth={1.75} />
+                <p className={styles.recommendationsTitle}>{t('compare.recommendations.needTwo')}</p>
+              </div>
+            ) : (
+              <div className={styles.recommendationsResult}>
+                <div className={styles.recommendationsHeader}>
+                  <Sparkles size={20} strokeWidth={1.75} className={aiFetching ? styles.recSpin : ''} />
+                  <h2 className={styles.recommendationsTitle}>{t('compare.recommendations.title')}</h2>
+                </div>
+                {aiLoading ? (
+                  <p className={styles.recommendationsText}>{t('compare.recommendations.loading')}</p>
+                ) : (
+                  <p className={styles.recommendationsText}>{aiComparison?.response}</p>
+                )}
+              </div>
+            )}
           </div>
-        ) : (
-          <div className={styles.recommendationsHeader}>
-            <Sparkles size={20} strokeWidth={1.75} />
-            <h2 className={styles.recommendationsTitle}>{t('compare.recommendations.title')}</h2>
-          </div>
-        )}
-      </div>
         </>
       )}
     </div>

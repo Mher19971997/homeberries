@@ -232,7 +232,7 @@
   z-index: 30;
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   max-height: 280px;
   overflow-y: auto;
   text-align: start;
@@ -463,10 +463,12 @@
   cursor: pointer;
   font-size: 16px;
 }
-.cartBtn > svg {
+
+.cartBtn>svg {
   width: 22px;
   height: 22px;
 }
+
 .productName {
   font-weight: 600;
   color: #171717;
@@ -598,6 +600,13 @@
 .recommendationsTitle {
   font-size: 22px;
   font-weight: 600;
+  color: #111111;
+  margin: 0;
+  font-family: var(--font-inter);
+}
+
+.recommendationsText {
+  font-size: 16px;
   color: #111111;
   margin: 0;
   font-family: var(--font-inter);

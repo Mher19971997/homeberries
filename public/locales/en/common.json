@@ -147,6 +147,8 @@
     "clearAll": "Clear all",
     "recommendations": {
       "title": "Smart Recommendations",
+      "needTwo": "Select at least 2 products to get a comparison",
+      "loading": "Analyzing products...",
       "lock": {
         "title": "Please sign in to get smart recommendations",
         "subtitle": "Sign in to unlock smarter product recommendations, personalized comparison insights, and tailored picks for your goals.",

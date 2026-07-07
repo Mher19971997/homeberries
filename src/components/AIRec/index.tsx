@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from '@homeberris/hooks/useToast';
 import Toast from '@homeberris/components/Toast';
 import FavoriteItem from '@homeberris/features/favorites/components/FavoriteItems';
+import { useCookies } from 'react-cookie';
 
 // ─── ИНТЕРФЕЙСЫ И ТИПЫ ──────────────────────────────────────────────────────
 export interface ChatMessage {
@@ -56,8 +57,10 @@ const cleanTextForSpeech = (text: string): string =>
     .replace(/\s+/g, ' ')
     .trim();
 
+const API_BASE = 'http://localhost:6001/api/v1/aiRec';
+
 // ─── ВСТРОЕННЫЙ ХУК useAiChat ───────────────────────────────────────────────
-function useAiChatInternal() {
+function useAiChatInternal(token?: string) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -65,9 +68,17 @@ function useAiChatInternal() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
+  const authHeaders = useCallback((): HeadersInit => {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
+    return headers;
+  }, [token]);
+
   const checkConnection = useCallback(async () => {
     try {
-      const res = await fetch('/api/ai/health');
+      const res = await fetch(`${API_BASE}/health`, {
+        headers: authHeaders(),
+      });
       const data = await res.json();
       setIsConnected(data.connected);
       return data.connected;
@@ -75,7 +86,7 @@ function useAiChatInternal() {
       setIsConnected(false);
       return false;
     }
-  }, []);
+  }, [authHeaders]);
 
   const sendMessage = useCallback(
     async (userMessage: string) => {
@@ -92,9 +103,9 @@ function useAiChatInternal() {
       abortRef.current = new AbortController();
 
       try {
-        const res = await fetch('/api/ai/chat/stream', {
+        const res = await fetch(`${API_BASE}/chat/stream`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: authHeaders(),
           signal: abortRef.current.signal,
           body: JSON.stringify({
             message: userMessage,
@@ -104,6 +115,9 @@ function useAiChatInternal() {
           }),
         });
 
+        if (res.status === 401) {
+          throw new Error('Не авторизован. Пожалуйста, войдите в аккаунт.');
+        }
         if (!res.ok) throw new Error('Ошибка сервера');
 
         const reader = res.body!.getReader();
@@ -118,25 +132,27 @@ function useAiChatInternal() {
 
           for (const line of lines) {
             if (!line.startsWith('data: ')) continue;
-            try {
-              const event = JSON.parse(line.slice(6));
 
-              if (event.type === 'products') {
-                setProducts(event.data);
-              } else if (event.type === 'text') {
-                fullText += event.data;
-                setStreamText(fullText);
-              } else if (event.type === 'done') {
-                setMessages((prev) => [
-                  ...prev,
-                  { role: 'assistant', content: fullText },
-                ]);
-                setStreamText('');
-              } else if (event.type === 'error') {
-                throw new Error(event.data);
-              }
-            } catch (parseErr) {
-              // пропускаем неполные чанки
+            let event: any;
+            try {
+              event = JSON.parse(line.slice(6));
+            } catch {
+              continue;
+            }
+
+            if (event.type === 'products') {
+              setProducts(event.data);
+            } else if (event.type === 'text') {
+              fullText += event.data;
+              setStreamText(fullText);
+            } else if (event.type === 'done') {
+              setMessages((prev) => [
+                ...prev,
+                { role: 'assistant', content: fullText },
+              ]);
+              setStreamText('');
+            } else if (event.type === 'error') {
+              throw new Error(event.data);
             }
           }
         }
@@ -155,7 +171,7 @@ function useAiChatInternal() {
         setStreamText('');
       }
     },
-    [messages, isLoading],
+    [messages, isLoading, authHeaders],
   );
 
   const stopGeneration = useCallback(() => {
@@ -186,8 +202,8 @@ function useAiChatInternal() {
 const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
   const { t } = useTranslation('common');
   const { toast, showWarning, hideToast } = useToast();
+  const [cookies] = useCookies(['token']);
 
-  // Используем хук, объявленный прямо в этом файле
   const {
     messages,
     products,
@@ -197,7 +213,7 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
     sendMessage,
     stopGeneration,
     checkConnection,
-  } = useAiChatInternal();
+  } = useAiChatInternal(cookies.token);
 
   const [inputMessage, setInputMessage] = useState('');
   const [isListening, setIsListening] = useState(false);
@@ -211,17 +227,14 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
   const waveRef = useRef<number>(0);
   const [waveBars, setWaveBars] = useState<number[]>(Array(20).fill(8));
 
-  // Проверка подключения при маунте
   useEffect(() => {
     checkConnection();
   }, [checkConnection]);
 
-  // Скролл к последнему сообщению
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamText]);
 
-  // Анимация волны
   useEffect(() => {
     if (isSpeaking) {
       const animate = () => {
@@ -241,7 +254,6 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
     return () => cancelAnimationFrame(waveRef.current);
   }, [isSpeaking]);
 
-  // Инициализация Speech API
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -274,7 +286,6 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
     };
   }, []);
 
-  // TTS воспроизведение
   const speakText = useCallback(
     (text: string) => {
       if (!isSoundEnabled || !synthRef.current) return;
@@ -314,7 +325,6 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
     [isSoundEnabled],
   );
 
-  // Автовоспроизведение ответов
   const lastAssistantMsgRef = useRef('');
   useEffect(() => {
     const last = messages[messages.length - 1];
@@ -357,7 +367,6 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
   return (
     <Box className={styles.container}>
       <Grid container spacing={3}>
-        {/* Чат */}
         <Grid item xs={12} md={8}>
           <Paper className={styles.chatContainer}>
             <Box className={styles.chatHeader}>
@@ -463,7 +472,6 @@ const AIRec: React.FC<AiAssistantProps> = ({ onCatalogSelect }) => {
           </Paper>
         </Grid>
 
-        {/* Визуализация голоса */}
         <Grid item xs={12} md={4}>
           <Paper
             sx={{
