@@ -32,6 +32,7 @@ export interface HealthResponse {
 
 export interface CompareRequest {
   uuids: string[];
+  locale?: string;
 }
 
 export interface CompareResponse {

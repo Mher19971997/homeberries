@@ -10,7 +10,7 @@
   font-size: 28px;
   font-weight: 600;
   color: #111111;
-  margin: 16px 0 4px;
+  margin: 20px 0 20px;
   font-family: var(--font-inter);
 }
 
@@ -85,7 +85,7 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: #8b8b8b;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 }
 
 .categoryTabs {
@@ -608,8 +608,78 @@
 .recommendationsText {
   font-size: 16px;
   color: #111111;
-  margin: 0;
+  margin: 25px 0 0 0;
   font-family: var(--font-inter);
+}
+
+/* Карточка с результатом AI-сравнения */
+.recommendationsResult {
+  position: relative;
+  padding: 32px 36px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #111111 0%, #1e1e1e 100%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.recommendationsResult::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -80px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.recommendationsResult .recommendationsHeader {
+  gap: 12px;
+  position: relative;
+}
+
+.recommendationsResult .recommendationsTitle {
+  color: #ffffff;
+}
+
+.recommendationsResult .recommendationsHeader svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  padding: 8px;
+  box-sizing: content-box;
+  border-radius: 10px;
+  color: #111111;
+  background: #ffffff;
+}
+
+.recommendationsResult .recommendationsText {
+  position: relative;
+  line-height: 1.7;
+  font-weight: 500;
+  color: #e5e5e5;
+  white-space: pre-line;
+}
+
+.recSpin {
+  animation: recSpin 1.4s linear infinite;
+}
+
+@keyframes recSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  .recommendationsResult {
+    padding: 20px 18px;
+    border-radius: 14px;
+  }
 }
 
 /* Карточка-замок для гостя */

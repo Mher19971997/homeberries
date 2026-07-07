@@ -138,8 +138,8 @@ function ComparePage() {
   );
 
   const { data: aiComparison, isLoading: aiLoading, isFetching: aiFetching } = useQuery({
-    queryKey: ['aiCompare', ...compareUuids],
-    queryFn: () => compare({ uuids: compareUuids }),
+    queryKey: ['aiCompare', locale, ...compareUuids],
+    queryFn: () => compare({ uuids: compareUuids, locale }),
     enabled: isAuth && compareUuids.length >= 2 && !!cookies.token,
     staleTime: 5 * 60 * 1000,
   });
