@@ -21,7 +21,8 @@
 .gridCard {
   display: grid;
   grid-template-rows: 1fr auto;
-  padding: 56px 32px;
+  padding: 50px 32px;
+  /* 56 */
   box-sizing: border-box;
   height: 100%;
 }

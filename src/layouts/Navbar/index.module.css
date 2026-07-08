@@ -372,12 +372,21 @@
 
 @media only screen and (max-width: 992px) {
   .navbarInner {
-    padding: 32px 16px;
-    gap: 24px;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .searchWrapper {
+    width: auto;
+    max-width: none;
+    flex: 1 1 auto;
   }
 
   .searchBox {
-    display: none;
+    height: 40px;
+    width: 70%;
+    margin: 0 auto;
+    padding: 0 0 0 14px;
   }
 
   .navLinks {
@@ -406,4 +415,9 @@
   align-items: center;
   justify-content: center;
   letter-spacing: 0;
+}
+@media (max-width:375px){
+  .searchBox{
+    width: 100%;
+  }
 }
