@@ -8,7 +8,7 @@ import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import styles from '@homeberris/app/[locale]/index.module.css';
 import { CatalogItem } from '@homeberris/types/catalog';
 import CarouselCatalog from '@homeberris/components/CarouselCatalog';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { CategoryItem, SubCategoryItem } from '@homeberris/types/category';
 import { useTranslation } from 'react-i18next';
 import SmallerBanners from '@homeberris/components/SmallerBanners';
@@ -143,12 +143,13 @@ export default function Home() {
     return qs.stringify(filters);
   };
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ['getAllCatalogs', selectedCategory?.uuid, selectedSubCategory?.uuid, newPage, activeTab, itemsLimit],
     queryFn: () => getAllCatalogs(buildQuery()),
+    placeholderData: keepPreviousData,
   });
 
-  const { data: discountData, isLoading: isDiscountLoading } = useQuery({
+  const { data: discountData, isLoading: isDiscountLoading, isFetching: isDiscountFetching } = useQuery({
     queryKey: ['getDiscountCatalogs', discountPage],
     queryFn: () => getAllCatalogs(qs.stringify({
       filterMeta: { isDiscount: true }, queryMeta: {
@@ -157,6 +158,7 @@ export default function Home() {
         },
       }
     })),
+    placeholderData: keepPreviousData,
   });
 
   const catalogs: CatalogItem[] = data?.data || [];
@@ -228,7 +230,8 @@ export default function Home() {
 
       <div ref={catalogGridRef} style={{ position: 'relative', minHeight: isLoading ? catalogMinHeight : undefined }}>
         {isLoading && <Spinner overlay />}
-        <div className={styles.catalogWrapper} style={{ opacity: isLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+        {!isLoading && isFetching && <Spinner overlay />}
+        <div className={styles.catalogWrapper}>
           <div className={styles.catalogGrid}>
             {catalogs.length > 0 ? (
               catalogs.map((catalog, index) => (
@@ -262,7 +265,8 @@ export default function Home() {
 
         <div ref={discountGridRef} style={{ position: 'relative', minHeight: isDiscountLoading ? discountMinHeight : undefined }}>
           {isDiscountLoading && <Spinner overlay />}
-          <div className={styles.catalogGrid} style={{ opacity: isDiscountLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+          {!isDiscountLoading && isDiscountFetching && <Spinner overlay />}
+          <div className={styles.catalogGrid}>
             {discountCatalogs.length > 0 ? (
               discountCatalogs.map((catalog, index) => (
                 <div className={styles.catalogItem} key={`discount-${catalog?.uuid || index}`}>

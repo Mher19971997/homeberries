@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://homeberries.com/ru</loc></url>
+  <url><loc>https://homeberries.com/en</loc></url>
+  <url><loc>https://homeberries.com/hy</loc></url>
+
+  <url><loc>https://homeberries.com/ru/catalog</loc></url>
+  <url><loc>https://homeberries.com/en/catalog</loc></url>
+  <url><loc>https://homeberries.com/hy/catalog</loc></url>
+
+  <url><loc>https://homeberries.com/ru/cars</loc></url>
+  <url><loc>https://homeberries.com/en/cars</loc></url>
+  <url><loc>https://homeberries.com/hy/cars</loc></url>
+</urlset>

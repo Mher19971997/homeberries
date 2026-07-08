@@ -1,7 +1,7 @@
 ﻿'use client';
 
 import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import { CatalogItem } from '@homeberris/types/catalog';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
@@ -90,6 +90,7 @@ const SimilarProducts: React.FC<SimilarProductsProps> = ({
     queryFn: () => getAllCatalogs(buildQuery(page)),
     enabled: !!(categoryUuid || subCategoryUuid),
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const products: CatalogItem[] = (data?.data || [])

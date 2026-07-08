@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /basket
+Disallow: /profile
+Disallow: /security/login
+Disallow: /order
+Disallow: /myorders
+
+Sitemap: https://homeberries.com/sitemap.xml

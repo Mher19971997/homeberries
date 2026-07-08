@@ -4,7 +4,7 @@ import React from 'react';
 import * as qs from 'qs';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useParams } from 'next/navigation';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 
 import { getAllCatalogs } from '@homeberris/http/catalogApi';
@@ -132,7 +132,7 @@ export default function SubCategoryPageContent({
     return qs.stringify(filters);
   };
 
-  const { data: catalogs, isLoading: isCatalogsLoading } = useQuery<{ data: CatalogItem[]; meta: ListResult }>({
+  const { data: catalogs, isLoading: isCatalogsLoading, isFetching: isCatalogsFetching } = useQuery<{ data: CatalogItem[]; meta: ListResult }>({
     queryKey: [
       'getAllCatalogsBySubCategory',
       categoryName,
@@ -146,6 +146,7 @@ export default function SubCategoryPageContent({
     ],
     queryFn: () => getAllCatalogs(buildQuery()),
     enabled: !!categoryName && !!subCategoryName,
+    placeholderData: keepPreviousData,
   });
 
   const { data: brandsData } = useQuery({
@@ -305,7 +306,8 @@ export default function SubCategoryPageContent({
       ) : (
         <div style={{ position: 'relative', minHeight: '600px' }}>
           {isCatalogsLoading && <Spinner overlay />}
-          <div className={catalogStyles.container} style={{ opacity: isCatalogsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+          {!isCatalogsLoading && isCatalogsFetching && <Spinner overlay />}
+          <div className={catalogStyles.container}>
             {catalogs.data.map((catalog: CatalogItem) => (
               <div key={catalog.uuid} className={catalogStyles.cardWrap}>
                 <CatalogCard

@@ -4,6 +4,7 @@ export const metadata: Metadata = {
   title: 'StyleBox - Премиальный интернет-магазин модной одежды и обуви',
   description: 'StyleBox - Премиальный интернет-магазин модной одежды и обуви',
   icons: { icon: '/favicon.ico' },
+  manifest: '/manifest.json',
   other: {
     'Permissions-Policy':
       'accelerometer=(), autoplay=*, clipboard-write=*, encrypted-media=*, gyroscope=(), picture-in-picture=*',

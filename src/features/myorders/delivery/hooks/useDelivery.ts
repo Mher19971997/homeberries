@@ -1,5 +1,5 @@
 ﻿import { useMemo, useState, useCallback, useEffect } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { useCookies } from 'react-cookie';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useSearchParams } from 'next/navigation';
@@ -72,6 +72,7 @@ export const useDelivery = () => {
     },
     enabled: !!cookies.token,
     refetchOnWindowFocus: false,
+    placeholderData: keepPreviousData,
   });
 
   const { data: paymentInfo } = useQuery({

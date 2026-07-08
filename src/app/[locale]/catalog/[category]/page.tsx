@@ -20,7 +20,7 @@ import MobileFilterDrawer from "@homeberris/components/MobileFilterDrawer";
 import Spinner from "@homeberris/components/Spinner";
 import Breadcrumb from "@homeberris/components/Breadcrumb";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { ListResult } from "@homeberris/types/filter";
 
 import styles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
@@ -115,7 +115,7 @@ export default function CatalogPage() {
     return qs.stringify(filters);
   };
 
-  const { data: catalogs, isLoading: isCatalogsLoading } = useQuery<{
+  const { data: catalogs, isLoading: isCatalogsLoading, isFetching: isCatalogsFetching } = useQuery<{
     data: CatalogItem[];
     meta: ListResult;
   }>({
@@ -131,6 +131,7 @@ export default function CatalogPage() {
     ],
     queryFn: () => getAllCatalogs(buildQuery(categoryUuid)),
     enabled: !!categoryName && !!categoryUuid && (!hasGroupFilters || (matchingCatalogUuids !== undefined && matchingCatalogUuids.length > 0)),
+    placeholderData: keepPreviousData,
   });
 
   const { data: allCategoryCatalogs } = useQuery<{
@@ -229,7 +230,8 @@ export default function CatalogPage() {
           </div>
           <div style={{ position: 'relative', minHeight: '600px' }}>
             {isCatalogsLoading && <Spinner overlay />}
-            <div style={{ opacity: isCatalogsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+            {!isCatalogsLoading && isCatalogsFetching && <Spinner overlay />}
+            <div>
               <StaticProductCard
                 catalogs={catalogs?.data || []}
                 onNavigate={(item) => {
