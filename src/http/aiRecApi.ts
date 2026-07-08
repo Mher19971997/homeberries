@@ -32,22 +32,27 @@ export interface HealthResponse {
 
 export interface CompareRequest {
   products: any[];
-  locale?: string;
   criteriaCount?: number;
 }
 
+export interface LocalizedText {
+  ru: string;
+  en: string;
+  hy: string;
+}
+
 export interface ComparisonCriterion {
-  title: string;
+  title: LocalizedText;
   winnerIndex: number;
-  values: string[];
-  explanation: string;
+  values: LocalizedText[];
+  explanation: LocalizedText;
 }
 
 export interface ComparisonResult {
   criteria: ComparisonCriterion[];
   overallWinnerIndex: number;
-  overallReason: string;
-  finalRecommendation: string;
+  overallReason: LocalizedText;
+  finalRecommendation: LocalizedText;
 }
 
 export interface CompareResponse {

@@ -172,7 +172,7 @@ export default function SidebarFilters({
           {openSections[name] && (
             <div className={styles.accordionBody}>
               {values.length === 0 ? (
-                <p className={styles.emptyText}>No data</p>
+                <p className={styles.emptyText}>{t('sidebarFilters.noData')}</p>
               ) : (
                 <div className={styles.brandList}>
                   {values.map((val) => (

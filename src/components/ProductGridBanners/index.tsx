@@ -12,7 +12,7 @@ import 'swiper/css';
 import styles from './index.module.css';
 import { useTranslation } from 'react-i18next';
 
-const BASE_URL = 'http://localhost:6001';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -61,9 +61,9 @@ export default function ProductGridBanners() {
         loop={true}
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
         breakpoints={{
-          0:    { slidesPerView: 1 },
-          600:  { slidesPerView: 2 },
-          900:  { slidesPerView: 3 },
+          0: { slidesPerView: 1 },
+          600: { slidesPerView: 2 },
+          900: { slidesPerView: 3 },
           1200: { slidesPerView: 4 },
         }}
         className={styles.swiper}

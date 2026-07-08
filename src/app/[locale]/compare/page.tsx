@@ -24,7 +24,7 @@ import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
 import { CartIcon } from '@homeberris/assets/icons/navbar';
 import { Sparkles, Lock } from 'lucide-react';
-import { compare, ComparisonResult } from '@homeberris/http/aiRecApi';
+import { compare, ComparisonResult, LocalizedText } from '@homeberris/http/aiRecApi';
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -137,9 +137,14 @@ function ComparePage() {
     [displayedProducts],
   );
 
+  const pickLoc = (val: LocalizedText | undefined, locale: string): string => {
+  if (!val) return '';
+  return (val as any)[locale] || val.ru || '';
+};
+
   const { data: aiComparison, isLoading: aiLoading, isFetching: aiFetching } = useQuery({
-    queryKey: ['aiCompare', locale, ...compareUuids],
-    queryFn: () => compare({ products: displayedProducts, locale }),
+    queryKey: ['aiCompare', ...compareUuids],
+    queryFn: () => compare({ products: displayedProducts }),
     enabled: isAuth && compareUuids.length >= 2 && !!cookies.token,
     staleTime: 5 * 60 * 1000,
   });
@@ -564,11 +569,11 @@ function ComparePage() {
                             </div>
 
                             <h3 className={styles.aiCardTitle}>
-                              {criterion.title}
+                              {pickLoc(criterion.title, locale)}
                             </h3>
 
                             <p className={styles.aiCardText}>
-                              {criterion.explanation}
+                              {pickLoc(criterion.explanation, locale)}
                             </p>
 
                             {criterion.values?.length > 0 && (
@@ -578,7 +583,7 @@ function ComparePage() {
                                     key={i}
                                     className={styles.aiValue}
                                   >
-                                    {value}
+                                    {pickLoc(value, locale)}
                                   </span>
                                 ))}
                               </div>

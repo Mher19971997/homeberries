@@ -115,7 +115,7 @@ export default function Profile() {
     e.target.value = '';
   };
 
-  const BASE_URL = 'http://localhost:6001';
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
   const userLetter = user?.email?.[0]?.toUpperCase() || 'U';
   const userName = user?.email?.split('@')[0] || 'User';
 
@@ -146,7 +146,7 @@ export default function Profile() {
           />
           <div className={styles.avatar} onClick={handleAvatarClick} style={{ cursor: 'pointer', overflow: 'hidden', padding: 0 }}>
             {user?.avatar
-              ? <img src={`${BASE_URL}/${user.avatar}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ? <img src={`${BASE_URL}${user.avatar}`} alt="avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               : userLetter}
           </div>
           <div className={styles.headerInfo}>

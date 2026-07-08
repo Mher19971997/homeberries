@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import styles from './index.module.css';
 import { getActiveBanners, BannerItem, LocalizedString } from '@homeberris/http/bannerApi';
 
-const BASE_URL = 'http://localhost:6001';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getLoc = (val: LocalizedString | string | undefined, locale: string): string => {
   if (!val) return '';

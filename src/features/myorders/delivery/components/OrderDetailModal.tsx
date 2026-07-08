@@ -5,7 +5,7 @@ import { OrderItem } from '@homeberris/http/orderApi';
 import { useTranslation } from 'react-i18next';
 import styles from '@homeberris/features/myorders/delivery/styles/index.module.css';
 
-const BASE_URL = 'http://localhost:6001';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const getLoc = (val: any, locale = 'en'): string => {
   if (!val) return '';
