@@ -179,7 +179,25 @@
       "descriptionFree": "Regular delivery",
       "descriptionFast": "Get your delivery as soon as possible",
       "descriptionSchedule": "Pick a date when you want to get your delivery",
-      "date": "Select Date"
+      "date": "Select Date",
+      "datePicker": {
+        "weekdays": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        "months": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ],
+        "reset": "Reset"
+      }
     },
     "payment": {
       "title": "Payment",
