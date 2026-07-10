@@ -1,4 +1,4 @@
- 'use client';
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
@@ -11,6 +11,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'react-image-gallery/styles/scss/image-gallery.scss';
 import 'flag-icons/css/flag-icons.min.css';
+import { usePathname } from 'next/navigation';
 
 function ErrorContent({ reset }: { reset: () => void }) {
   const [mounted, setMounted] = useState(false);
@@ -235,6 +236,9 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const pathname = usePathname();
+  const locale = (['en', 'ru', 'hy'].find((l) => pathname?.startsWith(`/${l}`))) ?? 'en';
+
   return (
     <html lang="ru" suppressHydrationWarning>
       <head>
@@ -243,7 +247,7 @@ export default function GlobalError({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body style={{ margin: 0, padding: 0, fontFamily: 'Inter, -apple-system, sans-serif' }} suppressHydrationWarning>
-        <Providers>
+        <Providers locale={locale}>
           <Navbar />
           <ErrorContent reset={reset} />
           <Footer />

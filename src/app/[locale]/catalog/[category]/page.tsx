@@ -2,9 +2,8 @@
 
 import React from "react";
 import * as qs from "qs";
-import Link from "next/link";
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
-import { ChevronSepIcon, PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
+import { PaginationLeft, PaginationRight, filteration as FilterIcon } from "@homeberris/assets/icons/catalog";
 import { useParams } from "next/navigation";
 
 import { getAllCatalogs, getPriceRange } from "@homeberris/http/catalogApi";
@@ -26,6 +25,7 @@ import { ListResult } from "@homeberris/types/filter";
 import styles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
 import { useTranslation } from "react-i18next";
 import SelectOptions from "@homeberris/components/SelectOptions";
+import NotFoundContent from "@homeberris/app/not-found-content";
 
 const getLoc = (val: any, locale: string): string => {
   if (!val) return '';
@@ -62,7 +62,7 @@ export default function CatalogPage() {
     setCurrentPage(1);
   }, [sortBy, priceRange, selectedBrands, groupFilters]);
 
-  const { data: menuTree } = useQuery({
+  const { data: menuTree, isLoading: isMenuTreeLoading } = useQuery({
     queryKey: ["getMenuTree"],
     queryFn: getMenuTree,
   });
@@ -157,6 +157,20 @@ export default function CatalogPage() {
   const totalPages = catalogs?.meta
     ? Math.max(1, Math.ceil(catalogs.meta.count / ITEMS_PER_PAGE))
     : 0;
+
+  // Пока дерево меню не загрузилось — показываем спиннер, а не пустую страницу
+  if (isMenuTreeLoading) {
+    return (
+      <div style={{ position: 'relative', minHeight: '600px' }}>
+        <Spinner overlay />
+      </div>
+    );
+  }
+
+  // Категория не найдена — ничего не рендерим, пока notFound() из useEffect не подхватится
+  if (!categoryData) {
+    return <NotFoundContent />;
+  }
 
   return (
     <div className={styles.body}>

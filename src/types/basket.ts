@@ -9,4 +9,9 @@ export interface BasketDataItem {
   userUuid?: UUID;
   uuid?: UUID;
   catalog: any;
+  selectedVariant?: {
+    uuid?: UUID;
+    price?: number | string;
+    [key: string]: any;
+  };
 }

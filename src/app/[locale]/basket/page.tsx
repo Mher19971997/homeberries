@@ -72,6 +72,12 @@ export default function BasketPage() {
   const totalBasketPages = Math.max(1, Math.ceil(allBasketItems.length / BASKET_LIMIT));
   const pagedBasketItems = allBasketItems.slice((basketPage - 1) * BASKET_LIMIT, basketPage * BASKET_LIMIT);
 
+  React.useEffect(() => {
+    if (basketPage > totalBasketPages) {
+      setBasketPage(totalBasketPages);
+    }
+  }, [basketPage, totalBasketPages]);
+
   const TAX_RATE = 0.021; // ~$50 on $2347
   const SHIPPING = 29;
 

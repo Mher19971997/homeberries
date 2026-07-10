@@ -113,7 +113,7 @@
 .mainImage {
   width: 413px;
   width: 413px;
-  height: 516px;
+  /* height: 516px; */
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -658,7 +658,7 @@
 }
 
 /* ── 1024px ── aaaaaaaaaaaaaa*/
-@media only screen and (max-width: 1124px) {
+@media only screen and (max-width: 1140px) {
   .contantHeader {
     padding: 0 24px;
     margin-bottom: 48px;
@@ -737,7 +737,7 @@
 }
 
 /* ── 920px ── */
-@media only screen and (max-width: 920px) {
+@media only screen and (max-width: 950px) {
   .contantHeader {
     padding: 0 20px;
     margin-bottom: 36px;
@@ -758,7 +758,7 @@
   }
 
   .gallery {
-    gap: 20px;
+    gap: 15px;
   }
 
   .mainImage {
@@ -824,7 +824,7 @@
     line-height: 14px;
   }
   .mainImage {
-    min-height: 400px;
+    /* min-height: 400px; */
   }
   .gridContainer {
     padding: 0 16px;
@@ -957,7 +957,7 @@
     gap: 20px;
   }
   .mainImage {
-    min-height: 300px;
+    /* min-height: 300px; */
   }
   .gallery {
     gap: 10px;
@@ -1103,7 +1103,9 @@
     max-width: 100%;
     width: 100%;
     gap: 8px;
-    justify-content: space-between;
+    /* justify-content: space-between; */
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .thumb {

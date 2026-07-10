@@ -39,6 +39,15 @@
   min-width: 0;
 }
 
+.parentTabItem {
+  display: flex;
+  gap: 32px;
+  max-width: 1400px;
+  height: 32px;
+  margin: 56px auto 32px auto;
+  padding: 0 16px;
+}
+
 /* 1280px → 900px: 3 колонки */
 @media (max-width: 1280px) {
   .catalogGrid {
@@ -61,6 +70,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
   .catalogWrapper {
     padding: 0 12px;
   }
@@ -68,15 +78,20 @@
 
 /* 375px и ниже: уменьшаем gap и padding чтобы вторая карточка не обрезалась */
 @media (max-width:400px) {
+  .parentTabItem {
+    gap: 20px;
+  }
+
   .catalogGrid {
     gap: 16px;
   }
+
   .catalogWrapper {
     padding: 0 8px;
   }
 
   .tabItem {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     padding-bottom: 6px;
     font-family: var(--font-inter);

@@ -35,15 +35,21 @@
   flex-shrink: 0;
 }
 
+@media (max-width:580px){
+  .breadcrumb{
+    flex-wrap: wrap;
+  }
+}
+
 @media (max-width:520px){
   .breadcrumb{
-    gap: 5px;
+    gap: 10 px;
   }
 }
 
 @media (max-width:480px){
   .breadcrumb{
-    gap: 1px;
+    gap: 10px;
   }
 }
 
