@@ -47,4 +47,11 @@ const getMyPromocodes = async (token: string) => {
     return data;
 };
 
-export { getAllPromocodeUsages, validatePromocode, getMyPromocodes };
+const markPromocodesRead = async (token: string) => {
+    const { data } = await $host.post(`/api/v1/promocode/mark-read`, null, {
+        headers: authHeader(token),
+    });
+    return data;
+};
+
+export { getAllPromocodeUsages, validatePromocode, getMyPromocodes, markPromocodesRead };

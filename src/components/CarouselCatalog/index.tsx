@@ -1,8 +1,12 @@
 'use client'
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 import styles from './index.module.css';
 import { getActiveBanners, BannerItem, LocalizedString } from '@homeberris/http/bannerApi';
 
@@ -18,48 +22,30 @@ const CarouselCatalog: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const locale = (params?.locale as string) ?? 'ru';
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const isProgrammaticScroll = useRef(false);
-  const programmaticScrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: banners = [] } = useQuery<BannerItem[]>({
     queryKey: ['activeBanners'],
     queryFn: getActiveBanners,
   });
 
-  const handleScroll = () => {
-    if (isProgrammaticScroll.current) return;
-    const el = scrollRef.current;
-    if (!el) return;
-    const idx = Math.round(el.scrollLeft / el.clientWidth);
-    if (idx !== activeIndex && idx >= 0 && idx < banners.length) setActiveIndex(idx);
-  };
-
-  const scrollTo = (index: number) => {
-    const el = scrollRef.current;
-    if (!el) return;
-    if (programmaticScrollTimeout.current) clearTimeout(programmaticScrollTimeout.current);
-    isProgrammaticScroll.current = true;
-    setActiveIndex(index);
-    el.scrollTo({ left: el.clientWidth * index, behavior: 'smooth' });
-    programmaticScrollTimeout.current = setTimeout(() => {
-      isProgrammaticScroll.current = false;
-    }, 600);
-  };
-
   if (!banners.length) return null;
 
   return (
     <div className={styles.carouselWrapper}>
-      <div ref={scrollRef} onScroll={handleScroll} className={styles.carouselTrack}>
+      <Swiper
+        modules={[Pagination]}
+        pagination={banners.length > 1 ? { clickable: true, bulletActiveClass: styles.activeDot, bulletClass: styles.dot } : false}
+        grabCursor
+        slidesPerView={1}
+        className={styles.carouselTrack}
+      >
         {banners.map((banner) => {
           const imgSrc = banner.image.startsWith('http')
             ? banner.image
             : `${BASE_URL}/${banner.image}`;
 
           return (
-            <div key={banner.uuid} className={styles.banner}>
+            <SwiperSlide key={banner.uuid} className={styles.banner}>
               <div className={styles.bannerContainer}>
                 <div className={styles.textBlock}>
                   {getLoc(banner.subtitle, locale) && <span className={styles.proText}>{getLoc(banner.subtitle, locale)}</span>}
@@ -85,24 +71,12 @@ const CarouselCatalog: React.FC = () => {
                     </button>
                   )}
                 </div>
-                <img className={styles.bannerImg} src={imgSrc} alt={getLoc(banner.title, locale)} />
+                <img className={styles.bannerImg} src={imgSrc} alt={getLoc(banner.title, locale)} draggable={false} />
               </div>
-            </div>
+            </SwiperSlide>
           );
         })}
-      </div>
-
-      {banners.length > 1 && (
-        <div className={styles.dots}>
-          {banners.map((_, i) => (
-            <div
-              key={i}
-              className={[styles.dot, activeIndex === i ? styles.activeDot : ''].join(' ')}
-              onClick={() => scrollTo(i)}
-            />
-          ))}
-        </div>
-      )}
+      </Swiper>
     </div>
   );
 };

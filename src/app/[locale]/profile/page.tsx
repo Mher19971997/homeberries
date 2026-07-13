@@ -19,8 +19,7 @@ import CatalogCard from '@homeberris/components/CatalogCard';
 import styles from '@homeberris/app/[locale]/profile/index.module.css';
 import { Package, Heart, ShoppingCart, MapPin, MessageCircle, RotateCcw, HelpCircle, ChevronRight, LogOut, Ticket, X, Copy, Check } from 'lucide-react';
 import { getAllRecentlyViewed } from '@homeberris/http/recentlyViewedApi';
-import { getMyPromocodes } from '@homeberris/http/promocodeApi';
-import { clearUnreadPromos } from '@homeberris/hooks/usePromoSocket';
+import { getMyPromocodes, markPromocodesRead } from '@homeberris/http/promocodeApi';
 
 const buildCatalogUrl = (catalog: any) => {
   const cat = catalog?.category?.name;
@@ -153,7 +152,17 @@ export default function Profile() {
             <p className={styles.userName}>{userName}</p>
             <p className={styles.userEmail}>{user?.email}</p>
           </div>
-          <button className={styles.promoBtn} onClick={() => { setPromoModalOpen(true); if (user?.uuid) clearUnreadPromos(user.uuid); }}>
+          <button
+            className={styles.promoBtn}
+            onClick={() => {
+              setPromoModalOpen(true);
+              if (cookies.token) {
+                markPromocodesRead(cookies.token).then(() => {
+                  queryClient.invalidateQueries({ queryKey: ['myPromocodes', cookies.token] });
+                });
+              }
+            }}
+          >
             <Ticket size={16} strokeWidth={1.8} />
             {t('profile.promocodes')}
           </button>

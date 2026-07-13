@@ -343,38 +343,20 @@
   position: relative;
 }
 
-.carouselTrack {
-  display: flex;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.carouselTrack::-webkit-scrollbar {
-  display: none;
-}
-
-.carouselTrack .banner {
-  flex: 0 0 100%;
-  scroll-snap-align: start;
-}
-
-.dots {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 0;
+.carouselTrack :global(.swiper-pagination) {
   position: absolute;
   bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
+  padding: 16px 0;
 }
 
 .dot {
+  display: inline-block;
   width: 8px;
   height: 8px;
+  margin: 0 4px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.35);
   cursor: pointer;

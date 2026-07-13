@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedRouter";
 import { useFavorites } from "@homeberris/context/favoritesContext";
 import { useCompare } from "@homeberris/context/compareContext";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import { useAuth } from "@homeberris/hooks/useAuth";
 import { getAllBaskets } from "@homeberris/http/basketApi";
@@ -25,7 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "@homeberris/hooks/useDebounce";
 import { CatalogItem } from "@homeberris/types/catalog";
 import { useParams } from "next/navigation";
-import { getUnreadPromos, usePromoSocket } from "@homeberris/hooks/usePromoSocket";
+import { usePromoSocket } from "@homeberris/hooks/usePromoSocket";
+import { getMyPromocodes } from "@homeberris/http/promocodeApi";
 import PromoNotification from "@homeberris/components/PromoNotification";
 
 const getLoc = (val: any, locale: string): string => {
@@ -43,8 +44,8 @@ const Navbar = () => {
   const { items: favorites } = useFavorites();
   const { items: compareItems } = useCompare();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
-  const [unreadPromos, setUnreadPromos] = React.useState(0);
   const [promoNotif, setPromoNotif] = React.useState<{ code: string; discountPercent: number } | null>(null);
+  const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -72,15 +73,19 @@ const Navbar = () => {
 
   const userLetter = profile?.email ? profile.email[0].toUpperCase() : null;
 
-  React.useEffect(() => {
-    setUnreadPromos(getUnreadPromos(profile?.uuid));
-    const onPromoNotif = () => setUnreadPromos(getUnreadPromos(profile?.uuid));
-    window.addEventListener('promoNotification', onPromoNotif);
-    return () => window.removeEventListener('promoNotification', onPromoNotif);
-  }, [profile?.uuid]);
+  // источник правды для бейджа промокодов — сервер, а не localStorage:
+  // так бейдж не теряется, если промокод назначили, пока юзер был разлогинен/офлайн
+  const { data: myPromocodes } = useQuery({
+    queryKey: ["myPromocodes", cookies.token],
+    queryFn: () => getMyPromocodes(cookies.token),
+    enabled: !!profile?.uuid && !!cookies.token,
+  });
+
+  const unreadPromos = myPromocodes?.unreadCount ?? 0;
 
   usePromoSocket(profile?.uuid, (payload) => {
     setPromoNotif(payload);
+    queryClient.invalidateQueries({ queryKey: ["myPromocodes", cookies.token] });
   });
 
   const { data: searchResults } = useQuery({
