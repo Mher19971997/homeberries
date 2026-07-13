@@ -81,6 +81,16 @@ export default function MobileFilterDrawer({
     }
   }, [open]);
 
+  // блокируем скролл страницы под дровером, пока фильтр открыт
+  React.useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [open]);
+
   const toggleSection = (key: string) => {
     setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
@@ -125,26 +135,6 @@ export default function MobileFilterDrawer({
         onClick={onClose}
       />
       <div className={`${styles.drawer} ${open ? styles.drawerOpen : ''}`}>
-        {/* Navbar header */}
-        <div className={styles.navHeader}>
-          <span className={styles.navLogo} onClick={() => { onClose(); }}>cyber</span>
-          <button
-            className={styles.burgerBtn}
-            aria-label="open menu"
-            suppressHydrationWarning
-            onClick={() => {
-              onClose();
-              window.dispatchEvent(new CustomEvent('openNavMenu'));
-            }}
-          >
-            <svg width="25" height="17" viewBox="0 0 25 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect width="25" height="2.5" rx="1.25" fill="#080341"/>
-              <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341"/>
-              <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341"/>
-            </svg>
-          </button>
-        </div>
-
         {/* Filters header */}
         <div className={styles.header}>
           <button className={styles.backBtn} suppressHydrationWarning onClick={onClose}>

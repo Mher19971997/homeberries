@@ -3,7 +3,9 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.3);
-  z-index: 1000;
+  /* ниже z-index навбара (100, Navbar/index.module.css), чтобы sticky-навбар
+     оставался виден поверх дровера, а не перекрывался им */
+  z-index: 90;
 }
 
 .overlayVisible {
@@ -18,44 +20,21 @@
   max-width: 390px;
   height: 100%;
   background: #fff;
-  z-index: 1001;
+  z-index: 91;
   display: flex;
   flex-direction: column;
+  /* высота мобильного навбара (Navbar/index.module.css, .navbarInner на ≤992px:
+     padding 16px + searchBox 40px + border 1px) — чтобы контент дровера не
+     прятался под настоящим навбаром, который теперь рисуется поверх (z-index: 100) */
+  padding-top: 100px;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   overflow: hidden;
 }
 
 .drawerOpen {
-  overflow: scroll;
+  /* overflow: scroll; */
   transform: translateX(0);
-}
-
-.navHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32px 16px;
-  border-bottom: 1px solid #b5b5b5;
-  flex-shrink: 0;
-  margin-bottom: 31px;
-}
-
-.navLogo {
-  font-size: 24px;
-  font-weight: 700;
-  color: #000000;
-  cursor: pointer;
-  letter-spacing: 0.5px;
-}
-
-.burgerBtn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
 }
 
 .header {
