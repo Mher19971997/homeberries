@@ -172,21 +172,25 @@ const BrowseByCategory: React.FC = () => {
             swiperRef.current = swiper;
           }}
           slidesPerView={2}
+          slidesPerGroup={2}
           grid={{ rows: 3, fill: "row" }}
           spaceBetween={12}
           breakpoints={{
             0: {
               slidesPerView: 2,
+              slidesPerGroup: 2,
               spaceBetween: 12,
               grid: { rows: 3, fill: "row" },
             },
             480: {
               slidesPerView: 3,
+              slidesPerGroup: 3,
               spaceBetween: 20,
               grid: { rows: 2, fill: "row" },
             },
             920: {
               slidesPerView: 6,
+              slidesPerGroup: 6,
               spaceBetween: 29,
               grid: { rows: 1, fill: "row" },
             },

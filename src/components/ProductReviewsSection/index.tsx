@@ -292,7 +292,7 @@ export default function ProductReviewsSection({ catalog }: Props) {
           <div className={styles.ratingLeft}>
             <div className={styles.ordinaryClass}>
               <span className={styles.ratingNumber}>{avgRating || "—"}</span>
-              <br />
+              <br className={styles.ratingBr} />
               <span className={styles.ratingTotal}>
                 {t("reviews.ofReviews", { count: comments.length })}
               </span>

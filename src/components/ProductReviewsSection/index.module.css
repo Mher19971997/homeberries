@@ -228,7 +228,7 @@
   line-height: 24px;
   letter-spacing: 0%;
   vertical-align: middle;
-    word-break: break-word;
+  word-break: break-word;
   overflow-wrap: anywhere;
   white-space: normal;
 }
@@ -363,7 +363,13 @@
   .section {
     padding: 24px 16px 77px 16px;
   }
-
+  .ratingLeft{
+    display: flex;
+    flex-direction: column;
+  }
+  .ratingBr {
+    display: none;
+  }
   .ratingBlock,
   .reviewsBlock {
     /* margin: 0 12px;
@@ -403,7 +409,7 @@
     padding: 10px 32px;
     font-size: 14px;
     border: 1px solid #545454;
-    max-width: 216px ;
+    max-width: 216px;
     width: 100%;
     justify-content: center;
     margin-top: unset;
@@ -431,7 +437,7 @@
   .reviewHeader {
     flex-direction: column;
   }
-  .reviewText{
+  .reviewText {
     padding-left: unset;
   }
 }
