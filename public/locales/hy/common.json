@@ -99,7 +99,7 @@
     "noProductsDesc": "Մենք աշխատում ենք տեսականու ավելացման վրա։ Խնդրում ենք այցելել ավելի ուշ։",
     "backToCategory": "Վերադառնալ կատեգորիա \"{{name}}\"",
     "categories": "Կատեգորիաներ",
-    "emptyFavoritesTitle": "Ընտրյալներում ապրանքներ չկան",
+    "emptyFavoritesTitle": "Նախընտրածներում ապրանքներ չկան",
     "emptyFavoritesDesc": "Ավելացրեք հավանած ապրանքները, որպեսզի չկորցնեք դրանք"
   },
   "basket": {
@@ -409,7 +409,7 @@
   },
   "profile": {
     "logout": "Ելք",
-    "favorites": "Ընտրյալներ",
+    "favorites": "Նախընտրածներ",
     "orders": "Պատվերներ",
     "basket": "Զամբյուղ",
     "navigation": "Նավիգացիա",
@@ -431,7 +431,7 @@
     "paymentOnDelivery": "Վճարում առաքման ժամանակ",
     "menu": {
       "purchases": "Գնումներ",
-      "favorites": "Ընտրյալներ",
+      "favorites": "Նախընտրածներ",
       "brands": "Ապրանքանիշեր",
       "orders": "Պատվերներ",
       "certificates": "Վկայագրեր",
@@ -456,7 +456,7 @@
       "home": "Գլխավոր",
       "orders": "Պատվերներ",
       "purchases": "Գնումներ",
-      "favorites": "Ընտրյալներ",
+      "favorites": "Նախընտրածներ",
       "bank": "WB Բանկ",
       "reviews": "Կարծիքներ և հարցեր",
       "moreSections": "Ավելին"
