@@ -68,6 +68,12 @@ const Navbar = () => {
     return () => window.removeEventListener("openNavMenu", onOpenMenu);
   }, []);
 
+  React.useEffect(() => {
+    const onCloseNavDropdown = () => setShowDropdown(false);
+    window.addEventListener("closeNavDropdown", onCloseNavDropdown);
+    return () => window.removeEventListener("closeNavDropdown", onCloseNavDropdown);
+  }, []);
+
   const { data: profile } = useQuery({
     queryKey: ["getProfile", cookies.token],
     queryFn: () => getProfile(cookies.token),

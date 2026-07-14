@@ -38,6 +38,9 @@ const CarouselCatalog: React.FC = () => {
         grabCursor
         slidesPerView={1}
         className={styles.carouselTrack}
+        onTouchStart={() => {
+          window.dispatchEvent(new CustomEvent('closeNavDropdown'));
+        }}
       >
         {banners.map((banner) => {
           const imgSrc = banner.image.startsWith('http')
