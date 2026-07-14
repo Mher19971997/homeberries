@@ -44,7 +44,10 @@ const Navbar = () => {
   const { items: favorites } = useFavorites();
   const { items: compareItems } = useCompare();
   const [localBasketCount, setLocalBasketCount] = React.useState(0);
-  const [promoNotif, setPromoNotif] = React.useState<{ code: string; discountPercent: number } | null>(null);
+  const [promoNotif, setPromoNotif] = React.useState<{
+    code: string;
+    discountPercent: number;
+  } | null>(null);
   const queryClient = useQueryClient();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -85,7 +88,9 @@ const Navbar = () => {
 
   usePromoSocket(profile?.uuid, (payload) => {
     setPromoNotif(payload);
-    queryClient.invalidateQueries({ queryKey: ["myPromocodes", cookies.token] });
+    queryClient.invalidateQueries({
+      queryKey: ["myPromocodes", cookies.token],
+    });
   });
 
   const { data: searchResults } = useQuery({
@@ -143,7 +148,7 @@ const Navbar = () => {
 
   React.useEffect(() => {
     if (menuOpen) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
     }
@@ -157,18 +162,18 @@ const Navbar = () => {
 
   return (
     <>
-    <div
-      className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""}`}
-    >
-      <div className={styles.navbarInner}>
-        {/* Лого */}
-        <span className={styles.logo} onClick={() => router.push("/")}>
-          cyber
-        </span>
+      <div
+        className={`${styles.navbar} ${scrolled ? styles.navbarScrolled : ""}`}
+      >
+        <div className={styles.navbarInner}>
+          {/* Лого */}
+          <span className={styles.logo} onClick={() => router.push("/")}>
+            cyber
+          </span>
 
-        {/* Поиск */}
-        <div className={styles.searchWrapper} ref={searchRef}>
-          <div className={styles.searchBox}>
+          {/* Поиск */}
+          <div className={styles.searchWrapper} ref={searchRef}>
+            {/* <div className={styles.searchBox} style={{background:"red"}}>
             <SearchIcon className={styles.searchIcon} />
             <input
               placeholder={t("nav.search")}
@@ -189,105 +194,301 @@ const Navbar = () => {
                 }
               }}
             />
-          </div>
-          {showDropdown && debouncedSearch.length >= 2 && (
-            <div className={styles.searchDropdown}>
-              {searchResults?.data && searchResults.data.length > 0 ? (
-                searchResults.data.map((item: CatalogItem) => {
-                  const cat = getLoc((item as any).category?.name, locale);
-                  const sub = getLoc((item as any).subCategorie?.name, locale);
-                  const href =
-                    cat && sub
-                      ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
-                      : cat
-                        ? `/catalog/${encodeURIComponent(cat)}/${item.uuid}`
-                        : `/catalog`;
-                  return (
-                    <div
-                      key={item.uuid}
-                      className={styles.searchDropdownItem}
-                      onClick={() => {
-                        setShowDropdown(false);
-                        setSearchValue("");
-                        router.push(href);
-                      }}
-                    >
-                      {getLoc(item.name, locale)}
-                    </div>
-                  );
-                })
-              ) : (
-                <div className={styles.searchDropdownEmpty}>
-                  {t("catalog.empty")}
-                </div>
-              )}
+          </div> */}
+            <div
+              className={styles.searchBox}
+              onClick={() => {
+                // Фокусируем инпут при клике по всему диву
+                const input = document.querySelector(
+                  `.${styles.searchInput}`,
+                ) as HTMLInputElement;
+                input?.focus();
+              }}
+            >
+              <SearchIcon className={styles.searchIcon} />
+              <input
+                placeholder={t("nav.search")}
+                className={styles.searchInput}
+                suppressHydrationWarning
+                value={searchValue}
+                onChange={(e) => {
+                  setSearchValue(e.target.value);
+                  setShowDropdown(true);
+                }}
+                onFocus={() => searchValue.length >= 2 && setShowDropdown(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && searchValue.trim()) {
+                    setShowDropdown(false);
+                    router.push(
+                      `/catalog?search=${encodeURIComponent(searchValue.trim())}`,
+                    );
+                  }
+                }}
+              />
             </div>
-          )}
+            {showDropdown && debouncedSearch.length >= 2 && (
+              <div className={styles.searchDropdown}>
+                {searchResults?.data && searchResults.data.length > 0 ? (
+                  searchResults.data.map((item: CatalogItem) => {
+                    const cat = getLoc((item as any).category?.name, locale);
+                    const sub = getLoc(
+                      (item as any).subCategorie?.name,
+                      locale,
+                    );
+                    const href =
+                      cat && sub
+                        ? `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${item.uuid}`
+                        : cat
+                          ? `/catalog/${encodeURIComponent(cat)}/${item.uuid}`
+                          : `/catalog`;
+                    return (
+                      <div
+                        key={item.uuid}
+                        className={styles.searchDropdownItem}
+                        onClick={() => {
+                          setShowDropdown(false);
+                          setSearchValue("");
+                          router.push(href);
+                        }}
+                      >
+                        {getLoc(item.name, locale)}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className={styles.searchDropdownEmpty}>
+                    {t("catalog.empty")}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Навигация */}
+          <nav className={styles.navLinks}>
+            {[
+              { label: t("nav.home"), href: "/" },
+              { label: t("nav.catalog"), href: "/catalog" },
+              { label: t("nav.about"), href: "/about" },
+              { label: t("nav.contact"), href: "/contact" },
+            ].map(({ label, href }) => (
+              <span
+                key={href}
+                onClick={() => router.push(href)}
+                className={styles.navLink}
+              >
+                {label}
+              </span>
+            ))}
+          </nav>
+
+          <div className={styles.navActions}>
+            <button
+              className={styles.iconBtn}
+              onClick={() => router.push("/compare")}
+            >
+              <div className={styles.badgeWrapper}>
+                <ScaleIcon size={28} />
+                {compareItems.length > 0 && (
+                  <span key={compareItems.length} className={styles.badge}>
+                    {compareItems.length}
+                  </span>
+                )}
+              </div>
+            </button>
+            <button
+              className={styles.iconBtn}
+              onClick={() => router.push("/favorites")}
+            >
+              <div className={styles.badgeWrapper}>
+                <FavoriteIcon />
+                {favorites.length > 0 && (
+                  <span key={favorites.length} className={styles.badge}>
+                    {favorites.length}
+                  </span>
+                )}
+              </div>
+            </button>
+            <button
+              className={styles.iconBtn}
+              onClick={() => router.push("/basket")}
+            >
+              <div className={styles.badgeWrapper}>
+                <CartIcon />
+                {basketCount > 0 && (
+                  <span key={basketCount} className={styles.badge}>
+                    {basketCount}
+                  </span>
+                )}
+              </div>
+            </button>
+            <button
+              className={styles.iconBtn}
+              onClick={() =>
+                router.push(isAuth ? "/profile" : "/security/login")
+              }
+            >
+              <div className={styles.badgeWrapper}>
+                {isAuth && userAvatar ? (
+                  <div
+                    className={styles.avatarCircle}
+                    style={{ padding: 0, overflow: "hidden" }}
+                  >
+                    <img
+                      src={userAvatar}
+                      alt="avatar"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
+                ) : isAuth && userLetter ? (
+                  <div className={styles.avatarCircle}>{userLetter}</div>
+                ) : (
+                  <UserIcon />
+                )}
+                {unreadPromos > 0 && (
+                  <span className={styles.badge}>{unreadPromos}</span>
+                )}
+              </div>
+            </button>
+            <SelectLanguageInPopover>
+              <button className={styles.iconBtn}>
+                <GlobeIcon />
+              </button>
+            </SelectLanguageInPopover>
+          </div>
+
+          {/* Бургер кнопка */}
+          <button
+            className={styles.burgerBtn}
+            onClick={() => setMenuOpen(true)}
+            aria-label="open menu"
+          >
+            <svg
+              width="25"
+              height="17"
+              viewBox="0 0 25 17"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect width="25" height="2.5" rx="1.25" fill="#080341" />
+              <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341" />
+              <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341" />
+            </svg>
+          </button>
         </div>
 
-        {/* Навигация */}
-        <nav className={styles.navLinks}>
-          {[
-            { label: t("nav.home"), href: "/" },
-            { label: t("nav.catalog"), href: "/catalog" },
-            { label: t("nav.about"), href: "/about" },
-            { label: t("nav.contact"), href: "/contact" },
-          ].map(({ label, href }) => (
-            <span
-              key={href}
-              onClick={() => router.push(href)}
-              className={styles.navLink}
-            >
-              {label}
-            </span>
-          ))}
-        </nav>
+        {/* Overlay */}
+        <div
+          className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ""}`}
+          onClick={() => setMenuOpen(false)}
+        />
 
-        <div className={styles.navActions}>
-          <button
-            className={styles.iconBtn}
-            onClick={() => router.push("/compare")}
-          >
-            <div className={styles.badgeWrapper}>
-              <ScaleIcon size={28} />
-              {compareItems.length > 0 && (
-                <span key={compareItems.length} className={styles.badge}>
-                  {compareItems.length}
-                </span>
-              )}
-            </div>
-          </button>
-          <button
-            className={styles.iconBtn}
-            onClick={() => router.push("/favorites")}
-          >
-            <div className={styles.badgeWrapper}>
-              <FavoriteIcon />
-              {favorites.length > 0 && (
-                <span key={favorites.length} className={styles.badge}>
-                  {favorites.length}
-                </span>
-              )}
-            </div>
-          </button>
-          <button
-            className={styles.iconBtn}
-            onClick={() => router.push("/basket")}
-          >
-            <div className={styles.badgeWrapper}>
-              <CartIcon />
-              {basketCount > 0 && (
-                <span key={basketCount} className={styles.badge}>
-                  {basketCount}
-                </span>
-              )}
-            </div>
-          </button>
-          <button
-            className={styles.iconBtn}
-            onClick={() => router.push(isAuth ? "/profile" : "/security/login")}
-          >
-            <div className={styles.badgeWrapper}>
+        {/* Drawer */}
+        <div
+          className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}
+        >
+          <div className={styles.drawerHeader}>
+            <span className={styles.drawerLogo}>cyber</span>
+            <button
+              className={styles.closeBtn}
+              onClick={() => setMenuOpen(false)}
+              aria-label="close menu"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                width="24"
+                height="24"
+              >
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+              </svg>
+            </button>
+          </div>
+
+          <nav className={styles.drawerNav}>
+            {[
+              { label: t("nav.home"), href: "/" },
+              { label: t("nav.catalog"), href: "/catalog" },
+              { label: t("nav.about"), href: "/about" },
+              { label: t("nav.contact"), href: "/contact" },
+              // { label: t("nav.blog"), href: "/blog" },
+            ].map(({ label, href }) => (
+              <span
+                key={href}
+                onClick={() => {
+                  router.push(href);
+                  setMenuOpen(false);
+                }}
+                className={styles.drawerNavLink}
+              >
+                {label}
+              </span>
+            ))}
+          </nav>
+
+          <div className={styles.drawerActions}>
+            <button
+              className={styles.drawerIconBtn}
+              onClick={() => {
+                router.push("/compare");
+                setMenuOpen(false);
+              }}
+            >
+              <div className={styles.badgeWrapper}>
+                <ScaleIcon size={28} />
+                {compareItems.length > 0 && (
+                  <span className={styles.badge}>{compareItems.length}</span>
+                )}
+              </div>
+              <span className={styles.drawerIconLabel}>
+                {t("compare.title")}
+              </span>
+            </button>
+            <button
+              className={styles.drawerIconBtn}
+              onClick={() => {
+                router.push("/favorites");
+                setMenuOpen(false);
+              }}
+            >
+              <div className={styles.badgeWrapper}>
+                <FavoriteIcon />
+                {favorites.length > 0 && (
+                  <span className={styles.badge}>{favorites.length}</span>
+                )}
+              </div>
+              <span className={styles.drawerIconLabel}>
+                {t("profile.favorites")}
+              </span>
+            </button>
+            <button
+              className={styles.drawerIconBtn}
+              onClick={() => {
+                router.push("/basket");
+                setMenuOpen(false);
+              }}
+            >
+              <div className={styles.badgeWrapper}>
+                <CartIcon />
+                {basketCount > 0 && (
+                  <span className={styles.badge}>{basketCount}</span>
+                )}
+              </div>
+              <span className={styles.drawerIconLabel}>
+                {t("profile.basket")}
+              </span>
+            </button>
+            <button
+              className={styles.drawerIconBtn}
+              onClick={() => {
+                router.push(isAuth ? "/profile" : "/security/login");
+                setMenuOpen(false);
+              }}
+            >
               {isAuth && userAvatar ? (
                 <div
                   className={styles.avatarCircle}
@@ -296,7 +497,11 @@ const Navbar = () => {
                   <img
                     src={userAvatar}
                     alt="avatar"
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               ) : isAuth && userLetter ? (
@@ -304,178 +509,29 @@ const Navbar = () => {
               ) : (
                 <UserIcon />
               )}
-              {unreadPromos > 0 && (
-                <span className={styles.badge}>{unreadPromos}</span>
-              )}
-            </div>
-          </button>
-          <SelectLanguageInPopover>
-            <button className={styles.iconBtn}>
-              <GlobeIcon />
-            </button>
-          </SelectLanguageInPopover>
-        </div>
-
-        {/* Бургер кнопка */}
-        <button
-          className={styles.burgerBtn}
-          onClick={() => setMenuOpen(true)}
-          aria-label="open menu"
-        >
-          <svg
-            width="25"
-            height="17"
-            viewBox="0 0 25 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect width="25" height="2.5" rx="1.25" fill="#080341" />
-            <rect y="7.25" width="25" height="2.5" rx="1.25" fill="#080341" />
-            <rect y="14.5" width="25" height="2.5" rx="1.25" fill="#080341" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Overlay */}
-      <div
-        className={`${styles.overlay} ${menuOpen ? styles.overlayVisible : ""}`}
-        onClick={() => setMenuOpen(false)}
-      />
-
-      {/* Drawer */}
-      <div className={`${styles.drawer} ${menuOpen ? styles.drawerOpen : ""}`}>
-        <div className={styles.drawerHeader}>
-          <span className={styles.drawerLogo}>cyber</span>
-          <button
-            className={styles.closeBtn}
-            onClick={() => setMenuOpen(false)}
-            aria-label="close menu"
-          >
-            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-            </svg>
-          </button>
-        </div>
-
-        <nav className={styles.drawerNav}>
-          {[
-            { label: t("nav.home"), href: "/" },
-            { label: t("nav.catalog"), href: "/catalog" },
-            { label: t("nav.about"), href: "/about" },
-            { label: t("nav.contact"), href: "/contact" },
-            // { label: t("nav.blog"), href: "/blog" },
-          ].map(({ label, href }) => (
-            <span
-              key={href}
-              onClick={() => {
-                router.push(href);
-                setMenuOpen(false);
-              }}
-              className={styles.drawerNavLink}
-            >
-              {label}
-            </span>
-          ))}
-        </nav>
-
-        <div className={styles.drawerActions}>
-          <button
-            className={styles.drawerIconBtn}
-            onClick={() => {
-              router.push("/compare");
-              setMenuOpen(false);
-            }}
-          >
-            <div className={styles.badgeWrapper}>
-              <ScaleIcon size={28} />
-              {compareItems.length > 0 && (
-                <span className={styles.badge}>{compareItems.length}</span>
-              )}
-            </div>
-            <span className={styles.drawerIconLabel}>
-              {t("compare.title")}
-            </span>
-          </button>
-          <button
-            className={styles.drawerIconBtn}
-            onClick={() => {
-              router.push("/favorites");
-              setMenuOpen(false);
-            }}
-          >
-            <div className={styles.badgeWrapper}>
-              <FavoriteIcon />
-              {favorites.length > 0 && (
-                <span className={styles.badge}>{favorites.length}</span>
-              )}
-            </div>
-            <span className={styles.drawerIconLabel}>
-              {t("profile.favorites")}
-            </span>
-          </button>
-          <button
-            className={styles.drawerIconBtn}
-            onClick={() => {
-              router.push("/basket");
-              setMenuOpen(false);
-            }}
-          >
-            <div className={styles.badgeWrapper}>
-              <CartIcon />
-              {basketCount > 0 && (
-                <span className={styles.badge}>{basketCount}</span>
-              )}
-            </div>
-            <span className={styles.drawerIconLabel}>
-              {t("profile.basket")}
-            </span>
-          </button>
-          <button
-            className={styles.drawerIconBtn}
-            onClick={() => {
-              router.push(isAuth ? "/profile" : "/security/login");
-              setMenuOpen(false);
-            }}
-          >
-            {isAuth && userAvatar ? (
-              <div
-                className={styles.avatarCircle}
-                style={{ padding: 0, overflow: "hidden" }}
-              >
-                <img
-                  src={userAvatar}
-                  alt="avatar"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              </div>
-            ) : isAuth && userLetter ? (
-              <div className={styles.avatarCircle}>{userLetter}</div>
-            ) : (
-              <UserIcon />
-            )}
-            <span className={styles.drawerIconLabel}>
-              {isAuth ? t("nav.profile") : t("nav.login")}
-            </span>
-          </button>
-          <SelectLanguageInPopover>
-            <button className={styles.drawerIconBtn}>
-              <GlobeIcon />
               <span className={styles.drawerIconLabel}>
-                {t("nav.language")}
+                {isAuth ? t("nav.profile") : t("nav.login")}
               </span>
             </button>
-          </SelectLanguageInPopover>
-        </div>
+            <SelectLanguageInPopover>
+              <button className={styles.drawerIconBtn}>
+                <GlobeIcon />
+                <span className={styles.drawerIconLabel}>
+                  {t("nav.language")}
+                </span>
+              </button>
+            </SelectLanguageInPopover>
+          </div>
+        </div>  
       </div>
-    </div>
 
-    {promoNotif && (
-      <PromoNotification
-        code={promoNotif.code}
-        discountPercent={promoNotif.discountPercent}
-        onClose={() => setPromoNotif(null)}
-      />
-    )}
+      {promoNotif && (
+        <PromoNotification
+          code={promoNotif.code}
+          discountPercent={promoNotif.discountPercent}
+          onClose={() => setPromoNotif(null)}
+        />
+      )}
     </>
   );
 };
