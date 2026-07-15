@@ -111,6 +111,13 @@
   color: #9a9a9a;
 }
 
+.searchIconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
 .navLinks {
   display: flex;
   align-items: center;

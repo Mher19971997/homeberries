@@ -13,6 +13,8 @@ import 'react-image-gallery/styles/scss/image-gallery.scss';
 import 'flag-icons/css/flag-icons.min.css';
 import styles from '@homeberris/styles/Home.module.css';
 import Footer from '@homeberris/layouts/Footer';
+import { Suspense } from 'react';
+
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -42,7 +44,9 @@ export default async function LocaleLayout({
         <Providers locale={locale}>
           <Preloader />
           <main className={styles.main}>
+            <Suspense fallback={null}>
             <Navbar />
+            </Suspense>
             <section className={styles.sectionTwo}>{children}</section>
             {/* <BottomBarMobile /> */}
             <Footer/>

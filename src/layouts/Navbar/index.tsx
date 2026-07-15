@@ -12,6 +12,7 @@ import qs from "qs";
 import styles from "./index.module.css";
 import { getProfile } from "@homeberris/http/userApi";
 import { getAllCatalogs } from "@homeberris/http/catalogApi";
+import { Suspense } from "react";
 import {
   CartIcon,
   FavoriteIcon,
@@ -24,7 +25,7 @@ import SelectLanguageInPopover from "@homeberris/components/SelectLanguageInPopo
 import { useTranslation } from "react-i18next";
 import { useDebounce } from "@homeberris/hooks/useDebounce";
 import { CatalogItem } from "@homeberris/types/catalog";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import { usePromoSocket } from "@homeberris/hooks/usePromoSocket";
 import { getMyPromocodes } from "@homeberris/http/promocodeApi";
 import PromoNotification from "@homeberris/components/PromoNotification";
@@ -55,6 +56,8 @@ const Navbar = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const searchRef = React.useRef<HTMLDivElement>(null);
   const debouncedSearch = useDebounce(searchValue, 300);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -71,7 +74,8 @@ const Navbar = () => {
   React.useEffect(() => {
     const onCloseNavDropdown = () => setShowDropdown(false);
     window.addEventListener("closeNavDropdown", onCloseNavDropdown);
-    return () => window.removeEventListener("closeNavDropdown", onCloseNavDropdown);
+    return () =>
+      window.removeEventListener("closeNavDropdown", onCloseNavDropdown);
   }, []);
 
   const { data: profile } = useQuery({
@@ -166,6 +170,15 @@ const Navbar = () => {
 
   const basketCount = isAuth ? basket?.meta?.count || 0 : localBasketCount;
 
+  const handleSearch = () => {
+    const value = searchValue.trim();
+    if (!value) return;
+    router.push(`/catalog?search=${encodeURIComponent(value)}`);
+  };
+
+  React.useEffect(() => {
+    setShowDropdown(false);
+  }, [pathname, searchParams]);
   return (
     <>
       <div
@@ -179,39 +192,18 @@ const Navbar = () => {
 
           {/* Поиск */}
           <div className={styles.searchWrapper} ref={searchRef}>
-            {/* <div className={styles.searchBox} style={{background:"red"}}>
-            <SearchIcon className={styles.searchIcon} />
-            <input
-              placeholder={t("nav.search")}
-              className={styles.searchInput}
-              suppressHydrationWarning
-              value={searchValue}
-              onChange={(e) => {
-                setSearchValue(e.target.value);
-                setShowDropdown(true);
-              }}
-              onFocus={() => searchValue.length >= 2 && setShowDropdown(true)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && searchValue.trim()) {
-                  setShowDropdown(false);
-                  router.push(
-                    `/catalog?search=${encodeURIComponent(searchValue.trim())}`,
-                  );
-                }
-              }}
-            />
-          </div> */}
             <div
               className={styles.searchBox}
               onClick={() => {
-                // Фокусируем инпут при клике по всему диву
                 const input = document.querySelector(
                   `.${styles.searchInput}`,
                 ) as HTMLInputElement;
                 input?.focus();
               }}
             >
-              <SearchIcon className={styles.searchIcon} />
+              <div className={styles.searchIconWrapper} onClick={handleSearch}>
+                <SearchIcon className={styles.searchIcon} />
+              </div>
               <input
                 placeholder={t("nav.search")}
                 className={styles.searchInput}
@@ -223,11 +215,8 @@ const Navbar = () => {
                 }}
                 onFocus={() => searchValue.length >= 2 && setShowDropdown(true)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && searchValue.trim()) {
-                    setShowDropdown(false);
-                    router.push(
-                      `/catalog?search=${encodeURIComponent(searchValue.trim())}`,
-                    );
+                  if (e.key === "Enter") {
+                    handleSearch();
                   }
                 }}
               />
@@ -360,11 +349,13 @@ const Navbar = () => {
                 )}
               </div>
             </button>
-            <SelectLanguageInPopover>
-              <button className={styles.iconBtn}>
-                <GlobeIcon />
-              </button>
-            </SelectLanguageInPopover>
+            <Suspense fallback={null}>
+              <SelectLanguageInPopover>
+                <button className={styles.iconBtn}>
+                  <GlobeIcon />
+                </button>
+              </SelectLanguageInPopover>
+            </Suspense>
           </div>
 
           {/* Бургер кнопка */}
@@ -519,16 +510,18 @@ const Navbar = () => {
                 {isAuth ? t("nav.profile") : t("nav.login")}
               </span>
             </button>
-            <SelectLanguageInPopover>
-              <button className={styles.drawerIconBtn}>
-                <GlobeIcon />
-                <span className={styles.drawerIconLabel}>
-                  {t("nav.language")}
-                </span>
-              </button>
-            </SelectLanguageInPopover>
+            <Suspense fallback={null}>
+              <SelectLanguageInPopover>
+                <button className={styles.drawerIconBtn}>
+                  <GlobeIcon />
+                  <span className={styles.drawerIconLabel}>
+                    {t("nav.language")}
+                  </span>
+                </button>
+              </SelectLanguageInPopover>
+            </Suspense>
           </div>
-        </div>  
+        </div>
       </div>
 
       {promoNotif && (
