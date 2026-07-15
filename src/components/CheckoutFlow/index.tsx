@@ -610,6 +610,7 @@ function PaymentStep({
   subtotal,
   tax,
   shippingCost,
+  discountAmount,
   total,
   address,
   shipmentMethod,
@@ -623,6 +624,7 @@ function PaymentStep({
   subtotal: number;
   tax: number;
   shippingCost: number;
+  discountAmount?: number;
   total: number;
   address: string;
   shipmentMethod: string;
@@ -735,6 +737,12 @@ function PaymentStep({
                 <span>{fmt(shippingCost)}</span>
               </div>
             </div>
+            {!!discountAmount && (
+              <div className={styles.summaryTotalRow}>
+                <span>{t('basket.summary.discount')}</span>
+                <span style={{ color: '#2e7d32' }}>-{fmt(discountAmount)}</span>
+              </div>
+            )}
             <div className={`${styles.summaryTotalRow} ${styles.totalRow}`}>
               <span>{t('checkout.payment.total')}</span>
               <span>{fmt(total)}</span>
@@ -920,11 +928,18 @@ export default function CheckoutFlow() {
 
       const imgSrc = images?.[0]?.imgPath || "/images/cardEmpty.png";
 
-      // Цена позиции — по выбранному варианту, если он есть, иначе базовая.
+      // Цена позиции — по выбранному варианту, если он есть, иначе базовая,
+      // с учётом скидки на сам товар (isDiscount/discountPercent) — как на /basket,
+      // иначе subtotal тут и там не совпадают.
       const sv = (item as any)?.selectedVariant;
-      const unitPrice = (sv && typeof sv.price === "number")
+      const originalPrice = (sv && typeof sv.price === "number")
         ? sv.price
         : (Number((item as any).catalog?.price) || 0);
+      const itemDiscount = (item as any).catalog?.discountPercent || 0;
+      const itemIsDiscount = (item as any).catalog?.isDiscount && itemDiscount > 0;
+      const unitPrice = itemIsDiscount
+        ? Math.round(originalPrice * (1 - itemDiscount / 100))
+        : originalPrice;
 
       return {
         uuid: (item as any).uuid ?? String(index),
@@ -946,7 +961,8 @@ export default function CheckoutFlow() {
   );
   const discountAmount = Math.round(subtotal * ((appliedPromo?.discountPercent || 0) / 100)); // ADD
 
-  const tax = 50; // Жестко под макет или Math.round(subtotal * TAX_RATE);
+  // тот же расчёт, что на /basket (TAX_RATE=0.021), чтобы tax не расходился между страницами
+  const tax = Math.round(subtotal * TAX_RATE);
   const total = subtotal - discountAmount + tax + SHIPPING;
 
   const currentAddr = addresses.find((a) => a.uuid === selectedAddress);
@@ -1007,6 +1023,7 @@ export default function CheckoutFlow() {
                 subtotal={subtotal}
                 tax={tax}
                 shippingCost={SHIPPING}
+                discountAmount={discountAmount}
                 total={total}
                 address={addressString}
                 shipmentMethod={selectedShipment}
