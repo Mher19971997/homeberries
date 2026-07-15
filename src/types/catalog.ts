@@ -26,6 +26,8 @@ export interface CatalogItem {
   productSpecs?: ProductSpecItem[];
   isDiscount?: boolean;
   discountPercent: number
+  stockStatus?: string;
+  stockQuantity?: number;
 }
 export interface InfoItem {
   uuid: UUID;

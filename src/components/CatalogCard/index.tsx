@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'next/navigation';
 import { useFormatPrice } from '@homeberris/utils/formatPrice';
 import AuthModal from '@homeberris/components/AuthModal';
+import { getStockBadge } from '@homeberris/utils/stockStatus';
 
 interface CatalogCardProps {
   catalog: CatalogItem;
@@ -109,6 +110,8 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
       ? process.env.NEXT_PUBLIC_BASE_URL! + catalog.images[0].image
       : EmtpImg.src;
 
+  const stockBadge = getStockBadge(catalog?.stockQuantity);
+
   return (
     <>
       <AuthModal open={showAuthModal} onClose={() => setShowAuthModal(false)} />
@@ -122,20 +125,25 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
 
       <div className={styles.inner}>
         <div className={styles.favoriteRow}>
-          <button
-            className={styles.favoriteButton}
-            onClick={handleCompareClick}
-            aria-label="Compare"
-            style={isInCompare(catalog.uuid) ? { color: '#1e88e5' } : undefined}
-          >
-            <ScaleIcon size={20} />
-          </button>
-          <button className={styles.favoriteButton} onClick={handleFavoriteClick} aria-label="Favourite">
-            {isFavorite(catalog.uuid)
-              ? <HeartFilledIcon/>
-              : <HeartIcon />
-            }
-          </button>
+          <span className={styles.stockBadge} style={{ backgroundColor: stockBadge.color }}>
+            {t(stockBadge.labelKey)}
+          </span>
+          <div className={styles.favoriteIcons}>
+            <button
+              className={styles.favoriteButton}
+              onClick={handleCompareClick}
+              aria-label="Compare"
+              style={isInCompare(catalog.uuid) ? { color: '#1e88e5' } : undefined}
+            >
+              <ScaleIcon size={20} />
+            </button>
+            <button className={styles.favoriteButton} onClick={handleFavoriteClick} aria-label="Favourite">
+              {isFavorite(catalog.uuid)
+                ? <HeartFilledIcon/>
+                : <HeartIcon />
+              }
+            </button>
+          </div>
         </div>
 
         <div className={styles.imageWrap}>

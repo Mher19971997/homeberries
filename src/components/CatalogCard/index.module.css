@@ -37,11 +37,17 @@
 /* ── Favourite ── */
 .favoriteRow {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   width: 100%;
   margin-bottom: 16px;
+}
+
+.favoriteIcons {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .favoriteButton {
@@ -59,6 +65,7 @@
 
 /* ── Image ── */
 .imageWrap {
+  position: relative;
   width: 160px;
   height: 160px;
   min-width: 160px;
@@ -72,6 +79,18 @@
   align-items: center;
   justify-content: center;
   background-color: unset !important;
+}
+
+.stockBadge {
+  color: #fff;
+  font-family: var(--font-inter);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 7px;
+  border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .imageWrap > * {

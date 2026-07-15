@@ -28,6 +28,11 @@
     "loading": "Loading...",
     "empty": "No products found"
   },
+  "stock": {
+    "inStock": "In Stock",
+    "limited": "Limited",
+    "outOfStock": "Out of Stock"
+  },
   "smallerBanners": {
     "ps5": {
       "desc": "Incredibly powerful CPUs, GPUs, and an SSD with integrated I/O will redefine your PlayStation experience."
