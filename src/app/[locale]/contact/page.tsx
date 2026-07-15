@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { insertContactMessage } from "@homeberris/http/contactMessagesApi";
 import { getToken } from "@homeberris/utils/auth";
 import { useCookies } from "react-cookie";
+import { phone } from "phone";
 
 const Fallback = ({
   t,
@@ -55,8 +56,6 @@ type FormFields = {
 type FieldErrors = Partial<Record<keyof FormFields, string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-// принимает +374XXXXXXXX, 0XXXXXXXX и т.п., минимум 8 цифр
-const PHONE_RE = /^\+?[0-9\s\-()]{8,15}$/;
 
 const ContactPage: React.FC = () => {
   const { t } = useTranslation("common");
@@ -110,13 +109,15 @@ const ContactPage: React.FC = () => {
           return t("contact.form.errors.invalidEmail");
         return undefined;
       case "phone":
-        if (value.trim() && !PHONE_RE.test(value.trim())) {
+        // та же библиотека, что и на бэкенде (phoneNumber keyword в ajv.lib.ts) —
+        // чтобы фронт и бэк не расходились в том, что считается валидным номером.
+        if (value.trim() && !phone(value.trim()).isValid) {
           return t("contact.form.errors.invalidPhone");
         }
         return undefined;
       case "message":
         if (!value.trim()) return t("contact.form.errors.required");
-        if (value.trim().length < 10)
+        if (value.trim().length < 5)
           return t("contact.form.errors.messageTooShort");
         return undefined;
       default:

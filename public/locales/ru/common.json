@@ -988,13 +988,13 @@
     },
     "form": {
       "name": "Имя",
-      "namePlaceholder": "Введите ваше имя",
+      "namePlaceholder": "Ваше имя",
       "surname": "Фамилия",
-      "surnamePlaceholder": "Введите вашу фамилию",
+      "surnamePlaceholder": "Вашу фамилию",
       "phone": "Номер телефона",
-      "phonePlaceholder": "Введите ваш номер телефона",
+      "phonePlaceholder": "Ваш номер телефона (+374)",
       "email": "Email",
-      "emailPlaceholder": "Введите ваш email",
+      "emailPlaceholder": "Ваш email",
       "message": "Сообщение",
       "messagePlaceholder": "Напишите ваше сообщение...",
       "submit": "Отправить",
@@ -1007,7 +1007,7 @@
         "tooShort": "Слишком короткое значение",
         "invalidEmail": "Введите корректный email",
         "invalidPhone": "Введите корректный номер телефона",
-        "messageTooShort": "Сообщение должно содержать минимум 10 символов"
+        "messageTooShort": "Сообщение должно содержать минимум 5 символов"
       }
     }
   },

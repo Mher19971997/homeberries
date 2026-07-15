@@ -981,13 +981,13 @@
     },
     "form": {
       "name": "Անուն",
-      "namePlaceholder": "Մուտքագրեք ձեր անունը",
+      "namePlaceholder": "Ձեր անունը",
       "surname": "Ազգանուն",
-      "surnamePlaceholder": "Մուտքագրեք ձևր Ազգանունը",
+      "surnamePlaceholder": "Ձեր Ազգանունը",
       "phone": "Հեռախոսահամար",
-      "phonePlaceholder": "Մուտքագրեք ձևր հեռախոսահամարը",
+      "phonePlaceholder": "Ձեր հեռախոսահամարը (+374)",
       "email": "Էլ. փոստ",
-      "emailPlaceholder": "Մուտքագրեք ձեր էլ. փոստը",
+      "emailPlaceholder": "Ձեր էլ. փոստը",
       "message": "Հաղորդագրություն",
       "messagePlaceholder": "Գրեք ձեր հաղորդագրությունը...",
       "submit": "Ուղարկել",
@@ -1000,7 +1000,7 @@
         "tooShort": "Այս դաշտը չափազանց կարճ է",
         "invalidEmail": "Մուտքագրեք ճիշտ էլ․ փոստի հասցե",
         "invalidPhone": "Մուտքագրեք ճիշտ հեռախոսահամար",
-        "messageTooShort": "Հաղորդագրությունը պետք է պարունակի առնվազն 10 նիշ"
+        "messageTooShort": "Հաղորդագրությունը պետք է պարունակի առնվազն 5 նիշ"
       }
     }
   },

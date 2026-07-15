@@ -981,13 +981,13 @@
     },
     "form": {
       "name": "Name",
-      "namePlaceholder": "Enter your name",
+      "namePlaceholder": "Your name",
       "surname": "Surname",
-      "surnamePlaceholder": "Enter your surname",
+      "surnamePlaceholder": "Your surname",
       "phone": "Phone Number",
-      "phonePlaceholder": "Enter your phone number",
+      "phonePlaceholder": "Your phone number (+374)",
       "email": "Email",
-      "emailPlaceholder": "Enter your email",
+      "emailPlaceholder": "Your email",
       "message": "Message",
       "messagePlaceholder": "Write your message...",
       "submit": "Send",
@@ -1000,7 +1000,7 @@
         "tooShort": "This field is too short",
         "invalidEmail": "Please enter a valid email address",
         "invalidPhone": "Please enter a valid phone number",
-        "messageTooShort": "Message must contain at least 10 characters"
+        "messageTooShort": "Message must contain at least 5 characters"
       }
     }
   },
