@@ -12,7 +12,11 @@ import { insertContactMessage } from "@homeberris/http/contactMessagesApi";
 import { getToken } from "@homeberris/utils/auth";
 import { useCookies } from "react-cookie";
 
-const Fallback = ({ t, styles, onHide }: {
+const Fallback = ({
+  t,
+  styles,
+  onHide,
+}: {
   t: any;
   styles: any;
   onHide: () => void;
@@ -40,9 +44,23 @@ const Fallback = ({ t, styles, onHide }: {
   );
 };
 
+type FormFields = {
+  name: string;
+  surname: string;
+  phone: string;
+  email: string;
+  message: string;
+};
+
+type FieldErrors = Partial<Record<keyof FormFields, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// принимает +374XXXXXXXX, 0XXXXXXXX и т.п., минимум 8 цифр
+const PHONE_RE = /^\+?[0-9\s\-()]{8,15}$/;
+
 const ContactPage: React.FC = () => {
   const { t } = useTranslation("common");
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormFields>({
     name: "",
     surname: "",
     phone: "",
@@ -50,6 +68,10 @@ const ContactPage: React.FC = () => {
     message: "",
   });
 
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [touched, setTouched] = useState<
+    Partial<Record<keyof FormFields, boolean>>
+  >({});
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<"error" | "tooMany" | null>(null);
@@ -72,15 +94,89 @@ const ContactPage: React.FC = () => {
     return () => window.removeEventListener("preloaderDone", scrollToFaq);
   }, []);
 
+  const validateField = (
+    name: keyof FormFields,
+    value: string,
+  ): string | undefined => {
+    switch (name) {
+      case "name":
+      case "surname":
+        if (!value.trim()) return t("contact.form.errors.required");
+        if (value.trim().length < 2) return t("contact.form.errors.tooShort");
+        return undefined;
+      case "email":
+        if (!value.trim()) return t("contact.form.errors.required");
+        if (!EMAIL_RE.test(value.trim()))
+          return t("contact.form.errors.invalidEmail");
+        return undefined;
+      case "phone":
+        if (value.trim() && !PHONE_RE.test(value.trim())) {
+          return t("contact.form.errors.invalidPhone");
+        }
+        return undefined;
+      case "message":
+        if (!value.trim()) return t("contact.form.errors.required");
+        if (value.trim().length < 10)
+          return t("contact.form.errors.messageTooShort");
+        return undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  const validateAll = (values: FormFields): FieldErrors => {
+    const errors: FieldErrors = {};
+    (Object.keys(values) as (keyof FormFields)[]).forEach((key) => {
+      const err = validateField(key, values[key]);
+      if (err) errors[key] = err;
+    });
+    return errors;
+  };
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+
+    // если поле уже "тронуто" — валидируем в реальном времени
+    if (touched[name as keyof FormFields]) {
+      setFieldErrors((prev) => ({
+        ...prev,
+        [name]: validateField(name as keyof FormFields, value),
+      }));
+    }
+  };
+
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setTouched((prev) => ({ ...prev, [name]: true }));
+    setFieldErrors((prev) => ({
+      ...prev,
+      [name]: validateField(name as keyof FormFields, value),
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    const errors = validateAll(form);
+    setFieldErrors(errors);
+    setTouched({
+      name: true,
+      surname: true,
+      phone: true,
+      email: true,
+      message: true,
+    });
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -89,6 +185,8 @@ const ContactPage: React.FC = () => {
 
       setSent(true);
       setForm({ name: "", surname: "", phone: "", email: "", message: "" });
+      setFieldErrors({});
+      setTouched({});
     } catch (err: any) {
       setError(err?.response?.status === 429 ? "tooMany" : "error");
     } finally {
@@ -118,13 +216,9 @@ const ContactPage: React.FC = () => {
       <div className={styles.layout}>
         <div className={styles.formCard}>
           {sent ? (
-            <Fallback
-              t={t}
-              styles={styles}
-              onHide={() => setSent(false)}
-            />
+            <Fallback t={t} styles={styles} onHide={() => setSent(false)} />
           ) : (
-            <form onSubmit={handleSubmit} className={styles.form}>
+            <form onSubmit={handleSubmit} className={styles.form} noValidate>
               <div className={styles.row}>
                 <div className={styles.field}>
                   <label htmlFor="name" className={styles.label}>
@@ -132,13 +226,19 @@ const ContactPage: React.FC = () => {
                   </label>
                   <input
                     id="name"
-                    className={styles.input}
+                    className={`${styles.input} ${fieldErrors.name ? styles.inputError : ""}`}
                     name="name"
                     value={form.name}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={t("contact.form.namePlaceholder")}
                     required
                   />
+                  {fieldErrors.name && (
+                    <span className={styles.fieldError}>
+                      {fieldErrors.name}
+                    </span>
+                  )}
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="surname" className={styles.label}>
@@ -146,13 +246,19 @@ const ContactPage: React.FC = () => {
                   </label>
                   <input
                     id="surname"
-                    className={styles.input}
+                    className={`${styles.input} ${fieldErrors.surname ? styles.inputError : ""}`}
                     name="surname"
                     value={form.surname}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={t("contact.form.surnamePlaceholder")}
                     required
                   />
+                  {fieldErrors.surname && (
+                    <span className={styles.fieldError}>
+                      {fieldErrors.surname}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -163,13 +269,19 @@ const ContactPage: React.FC = () => {
                   </label>
                   <input
                     id="phone"
-                    className={styles.input}
+                    className={`${styles.input} ${fieldErrors.phone ? styles.inputError : ""}`}
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={t("contact.form.phonePlaceholder")}
                     type="tel"
                   />
+                  {fieldErrors.phone && (
+                    <span className={styles.fieldError}>
+                      {fieldErrors.phone}
+                    </span>
+                  )}
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="email" className={styles.label}>
@@ -177,14 +289,20 @@ const ContactPage: React.FC = () => {
                   </label>
                   <input
                     id="email"
-                    className={styles.input}
+                    className={`${styles.input} ${fieldErrors.email ? styles.inputError : ""}`}
                     name="email"
                     value={form.email}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={t("contact.form.emailPlaceholder")}
                     type="email"
                     required
                   />
+                  {fieldErrors.email && (
+                    <span className={styles.fieldError}>
+                      {fieldErrors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -194,14 +312,20 @@ const ContactPage: React.FC = () => {
                 </label>
                 <textarea
                   id="message"
-                  className={styles.textarea}
+                  className={`${styles.textarea} ${fieldErrors.message ? styles.inputError : ""}`}
                   name="message"
                   value={form.message}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   placeholder={t("contact.form.messagePlaceholder")}
                   rows={5}
                   required
                 />
+                {fieldErrors.message && (
+                  <span className={styles.fieldError}>
+                    {fieldErrors.message}
+                  </span>
+                )}
               </div>
 
               {error && (

@@ -1,10 +1,17 @@
-'use client';
-import React, { createContext, useContext, useCallback, useEffect, useState, ReactNode } from 'react';
-import { CatalogItem } from '@homeberris/types/catalog';
-import { useToast } from '@homeberris/hooks/useToast';
-import { useTranslation } from 'react-i18next';
+"use client";
+import React, {
+  createContext,
+  useContext,
+  useCallback,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
+import { CatalogItem } from "@homeberris/types/catalog";
+import { useTranslation } from "react-i18next";
+import CompareLimitSnackbar from "@homeberris/components/CompareLimitSnackbar";
 
-const LOCAL_KEY = 'hb_compare';
+const LOCAL_KEY = "hb_compare";
 const MAX_ITEMS = 4;
 
 type CompareState = {
@@ -18,27 +25,28 @@ type CompareState = {
 
 const CompareContext = createContext<CompareState | undefined>(undefined);
 
-export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { showToast } = useToast();
-  const { t } = useTranslation('common');
+export const CompareProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const { t } = useTranslation("common");
 
   const [items, setItems] = useState<CatalogItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [limitToastOpen, setLimitToastOpen] = useState(false);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(LOCAL_KEY);
       if (raw) setItems(JSON.parse(raw));
-    } catch { }
+    } catch {}
     setLoaded(true);
   }, []);
-
 
   useEffect(() => {
     if (!loaded) return;
     try {
       localStorage.setItem(LOCAL_KEY, JSON.stringify(items));
-    } catch { }
+    } catch {}
   }, [items, loaded]);
 
   const isInCompare = useCallback(
@@ -46,32 +54,28 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
     [items],
   );
 
-  const toggleCompare = useCallback(
-    (item: CatalogItem) => {
-      setItems((prev) => {
-        const exists = prev.some((i) => i.uuid === item.uuid);
-        if (exists) {
-          return prev.filter((i) => i.uuid !== item.uuid);
-        }
+  const toggleCompare = useCallback((item: CatalogItem) => {
+    setItems((prev) => {
+      const exists = prev.some((i) => i.uuid === item.uuid);
+      if (exists) {
+        return prev.filter((i) => i.uuid !== item.uuid);
+      }
 
-        // Лимит считается отдельно для каждой категории — товары разных
-        // категорий можно держать в сравнении одновременно (см. вкладки на /compare).
-        const itemCategoryUuid = item.category?.uuid || item.categoryUuid;
-        const sameCategoryCount = prev.filter((i) => {
-          const prevCategoryUuid = i.category?.uuid || i.categoryUuid;
-          return prevCategoryUuid === itemCategoryUuid;
-        }).length;
+      const itemCategoryUuid =
+        item.category?.uuid || (item as any).categoryUuid;
+      const sameCategoryCount = prev.filter((i) => {
+        const prevCategoryUuid = i.category?.uuid || (i as any).categoryUuid;
+        return prevCategoryUuid === itemCategoryUuid;
+      }).length;
 
-        if (sameCategoryCount >= MAX_ITEMS) {
-          showToast(t('compare.maxItems'), 'warning');
-          return prev;
-        }
+      if (sameCategoryCount >= MAX_ITEMS) {
+        setLimitToastOpen(true);
+        return prev;
+      }
 
-        return [item, ...prev];
-      });
-    },
-    [showToast, t],
-  );
+      return [item, ...prev];
+    });
+  }, []);
 
   const removeFromCompare = useCallback((uuid: string) => {
     setItems((prev) => prev.filter((i) => i.uuid !== uuid));
@@ -80,18 +84,35 @@ export const CompareProvider: React.FC<{ children: ReactNode }> = ({ children })
   const clearCompare = useCallback(() => setItems([]), []);
 
   const loadFromShare = useCallback((uuids: string[]) => {
-    setItems(uuids.slice(0, MAX_ITEMS).map((uuid) => ({ uuid } as CatalogItem)));
+    setItems(
+      uuids.slice(0, MAX_ITEMS).map((uuid) => ({ uuid }) as CatalogItem),
+    );
   }, []);
 
   return (
-    <CompareContext.Provider value={{ items, isInCompare, toggleCompare, removeFromCompare, clearCompare, loadFromShare }}>
+    <CompareContext.Provider
+      value={{
+        items,
+        isInCompare,
+        toggleCompare,
+        removeFromCompare,
+        clearCompare,
+        loadFromShare,
+      }}
+    >
       {children}
+
+      <CompareLimitSnackbar
+        open={limitToastOpen}
+        message={t("compare.maxItems")}
+        handleClose={() => setLimitToastOpen(false)}
+      />
     </CompareContext.Provider>
   );
 };
 
 export const useCompare = () => {
   const ctx = useContext(CompareContext);
-  if (!ctx) throw new Error('useCompare must be used within CompareProvider');
+  if (!ctx) throw new Error("useCompare must be used within CompareProvider");
   return ctx;
 };

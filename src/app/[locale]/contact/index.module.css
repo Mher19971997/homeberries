@@ -210,6 +210,13 @@
   font-family: var(--font-inter);
 }
 
+.fieldError {
+  font-size: 11px;
+  color: #e02424;
+  font-family: var(--font-inter);
+  line-height: 1.4;
+}
+
 /* Tablet */
 @media (max-width: 900px) {
   .layout {

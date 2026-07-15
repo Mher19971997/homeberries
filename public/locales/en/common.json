@@ -989,7 +989,14 @@
       "success": "Your message has been sent! We will contact you shortly.",
       "submitting": "Submitting...",
       "error": "An error occurred. Please try again.",
-      "tooMany": "Too many requests. Please wait a minute and try again."
+      "tooMany": "Too many requests. Please wait a minute and try again.",
+      "errors": {
+        "required": "This field is required",
+        "tooShort": "This field is too short",
+        "invalidEmail": "Please enter a valid email address",
+        "invalidPhone": "Please enter a valid phone number",
+        "messageTooShort": "Message must contain at least 10 characters"
+      }
     }
   },
   "privacyPolicy": {
@@ -1049,5 +1056,8 @@
         "excerpt": "A review of popular wireless headphones for an active lifestyle."
       }
     }
+  },
+  "compareWarning": {
+    "maxItems": "You can compare up to 4 products from the same category."
   }
 }
