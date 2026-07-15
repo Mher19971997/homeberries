@@ -272,6 +272,20 @@
   align-items: stretch;
 }
 
+/* Число колонок = число карточек сравнения, чтобы они не были прижаты
+   влево пустыми колонками auto-fill, а равномерно занимали всю ширину */
+.mobileListCols2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.mobileListCols3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.mobileListCols4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .mobileCard {
   position: relative;
   height: 100%;

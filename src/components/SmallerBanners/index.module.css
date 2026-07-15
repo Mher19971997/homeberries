@@ -256,6 +256,8 @@
 
   .cardTextPS5 {
     padding: 0 32px 0 0;
+    margin-left: -50px;
+    max-width: 600px;
   }
 
   .bottomRow {
@@ -295,20 +297,26 @@
 
   .cardTextPS5 {
     padding: 0 20px 0 0;
+    margin-left: unset;
   }
 
   .cardAirpods {
     padding: 0 16px 0 0;
     gap: 10px;
+    justify-content: space-between;
+    max-width: unset;
   }
 
   .cardVision {
     padding: 0 16px 0 0;
     gap: 8px;
+    justify-content: space-between;
+    max-width: unset;
+
   }
 
   .cardTextCenter {
-    max-width: 130px;
+    max-width: 330px;
   }
 
   .bottomRow {

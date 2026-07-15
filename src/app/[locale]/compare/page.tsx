@@ -455,7 +455,14 @@ function ComparePage() {
           </div>
 
           {/* Мобильная раскладка: товары друг под другом, без горизонтального скролла */}
-          <div className={styles.mobileList}>
+          <div
+            className={[
+              styles.mobileList,
+              styles[`mobileListCols${displayedProducts.length}`],
+            ]
+              .filter(Boolean)
+              .join(' ')}
+          >
             {displayedProducts.map((p) => {
               const imgSrc = p.images?.length
                 ? baseUrl + (p.images[0].image?.startsWith('/') ? p.images[0].image : '/' + p.images[0].image)

@@ -178,6 +178,7 @@ const Navbar = () => {
 
   React.useEffect(() => {
     setShowDropdown(false);
+    setSearchValue("");
   }, [pathname, searchParams]);
   return (
     <>

@@ -66,6 +66,10 @@
 
 /* 599px → 376px: 2 колонки компактно */
 @media (max-width: 599px) {
+  .tabItem {
+    padding-bottom: 50px;
+    border-bottom: 1px solid #000;
+  }
   .catalogGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
@@ -76,8 +80,17 @@
   }
 }
 
+/* 500px и ниже: 1 карточка в ряд (и для основной сетки товаров, и для скидок —
+   обе используют .catalogGrid) */
+@media (max-width: 500px) {
+  .catalogGrid {
+    grid-template-columns: 220px;
+    justify-content: center;
+  }
+}
+
 /* 375px и ниже: уменьшаем gap и padding чтобы вторая карточка не обрезалась */
-@media (max-width:400px) {
+@media (max-width: 400px) {
   .parentTabItem {
     gap: 20px;
   }
@@ -93,7 +106,7 @@
   .tabItem {
     font-size: 13px;
     font-weight: 500;
-    padding-bottom: 6px;
+    padding-bottom: 35px;
     font-family: var(--font-inter);
     transition: all 0.2s ease;
   }
