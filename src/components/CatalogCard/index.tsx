@@ -72,6 +72,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    if ((catalog?.stockQuantity ?? 1) <= 0) return;
     if (isAuth && cookies.token) {
       mutate(catalog.uuid);
     } else {
@@ -111,6 +112,7 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
       : EmtpImg.src;
 
   const stockBadge = getStockBadge(catalog?.stockQuantity);
+  const isOutOfStock = (catalog?.stockQuantity ?? 1) <= 0;
 
   return (
     <>
@@ -167,8 +169,13 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
           ) : (
             <p className={styles.price}>{formatPrice(displayPrice)}</p>
           )}
-          <button className={styles.buyBtn} onClick={handleAddToBasket}>
-            {t('home.buyNow')}
+          <button
+            className={styles.buyBtn}
+            onClick={handleAddToBasket}
+            disabled={isOutOfStock}
+            style={isOutOfStock ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+          >
+            {isOutOfStock ? t(stockBadge.labelKey) : t('home.buyNow')}
           </button>
         </div>
       </div>

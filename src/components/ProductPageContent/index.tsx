@@ -161,6 +161,7 @@ export default function ProductPageContent({
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    if (((catalog as any)?.stockQuantity ?? 1) <= 0) return;
     if (!isAuth || !cookies.token) {
       setShowAuthModal(true);
       return;
@@ -604,8 +605,15 @@ export default function ProductPageContent({
               >
                 {t('productPageContent.actions.addToWishlist')}
               </button>
-              <button className={styles.btnCart} onClick={handleAddToBasket}>
-                {isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
+              <button
+                className={styles.btnCart}
+                onClick={handleAddToBasket}
+                disabled={((catalog as any)?.stockQuantity ?? 1) <= 0}
+                style={((catalog as any)?.stockQuantity ?? 1) <= 0 ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+              >
+                {((catalog as any)?.stockQuantity ?? 1) <= 0
+                  ? t('productPageContent.delivery.stock.outOfStock')
+                  : isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
               </button>
               {/* <button
                 className={styles.btnWishlist}

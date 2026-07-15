@@ -57,6 +57,7 @@ interface CheckoutItem {
   uuid?: string;
   name: string;
   price: number;
+  quantity: number;
   image?: string;
 }
 
@@ -704,8 +705,11 @@ function PaymentStep({
                   className={styles.summaryItemImg}
                 />
               )}
-              <span className={styles.summaryItemName}>{item.name}</span>
-              <span className={styles.summaryItemPrice}>{fmt(item.price)}</span>
+              <span className={styles.summaryItemName}>
+                {item.name}
+                {item.quantity > 1 ? ` × ${item.quantity}` : ''}
+              </span>
+              <span className={styles.summaryItemPrice}>{fmt(item.price * item.quantity)}</span>
             </div>
           ))}
         </div>
@@ -945,6 +949,7 @@ export default function CheckoutFlow() {
         uuid: (item as any).uuid ?? String(index),
         name: getLoc((item as any).catalog?.name) || "Product",
         price: unitPrice,
+        quantity: item.quantity || 1,
         image: imgSrc,
       };
     });
@@ -955,8 +960,10 @@ export default function CheckoutFlow() {
 
   const appliedPromo = queryClient.getQueryData<{ code: string; discountPercent: number }>(['appliedPromo']); // ADD
 
+  // Цена позиции * количество — иначе subtotal/сумма оплаты не учитывают
+  // выбранное в корзине количество (всегда считалось как 1 шт.)
   const subtotal = useMemo(
-    () => basketItems.reduce((sum, item) => sum + item.price, 0),
+    () => basketItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [basketItems],
   );
   const discountAmount = Math.round(subtotal * ((appliedPromo?.discountPercent || 0) / 100)); // ADD
