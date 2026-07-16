@@ -344,9 +344,14 @@
 }
 
 .carouselTrack :global(.swiper-pagination) {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
+  /* !important — та же причина, что в BigSummerSale/index.module.css:
+     .swiper-horizontal > .swiper-pagination-bullets той же специфичности
+     может победить в проде и вернуть left:0/width:100%. */
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  right: auto !important;
+  width: auto !important;
   transform: translateX(-50%);
   z-index: 3;
   padding: 16px 0;

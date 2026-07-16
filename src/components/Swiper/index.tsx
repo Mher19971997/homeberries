@@ -3,8 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import Swiper from 'swiper';
 import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+// CSS Swiper подключается глобально в app/[locale]/layout.tsx
 
 interface CustomSwiperProps {
   children: React.ReactNode;

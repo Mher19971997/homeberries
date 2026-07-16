@@ -5,8 +5,9 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/pagination';
+// CSS Swiper подключается глобально в app/[locale]/layout.tsx — если импортировать
+// его тут (внутри клиентского компонента), в проде порядок CSS-чанков может
+// оказаться другим и стили Swiper проиграют каскад (были без пагинации/раскладки).
 import styles from './index.module.css';
 import { getActiveBanners, BannerItem, LocalizedString } from '@homeberris/http/bannerApi';
 

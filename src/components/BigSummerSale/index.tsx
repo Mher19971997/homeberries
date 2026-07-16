@@ -5,8 +5,7 @@ import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
+// CSS Swiper подключается глобально в app/[locale]/layout.tsx (см. комментарий там же)
 import styles from "./index.module.css";
 import { useTranslation } from "react-i18next";
 import { getActiveSeasonalBanners } from "@homeberris/http/seasonalBannerApi";

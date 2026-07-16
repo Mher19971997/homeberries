@@ -7,8 +7,7 @@ import { getAllCatalogs } from '@homeberris/http/catalogApi';
 import qs from 'qs';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { A11y } from 'swiper/modules';
-// @ts-ignore
-import 'swiper/css';
+// CSS Swiper подключается глобально в app/[locale]/layout.tsx
 import styles from './index.module.css';
 import { useTranslation } from 'react-i18next';
 

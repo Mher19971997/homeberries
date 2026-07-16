@@ -4,8 +4,7 @@ import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedR
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Grid } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/grid";
+// CSS Swiper подключается глобально в app/[locale]/layout.tsx (см. комментарий там же)
 
 import styles from "./index.module.css";
 import {

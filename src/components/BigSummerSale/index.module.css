@@ -1,12 +1,20 @@
 .saleBanner {
   position: relative;
-  width: 100%;
-  height: 448px;
+  width: 100% !important;
+  /* !important обязателен: у Swiper .swiper-slide тоже задан height:100%
+     с той же специфичностью (один класс) — кто победит, решает порядок CSS
+     в собранном бандле, а он в проде отличается от дева. Без !important
+     слайд может схлопнуться до высоты контента вместо 448px. */
+  height: 448px !important;
   background-image: url('/images/BigSummerSale.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  display: flex;
+  /* !important — та же причина, что у height/width выше: у Swiper .swiper-slide
+     задан display:block той же специфичностью, без !important в проде может
+     победить он, и flex-центрирование (align-items/justify-content) перестаёт
+     работать — контент течёт обычным блочным потоком сверху. */
+  display: flex !important;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
@@ -74,7 +82,7 @@
 
 @media (max-width: 768px) {
   .saleBanner {
-    height: 480px;
+    height: 480px !important;
     background-image: url('/images/BigSummerSaleMobile.png');
     background-position: center;
     align-items: center;
@@ -126,7 +134,7 @@
 
 @media (max-width: 480px) {
   .saleBanner {
-    height: 560px;
+    height: 560px !important;
   }
 }
 
@@ -136,9 +144,14 @@
 }
 
 .carouselTrack :global(.swiper-pagination) {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
+  /* та же логика с !important, что и у .saleBanner — у Swiper есть своё
+     .swiper-horizontal > .swiper-pagination-bullets с той же специфичностью
+     (2 класса), которое иначе может победить в проде и вернуть left:0/width:100%. */
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  right: auto !important;
+  width: auto !important;
   transform: translateX(-50%);
   z-index: 3;
   padding: 16px 0;
