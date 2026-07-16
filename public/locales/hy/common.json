@@ -31,6 +31,7 @@
   "stock": {
     "inStock": "Առկա է",
     "limited": "Սահմանափակ",
+    "underOrder": "Պատվերով",
     "outOfStock": "Առկա չէ"
   },
   "smallerBanners": {

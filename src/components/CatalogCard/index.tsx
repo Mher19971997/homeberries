@@ -70,9 +70,11 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
     return null;
   };
 
+  const stockBadge = getStockBadge(catalog?.stockQuantity, catalog?.stockStatus);
+
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if ((catalog?.stockQuantity ?? 1) <= 0) return;
+    if (stockBadge.isBlocked) return;
     if (isAuth && cookies.token) {
       mutate(catalog.uuid);
     } else {
@@ -111,8 +113,6 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
       ? process.env.NEXT_PUBLIC_BASE_URL! + catalog.images[0].image
       : EmtpImg.src;
 
-  const stockBadge = getStockBadge(catalog?.stockQuantity);
-  const isOutOfStock = (catalog?.stockQuantity ?? 1) <= 0;
 
   return (
     <>
@@ -172,10 +172,10 @@ const CatalogCard: React.FC<CatalogCardProps> = ({ catalog, onNavigate }) => {
           <button
             className={styles.buyBtn}
             onClick={handleAddToBasket}
-            disabled={isOutOfStock}
-            style={isOutOfStock ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+            disabled={stockBadge.isBlocked}
+            style={stockBadge.isBlocked ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
           >
-            {isOutOfStock ? t(stockBadge.labelKey) : t('home.buyNow')}
+            {stockBadge.isBlocked ? t(stockBadge.labelKey) : t('home.buyNow')}
           </button>
         </div>
       </div>

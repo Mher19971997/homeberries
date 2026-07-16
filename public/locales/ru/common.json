@@ -31,6 +31,7 @@
   "stock": {
     "inStock": "В наличии",
     "limited": "Осталось мало",
+    "underOrder": "Под заказ",
     "outOfStock": "Нет в наличии"
   },
   "smallerBanners": {

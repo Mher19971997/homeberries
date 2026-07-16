@@ -28,6 +28,7 @@ import {
   ProductSpecItem,
 } from "@homeberris/types/catalog";
 import styles from "./index.module.css";
+import { getStockBadge } from "@homeberris/utils/stockStatus";
 import { useProductPurchase } from "@homeberris/features/catalog/hooks/useProductPurchase";
 import ProductSpecsGrid from "@homeberris/components/ProductSpecsGrid";
 import ProductDetailsSection from "@homeberris/components/ProductDetailsSection";
@@ -159,9 +160,11 @@ export default function ProductPageContent({
     return { values: eff, price: m ? m.price : (catalog as any).price };
   };
 
+  const stockBadge = getStockBadge((catalog as any)?.stockQuantity, (catalog as any)?.stockStatus);
+
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (((catalog as any)?.stockQuantity ?? 1) <= 0) return;
+    if (stockBadge.isBlocked) return;
     if (!isAuth || !cookies.token) {
       setShowAuthModal(true);
       return;
@@ -608,10 +611,10 @@ export default function ProductPageContent({
               <button
                 className={styles.btnCart}
                 onClick={handleAddToBasket}
-                disabled={((catalog as any)?.stockQuantity ?? 1) <= 0}
-                style={((catalog as any)?.stockQuantity ?? 1) <= 0 ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+                disabled={stockBadge.isBlocked}
+                style={stockBadge.isBlocked ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
               >
-                {((catalog as any)?.stockQuantity ?? 1) <= 0
+                {stockBadge.isBlocked
                   ? t('productPageContent.delivery.stock.outOfStock')
                   : isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
               </button>
@@ -630,13 +633,13 @@ export default function ProductPageContent({
               const hasFreeDelivery = cat?.hasFreeDelivery !== false;
               const deliveryDays = cat?.deliveryDays ?? 2;
               const warrantyMonths = Number(cat?.warrantyMonths ?? 12);
-              const stockStatus: string = cat?.stockStatus ?? 'inStock';
 
-              const stockLabel = stockStatus === 'inStock'
+              // тот же stockBadge, что и у кнопки "В корзину" — раньше тут был
+              // отдельный расчёт только по stockStatus, без учёта stockQuantity,
+              // из-за чего плашка могла говорить "в наличии" при остатке 0.
+              const stockLabel = stockBadge.status === 'inStock'
                 ? t('productPageContent.delivery.stock.subtitle')
-                : stockStatus === 'underOrder'
-                ? t('productPageContent.delivery.stock.underOrder')
-                : t('productPageContent.delivery.stock.outOfStock');
+                : t(stockBadge.labelKey);
 
               const warrantyLabel = warrantyMonths === 0
                 ? t('productPageContent.delivery.guarantee.noWarranty')
