@@ -141,9 +141,10 @@ export default function Home() {
         paginate: true,
         limit: itemsLimit,
         page: newPage,
-        order: {
-          createdAt: "DESC",
-        },
+        order:
+          activeTab === "bestseller"
+            ? { bestseller: "DESC" }
+            : { createdAt: "DESC" },
       },
     };
 

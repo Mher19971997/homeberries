@@ -84,7 +84,7 @@
   .saleBanner {
     height: 480px !important;
     background-image: url('/images/BigSummerSaleMobile.png');
-    background-position: center;
+    background-position: center top;
     align-items: center;
     padding: 0 16px;
   }

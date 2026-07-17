@@ -56,14 +56,6 @@ const formatDate = (dateString: string) => {
     }).format(date);
 };
 
-const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('ru-RU', {
-        style: 'currency',
-        currency: 'RUB',
-        minimumFractionDigits: 0
-    }).format(price);
-};
-
 const getProductImage = (order: OrderItem) => {
     if (order.catalog?.images && order.catalog.images.length > 0) {
         const imagePath = order.catalog.images[0].image;
@@ -73,4 +65,4 @@ const getProductImage = (order: OrderItem) => {
     return EmtpImg.src;
 };
 
-export { getStatusColor, getStatusLabel, formatDate, formatPrice, getProductImage }
+export { getStatusColor, getStatusLabel, formatDate, getProductImage }

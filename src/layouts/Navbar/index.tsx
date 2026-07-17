@@ -180,6 +180,13 @@ const Navbar = () => {
     setShowDropdown(false);
     setSearchValue("");
   }, [pathname, searchParams]);
+
+  const isActiveLink = (href: string) => {
+    const clean = pathname?.replace(/^\/[a-z]{2}(?=\/|$)/, "") || "/";
+    if (href === "/") return clean === "/";
+    return clean === href || clean.startsWith(`${href}/`);
+  };
+
   return (
     <>
       <div
@@ -271,7 +278,7 @@ const Navbar = () => {
               <span
                 key={href}
                 onClick={() => router.push(href)}
-                className={styles.navLink}
+                className={`${styles.navLink} ${isActiveLink(href) ? styles.navLinkActive : ""}`}
               >
                 {label}
               </span>
@@ -421,7 +428,7 @@ const Navbar = () => {
                   router.push(href);
                   setMenuOpen(false);
                 }}
-                className={styles.drawerNavLink}
+                className={`${styles.drawerNavLink} ${isActiveLink(href) ? styles.drawerNavLinkActive : ""}`}
               >
                 {label}
               </span>

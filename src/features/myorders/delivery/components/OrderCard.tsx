@@ -3,7 +3,8 @@
 import React from 'react';
 import styles from "@homeberris/features/myorders/delivery/styles/index.module.css";
 import { OrderItem } from '@homeberris/http/orderApi';
-import { formatDate, formatPrice } from '@homeberris/features/myorders/delivery';
+import { formatDate } from '@homeberris/features/myorders/delivery';
+import { useFormatPrice } from '@homeberris/utils/formatPrice';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -21,6 +22,7 @@ const getLoc = (val: any, locale = 'en'): string => {
 export const OrderCard = React.memo(
   ({ order, onMenuOpen, onPay }: Props) => {
     const { t, i18n } = useTranslation('common');
+    const { formatPrice } = useFormatPrice();
     const status = order.status?.toLowerCase() || '';
 
     const getStatusLabel = (s: string) => {
