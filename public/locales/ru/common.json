@@ -93,7 +93,11 @@
       "title": "Избранное"
     },
     "header": {
-      "title": "Избранное"
+      "title": "Избранное",
+      "products_one": "{{count}} товар",
+      "products_few": "{{count}} товара",
+      "products_many": "{{count}} товаров",
+      "products_other": "{{count}} товара"
     }
   },
   "basket": {

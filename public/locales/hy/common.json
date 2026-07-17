@@ -93,7 +93,9 @@
       "title": "Նախընտրածներ"
     },
     "header": {
-      "title": "Նախընտրածներ"
+      "title": "Նախընտրածներ",
+      "products_one": "{{count}} ապրանք",
+      "products_other": "{{count}} ապրանք"
     }
   },
   "catalogFavorites": {

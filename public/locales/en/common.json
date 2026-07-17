@@ -93,7 +93,9 @@
       "title": "Favorites"
     },
     "header": {
-      "title": "Favorites"
+      "title": "Favorites",
+      "products_one": "{{count}} item",
+      "products_other": "{{count}} items"
     }
   },
   "catalogFavorites": {
