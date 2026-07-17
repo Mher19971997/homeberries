@@ -30,7 +30,7 @@
   },
   "stock": {
     "inStock": "Առկա է",
-    "limited": "Սահմանափակ",
+    "limited": "Սահմանափակ է",
     "underOrder": "Պատվերով",
     "outOfStock": "Առկա չէ"
   },

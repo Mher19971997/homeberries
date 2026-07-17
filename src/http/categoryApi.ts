@@ -49,8 +49,6 @@ const getSubCategoryByUuid = async (uuid: string): Promise<SubCategoryItem> => {
  */
 const getSubCategoryByName = async (name: string, categoryUuid?: string): Promise<SubCategoryItem | null> => {
   try {
-    console.log(name, "namename");
-
     const queryString = qs.stringify({
       name: name,
       ...(categoryUuid && {

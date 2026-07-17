@@ -65,7 +65,6 @@ const SelectLanguageInPopover: React.FC<SelectLanguageInPopoverProps> = ({
     const query = searchParams.toString();
     const finalPath = query ? `${newPath}?${query}` : newPath;
 
-    console.log(787878, finalPath);
     router.push(finalPath);
     
     // router.push(newPath);

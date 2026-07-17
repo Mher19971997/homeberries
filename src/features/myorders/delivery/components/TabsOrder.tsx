@@ -5,7 +5,7 @@ export const TabsOrder = ({ tabValue, handleTabChange, orders }: { tabValue: any
     const { t } = useTranslation('common');
 
     const tabs = [
-        { label: `${t('delivery.tabs.all')} (${orders?.data?.length || 0})` },
+        { label: `${t('delivery.tabs.all')} (${orders?.meta?.count || 0})` },
         {
             label: `${t('delivery.tabs.processing')} (${orders?.data?.filter(
                 (o: any) =>

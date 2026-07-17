@@ -77,7 +77,6 @@ export default function DatePickerCustom({
   const weeks = buildMonthMatrix(viewDate.getFullYear(), viewDate.getMonth());
 
   const monthLabel = `${months[viewDate.getMonth()]} ${viewDate.getFullYear()}`;
-  console.log(2323, monthLabel);
 
   const goPrevMonth = () =>
     setViewDate(new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 1));

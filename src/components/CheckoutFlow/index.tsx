@@ -25,17 +25,34 @@ import WiFiCard from "@homeberris/assets/icons/wifi";
 import MastercardIcon from "@homeberris/assets/icons/mastercard";
 import { useQueryClient as useQC } from "@tanstack/react-query";
 import { useLoadScript } from "@react-google-maps/api";
-import usePlacesAutocomplete, { getGeocode, getLatLng } from "use-places-autocomplete";
-import { createDeliveryAddress, updateDeliveryAddress, deleteDeliveryAddress } from "@homeberris/http/deliveryAddressApi";
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  createDeliveryAddress,
+  updateDeliveryAddress,
+  deleteDeliveryAddress,
+} from "@homeberris/http/deliveryAddressApi";
 import { useTranslation } from "react-i18next";
 import CustomModal from "@homeberris/components/CustomModal";
 import DatePickerCustom from "@homeberris/components/DatePickerCustom";
 import { loadStripe } from "@stripe/stripe-js";
 import { Skeleton } from "@mui/material";
-import { CardCvcElement, CardExpiryElement, CardNumberElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import { confirmPayment, createPaymentIntent } from "@homeberris/http/paymentApi";
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+  Elements,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import {
+  confirmPayment,
+  createPaymentIntent,
+} from "@homeberris/http/paymentApi";
 
-const GOOGLE_LIBRARIES: ("places")[] = ["places"];
+const GOOGLE_LIBRARIES: "places"[] = ["places"];
 
 interface Address {
   uuid: string;
@@ -61,14 +78,20 @@ interface CheckoutItem {
   image?: string;
 }
 
-const getLoc = (val: any, locale = 'en'): string => {
-  if (!val) return '';
-  if (typeof val === 'string') return val;
-  return val[locale] || val.en || val.ru || '';
+const getLoc = (val: any, locale = "en"): string => {
+  if (!val) return "";
+  if (typeof val === "string") return val;
+  return val[locale] || val.en || val.ru || "";
 };
 
-function StepIndicator({ current, steps }: { current: number, steps: string[] }) {
-  const { t } = useTranslation('common');
+function StepIndicator({
+  current,
+  steps,
+}: {
+  current: number;
+  steps: string[];
+}) {
+  const { t } = useTranslation("common");
   return (
     <div className={styles.stepIndicator} data-step={current}>
       {steps.map((label, i) => {
@@ -84,7 +107,9 @@ function StepIndicator({ current, steps }: { current: number, steps: string[] })
             </div>
 
             <div className={styles.stepMeta}>
-              <span>{t('checkout.steps.step')} {i + 1}</span>
+              <span>
+                {t("checkout.steps.step")} {i + 1}
+              </span>
               <span>{label}</span>
             </div>
           </div>
@@ -101,7 +126,13 @@ function AddressForm({
   onCancel,
   isLoaded,
 }: {
-  initial?: { uuid: string; address: string; lat: string; lng: string; tag?: string };
+  initial?: {
+    uuid: string;
+    address: string;
+    lat: string;
+    lng: string;
+    tag?: string;
+  };
   token: string;
   onSave: () => void;
   onCancel: () => void;
@@ -121,11 +152,11 @@ function AddressForm({
   const [lat, setLat] = React.useState(initial?.lat || "");
   const [lng, setLng] = React.useState(initial?.lng || "");
   const [tag, setTag] = React.useState<"HOME" | "OFFICE">(
-    (initial?.tag as "HOME" | "OFFICE") || "HOME"
+    (initial?.tag as "HOME" | "OFFICE") || "HOME",
   );
   const [saving, setSaving] = React.useState(false);
   const [showSuggestions, setShowSuggestions] = React.useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const qc = useQC();
 
@@ -138,32 +169,47 @@ function AddressForm({
       const coords = await getLatLng(results[0]);
       setLat(String(coords.lat));
       setLng(String(coords.lng));
-    } catch { }
+    } catch {}
   };
 
   const handleSave = async () => {
     if (!value.trim()) return;
     setSaving(true);
     try {
-      const authToken = token || (typeof window !== 'undefined' ? (document.cookie.match(/token=([^;]+)/)?.[1] || '') : '');
+      const authToken =
+        token ||
+        (typeof window !== "undefined"
+          ? document.cookie.match(/token=([^;]+)/)?.[1] || ""
+          : "");
       if (initial?.uuid) {
-        await updateDeliveryAddress(initial.uuid, { address: value, lat, lng, tag }, authToken);
+        await updateDeliveryAddress(
+          initial.uuid,
+          { address: value, lat, lng, tag },
+          authToken,
+        );
       } else {
-        await createDeliveryAddress({ address: value, lat, lng, tag }, authToken);
+        await createDeliveryAddress(
+          { address: value, lat, lng, tag },
+          authToken,
+        );
       }
       qc.invalidateQueries({ queryKey: ["getDeliveryAddresses"] });
       onSave();
-    } catch { } finally {
+    } catch {
+    } finally {
       setSaving(false);
     }
   };
 
-  if (!isLoaded) return <p className={styles.addressLine}>{t('checkout.form.loading')}</p>;
+  if (!isLoaded)
+    return <p className={styles.addressLine}>{t("checkout.form.loading")}</p>;
 
   return (
     <div className={styles.addressFormBox}>
       <div className={styles.tagRadioGroup}>
-        <label className={`${styles.tagRadioLabel} ${tag === "HOME" ? styles.tagRadioActive : ""}`}>
+        <label
+          className={`${styles.tagRadioLabel} ${tag === "HOME" ? styles.tagRadioActive : ""}`}
+        >
           <input
             type="radio"
             name="addressTag"
@@ -173,9 +219,11 @@ function AddressForm({
             className={styles.tagRadioInput}
           />
           <Home size={15} strokeWidth={2} />
-          {t('checkout.form.tagHome')}
+          {t("checkout.form.tagHome")}
         </label>
-        <label className={`${styles.tagRadioLabel} ${tag === "OFFICE" ? styles.tagRadioActive : ""}`}>
+        <label
+          className={`${styles.tagRadioLabel} ${tag === "OFFICE" ? styles.tagRadioActive : ""}`}
+        >
           <input
             type="radio"
             name="addressTag"
@@ -185,17 +233,20 @@ function AddressForm({
             className={styles.tagRadioInput}
           />
           <Briefcase size={15} strokeWidth={2} />
-          {t('checkout.form.tagOffice')}
+          {t("checkout.form.tagOffice")}
         </label>
       </div>
       <div style={{ position: "relative" }}>
         <input
           className={styles.addressInput}
           value={value}
-          onChange={(e) => { setValue(e.target.value); setShowSuggestions(true); }}
+          onChange={(e) => {
+            setValue(e.target.value);
+            setShowSuggestions(true);
+          }}
           onFocus={() => setShowSuggestions(true)}
           disabled={!ready}
-          placeholder={t('checkout.form.placeholder')}
+          placeholder={t("checkout.form.placeholder")}
         />
         {showSuggestions && status === "OK" && (
           <div className={styles.suggestionsList}>
@@ -212,9 +263,15 @@ function AddressForm({
         )}
       </div>
       <div className={styles.addressFormBtns}>
-        <button className={styles.btnBack} onClick={onCancel}>{t('checkout.form.cancel')}</button>
-        <button className={styles.btnNext} onClick={handleSave} disabled={saving || !value.trim()}>
-          {saving ? t('checkout.form.saving') : t('checkout.form.save')}
+        <button className={styles.btnBack} onClick={onCancel}>
+          {t("checkout.form.cancel")}
+        </button>
+        <button
+          className={styles.btnNext}
+          onClick={handleSave}
+          disabled={saving || !value.trim()}
+        >
+          {saving ? t("checkout.form.saving") : t("checkout.form.save")}
         </button>
       </div>
     </div>
@@ -236,7 +293,9 @@ function AddressStep({
 }) {
   const [showForm, setShowForm] = React.useState(false);
   const [editAddr, setEditAddr] = React.useState<Address | null>(null);
-  const [confirmDeleteUuid, setConfirmDeleteUuid] = React.useState<string | null>(null);
+  const [confirmDeleteUuid, setConfirmDeleteUuid] = React.useState<
+    string | null
+  >(null);
   const qc = useQC();
 
   const handleDelete = (uuid: string, e: React.MouseEvent) => {
@@ -261,12 +320,12 @@ function AddressStep({
     setShowForm(false);
     setEditAddr(null);
   };
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   return (
     <div className={styles.stepContent}>
       <div className={styles.addressList}>
-        <h2 className={styles.sectionTitle}>{t('checkout.address.title')}</h2>
+        <h2 className={styles.sectionTitle}>{t("checkout.address.title")}</h2>
         {addresses.map((addr) => (
           <label
             key={addr.uuid}
@@ -289,15 +348,32 @@ function AddressStep({
                 <span className={styles.addressTag}>{addr.tag}</span>
               </div>
               {addr.street.split("\n").map((line, i) => (
-                <p key={i} className={styles.addressLine}>{line}</p>
+                <p key={i} className={styles.addressLine}>
+                  {line}
+                </p>
               ))}
             </div>
             <div className={styles.addressActions}>
-              <button className={styles.iconBtn} title="Edit" onClick={(e) => handleEdit(addr, e)}>
+              <button
+                className={styles.iconBtn}
+                title="Edit"
+                onClick={(e) => handleEdit(addr, e)}
+              >
                 <EditIcon />
               </button>
-              <button className={styles.iconBtn} title="Delete" onClick={(e) => handleDelete(addr.uuid, e)}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="2">
+              <button
+                className={styles.iconBtn}
+                title="Delete"
+                onClick={(e) => handleDelete(addr.uuid, e)}
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#000"
+                  strokeWidth="2"
+                >
                   <line x1="18" y1="6" x2="6" y2="18" />
                   <line x1="6" y1="6" x2="18" y2="18" />
                 </svg>
@@ -309,36 +385,77 @@ function AddressStep({
         {showForm ? (
           <AddressForm
             token={token}
-            initial={editAddr ? { uuid: editAddr.uuid, address: editAddr.street, lat: "", lng: "", tag: editAddr.tag } : undefined}
+            initial={
+              editAddr
+                ? {
+                    uuid: editAddr.uuid,
+                    address: editAddr.street,
+                    lat: "",
+                    lng: "",
+                    tag: editAddr.tag,
+                  }
+                : undefined
+            }
             onSave={handleFormClose}
             onCancel={handleFormClose}
             isLoaded={isLoaded}
           />
         ) : (
-          <button className={styles.addAddressBtn} onClick={() => { setEditAddr(null); setShowForm(true); }}>
-            <span className={styles.addIcon}><AddAddressIcon /></span>
-            {t('checkout.address.addNew')}
+          <button
+            className={styles.addAddressBtn}
+            onClick={() => {
+              setEditAddr(null);
+              setShowForm(true);
+            }}
+          >
+            <span className={styles.addIcon}>
+              <AddAddressIcon />
+            </span>
+            {t("checkout.address.addNew")}
           </button>
         )}
       </div>
 
       <CustomModal
         open={confirmDeleteUuid !== null}
-        title={t('checkout.confirm.title')}
+        title={t("checkout.confirm.title")}
         width={400}
         handleClose={() => setConfirmDeleteUuid(null)}
       >
         <div className={styles.confirmBody}>
           <div className={styles.confirmIcon}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="#000" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M10 11v5M14 11v5" stroke="#000" strokeWidth="1.8" strokeLinecap="round" />
+              <path
+                d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"
+                stroke="#000"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M10 11v5M14 11v5"
+                stroke="#000"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+              />
             </svg>
           </div>
-          <p className={styles.confirmText}>{t('checkout.confirm.description')}</p>
+          <p className={styles.confirmText}>
+            {t("checkout.confirm.description")}
+          </p>
           <div className={styles.confirmActions}>
-            <button className={styles.confirmCancel} onClick={() => setConfirmDeleteUuid(null)}>{t('checkout.confirm.cancel')}</button>
-            <button className={styles.confirmDelete} onClick={handleConfirmDelete}>{t('checkout.confirm.delete')}</button>
+            <button
+              className={styles.confirmCancel}
+              onClick={() => setConfirmDeleteUuid(null)}
+            >
+              {t("checkout.confirm.cancel")}
+            </button>
+            <button
+              className={styles.confirmDelete}
+              onClick={handleConfirmDelete}
+            >
+              {t("checkout.confirm.delete")}
+            </button>
           </div>
         </div>
       </CustomModal>
@@ -355,28 +472,28 @@ function ShippingStep({
   selected: string;
   onSelect: (id: string) => void;
 }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const { formatPrice } = useFormatPrice();
   const [scheduledDate, setScheduledDate] = useState<Date | null>(null);
   const SHIPMENT_METHODS: ShipmentMethod[] = [
     {
       id: "free",
-      label: `${t('checkout.shipping.free')}`,
-      description: `${t('checkout.shipping.regularlyShipment')}`,
+      label: `${t("checkout.shipping.free")}`,
+      description: `${t("checkout.shipping.regularlyShipment")}`,
       price: null,
       date: "17 Oct, 2023",
     },
     {
       id: "fast",
       label: formatPrice(8.5),
-      description: `${t('checkout.shipping.descriptionFast')}`,
+      description: `${t("checkout.shipping.descriptionFast")}`,
       price: 8.5,
       date: "1 Oct, 2023",
     },
     {
       id: "schedule",
-      label: `${t('checkout.shipping.schedule')}`,
-      description: `${t('checkout.shipping.descriptionSchedule')}`,
+      label: `${t("checkout.shipping.schedule")}`,
+      description: `${t("checkout.shipping.descriptionSchedule")}`,
       price: null,
       date: null,
     },
@@ -385,7 +502,7 @@ function ShippingStep({
   return (
     <div className={styles.stepContent}>
       <div className={styles.shipmentList}>
-        <h2 className={styles.sectionTitle}>{t('checkout.shipping.title')}</h2>
+        <h2 className={styles.sectionTitle}>{t("checkout.shipping.title")}</h2>
         {SHIPMENT_METHODS.map((method) => (
           <label
             key={method.id}
@@ -419,7 +536,7 @@ function ShippingStep({
               ) : method.id === "schedule" ? (
                 <DatePickerCustom
                   value={scheduledDate}
-                  placeholder={t('checkout.shipping.date')}
+                  placeholder={t("checkout.shipping.date")}
                   disablePast
                   selected={selected === method.id}
                   onChange={(newDate) => {
@@ -439,7 +556,9 @@ function ShippingStep({
 
 type PaymentTab = "Credit Card" | "PayPal" | "PayPal Credit";
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
+);
 
 const ELEMENT_OPTIONS = {
   style: {
@@ -456,7 +575,12 @@ const ELEMENT_OPTIONS = {
 function CardFormSkeleton({ styles }: { styles: any }) {
   return (
     <div className={styles.cardDetails}>
-      <Skeleton variant="rounded" width="100%" height={130} sx={{ borderRadius: "12px", marginBottom: "24px" }} />
+      <Skeleton
+        variant="rounded"
+        width="100%"
+        height={130}
+        sx={{ borderRadius: "12px", marginBottom: "24px" }}
+      />
       <div className={styles.paymentForm}>
         <Skeleton variant="rounded" height={48} />
         <Skeleton variant="rounded" height={48} />
@@ -499,12 +623,15 @@ function CreditCardFields({
     setErrorMessage(null);
 
     try {
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: cardNumberElement,
-          billing_details: { name: cardName || undefined },
+      const { error, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: cardNumberElement,
+            billing_details: { name: cardName || undefined },
+          },
         },
-      });
+      );
 
       if (error) {
         const msg = error.message || t("checkout.payment.errorConfirm");
@@ -514,13 +641,17 @@ function CreditCardFields({
       }
 
       if (paymentIntent?.status !== "succeeded") {
-        const msg = t("checkout.payment.errorNotCompleted", { status: paymentIntent?.status || "unknown" });
+        const msg = t("checkout.payment.errorNotCompleted", {
+          status: paymentIntent?.status || "unknown",
+        });
         setErrorMessage(msg);
         onPaymentError(msg);
         return;
       }
 
-      const result = await confirmPayment({ paymentIntentId: paymentIntent.id });
+      const result = await confirmPayment({
+        paymentIntentId: paymentIntent.id,
+      });
 
       if (result.success) {
         onPaymentSuccess({ ...result, paymentIntentId: paymentIntent.id });
@@ -553,25 +684,34 @@ function CreditCardFields({
         <div className={styles.paymentForm}>
           <input
             className={styles.payInput}
-            placeholder={t('checkout.payment.cardholder')}
+            placeholder={t("checkout.payment.cardholder")}
             value={cardName}
             onChange={(e) => setCardName(e.target.value)}
           />
 
-          <div className={styles.payInput} style={{ display: "flex", alignItems: "center" }}>
+          <div
+            className={styles.payInput}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <div style={{ width: "100%" }}>
               <CardNumberElement options={ELEMENT_OPTIONS} />
             </div>
           </div>
 
           <div className={styles.payRow}>
-            <div className={styles.payInput} style={{ display: "flex", alignItems: "center" }}>
+            <div
+              className={styles.payInput}
+              style={{ display: "flex", alignItems: "center" }}
+            >
               <div style={{ width: "100%" }}>
                 <CardExpiryElement options={ELEMENT_OPTIONS} />
               </div>
             </div>
 
-            <div className={styles.payInput} style={{ display: "flex", alignItems: "center" }}>
+            <div
+              className={styles.payInput}
+              style={{ display: "flex", alignItems: "center" }}
+            >
               <div style={{ width: "100%" }}>
                 <CardCvcElement options={ELEMENT_OPTIONS} />
               </div>
@@ -595,11 +735,21 @@ function CreditCardFields({
       {errorMessage && <p className={styles.errorText}>{errorMessage}</p>}
 
       <div className={styles.navButtons}>
-        <button className={styles.btnBack} onClick={onBack} disabled={isProcessing}>
+        <button
+          className={styles.btnBack}
+          onClick={onBack}
+          disabled={isProcessing}
+        >
           {t("checkout.payment.back")}
         </button>
-        <button className={styles.btnNext} onClick={handlePay} disabled={!stripe || isProcessing}>
-          {isProcessing ? t("checkout.payment.processing") : t("checkout.payment.pay")}
+        <button
+          className={styles.btnNext}
+          onClick={handlePay}
+          disabled={!stripe || isProcessing}
+        >
+          {isProcessing
+            ? t("checkout.payment.processing")
+            : t("checkout.payment.pay")}
         </button>
       </div>
     </>
@@ -619,7 +769,7 @@ function PaymentStep({
   onPaymentError,
   onBack,
   // onNext,
-  promocode
+  promocode,
 }: {
   items: CheckoutItem[];
   subtotal: number;
@@ -633,7 +783,7 @@ function PaymentStep({
   onPaymentError: (error: string) => void;
   onBack: () => void;
   // onNext: () => void;
-  promocode?: string
+  promocode?: string;
 }) {
   const [tab, setTab] = useState<PaymentTab>("Credit Card");
   // const [cardNumber, setCardNumber] = useState("");
@@ -642,14 +792,18 @@ function PaymentStep({
   // const [cvv, setCvv] = useState("");
   // const [sameAsBilling, setSameAsBilling] = useState(true);
   // const [showStripe, setShowStripe] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const { formatPrice } = useFormatPrice();
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [intentError, setIntentError] = useState<string | null>(null);
 
   const hasRealBasketItems = items.every(
-    (item) => !!item.uuid && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(item.uuid)
+    (item) =>
+      !!item.uuid &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        item.uuid,
+      ),
   );
 
   useEffect(() => {
@@ -662,15 +816,25 @@ function PaymentStep({
       amount: Math.round(total * 100),
       currency: "amd",
       basketUuids: items.map((i) => i.uuid).filter(Boolean) as string[],
-      promocode
+      promocode,
     })
       .then((res) => {
         if (!active) return;
         setClientSecret(res.clientSecret);
       })
-      .catch((err) => {
+      .catch((err: any) => {
         if (!active) return;
-        setIntentError(err?.message || t("checkout.payment.intentError"));
+
+        const data = err?.response?.data;
+
+        if (data?.code === "INSUFFICIENT_STOCK") {
+          setIntentError(`${t("checkout.payment.outOfStock")}: ${items}`);
+          return;
+        }
+
+        setIntentError(
+          data?.message || err?.message || t("checkout.payment.intentError"),
+        );
       });
 
     return () => {
@@ -683,7 +847,7 @@ function PaymentStep({
   const TABS: PaymentTab[] = ["Credit Card", "PayPal", "PayPal Credit"];
   const shipLabel =
     shipmentMethod === "free"
-      ? `${t('checkout.shipping.free')}`
+      ? `${t("checkout.shipping.free")}`
       : shipmentMethod === "fast"
         ? formatPrice(8.5)
         : "Scheduled";
@@ -693,7 +857,9 @@ function PaymentStep({
       {/* Summary Panel (Слева) */}
       <div className={styles.summaryPanel}>
         <div className={styles.summary}>
-          <h3 className={styles.summaryPanelTitle}>{t('checkout.payment.summary')}</h3>
+          <h3 className={styles.summaryPanelTitle}>
+            {t("checkout.payment.summary")}
+          </h3>
         </div>
         <div className={styles.summaryItems}>
           {items.map((item, i) => (
@@ -707,48 +873,54 @@ function PaymentStep({
               )}
               <span className={styles.summaryItemName}>
                 {item.name}
-                {item.quantity > 1 ? ` × ${item.quantity}` : ''}
+                {item.quantity > 1 ? ` × ${item.quantity}` : ""}
               </span>
-              <span className={styles.summaryItemPrice}>{fmt(item.price * item.quantity)}</span>
+              <span className={styles.summaryItemPrice}>
+                {fmt(item.price * item.quantity)}
+              </span>
             </div>
           ))}
         </div>
         <div className={styles.details}>
           <div className={styles.addressDetails}>
             <div className={styles.summaryMeta}>
-              <p className={styles.summaryMetaLabel}>{t('checkout.payment.address')}</p>
+              <p className={styles.summaryMetaLabel}>
+                {t("checkout.payment.address")}
+              </p>
               <p className={styles.summaryMetaValue}>
                 {address || "1131 Dusty Townline, Jacksonville, TX 40322"}
               </p>
             </div>
             <div className={styles.summaryMeta}>
-              <p className={styles.summaryMetaLabel}>{t('checkout.payment.shipmentMethod')}</p>
+              <p className={styles.summaryMetaLabel}>
+                {t("checkout.payment.shipmentMethod")}
+              </p>
               <p className={styles.summaryMetaValue}>{shipLabel}</p>
             </div>
           </div>
           <div className={styles.summaryTotals}>
             <div className={styles.summaryTotalRow}>
-              <span>{t('checkout.payment.subtotal')}</span>
+              <span>{t("checkout.payment.subtotal")}</span>
               <span>{fmt(subtotal)}</span>
             </div>
             <div className={styles.taxes}>
               <div className={`${styles.summaryTotalRow} ${styles.muted}`}>
-                <span>{t('checkout.payment.tax')}</span>
+                <span>{t("checkout.payment.tax")}</span>
                 <span>{fmt(tax)}</span>
               </div>
               <div className={`${styles.summaryTotalRow} ${styles.muted}`}>
-                <span>{t('checkout.payment.estimated')}</span>
+                <span>{t("checkout.payment.estimated")}</span>
                 <span>{fmt(shippingCost)}</span>
               </div>
             </div>
             {!!discountAmount && (
               <div className={styles.summaryTotalRow}>
-                <span>{t('basket.summary.discount')}</span>
-                <span style={{ color: '#2e7d32' }}>-{fmt(discountAmount)}</span>
+                <span>{t("basket.summary.discount")}</span>
+                <span style={{ color: "#2e7d32" }}>-{fmt(discountAmount)}</span>
               </div>
             )}
             <div className={`${styles.summaryTotalRow} ${styles.totalRow}`}>
-              <span>{t('checkout.payment.total')}</span>
+              <span>{t("checkout.payment.total")}</span>
               <span>{fmt(total)}</span>
             </div>
           </div>
@@ -758,7 +930,7 @@ function PaymentStep({
       {/* Payment Form Panel (Справа) */}
       <div className={styles.paymentPanel}>
         <div className={styles.paymentSection}>
-          <h2 className={styles.sectionTitle}>{t('checkout.payment.title')}</h2>
+          <h2 className={styles.sectionTitle}>{t("checkout.payment.title")}</h2>
           <div className={styles.paymentTabs}>
             {TABS.map((t) => (
               <button
@@ -773,7 +945,9 @@ function PaymentStep({
         </div>
         {tab === "Credit Card" ? (
           !hasRealBasketItems ? (
-            <p className={styles.errorText}>{t("checkout.payment.basketNotReady")}</p>
+            <p className={styles.errorText}>
+              {t("checkout.payment.basketNotReady")}
+            </p>
           ) : intentError ? (
             <p className={styles.errorText}>{intentError}</p>
           ) : !clientSecret ? (
@@ -810,7 +984,7 @@ function NavButtons({
   onBack: () => void;
   onNext: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   return (
     <div
@@ -818,17 +992,19 @@ function NavButtons({
     >
       {" "}
       <button className={styles.btnBack} onClick={onBack}>
-        {t('checkout.buttons.back')}
+        {t("checkout.buttons.back")}
       </button>
       <button className={styles.btnNext} onClick={onNext}>
-        {step === 2 ? `${t('checkout.payment.pay')}` : `${t('checkout.buttons.next')}`}
+        {step === 2
+          ? `${t("checkout.payment.pay")}`
+          : `${t("checkout.buttons.next")}`}
       </button>
     </div>
   );
 }
 
 export default function CheckoutFlow() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -845,7 +1021,11 @@ export default function CheckoutFlow() {
   const [selectedShipment, setSelectedShipment] = useState("free");
   const [localBaskets, setLocalBaskets] = useState<any[]>([]);
 
-  const steps = [t("checkout.steps.address"), t("checkout.steps.shipping"), t("checkout.steps.payment")];
+  const steps = [
+    t("checkout.steps.address"),
+    t("checkout.steps.shipping"),
+    t("checkout.steps.payment"),
+  ];
 
   const { data: baskets, isLoading: basketsLoading } = useQuery({
     queryKey: ["getAllBaskets"],
@@ -911,7 +1091,7 @@ export default function CheckoutFlow() {
     }
     return deliveryAddresses.data.map((a: any) => ({
       uuid: a.uuid,
-      label: a.address?.split(',')?.[0]?.trim() || t('checkout.form.myAddress'),
+      label: a.address?.split(",")?.[0]?.trim() || t("checkout.form.myAddress"),
       tag: a.tag || "HOME",
       street: a.address ?? "",
       phone: "",
@@ -926,8 +1106,8 @@ export default function CheckoutFlow() {
       const images =
         item?.catalog?.images?.length > 0
           ? item.catalog.images.map(({ image }: any) => ({
-            imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
-          }))
+              imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
+            }))
           : [{ imgPath: "/images/cardEmpty.png" }];
 
       const imgSrc = images?.[0]?.imgPath || "/images/cardEmpty.png";
@@ -936,11 +1116,13 @@ export default function CheckoutFlow() {
       // с учётом скидки на сам товар (isDiscount/discountPercent) — как на /basket,
       // иначе subtotal тут и там не совпадают.
       const sv = (item as any)?.selectedVariant;
-      const originalPrice = (sv && typeof sv.price === "number")
-        ? sv.price
-        : (Number((item as any).catalog?.price) || 0);
+      const originalPrice =
+        sv && typeof sv.price === "number"
+          ? sv.price
+          : Number((item as any).catalog?.price) || 0;
       const itemDiscount = (item as any).catalog?.discountPercent || 0;
-      const itemIsDiscount = (item as any).catalog?.isDiscount && itemDiscount > 0;
+      const itemIsDiscount =
+        (item as any).catalog?.isDiscount && itemDiscount > 0;
       const unitPrice = itemIsDiscount
         ? Math.round(originalPrice * (1 - itemDiscount / 100))
         : originalPrice;
@@ -958,15 +1140,21 @@ export default function CheckoutFlow() {
   const TAX_RATE = 0.021;
   const SHIPPING = 29;
 
-  const appliedPromo = queryClient.getQueryData<{ code: string; discountPercent: number }>(['appliedPromo']); // ADD
+  const appliedPromo = queryClient.getQueryData<{
+    code: string;
+    discountPercent: number;
+  }>(["appliedPromo"]); // ADD
 
   // Цена позиции * количество — иначе subtotal/сумма оплаты не учитывают
   // выбранное в корзине количество (всегда считалось как 1 шт.)
   const subtotal = useMemo(
-    () => basketItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    () =>
+      basketItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [basketItems],
   );
-  const discountAmount = Math.round(subtotal * ((appliedPromo?.discountPercent || 0) / 100)); // ADD
+  const discountAmount = Math.round(
+    subtotal * ((appliedPromo?.discountPercent || 0) / 100),
+  ); // ADD
 
   // тот же расчёт, что на /basket (TAX_RATE=0.021), чтобы tax не расходился между страницами
   const tax = Math.round(subtotal * TAX_RATE);
@@ -1017,11 +1205,23 @@ export default function CheckoutFlow() {
               onSelect={setSelectedShipment}
             />
           )}
-          {step === 2 && (
-            basketsLoading ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '24px 0' }}>
-                {[1, 2, 3].map(i => (
-                  <Skeleton key={i} variant="rounded" height={52} sx={{ borderRadius: '10px' }} />
+          {step === 2 &&
+            (basketsLoading ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 12,
+                  padding: "24px 0",
+                }}
+              >
+                {[1, 2, 3].map((i) => (
+                  <Skeleton
+                    key={i}
+                    variant="rounded"
+                    height={52}
+                    sx={{ borderRadius: "10px" }}
+                  />
                 ))}
               </div>
             ) : (
@@ -1039,8 +1239,7 @@ export default function CheckoutFlow() {
                 onPaymentError={handlePaymentError}
                 onBack={handleBack}
               />
-            )
-          )}
+            ))}
         </div>
         {step !== 2 && (
           <NavButtons step={step} onBack={handleBack} onNext={handleNext} />
