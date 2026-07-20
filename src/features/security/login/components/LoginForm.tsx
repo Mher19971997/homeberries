@@ -52,6 +52,9 @@ export const LoginForm: React.FC = () => {
     const msg = err?.response?.data?.message;
     if (typeof msg === 'string') {
       const lower = msg.toLowerCase();
+      if (lower.includes('blocked')) {
+        return t('auth.errors.blocked');
+      }
       if (lower.includes('wrong password') || lower.includes('invalid') || lower.includes('not found')) {
         return t('auth.errors.invalid');
       }

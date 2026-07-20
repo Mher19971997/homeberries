@@ -560,6 +560,7 @@
       "passwordLength": "Password must be at least 8 characters",
       "passwordWeak": "Password must contain uppercase, lowercase letters, numbers and special characters (!?@#$%^&*()-_+=,./)",
       "invalid": "Invalid email or password",
+      "blocked": "Your account has been blocked",
       "registerError": "Registration error",
       "serverError": "Invalid authorization server response",
       "loginError": "Login error",
