@@ -1,39 +1,42 @@
-﻿'use client';
+﻿"use client";
 
-import React from 'react';
-import { useFormatPrice } from '@homeberris/utils/formatPrice';
-import styles from '@homeberris/app/[locale]/basket/index.module.css';
-import paginationStyles from '@homeberris/app/[locale]/catalog/[category]/index.module.css';
-import { PaginationLeft, PaginationRight } from '@homeberris/assets/icons/catalog';
-import BasketItem from '@homeberris/components/BasketItem';
-import { BasketDataItem } from '@homeberris/types/basket';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import React from "react";
+import { useFormatPrice } from "@homeberris/utils/formatPrice";
+import styles from "@homeberris/app/[locale]/basket/index.module.css";
+import paginationStyles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
+import {
+  PaginationLeft,
+  PaginationRight,
+} from "@homeberris/assets/icons/catalog";
+import BasketItem from "@homeberris/components/BasketItem";
+import { BasketDataItem } from "@homeberris/types/basket";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getAllBaskets,
   removeBasketCatalog,
   updateBasketQuantity as updateRemoteBasketQuantity,
-} from '@homeberris/http/basketApi';
-import qs from 'qs';
-import { useCookies } from 'react-cookie';
-import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
-import { useAuth } from '@homeberris/hooks/useAuth';
-import { useToast } from '@homeberris/hooks/useToast';
-import { useTranslation } from 'react-i18next';
+} from "@homeberris/http/basketApi";
+import qs from "qs";
+import { useCookies } from "react-cookie";
+import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedRouter";
+import { useAuth } from "@homeberris/hooks/useAuth";
+import { useToast } from "@homeberris/hooks/useToast";
+import { useTranslation } from "react-i18next";
 import {
   getBasketItems,
   removeFromBasket,
   updateBasketItemQuantity,
-} from '@homeberris/utils/indexedDB';
-import SelectPaymentMethod from '@homeberris/components/SelectPaymentMethod';
-import AuthGuard from '@homeberris/components/AuthGuard';
-import Spinner from '@homeberris/components/Spinner';
-import { validatePromocode } from '@homeberris/http/promocodeApi';
+} from "@homeberris/utils/indexedDB";
+import SelectPaymentMethod from "@homeberris/components/SelectPaymentMethod";
+import AuthGuard from "@homeberris/components/AuthGuard";
+import Spinner from "@homeberris/components/Spinner";
+import { validatePromocode } from "@homeberris/http/promocodeApi";
 
 export default function BasketPage() {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const queryClient = useQueryClient();
   const router = useRouter();
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(["token"]);
   const isAuth = useAuth();
   const { showToast } = useToast();
 
@@ -41,16 +44,22 @@ export default function BasketPage() {
   const [showPaymentModal, setShowPaymentModal] = React.useState(false);
   const [basketPage, setBasketPage] = React.useState(1);
   const BASKET_LIMIT = 3;
-  const [promocode, setPromocode] = React.useState('');
-  const [appliedPromo, setAppliedPromo] = React.useState<{ code: string; discountPercent: number } | null>(null);
+  const [promocode, setPromocode] = React.useState("");
+  const [appliedPromo, setAppliedPromo] = React.useState<{
+    code: string;
+    discountPercent: number;
+  } | null>(null);
   const [promoError, setPromoError] = React.useState<string | null>(null);
   const [isApplyingPromo, setIsApplyingPromo] = React.useState(false);
   const [emptyBasketError, setEmptyBasketError] = React.useState(false);
 
   const { data: baskets, isLoading: isBasketsLoading } = useQuery({
-    queryKey: ['getAllBaskets'],
+    queryKey: ["getAllBaskets"],
     queryFn: () =>
-      getAllBaskets(qs.stringify({ queryMeta: { paginate: true } }), cookies.token),
+      getAllBaskets(
+        qs.stringify({ queryMeta: { paginate: true } }),
+        cookies.token,
+      ),
     enabled: !!isAuth && !!cookies.token,
     retry: false,
   });
@@ -59,8 +68,8 @@ export default function BasketPage() {
     if (!isAuth) {
       getBasketItems().then(setLocalBaskets).catch(console.error);
       const handler = () => getBasketItems().then(setLocalBaskets);
-      window.addEventListener('basketUpdated', handler);
-      return () => window.removeEventListener('basketUpdated', handler);
+      window.addEventListener("basketUpdated", handler);
+      return () => window.removeEventListener("basketUpdated", handler);
     }
   }, [isAuth]);
 
@@ -68,9 +77,20 @@ export default function BasketPage() {
     ? baskets
     : { data: localBaskets, meta: { count: localBaskets.length } };
 
-  const allBasketItems = currentBaskets?.data || [];
-  const totalBasketPages = Math.max(1, Math.ceil(allBasketItems.length / BASKET_LIMIT));
-  const pagedBasketItems = allBasketItems.slice((basketPage - 1) * BASKET_LIMIT, basketPage * BASKET_LIMIT);
+  // const allBasketItems = currentBaskets?.data || [];
+  const allBasketItems = React.useMemo(() => {
+    return [...(currentBaskets?.data || [])].sort((a, b) =>
+      a.uuid.localeCompare(b.uuid),
+    );
+  }, [currentBaskets?.data]);
+  const totalBasketPages = Math.max(
+    1,
+    Math.ceil(allBasketItems.length / BASKET_LIMIT),
+  );
+  const pagedBasketItems = allBasketItems.slice(
+    (basketPage - 1) * BASKET_LIMIT,
+    basketPage * BASKET_LIMIT,
+  );
 
   React.useEffect(() => {
     if (basketPage > totalBasketPages) {
@@ -85,10 +105,15 @@ export default function BasketPage() {
     if (!currentBaskets?.data) return 0;
     return currentBaskets.data.reduce((sum: number, item: BasketDataItem) => {
       const variantPrice = item?.selectedVariant?.price;
-      const originalPrice = variantPrice != null ? Number(variantPrice) : (Number(item?.catalog?.price) || 0);
+      const originalPrice =
+        variantPrice != null
+          ? Number(variantPrice)
+          : Number(item?.catalog?.price) || 0;
       const discount = (item?.catalog as any)?.discountPercent || 0;
       const isDiscount = (item?.catalog as any)?.isDiscount && discount > 0;
-      const price = isDiscount ? Math.round(originalPrice * (1 - discount / 100)) : originalPrice;
+      const price = isDiscount
+        ? Math.round(originalPrice * (1 - discount / 100))
+        : originalPrice;
       return sum + price * (item.quantity || 1);
     }, 0);
   }, [currentBaskets?.data]);
@@ -98,19 +123,20 @@ export default function BasketPage() {
     ? Math.round(subtotal * (appliedPromo.discountPercent / 100))
     : 0;
 
-  const total = allBasketItems.length > 0 ? subtotal - discountAmount + tax + SHIPPING : 0;
+  const total =
+    allBasketItems.length > 0 ? subtotal - discountAmount + tax + SHIPPING : 0;
 
   const handleCheckout = () => {
     if (allBasketItems.length === 0) {
       setEmptyBasketError(true);
-      showToast(t('basket.summary.emptyBasketCheckout'), 'warning');
+      showToast(t("basket.summary.emptyBasketCheckout"), "warning");
       return;
     }
     setEmptyBasketError(false);
     if (appliedPromo) {
-      queryClient.setQueryData(['appliedPromo'], appliedPromo);
+      queryClient.setQueryData(["appliedPromo"], appliedPromo);
     } else {
-      queryClient.removeQueries({ queryKey: ['appliedPromo'] });
+      queryClient.removeQueries({ queryKey: ["appliedPromo"] });
     }
 
     router.push(`/order`);
@@ -126,16 +152,19 @@ export default function BasketPage() {
       if (!result.valid) {
         setAppliedPromo(null);
         setPromoError(
-          result.reason === 'already_used'
-            ? t('basket.summary.promoAlreadyUsed')
-            : t('basket.summary.promoInvalid')
+          result.reason === "already_used"
+            ? t("basket.summary.promoAlreadyUsed")
+            : t("basket.summary.promoInvalid"),
         );
         return;
       }
-      setAppliedPromo({ code: promocode.trim(), discountPercent: result.discountPercent || 0 });
+      setAppliedPromo({
+        code: promocode.trim(),
+        discountPercent: result.discountPercent || 0,
+      });
     } catch {
       setAppliedPromo(null);
-      setPromoError(t('basket.summary.promoInvalid'));
+      setPromoError(t("basket.summary.promoInvalid"));
     } finally {
       setIsApplyingPromo(false);
     }
@@ -143,22 +172,24 @@ export default function BasketPage() {
 
   const handleRemovePromo = () => {
     setAppliedPromo(null);
-    setPromocode('');
+    setPromocode("");
     setPromoError(null);
   };
 
   const handlePaymentSuccess = async (result: any) => {
-    showToast('Payment successful! Order is being created...', 'success');
+    showToast("Payment successful! Order is being created...", "success");
     setShowPaymentModal(false);
-    await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+    await queryClient.invalidateQueries({ queryKey: ["getAllBaskets"] });
     setTimeout(async () => {
-      await queryClient.invalidateQueries({ queryKey: ['getAllOrders'] });
-      router.push(`/myorders/delivery?paymentSuccess=true&paymentIntentId=${result?.paymentIntentId || ''}`);
+      await queryClient.invalidateQueries({ queryKey: ["getAllOrders"] });
+      router.push(
+        `/myorders/delivery?paymentSuccess=true&paymentIntentId=${result?.paymentIntentId || ""}`,
+      );
     }, 2000);
   };
 
   const handlePaymentError = (error: string) => {
-    showToast(error || 'Payment error', 'error');
+    showToast(error || "Payment error", "error");
   };
 
   const { formatPrice } = useFormatPrice();
@@ -167,14 +198,23 @@ export default function BasketPage() {
     return (
       <AuthGuard
         icon={
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            width="36"
+            height="36"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#000"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
         }
-        title={t('auth.modal.basketTitle')}
-        subtitle={t('auth.modal.basketSubtitle')}
+        title={t("auth.modal.basketTitle")}
+        subtitle={t("auth.modal.basketSubtitle")}
       />
     );
   }
@@ -183,39 +223,60 @@ export default function BasketPage() {
     <>
       <div className={styles.page}>
         <div className={styles.left}>
-          <h1 className={styles.title}>{t('basket.title')}</h1>
+          <h1 className={styles.title}>{t("basket.title")}</h1>
 
-          <div className={styles.itemsList} style={{ position: 'relative', minHeight: '300px' }}>
+          <div
+            className={styles.itemsList}
+            style={{ position: "relative", minHeight: "300px" }}
+          >
             {isBasketsLoading && <Spinner overlay />}
-            <div style={{ opacity: isBasketsLoading ? 0.4 : 1, transition: 'opacity 0.2s' }}>
+            <div
+              style={{
+                opacity: isBasketsLoading ? 0.4 : 1,
+                transition: "opacity 0.2s",
+              }}
+            >
               {allBasketItems.length > 0 ? (
-                pagedBasketItems.map((basket: BasketDataItem, index: number) => (
-                  <BasketItem
-                    key={basket.uuid || index}
-                    basket={basket}
-                    isLocal={!isAuth}
-                    onRemove={async (uuid: string) => {
-                      if (!isAuth) {
-                        await removeFromBasket(uuid);
-                        setLocalBaskets(await getBasketItems());
-                      } else {
-                        await removeBasketCatalog(uuid, cookies.token);
-                        await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
-                      }
-                    }}
-                    onUpdateQuantity={async (uuid: string, quantity: number) => {
-                      if (!isAuth) {
-                        await updateBasketItemQuantity(uuid, quantity);
-                        setLocalBaskets(await getBasketItems());
-                      } else {
-                        await updateRemoteBasketQuantity(uuid, quantity, cookies.token);
-                        await queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
-                      }
-                    }}
-                  />
-                ))
+                pagedBasketItems.map(
+                  (basket: BasketDataItem, index: number) => (
+                    <BasketItem
+                      key={basket.uuid || index}
+                      basket={basket}
+                      isLocal={!isAuth}
+                      onRemove={async (uuid: string) => {
+                        if (!isAuth) {
+                          await removeFromBasket(uuid);
+                          setLocalBaskets(await getBasketItems());
+                        } else {
+                          await removeBasketCatalog(uuid, cookies.token);
+                          await queryClient.invalidateQueries({
+                            queryKey: ["getAllBaskets"],
+                          });
+                        }
+                      }}
+                      onUpdateQuantity={async (
+                        uuid: string,
+                        quantity: number,
+                      ) => {
+                        if (!isAuth) {
+                          await updateBasketItemQuantity(uuid, quantity);
+                          setLocalBaskets(await getBasketItems());
+                        } else {
+                          await updateRemoteBasketQuantity(
+                            uuid,
+                            quantity,
+                            cookies.token,
+                          );
+                          await queryClient.invalidateQueries({
+                            queryKey: ["getAllBaskets"],
+                          });
+                        }
+                      }}
+                    />
+                  ),
+                )
               ) : (
-                <p className={styles.emptyText}>{t('basket.empty')}</p>
+                <p className={styles.emptyText}>{t("basket.empty")}</p>
               )}
             </div>
           </div>
@@ -224,7 +285,7 @@ export default function BasketPage() {
             <div className={paginationStyles.pagination}>
               <button
                 className={paginationStyles.pageBtn}
-                onClick={() => setBasketPage(p => Math.max(1, p - 1))}
+                onClick={() => setBasketPage((p) => Math.max(1, p - 1))}
                 disabled={basketPage === 1}
               >
                 <PaginationLeft />
@@ -235,32 +296,40 @@ export default function BasketPage() {
                   for (let i = 1; i <= totalBasketPages; i++) pages.push(i);
                 } else {
                   pages.push(1);
-                  if (basketPage > 3) pages.push('...');
+                  if (basketPage > 3) pages.push("...");
                   const start = Math.max(2, basketPage - 1);
-                  const end = basketPage <= 2
-                    ? Math.min(totalBasketPages - 1, 3)
-                    : Math.min(totalBasketPages - 1, basketPage + 1);
+                  const end =
+                    basketPage <= 2
+                      ? Math.min(totalBasketPages - 1, 3)
+                      : Math.min(totalBasketPages - 1, basketPage + 1);
                   for (let i = start; i <= end; i++) pages.push(i);
-                  if (basketPage < totalBasketPages - 2) pages.push('...');
+                  if (basketPage < totalBasketPages - 2) pages.push("...");
                   pages.push(totalBasketPages);
                 }
                 return pages.map((page, i) =>
-                  page === '...' ? (
-                    <span key={`dots-${i}`} className={paginationStyles.pageDots}>...</span>
+                  page === "..." ? (
+                    <span
+                      key={`dots-${i}`}
+                      className={paginationStyles.pageDots}
+                    >
+                      ...
+                    </span>
                   ) : (
                     <button
                       key={page}
-                      className={`${paginationStyles.pageBtn} ${basketPage === page ? paginationStyles.pageBtnActive : ''}`}
+                      className={`${paginationStyles.pageBtn} ${basketPage === page ? paginationStyles.pageBtnActive : ""}`}
                       onClick={() => setBasketPage(page as number)}
                     >
                       {page}
                     </button>
-                  )
+                  ),
                 );
               })()}
               <button
                 className={paginationStyles.pageBtn}
-                onClick={() => setBasketPage(p => Math.min(totalBasketPages, p + 1))}
+                onClick={() =>
+                  setBasketPage((p) => Math.min(totalBasketPages, p + 1))
+                }
                 disabled={basketPage === totalBasketPages}
               >
                 <PaginationRight />
@@ -271,14 +340,16 @@ export default function BasketPage() {
 
         <div className={styles.right}>
           <div className={styles.summaryCard}>
-            <h2 className={styles.summaryTitle}>{t('basket.summary.title')}</h2>
+            <h2 className={styles.summaryTitle}>{t("basket.summary.title")}</h2>
 
             <div className={styles.field}>
-              <label className={styles.fieldLabel}>{t('basket.summary.promoLabel')}</label>
+              <label className={styles.fieldLabel}>
+                {t("basket.summary.promoLabel")}
+              </label>
               <div className={styles.inputWrapper}>
                 <input
                   className={styles.inputWithBtn}
-                  placeholder={t('basket.summary.promoPlaceholder')}
+                  placeholder={t("basket.summary.promoPlaceholder")}
                   value={promocode}
                   disabled={!!appliedPromo}
                   onChange={(e) => {
@@ -287,8 +358,11 @@ export default function BasketPage() {
                   }}
                 />
                 {appliedPromo ? (
-                  <button className={styles.applyBtn} onClick={handleRemovePromo}>
-                    {t('basket.summary.remove')}
+                  <button
+                    className={styles.applyBtn}
+                    onClick={handleRemovePromo}
+                  >
+                    {t("basket.summary.remove")}
                   </button>
                 ) : (
                   <button
@@ -296,53 +370,76 @@ export default function BasketPage() {
                     onClick={handleApplyPromo}
                     disabled={isApplyingPromo || !promocode.trim()}
                   >
-                    {isApplyingPromo ? t('common.loading') : t('basket.summary.apply')}
+                    {isApplyingPromo
+                      ? t("common.loading")
+                      : t("basket.summary.apply")}
                   </button>
                 )}
               </div>
-              {promoError && <span className={styles.errorText}>{promoError}</span>}
+              {promoError && (
+                <span className={styles.errorText}>{promoError}</span>
+              )}
               {appliedPromo && (
-                <span className={styles.errorText} style={{ color: '#2e7d32' }}>
-                  {t('basket.summary.promoApplied', { discount: appliedPromo.discountPercent })}
+                <span className={styles.errorText} style={{ color: "#2e7d32" }}>
+                  {t("basket.summary.promoApplied", {
+                    discount: appliedPromo.discountPercent,
+                  })}
                 </span>
               )}
             </div>
 
             <div className={styles.summaryRowsContainer}>
               <div className={styles.summaryRow}>
-                <span className={styles.rowLabelBold}>{t('basket.summary.subtotal')}</span>
+                <span className={styles.rowLabelBold}>
+                  {t("basket.summary.subtotal")}
+                </span>
                 <span className={styles.bold}>{formatPrice(subtotal)}</span>
               </div>
               <div className={styles.summaryRow}>
-                <span className={styles.rowLabelValue}>{t('basket.summary.tax')}</span>
+                <span className={styles.rowLabelValue}>
+                  {t("basket.summary.tax")}
+                </span>
                 <span className={styles.rowValue}>{formatPrice(tax)}</span>
               </div>
               <div className={styles.summaryRow}>
-                <span className={styles.rowLabelValue}>{t('basket.summary.shipping')}</span>
-                <span className={styles.rowValue}>{formatPrice(allBasketItems.length > 0 ? SHIPPING : 0)}</span>
+                <span className={styles.rowLabelValue}>
+                  {t("basket.summary.shipping")}
+                </span>
+                <span className={styles.rowValue}>
+                  {formatPrice(allBasketItems.length > 0 ? SHIPPING : 0)}
+                </span>
               </div>
 
               {appliedPromo && (
                 <div className={styles.summaryRow}>
-                  <span className={styles.rowLabelValue}>{t('basket.summary.discount')}</span>
-                  <span className={styles.rowValue} style={{ color: '#2e7d32' }}>
+                  <span className={styles.rowLabelValue}>
+                    {t("basket.summary.discount")}
+                  </span>
+                  <span
+                    className={styles.rowValue}
+                    style={{ color: "#2e7d32" }}
+                  >
                     -{formatPrice(discountAmount)}
                   </span>
                 </div>
               )}
 
-              <div className={styles.summaryRow} style={{ marginTop: '24px' }}>
-                <span className={styles.rowLabelBold}>{t('basket.summary.total')}</span>
+              <div className={styles.summaryRow} style={{ marginTop: "24px" }}>
+                <span className={styles.rowLabelBold}>
+                  {t("basket.summary.total")}
+                </span>
                 <span className={styles.totalPrice}>{formatPrice(total)}</span>
               </div>
             </div>
 
             {emptyBasketError && (
-              <span className={styles.errorText}>{t('basket.summary.emptyBasketCheckout')}</span>
+              <span className={styles.errorText}>
+                {t("basket.summary.emptyBasketCheckout")}
+              </span>
             )}
 
             <button className={styles.checkoutBtn} onClick={handleCheckout}>
-              {t('basket.summary.checkout')}
+              {t("basket.summary.checkout")}
             </button>
           </div>
         </div>
