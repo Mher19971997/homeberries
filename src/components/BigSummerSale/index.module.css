@@ -173,3 +173,11 @@
   width: 24px;
   border-radius: 4px;
 }
+
+
+@media (min-width: 320px) and (max-width: 375px) {
+  .thinText,.boldText{
+    font-size: 40px;
+    line-height: 1.25;
+  }
+}

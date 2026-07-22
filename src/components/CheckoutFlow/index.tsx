@@ -7,6 +7,7 @@ import styles from "./index.module.css";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getAllBaskets } from "@homeberris/http/basketApi";
 import { getDeliveryAddressApi } from "@homeberris/http/deliveryAddressApi";
+import { getReverseGeocode } from "@homeberris/http/geocodeApi";
 import qs from "qs";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
@@ -60,6 +61,8 @@ interface Address {
   tag: "HOME" | "OFFICE" | string;
   street: string;
   phone: string;
+  lat: string;
+  lng: string;
 }
 
 interface ShipmentMethod {
@@ -278,6 +281,31 @@ function AddressForm({
   );
 }
 
+function AddressLines({ addr, locale }: { addr: Address; locale: string }) {
+  const { data } = useQuery({
+    queryKey: ["reverseGeocode", addr.uuid, locale],
+    queryFn: () => getReverseGeocode(addr.lat, addr.lng, locale),
+    enabled: !!addr.lat && !!addr.lng,
+    staleTime: Infinity,
+  });
+
+  const translated = data?.address;
+
+  if (translated) {
+    return <p className={styles.addressLine}>{translated}</p>;
+  }
+
+  return (
+    <>
+      {addr.street.split("\n").map((line, i) => (
+        <p key={i} className={styles.addressLine}>
+          {line}
+        </p>
+      ))}
+    </>
+  );
+}
+
 function AddressStep({
   addresses,
   selected,
@@ -320,7 +348,8 @@ function AddressStep({
     setShowForm(false);
     setEditAddr(null);
   };
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
+  const locale = i18n.language;
 
   return (
     <div className={styles.stepContent}>
@@ -347,11 +376,7 @@ function AddressStep({
                 <span className={styles.addressLabel}>{addr.label}</span>
                 <span className={styles.addressTag}>{addr.tag}</span>
               </div>
-              {addr.street.split("\n").map((line, i) => (
-                <p key={i} className={styles.addressLine}>
-                  {line}
-                </p>
-              ))}
+              <AddressLines addr={addr} locale={locale} />
             </div>
             <div className={styles.addressActions}>
               <button
@@ -1044,7 +1069,7 @@ export default function CheckoutFlow() {
       getDeliveryAddressApi(
         qs.stringify({
           attributeMeta: {
-            exclude: ["lng", "lat", "userUuid", "updatedAt", "deletedAt"],
+            exclude: ["userUuid", "updatedAt", "deletedAt"],
           },
         }),
         cookies.token,
@@ -1079,6 +1104,8 @@ export default function CheckoutFlow() {
           street:
             "2118 Thornridge Cir. Syracuse, Connecticut 35624\n(209) 555-0104",
           phone: "(209) 555-0104",
+          lat: "",
+          lng: "",
         },
         {
           uuid: "2",
@@ -1086,6 +1113,8 @@ export default function CheckoutFlow() {
           tag: "OFFICE",
           street: "2715 Ash Dr. San Jose, South Dakota 83475\n(704) 555-0127",
           phone: "(704) 555-0127",
+          lat: "",
+          lng: "",
         },
       ];
     }
@@ -1095,6 +1124,8 @@ export default function CheckoutFlow() {
       tag: a.tag || "HOME",
       street: a.address ?? "",
       phone: "",
+      lat: a.lat ?? "",
+      lng: a.lng ?? "",
     }));
   }, [deliveryAddresses]);
 

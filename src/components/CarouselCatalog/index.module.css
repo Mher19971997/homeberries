@@ -417,4 +417,14 @@
     padding: unset;
     min-height: 56px;
   }
+  .proText {
+    font-size: 22px;
+  }
+  .titleLight,.titleBold{
+    font-size: 40px;
+    line-height: 1.2;
+  }
+  .description{
+    font-size: 16px;
+  }
 }
