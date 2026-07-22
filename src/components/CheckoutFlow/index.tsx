@@ -1093,6 +1093,13 @@ export default function CheckoutFlow() {
     ? baskets
     : { data: localBaskets, meta: { count: localBaskets.length } };
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [step]);
+
   const addresses: Address[] = useMemo(() => {
     if (!deliveryAddresses?.data) {
       // Моковые данные для точного соответствия скрину, если бэкенд пуст
