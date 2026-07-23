@@ -75,7 +75,7 @@ const SmallerBanners: React.FC = () => {
           <div className={`${styles.card} ${styles.cardPS5}`}>
             <picture className={styles.imgPS5Container}>
               <source
-                media="(max-width: 600px)"
+                media="(max-width: 699px)"
                 srcSet={getImgSrc(ps5, DEFAULT_IMAGES_MOBILE[0])}
               />
               <img
@@ -107,7 +107,7 @@ const SmallerBanners: React.FC = () => {
             <div className={`${styles.card} ${styles.cardAirpods}`}>
               <picture className={styles.imgAirpodsContainer}>
                 <source
-                  media="(max-width: 600px)"
+                  media="(max-width: 699px)"
                   srcSet={getImgSrc(airpods, DEFAULT_IMAGES_MOBILE[1])}
                 />
                 <img
@@ -146,7 +146,7 @@ const SmallerBanners: React.FC = () => {
             <div className={`${styles.card} ${styles.cardVision}`}>
               <picture className={styles.imgVisionContainer}>
                 <source
-                  media="(max-width: 600px)"
+                  media="(max-width: 699px)"
                   srcSet={getImgSrc(visionPro, DEFAULT_IMAGES_MOBILE[2])}
                 />
                 <img
@@ -217,7 +217,7 @@ const SmallerBanners: React.FC = () => {
           <div className={styles.imgMacContainer}>
             <picture>
               <source
-                media="(max-width: 900px)"
+                media="(max-width: 1536px)"
                 srcSet={getImgSrc(macbook, DEFAULT_IMAGES_MOBILE[3])}
               />
               <img
