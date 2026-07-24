@@ -21,8 +21,6 @@ import CatalogCard from "@homeberris/components/CatalogCard";
 import BigSummerSale from "@homeberris/components/BigSummerSale";
 import Spinner from "@homeberris/components/Spinner";
 
-const DISCOUNT_LIMIT = 4;
-
 import paginationStyles from "@homeberris/app/[locale]/catalog/[category]/index.module.css";
 
 const renderPagination = (
@@ -120,20 +118,29 @@ export default function Home() {
   // На ширинах с 3 колонками (600px–1280px) 8 не делится нацело на 3 и оставляет
   // неполный последний ряд — запрашиваем 6 товаров вместо 8, чтобы ряды были полными.
   const [itemsLimit, setItemsLimit] = useState(8);
+  // Та же проблема у блока скидок: на 3 колонках 4 не делится нацело и оставляет
+  // на второй странице одну карточку — запрашиваем 6 вместо 4.
+  const [discountLimit, setDiscountLimit] = useState(4);
 
   useEffect(() => {
-    const updateItemsLimit = () => {
+    const updateLimits = () => {
       const w = window.innerWidth;
-      setItemsLimit(w > 599 && w <= 1280 ? 6 : 8);
+      const isThreeColumns = w > 599 && w <= 1280;
+      setItemsLimit(isThreeColumns ? 6 : 8);
+      setDiscountLimit(isThreeColumns ? 6 : 4);
     };
-    updateItemsLimit();
-    window.addEventListener("resize", updateItemsLimit);
-    return () => window.removeEventListener("resize", updateItemsLimit);
+    updateLimits();
+    window.addEventListener("resize", updateLimits);
+    return () => window.removeEventListener("resize", updateLimits);
   }, []);
 
   useEffect(() => {
     setNewPage(1);
   }, [itemsLimit]);
+
+  useEffect(() => {
+    setDiscountPage(1);
+  }, [discountLimit]);
 
   const buildQuery = () => {
     const filters: any = {
@@ -189,14 +196,14 @@ export default function Home() {
     isLoading: isDiscountLoading,
     isFetching: isDiscountFetching,
   } = useQuery({
-    queryKey: ["getDiscountCatalogs", discountPage],
+    queryKey: ["getDiscountCatalogs", discountPage, discountLimit],
     queryFn: () =>
       getAllCatalogs(
         qs.stringify({
           filterMeta: { isDiscount: true },
           queryMeta: {
             paginate: true,
-            limit: DISCOUNT_LIMIT,
+            limit: discountLimit,
             page: discountPage,
             order: {
               createdAt: "DESC",
@@ -225,7 +232,7 @@ export default function Home() {
     }
   }, [isDiscountLoading]);
   const discountTotalPages = discountData?.meta
-    ? Math.max(1, Math.ceil(discountData.meta.count / DISCOUNT_LIMIT))
+    ? Math.max(1, Math.ceil(discountData.meta.count / discountLimit))
     : 1;
 
   return (
