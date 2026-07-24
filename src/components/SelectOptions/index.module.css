@@ -2,7 +2,6 @@
   position: relative;
   width: 220px;
   font-family: var(--font-inter);
-  z-index: 10;
 }
 
 .control {
