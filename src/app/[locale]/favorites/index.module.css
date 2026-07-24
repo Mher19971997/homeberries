@@ -148,3 +148,10 @@
     gap: 8px;
   }
 }
+
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 220px;
+    justify-content: center;
+  }
+}

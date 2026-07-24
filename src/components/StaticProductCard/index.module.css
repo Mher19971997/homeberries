@@ -7,7 +7,7 @@
 }
 
 .card {
-    padding: 16px;
+  padding: 16px;
   border-radius: 9px;
   min-height: 432px;
   position: relative;
@@ -114,9 +114,9 @@
   line-height: 24px;
   letter-spacing: 0%;
   text-align: center;
-    color: #fff;
-    border-radius: 8px;
-    max-width: 188px;
+  color: #fff;
+  border-radius: 8px;
+  max-width: 188px;
   transition: background 0.2s;
 }
 
@@ -206,5 +206,12 @@
   .grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .grid {
+    grid-template-columns: 220px;
+    justify-content: center;
   }
 }

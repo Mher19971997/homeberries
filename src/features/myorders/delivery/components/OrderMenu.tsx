@@ -32,12 +32,13 @@ export const OrderMenu = ({ anchorEl, onClose, onDetails }: Props) => {
   if (!anchorEl) return null;
 
   const rect = anchorEl.getBoundingClientRect();
+  const right = window.innerWidth - rect.right;
 
   return (
     <div
       ref={menuRef}
       className={styles.dropdownMenu}
-      style={{ top: rect.bottom + 4, left: rect.left }}
+      style={{ top: rect.bottom + 4, right: right }}
     >
       <button className={styles.dropdownItem} onClick={() => { onDetails(); onClose(); }}>{t('delivery.menu.details')}</button>
       {/* <button className={`${styles.dropdownItem} ${styles.dropdownItemDanger}`} onClick={onClose}>{t('delivery.menu.cancel')}</button> */}

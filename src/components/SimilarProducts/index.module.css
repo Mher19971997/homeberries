@@ -92,6 +92,14 @@
     padding: 0 12px;
   }
 }
+
+@media (max-width: 500px) {
+  .productsGrid {
+    grid-template-columns: 220px;
+    justify-content: center;
+  }
+}
+
 @media (min-width: 320px) and (max-width: 375px) {
   .container {
     padding: unset;
