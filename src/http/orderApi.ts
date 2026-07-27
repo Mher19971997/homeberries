@@ -4,7 +4,7 @@ import * as qs from 'qs';
 
 export interface OrderItem {
   uuid: string;
-  order_N?: string;
+  order_N?: number;
   price: number;
   quantity: number;
   status: string;

@@ -66,7 +66,9 @@
   color: #868686;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.2s, border-color 0.2s;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
   margin-bottom: -1px;
 }
 
@@ -146,15 +148,42 @@
   font-weight: 600;
 }
 
-.status_pending    { background: #f5f5f5; color: #555555; }
-.status_processing { background: #f5f5f5; color: #555555; }
-.status_in_progress{ background: #f5f5f5; color: #555555; }
-.status_shipped    { background: #e8f0e8; color: #2a6a2a; }
-.status_delivered  { background: #000000; color: #ffffff; }
-.status_completed  { background: #000000; color: #ffffff; }
-.status_cancelled  { background: #fbe8e8; color: #8a2020; }
-.status_canceled   { background: #fbe8e8; color: #8a2020; }
-.status_default    { background: #f5f5f5; color: #555555; }
+.status_pending {
+  background: #f5f5f5;
+  color: #555555;
+}
+.status_processing {
+  background: #f5f5f5;
+  color: #555555;
+}
+.status_in_progress {
+  background: #f5f5f5;
+  color: #555555;
+}
+.status_shipped {
+  background: #e8f0e8;
+  color: #2a6a2a;
+}
+.status_delivered {
+  background: #000000;
+  color: #ffffff;
+}
+.status_completed {
+  background: #000000;
+  color: #ffffff;
+}
+.status_cancelled {
+  background: #fbe8e8;
+  color: #8a2020;
+}
+.status_canceled {
+  background: #fbe8e8;
+  color: #8a2020;
+}
+.status_default {
+  background: #f5f5f5;
+  color: #555555;
+}
 
 /* Menu button */
 .menuBtn {
@@ -199,6 +228,7 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
   z-index: 1000;
   min-width: 140px;
+  width: max-content;
   max-width: calc(100vw - 32px);
   overflow: hidden;
 }
@@ -214,6 +244,7 @@
   cursor: pointer;
   text-align: left;
   transition: background 0.15s;
+  white-space: nowrap;
 }
 
 .dropdownItem:hover {
@@ -283,8 +314,12 @@
 }
 
 @keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 
 /* Alert box */
@@ -344,7 +379,6 @@
   margin: 0;
 }
 
-
 /* Order Detail Modal */
 .modalOverlay {
   position: fixed;
@@ -392,7 +426,9 @@
   transition: background 0.15s;
 }
 
-.modalClose:hover { background: #f5f5f5; }
+.modalClose:hover {
+  background: #f5f5f5;
+}
 
 .modalBody {
   padding: 20px 24px 24px;
@@ -475,7 +511,9 @@
   font-weight: 500;
   color: #333;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
 .pageBtn:hover:not(:disabled) {
@@ -512,8 +550,15 @@
 
   .orderHeader {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .orderHeaderRight {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .tabsWrapper {

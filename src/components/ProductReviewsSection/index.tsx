@@ -218,7 +218,7 @@ interface Props {
 }
 
 export default function ProductReviewsSection({ catalog }: Props) {
-  const { t } = useTranslation("common");
+  const { t, i18n } = useTranslation("common");
   const [showAll, setShowAll] = React.useState(false);
   const [rating, setRating] = React.useState(5);
   const [text, setText] = React.useState("");
@@ -226,6 +226,10 @@ export default function ProductReviewsSection({ catalog }: Props) {
   const [cookies] = useCookies(["token"]);
   const isAuth = checkToken();
   const queryClient = useQueryClient();
+
+  const months = t("checkout.shipping.datePicker.months", {
+    returnObjects: true,
+  }) as string[];
 
   const comments: any[] = catalog?.comments || [];
 
@@ -276,11 +280,20 @@ export default function ProductReviewsSection({ catalog }: Props) {
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return "";
-    return new Date(dateStr).toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
+    const dateObj = new Date(dateStr);
+    if (isNaN(dateObj.getTime())) return "";
+
+    const day = dateObj.getDate();
+    const monthName = Array.isArray(months) ? months[dateObj.getMonth()] : "";
+    const year = dateObj.getFullYear();
+
+    return monthName
+      ? `${day} ${monthName} ${year}`
+      : dateObj.toLocaleDateString(i18n.language || "hy", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
   };
 
   return (
