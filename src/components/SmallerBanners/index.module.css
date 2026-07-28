@@ -502,8 +502,7 @@
     display: none;
   }
   .shopBtn {
-    width: 100%;
-    max-width: 70%;
+    width: 240px;
     margin: 0 auto;
     min-height: 56px;
   }
