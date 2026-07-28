@@ -19,6 +19,7 @@ import { useDebounce } from '@homeberris/hooks/useDebounce';
 import { useToast } from '@homeberris/hooks/useToast';
 import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
 import Breadcrumb from '@homeberris/components/Breadcrumb';
+import PositionedSnackbar from '@homeberris/components/PositionedSnackbar';
 import { ScaleIcon } from '@homeberris/assets/icons/compare';
 import { CatalogItem } from '@homeberris/types/catalog';
 import styles from './index.module.css';
@@ -64,6 +65,8 @@ function ComparePage() {
   const isAuth = checkToken();
 
   const [diffOnly, setDiffOnly] = React.useState(false);
+  const [openSuccess, setOpenSuccess] = React.useState(false);
+  const [addedProductName, setAddedProductName] = React.useState('');
   const [searchValue, setSearchValue] = React.useState('');
   const [showSearchDropdown, setShowSearchDropdown] = React.useState(false);
   const searchRef = React.useRef<HTMLDivElement>(null);
@@ -200,10 +203,12 @@ function ComparePage() {
         await addToBasket(product, 1);
       }
     },
-    onSuccess: () => {
+    onSuccess: (_data, product) => {
       queryClient.invalidateQueries({ queryKey: ['basketCount'] });
       queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
       window.dispatchEvent(new Event('basketUpdated'));
+      setAddedProductName(getLoc(product.name, locale));
+      setOpenSuccess(true);
     },
   });
 
@@ -312,6 +317,13 @@ function ComparePage() {
 
   return (
     <div className={styles.body}>
+      <PositionedSnackbar
+        open={openSuccess}
+        handleClose={() => setOpenSuccess(false)}
+        message={t('basket.addedToBasket')}
+        productName={addedProductName}
+      />
+
       <Breadcrumb items={[
         { label: t('productPageContent.breadcrumb.home'), href: '/' },
         { label: t('compare.title') },

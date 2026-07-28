@@ -229,6 +229,16 @@
   color: #ffffff;
 }
 
+.shopBtnLight {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.shopBtnLight:hover {
+  background: #ffffff;
+  color: #000000;
+}
+
 .brDesktop {
   display: inline;
 }

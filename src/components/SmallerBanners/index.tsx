@@ -172,7 +172,7 @@ const SmallerBanners: React.FC = () => {
                 </p>
                 {visionBtn && visionPro?.buttonLink && (
                   <button
-                    className={styles.shopBtn}
+                    className={`${styles.shopBtn} ${styles.shopBtnLight}`}
                     onClick={() => router.push(visionPro.buttonLink!)}
                   >
                     {visionBtn}
