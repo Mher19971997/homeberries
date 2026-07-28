@@ -144,3 +144,17 @@
   background: #f7f7f7;
   color: #17183b;
 }
+
+@media (max-width: 398px) {
+  .wrapper {
+    position: static;
+  }
+
+  .popover {
+    position: absolute;
+    top: calc(85% + 8px);
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
