@@ -486,7 +486,9 @@
     padding: 40px 24px;
     min-height: 460px;
   }
-
+  .macText{
+    max-width: unset;
+  }
   .imgMac {
     width: 85%;
     max-height: 260px;
@@ -500,7 +502,8 @@
     display: none;
   }
   .shopBtn {
-    width: 70%;
+    width: 100%;
+    max-width: 70%;
     margin: 0 auto;
     min-height: 56px;
   }
