@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./index.module.css";
 import { useTranslation } from "react-i18next";
 
@@ -73,6 +73,18 @@ export default function DatePickerCustom({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleScroll = () => {
+      setOpen(false);
+    };
+    document.addEventListener("scroll", handleScroll, true);
+    return () => {
+      document.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [open]);
 
   const weeks = buildMonthMatrix(viewDate.getFullYear(), viewDate.getMonth());
 
