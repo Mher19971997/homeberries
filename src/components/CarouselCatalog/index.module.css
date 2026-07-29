@@ -148,7 +148,7 @@
   }
 
   .bannerContainer {
-    min-height: 869px;
+    min-height: 969px;
     flex-direction: column;
     align-items: stretch;
   }
@@ -422,5 +422,17 @@
   }
   .description{
     font-size: 16px;
+  }
+    .bannerContainer {
+    min-height: 880px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .textBlock{
+    gap: 17px;
+    padding-bottom: 51px;
+  }
+  .bannerImg{
+    margin-bottom: -148px !important;
   }
 }
