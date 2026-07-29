@@ -6,7 +6,7 @@
      в собранном бандле, а он в проде отличается от дева. Без !important
      слайд может схлопнуться до высоты контента вместо 448px. */
   height: 448px !important;
-  background-image: url('/images/BigSummerSale.png');
+  background-image: url("/images/BigSummerSale.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -33,7 +33,7 @@
 }
 
 .mainTitle {
-  font-family: var(--font-inter);
+  font-family: var(--font-bebas);
   font-weight: 100;
   font-size: 72px;
   color: #ffffff;
@@ -83,7 +83,7 @@
 @media (max-width: 768px) {
   .saleBanner {
     height: 480px !important;
-    background-image: url('/images/BigSummerSaleMobile.png');
+    background-image: url("/images/BigSummerSaleMobile.png");
     background-position: center top;
     align-items: center;
     padding: 0 16px;
@@ -107,7 +107,7 @@
   }
 
   .boldText {
-    font-weight: 300 !important;
+    font-weight: 500 !important;
     display: block;
   }
 
@@ -174,9 +174,9 @@
   border-radius: 4px;
 }
 
-
 @media (min-width: 320px) and (max-width: 375px) {
-  .thinText,.boldText{
+  .thinText,
+  .boldText {
     font-size: 40px;
     line-height: 1.25;
   }

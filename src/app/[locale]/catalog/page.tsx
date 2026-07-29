@@ -1,52 +1,53 @@
-﻿'use client';
+﻿"use client";
 
-import React, { useEffect, useRef, useCallback } from 'react';
-import * as qs from 'qs';
-import Link from 'next/link';
-import { useLocalizedRouter as useRouter } from '@homeberris/hooks/useLocalizedRouter';
-import { useSearchParams } from 'next/navigation';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import React, { useEffect, useRef, useCallback } from "react";
+import * as qs from "qs";
+import Link from "next/link";
+import { useLocalizedRouter as useRouter } from "@homeberris/hooks/useLocalizedRouter";
+import { useSearchParams } from "next/navigation";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
-import { getAllCatalogs } from '@homeberris/http/catalogApi';
-import { getBrands } from '@homeberris/http/brandApi';
-import { CatalogItem } from '@homeberris/types/catalog';
-import CatalogCard from '@homeberris/components/CatalogCard';
-import { useTranslation } from 'react-i18next';
-import Breadcrumb from '@homeberris/components/Breadcrumb';
+import { getAllCatalogs } from "@homeberris/http/catalogApi";
+import { getBrands } from "@homeberris/http/brandApi";
+import { CatalogItem } from "@homeberris/types/catalog";
+import CatalogCard from "@homeberris/components/CatalogCard";
+import { useTranslation } from "react-i18next";
+import Breadcrumb from "@homeberris/components/Breadcrumb";
 
-import styles from '@homeberris/app/[locale]/catalog/index.module.css';
-import SelectOptions from '@homeberris/components/SelectOptions';
+import styles from "@homeberris/app/[locale]/catalog/index.module.css";
+import SelectOptions from "@homeberris/components/SelectOptions";
 
 const LIMIT = 12;
 
 const getLoc = (val: any, locale: string) => {
-  if (!val) return '';
-  if (typeof val === 'string') return val;
-  return val[locale] || val.ru || val.en || '';
+  if (!val) return "";
+  if (typeof val === "string") return val;
+  return val[locale] || val.ru || val.en || "";
 };
 
 const buildCatalogUrl = (catalog: CatalogItem, locale: string) => {
-  const cat = getLoc((catalog as any).category?.name, 'en');
-  const sub = getLoc((catalog as any).subCategorie?.name, 'en');
-  if (cat && sub) return `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${catalog.uuid}`;
+  const cat = getLoc((catalog as any).category?.name, "en");
+  const sub = getLoc((catalog as any).subCategorie?.name, "en");
+  if (cat && sub)
+    return `/catalog/${encodeURIComponent(cat)}/${encodeURIComponent(sub)}/${catalog.uuid}`;
   if (cat) return `/catalog/${encodeURIComponent(cat)}/${catalog.uuid}`;
   return `/catalog`;
 };
 
 export default function CatalogIndexPage() {
   const router = useRouter();
-  const { t, i18n } = useTranslation('common');
-  const locale = i18n.language || 'ru';
+  const { t, i18n } = useTranslation("common");
+  const locale = i18n.language || "ru";
   const searchParams = useSearchParams();
-  const searchQuery = searchParams?.get('search') ?? '';
+  const searchQuery = searchParams?.get("search") ?? "";
 
-  const [sortBy, setSortBy] = React.useState('newest');
-  const [selectedBrand, setSelectedBrand] = React.useState('');
-  const [minPrice, setMinPrice] = React.useState('');
-  const [maxPrice, setMaxPrice] = React.useState('');
+  const [sortBy, setSortBy] = React.useState("newest");
+  const [selectedBrand, setSelectedBrand] = React.useState("");
+  const [minPrice, setMinPrice] = React.useState("");
+  const [maxPrice, setMaxPrice] = React.useState("");
 
-  const [debouncedMin, setDebouncedMin] = React.useState('');
-  const [debouncedMax, setDebouncedMax] = React.useState('');
+  const [debouncedMin, setDebouncedMin] = React.useState("");
+  const [debouncedMax, setDebouncedMax] = React.useState("");
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedMin(minPrice), 300);
@@ -61,7 +62,7 @@ export default function CatalogIndexPage() {
   const sentinelRef = useRef<HTMLDivElement>(null);
 
   const { data: brandsData } = useQuery({
-    queryKey: ['getAllBrands'],
+    queryKey: ["getAllBrands"],
     queryFn: getBrands,
   });
   const brands = brandsData?.data || [];
@@ -84,31 +85,36 @@ export default function CatalogIndexPage() {
         ...(debouncedMax ? { lte: debouncedMax } : {}),
       };
     }
-    if (sortBy === 'price_asc') filters.queryMeta.order = { price: 'ASC' };
-    else if (sortBy === 'price_desc') filters.queryMeta.order = { price: 'DESC' };
-    else filters.queryMeta.order = { createdAt: 'DESC' };
+    if (sortBy === "price_asc") filters.queryMeta.order = { price: "ASC" };
+    else if (sortBy === "price_desc")
+      filters.queryMeta.order = { price: "DESC" };
+    else filters.queryMeta.order = { createdAt: "DESC" };
 
     return qs.stringify(filters);
   };
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['catalogInfinite', searchQuery, sortBy, selectedBrand, debouncedMin, debouncedMax],
-    queryFn: ({ pageParam = 1 }) => getAllCatalogs(buildQuery(pageParam as number)),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage: any, allPages) => {
-      const total = lastPage?.meta?.count || 0;
-      const loaded = allPages.length * LIMIT;
-      return loaded < total ? allPages.length + 1 : undefined;
-    },
-  });
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: [
+        "catalogInfinite",
+        searchQuery,
+        sortBy,
+        selectedBrand,
+        debouncedMin,
+        debouncedMax,
+      ],
+      queryFn: ({ pageParam = 1 }) =>
+        getAllCatalogs(buildQuery(pageParam as number)),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage: any, allPages) => {
+        const total = lastPage?.meta?.count || 0;
+        const loaded = allPages.length * LIMIT;
+        return loaded < total ? allPages.length + 1 : undefined;
+      },
+    });
 
-  const allCatalogs: CatalogItem[] = data?.pages.flatMap((p: any) => p.data) || [];
+  const allCatalogs: CatalogItem[] =
+    data?.pages.flatMap((p: any) => p.data) || [];
   const totalCount = data?.pages[0]?.meta?.count || 0;
 
   // IntersectionObserver — подгружаем когда sentinel виден
@@ -118,13 +124,15 @@ export default function CatalogIndexPage() {
         fetchNextPage();
       }
     },
-    [fetchNextPage, hasNextPage, isFetchingNextPage]
+    [fetchNextPage, hasNextPage, isFetchingNextPage],
   );
 
   useEffect(() => {
     const el = sentinelRef.current;
     if (!el) return;
-    const observer = new IntersectionObserver(handleObserver, { threshold: 0.1 });
+    const observer = new IntersectionObserver(handleObserver, {
+      threshold: 0.1,
+    });
     observer.observe(el);
     return () => observer.disconnect();
   }, [handleObserver]);
@@ -132,23 +140,31 @@ export default function CatalogIndexPage() {
   return (
     <div className={styles.body}>
       {/* Breadcrumb */}
-      <Breadcrumb items={[
-        { label: t('catalogIndex.breadcrumbHome'), href: '/' },
-        { label: searchQuery ? `${t('catalogIndex.searchPrefix')}${searchQuery}` : t('catalogIndex.breadcrumbCatalog') },
-      ]} />
+      <Breadcrumb
+        items={[
+          { label: t("catalogIndex.breadcrumbHome"), href: "/" },
+          {
+            label: searchQuery
+              ? `${t("catalogIndex.searchPrefix")}${searchQuery}`
+              : t("catalogIndex.breadcrumbCatalog"),
+          },
+        ]}
+      />
 
       {/* Горизонтальный фильтр */}
       <div className={styles.filterBar}>
         {/* Кол-во */}
-        <span className={styles.filterCount}>{t('catalogIndex.count', { count: totalCount })}</span>
+        <span className={styles.filterCount}>
+          {t("catalogIndex.count", { count: totalCount })}
+        </span>
 
         {/* Бренд */}
         <SelectOptions
           value={selectedBrand}
           onChange={setSelectedBrand}
-          placeholder={t('catalogIndex.allBrands')}
+          placeholder={t("catalogIndex.allBrands")}
           options={[
-            { label: t('catalogIndex.allBrands'), value: '' },
+            { label: t("catalogIndex.allBrands"), value: "" },
             ...brands.map((b: any) => ({
               label: b.name,
               value: b.uuid,
@@ -161,17 +177,42 @@ export default function CatalogIndexPage() {
           <input
             className={styles.filterInput}
             type="number"
-            placeholder={t('catalogIndex.priceFrom')}
+            min="0"
+            placeholder={t("catalogIndex.priceFrom")}
             value={minPrice}
-            onChange={e => setMinPrice(e.target.value)}
+            onKeyDown={(e) => {
+              // Запрещаем e, E, + и -
+              if (["e", "E", "+", "-"].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={(e) => {
+              const value = e.target.value;
+
+              if (value === "" || Number(value) >= 0) {
+                setMinPrice(value);
+              }
+            }}
           />
           <span className={styles.priceSep}>—</span>
           <input
             className={styles.filterInput}
             type="number"
-            placeholder={t('catalogIndex.priceTo')}
+            min="0"
+            placeholder={t("catalogIndex.priceTo")}
             value={maxPrice}
-            onChange={e => setMaxPrice(e.target.value)}
+            onKeyDown={(e) => {
+              // Запрещаем e, E, + и -
+              if (["e", "E", "+", "-"].includes(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === "" || Number(value) >= 0) {
+                setMaxPrice(value);
+              }
+            }}
           />
         </div>
 
@@ -180,19 +221,26 @@ export default function CatalogIndexPage() {
           value={sortBy}
           onChange={setSortBy}
           options={[
-            { label: t('catalogIndex.sortNewest'), value: 'newest' },
-            { label: t('catalogIndex.sortPriceAsc'), value: 'price_asc' },
-            { label: t('catalogIndex.sortPriceDesc'), value: 'price_desc' },
+            { label: t("catalogIndex.sortNewest"), value: "newest" },
+            { label: t("catalogIndex.sortPriceAsc"), value: "price_asc" },
+            { label: t("catalogIndex.sortPriceDesc"), value: "price_desc" },
           ]}
         />
 
         {/* Сброс */}
-        {(selectedBrand || minPrice || maxPrice || sortBy !== 'newest') && (
+        {(selectedBrand || minPrice || maxPrice || sortBy !== "newest") && (
           <button
             className={styles.resetBtn}
-            onClick={() => { setSelectedBrand(''); setMinPrice(''); setMaxPrice(''); setDebouncedMin(''); setDebouncedMax(''); setSortBy('newest'); }}
+            onClick={() => {
+              setSelectedBrand("");
+              setMinPrice("");
+              setMaxPrice("");
+              setDebouncedMin("");
+              setDebouncedMax("");
+              setSortBy("newest");
+            }}
           >
-            {t('catalogIndex.reset')}
+            {t("catalogIndex.reset")}
           </button>
         )}
       </div>
@@ -204,7 +252,7 @@ export default function CatalogIndexPage() {
         </div>
       ) : allCatalogs.length === 0 ? (
         <div className={styles.emptyBox}>
-          <p className={styles.emptyText}>{t('catalogIndex.empty')}</p>
+          <p className={styles.emptyText}>{t("catalogIndex.empty")}</p>
         </div>
       ) : (
         <div className={styles.container}>
@@ -231,7 +279,7 @@ export default function CatalogIndexPage() {
 
       {/* Конец списка */}
       {!hasNextPage && allCatalogs.length > 0 && (
-        <p className={styles.endText}>{t('catalogIndex.allLoaded')}</p>
+        <p className={styles.endText}>{t("catalogIndex.allLoaded")}</p>
       )}
     </div>
   );

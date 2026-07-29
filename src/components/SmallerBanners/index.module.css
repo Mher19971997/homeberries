@@ -144,7 +144,7 @@
 }
 
 .titleLg {
-  font-family: var(--font-inter);
+  font-family: var(--font-bebas);
   font-weight: 500;
   font-style: Medium;
   font-size: 47px;
@@ -161,6 +161,7 @@
   margin: 0;
   line-height: 0.95;
   letter-spacing: -1px;
+  font-family: var(--font-bebas);
 }
 
 .titleMac strong {
@@ -178,7 +179,7 @@
 
 .titleSm {
   color: #000000;
-  font-family: var(--font-inter);
+  font-family: var(--font-bebas);
   font-weight: 300;
   font-style: Light;
   font-size: 29px;
@@ -188,6 +189,7 @@
 }
 
 .titleSmLight {
+  font-family: var(--font-bebas);
   color: #ffffff;
 }
 
