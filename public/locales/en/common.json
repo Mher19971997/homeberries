@@ -498,7 +498,8 @@
       "status": "Status",
       "qty": "Quantity",
       "price": "Total",
-      "date": "Date"
+      "date": "Date",
+      "address": "Delivery address"
     },
     "status": {
       "delivered": "Delivered",

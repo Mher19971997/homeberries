@@ -1,6 +1,6 @@
-import { $authHost } from '@homeberris/http/index';
-import { ListResult } from '@homeberris/types/filter';
-import * as qs from 'qs';
+import { $authHost } from "@homeberris/http/index";
+import { ListResult } from "@homeberris/types/filter";
+import * as qs from "qs";
 
 export interface OrderItem {
   uuid: string;
@@ -27,6 +27,13 @@ export interface OrderItem {
     uuid: string;
     email: string;
   };
+  deliveryAddress?: {
+    uuid: string;
+    address: string;
+    lat?: string;
+    lng?: string;
+    tag?: string;
+  };
 }
 
 export interface OrdersResponse {
@@ -36,7 +43,7 @@ export interface OrdersResponse {
 
 const getAllOrders = async (
   query?: string,
-  token?: string
+  token?: string,
 ): Promise<OrdersResponse> => {
   const queryString = query || qs.stringify({ queryMeta: { paginate: true } });
   const { data } = await $authHost.get(`/api/v1/order?${queryString}`);
@@ -49,7 +56,7 @@ const getOrderByUuid = async (uuid: string): Promise<OrderItem> => {
 };
 
 const createOrder = async (inputDto: any): Promise<OrderItem> => {
-  const { data } = await $authHost.post('/api/v1/order', inputDto);
+  const { data } = await $authHost.post("/api/v1/order", inputDto);
   return data;
 };
 

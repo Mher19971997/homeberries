@@ -33,7 +33,9 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: border-color 0.18s, background 0.18s;
+  transition:
+    border-color 0.18s,
+    background 0.18s;
   background: #fff;
   user-select: none;
 }
@@ -56,7 +58,9 @@
   transition: border-color 0.2s;
 }
 
-.addressInput:focus { border-color: #000; }
+.addressInput:focus {
+  border-color: #000;
+}
 
 .suggestionsList {
   position: absolute;
@@ -67,7 +71,7 @@
   border: 1px solid #e0e0e0;
   border-radius: 10px;
   z-index: 100;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   max-height: 200px;
   overflow-y: auto;
 }
@@ -82,8 +86,12 @@
   transition: background 0.15s;
 }
 
-.suggestionItem:hover { background: #f6f6f6; }
-.suggestionItem:last-child { border-bottom: none; }
+.suggestionItem:hover {
+  background: #f6f6f6;
+}
+.suggestionItem:last-child {
+  border-bottom: none;
+}
 
 .addressFormBtns {
   display: flex;
@@ -612,7 +620,7 @@
   left: 63%;
   width: 30px;
   height: 220%;
-  background-color: #2C2C2CA8;
+  background-color: #2c2c2ca8;
   /* background: rgba(255, 255, 255, 0.04); */
   transform: rotate(28deg);
   pointer-events: none;
@@ -864,6 +872,30 @@
   opacity: 0.9;
 }
 
+.payButton {
+  min-height: 64px;
+  background: #000;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--font-inter);
+  color: #fff;
+  cursor: pointer;
+  max-width: 210px;
+  width: 100%;
+  transition: opacity 0.2s;
+}
+
+.payButton:hover {
+  opacity: 0.9;
+}
+
+.payButtonDisabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .billingAddressSection {
   margin-top: 48px;
   margin-bottom: 48px;
@@ -992,7 +1024,7 @@
   .navButtons {
     justify-content: center;
   }
-  .cardVisual{
+  .cardVisual {
     max-width: 100%;
   }
 }
@@ -1150,7 +1182,8 @@
   .btnBack,
   .btnNext,
   .paymentPanel .btnBack,
-  .paymentPanel .btnNext {
+  .paymentPanel .btnNext,
+  .payButton {
     width: 100%;
     padding: 0;
     height: 48px;

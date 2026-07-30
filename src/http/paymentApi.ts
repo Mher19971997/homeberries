@@ -1,4 +1,4 @@
-import { $authHost } from '@homeberris/http/index';
+import { $authHost } from "@homeberris/http/index";
 
 export interface CreatePaymentIntentRequest {
   amount: number; // сумма в копейках
@@ -6,7 +6,8 @@ export interface CreatePaymentIntentRequest {
   orderUuid?: string;
   basketUuids?: string[];
   description?: string;
-  promocode?: string
+  promocode?: string;
+  deliveryAddressUuid?: string;
 }
 
 export interface PaymentIntentResponse {
@@ -19,6 +20,7 @@ export interface PaymentIntentResponse {
 export interface ConfirmPaymentRequest {
   paymentIntentId: string;
   paymentMethodId?: string;
+  deliveryAddressUuid?: string;
 }
 
 export interface PaymentResultResponse {
@@ -29,24 +31,32 @@ export interface PaymentResultResponse {
 }
 
 const createPaymentIntent = async (
-  inputDto: CreatePaymentIntentRequest
+  inputDto: CreatePaymentIntentRequest,
 ): Promise<PaymentIntentResponse> => {
-  const { data } = await $authHost.post('/api/v1/payment/create-intent', inputDto);
+  const { data } = await $authHost.post(
+    "/api/v1/payment/create-intent",
+    inputDto,
+  );
   return data;
 };
 
 const confirmPayment = async (
   inputDto: ConfirmPaymentRequest,
-  orderUuid?: string
+  orderUuid?: string,
 ): Promise<PaymentResultResponse> => {
   // orderUuid не обязателен, так как заказ создается после успешного платежа
-  const queryString = orderUuid ? `?orderUuid=${orderUuid}` : '';
-  const { data } = await $authHost.post(`/api/v1/payment/confirm${queryString}`, inputDto);
+  const queryString = orderUuid ? `?orderUuid=${orderUuid}` : "";
+  const { data } = await $authHost.post(
+    `/api/v1/payment/confirm${queryString}`,
+    inputDto,
+  );
   return data;
 };
 
 const getPaymentIntent = async (paymentIntentId: string): Promise<any> => {
-  const { data } = await $authHost.get(`/api/v1/payment/intent/${paymentIntentId}`);
+  const { data } = await $authHost.get(
+    `/api/v1/payment/intent/${paymentIntentId}`,
+  );
   return data;
 };
 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect, useRef } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Home, Briefcase } from "lucide-react";
 import { useFormatPrice } from "@homeberris/utils/formatPrice";
 
@@ -52,6 +52,7 @@ import {
   confirmPayment,
   createPaymentIntent,
 } from "@homeberris/http/paymentApi";
+import { getBasketItemImage } from "@homeberris/utils/getBasketItemImage";
 
 const GOOGLE_LIBRARIES: "places"[] = ["places"];
 
@@ -621,12 +622,14 @@ function CardFormSkeleton({ styles }: { styles: any }) {
 function CreditCardFields({
   clientSecret,
   styles,
+  deliveryAddressUuid,
   onBack,
   onPaymentSuccess,
   onPaymentError,
 }: {
   clientSecret: string;
   styles: any;
+  deliveryAddressUuid: string;
   onBack: () => void;
   onPaymentSuccess: (result: any) => void;
   onPaymentError: (error: string) => void;
@@ -639,8 +642,20 @@ function CreditCardFields({
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const hasValidAddress = !!deliveryAddressUuid;
+  const isPayDisabled =
+    !stripe || isProcessing || !sameAsBilling || !hasValidAddress;
+
   const handlePay = async () => {
     if (!stripe || !elements) return;
+
+    if (!sameAsBilling || !hasValidAddress) {
+      const msg = t("checkout.payment.billingAddressRequired");
+      setErrorMessage(msg);
+      onPaymentError(msg);
+      return;
+    }
+
     const cardNumberElement = elements.getElement(CardNumberElement);
     if (!cardNumberElement) return;
 
@@ -676,6 +691,7 @@ function CreditCardFields({
 
       const result = await confirmPayment({
         paymentIntentId: paymentIntent.id,
+        deliveryAddressUuid,
       });
 
       if (result.success) {
@@ -765,12 +781,14 @@ function CreditCardFields({
           onClick={onBack}
           disabled={isProcessing}
         >
-          {t("checkout.payment.back")}
+          {t("checkout.payment.back")}.
         </button>
         <button
-          className={styles.btnNext}
+          className={`${styles.payButton} ${
+            isPayDisabled ? styles.payButtonDisabled : ""
+          }`}
           onClick={handlePay}
-          disabled={!stripe || isProcessing}
+          disabled={isPayDisabled}
         >
           {isProcessing
             ? t("checkout.payment.processing")
@@ -789,6 +807,7 @@ function PaymentStep({
   discountAmount,
   total,
   address,
+  deliveryAddressUuid,
   shipmentMethod,
   onPaymentSuccess,
   onPaymentError,
@@ -803,6 +822,7 @@ function PaymentStep({
   discountAmount?: number;
   total: number;
   address: string;
+  deliveryAddressUuid: string;
   shipmentMethod: string;
   onPaymentSuccess: (result: any) => void;
   onPaymentError: (error: string) => void;
@@ -842,6 +862,7 @@ function PaymentStep({
       currency: "amd",
       basketUuids: items.map((i) => i.uuid).filter(Boolean) as string[],
       promocode,
+      deliveryAddressUuid,
     })
       .then((res) => {
         if (!active) return;
@@ -866,7 +887,7 @@ function PaymentStep({
       active = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab, hasRealBasketItems, total, promocode]);
+  }, [tab, hasRealBasketItems, total, promocode, deliveryAddressUuid]);
 
   const fmt = (n: number) => formatPrice(n);
   const TABS: PaymentTab[] = ["Credit Card", "PayPal", "PayPal Credit"];
@@ -982,6 +1003,7 @@ function PaymentStep({
               <CreditCardFields
                 clientSecret={clientSecret}
                 styles={styles}
+                deliveryAddressUuid={deliveryAddressUuid}
                 onBack={onBack}
                 onPaymentSuccess={onPaymentSuccess}
                 onPaymentError={onPaymentError}
@@ -1141,14 +1163,7 @@ export default function CheckoutFlow() {
       return [];
     }
     return currentBaskets.data.map((item: BasketDataItem, index: number) => {
-      const images =
-        item?.catalog?.images?.length > 0
-          ? item.catalog.images.map(({ image }: any) => ({
-              imgPath: process.env.NEXT_PUBLIC_BASE_URL + image,
-            }))
-          : [{ imgPath: "/images/cardEmpty.png" }];
-
-      const imgSrc = images?.[0]?.imgPath || "/images/cardEmpty.png";
+      const imgSrc = getBasketItemImage(item);
 
       // Цена позиции — по выбранному варианту, если он есть, иначе базовая,
       // с учётом скидки на сам товар (isDiscount/discountPercent) — как на /basket,
@@ -1271,6 +1286,7 @@ export default function CheckoutFlow() {
                 discountAmount={discountAmount}
                 total={total}
                 address={addressString}
+                deliveryAddressUuid={selectedAddress}
                 shipmentMethod={selectedShipment}
                 promocode={appliedPromo?.code}
                 onPaymentSuccess={handlePaymentSuccess}

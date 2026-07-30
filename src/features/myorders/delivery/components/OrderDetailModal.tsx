@@ -139,6 +139,16 @@ export const OrderDetailModal = ({ order, onClose }: Props) => {
                 {formatDate(order.createdAt)}
               </span>
             </div>
+            {order.deliveryAddress && (
+              <div className={styles.modalRow}>
+                <span className={styles.modalRowLabel}>
+                  {t("delivery.detail.address")}
+                </span>
+                <span className={styles.modalRowValue}>
+                  {order.deliveryAddress.address}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -35,7 +35,7 @@ import ProductDetailsSection from "@homeberris/components/ProductDetailsSection"
 import ProductReviewsSection from "@homeberris/components/ProductReviewsSection";
 import ProductColorSelector from "../ProductColorSelector";
 import AuthModal from "@homeberris/components/AuthModal";
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { checkToken } from "@homeberris/utils/auth";
 import { useFavorites } from "@homeberris/context/favoritesContext";
 import { useCompare } from "@homeberris/context/compareContext";
@@ -49,9 +49,9 @@ import { Copy, Check } from "lucide-react";
 import { useToast } from "@homeberris/hooks/useToast";
 
 const getLoc = (val: any, locale: string): string => {
-  if (!val) return '';
-  if (typeof val === 'string') return val;
-  return val[locale] || val.ru || '';
+  if (!val) return "";
+  if (typeof val === "string") return val;
+  return val[locale] || val.ru || "";
 };
 
 interface ProductPageContentProps {
@@ -86,21 +86,23 @@ export default function ProductPageContent({
   const dragStartX = React.useRef<number | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
 
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
   const { showToast } = useToast();
   const [articuleCopied, setArticuleCopied] = React.useState(false);
   // Выбранные значения вариантов (память/мощность/...) для пересчёта цены.
-  const [selectedVariantValues, setSelectedVariantValues] = React.useState<Record<string, string>>({});
+  const [selectedVariantValues, setSelectedVariantValues] = React.useState<
+    Record<string, string>
+  >({});
 
-  const articule = (catalog as any)?.articule || '';
+  const articule = (catalog as any)?.articule || "";
   const handleCopyArticule = async () => {
     if (!articule) return;
     try {
       await navigator.clipboard.writeText(articule);
       setArticuleCopied(true);
-      showToast(t('productPageContent.articuleCopied'), 'success');
+      showToast(t("productPageContent.articuleCopied"), "success");
       setTimeout(() => setArticuleCopied(false), 1500);
-    } catch { }
+    } catch {}
   };
 
   const trackRecentlyViewed = useTrackRecentlyViewed();
@@ -108,7 +110,7 @@ export default function ProductPageContent({
   // React.useEffect(() => {
   //   if (catalog?.uuid) addRecentlyViewed(catalog.uuid);
   // }, [catalog?.uuid]);
-  
+
   React.useEffect(() => {
     if (catalog?.uuid) trackRecentlyViewed(catalog.uuid);
   }, [catalog?.uuid, trackRecentlyViewed]);
@@ -125,19 +127,30 @@ export default function ProductPageContent({
 
   const queryClient = useQueryClient();
   const [openSuccess, setOpenSuccess] = React.useState(false);
-  const [cookies] = useCookies(['token']);
+  const [cookies] = useCookies(["token"]);
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isInCompare, toggleCompare } = useCompare();
-
 
   const isAuth = checkToken();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const { mutate } = useMutation({
-    mutationFn: (payload: { catalogUuid: string; selectedVariant?: any }) =>
-      insertBasket({ catalogUuid: payload.catalogUuid, quantity: 1, selectedVariant: payload.selectedVariant }, cookies.token),
+    mutationFn: (payload: {
+      catalogUuid: string;
+      selectedVariant?: any;
+      colorUuid?: string;
+    }) =>
+      insertBasket(
+        {
+          catalogUuid: payload.catalogUuid,
+          quantity: 1,
+          selectedVariant: payload.selectedVariant,
+          colorUuid: payload.colorUuid,
+        },
+        cookies.token,
+      ),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['basketCount'] });
-      queryClient.invalidateQueries({ queryKey: ['getAllBaskets'] });
+      queryClient.invalidateQueries({ queryKey: ["basketCount"] });
+      queryClient.invalidateQueries({ queryKey: ["getAllBaskets"] });
       setOpenSuccess(true);
     },
     onError: (error) => console.error(error),
@@ -146,11 +159,17 @@ export default function ProductPageContent({
   // Считает выбранный вариант (значения + цена) для отправки в корзину.
   const computeSelectedVariant = (): any => {
     const vd: any = (catalog as any)?.variants;
-    if (!vd || Array.isArray(vd) || !Array.isArray(vd.params) || !vd.params.length) return undefined;
+    if (
+      !vd ||
+      Array.isArray(vd) ||
+      !Array.isArray(vd.params) ||
+      !vd.params.length
+    )
+      return undefined;
     const eff: Record<string, string> = {};
     vd.params.forEach((p: any) => {
-      const key = typeof p.name === 'string' ? p.name : (p.name?.ru || '');
-      eff[key] = selectedVariantValues[key] || p.options?.[0] || '';
+      const key = typeof p.name === "string" ? p.name : p.name?.ru || "";
+      eff[key] = selectedVariantValues[key] || p.options?.[0] || "";
     });
     const combos = Array.isArray(vd.combinations) ? vd.combinations : [];
     const m = combos.find((c: any) => {
@@ -160,7 +179,10 @@ export default function ProductPageContent({
     return { values: eff, price: m ? m.price : (catalog as any).price };
   };
 
-  const stockBadge = getStockBadge((catalog as any)?.stockQuantity, (catalog as any)?.stockStatus);
+  const stockBadge = getStockBadge(
+    (catalog as any)?.stockQuantity,
+    (catalog as any)?.stockStatus,
+  );
 
   const handleAddToBasket = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -169,7 +191,13 @@ export default function ProductPageContent({
       setShowAuthModal(true);
       return;
     }
-    mutate({ catalogUuid: catalog!.uuid, selectedVariant: computeSelectedVariant() });
+    const selectedColorUuid = dbColors.find(
+      (c) => c.color === selectedColor,
+    )?.uuid;
+    mutate({
+      catalogUuid: catalog!.uuid,
+      selectedVariant: {...computeSelectedVariant(), colorUuid: selectedColorUuid},
+    });
   };
 
   const handleWishlistClick = () => {
@@ -206,8 +234,8 @@ export default function ProductPageContent({
     formatPrice: formatPriceHook,
   } = useProductPurchase({
     catalog: catalog!,
-    onAddToBasket: () => { },
-    onBuyNow: () => { },
+    onAddToBasket: () => {},
+    onBuyNow: () => {},
   });
 
   const [openModal, setOpenModal] = React.useState(false);
@@ -266,42 +294,82 @@ export default function ProductPageContent({
     return null;
   }
 
-  const locale = (routeParams?.locale as string) || 'ru';
+  const locale = (routeParams?.locale as string) || "ru";
   const staticColors = ["#000000", "#781DBC", "#E10000", "#E1B000", "#E8E8E8"];
   const staticStorage = ["128GB", "256GB", "512GB", "1TB"];
   const staticSpecs = [
-    { name: t('productDetails.specs.labels.screenSize'), value: '6.7"', icon: <ScreenSizeIcon /> },
+    {
+      name: t("productDetails.specs.labels.screenSize"),
+      value: '6.7"',
+      icon: <ScreenSizeIcon />,
+    },
     { name: "CPU", value: "Apple A16 Bionic", icon: <CpuIcon /> },
-    { name: t('productDetails.specs.labels.cores'), value: "6", icon: <CoresIcon /> },
-    { name: t('productDetails.specs.labels.mainCamera'), value: "48-12 -12 MP", icon: <CameraIcon /> },
-    { name: t('productDetails.specs.labels.frontCamera'), value: "12 MP", icon: <FrontCameraIcon /> },
-    { name: t('productDetails.specs.labels.batteryCapacity'), value: "4323 mAh", icon: <BatteryIcon /> },
+    {
+      name: t("productDetails.specs.labels.cores"),
+      value: "6",
+      icon: <CoresIcon />,
+    },
+    {
+      name: t("productDetails.specs.labels.mainCamera"),
+      value: "48-12 -12 MP",
+      icon: <CameraIcon />,
+    },
+    {
+      name: t("productDetails.specs.labels.frontCamera"),
+      value: "12 MP",
+      icon: <FrontCameraIcon />,
+    },
+    {
+      name: t("productDetails.specs.labels.batteryCapacity"),
+      value: "4323 mAh",
+      icon: <BatteryIcon />,
+    },
   ];
   const staticDescription =
     "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos in weak, yes and in bright light using the new system with two cameras.";
 
-  const finalCategoryName = getLoc(catalog?.category?.name, locale) || categoryName || "";
-  const finalSubCategoryName = getLoc(catalog?.subCategorie?.name, locale) || subCategoryName || "";
+  const finalCategoryName =
+    getLoc(catalog?.category?.name, locale) || categoryName || "";
+  const finalSubCategoryName =
+    getLoc(catalog?.subCategorie?.name, locale) || subCategoryName || "";
 
   // --- Универсальные варианты с ценой: { params:[{name,options}], combinations:[{values,price,inStock}] } ---
   const variantsData: any = (catalog as any).variants;
   const vParams: Array<{ name: any; options: string[] }> =
-    (variantsData && !Array.isArray(variantsData) && Array.isArray(variantsData.params)) ? variantsData.params : [];
-  const vCombos: Array<{ values: Record<string, string>; price: number; inStock?: boolean }> =
-    (variantsData && !Array.isArray(variantsData) && Array.isArray(variantsData.combinations)) ? variantsData.combinations : [];
+    variantsData &&
+    !Array.isArray(variantsData) &&
+    Array.isArray(variantsData.params)
+      ? variantsData.params
+      : [];
+  const vCombos: Array<{
+    values: Record<string, string>;
+    price: number;
+    inStock?: boolean;
+  }> =
+    variantsData &&
+    !Array.isArray(variantsData) &&
+    Array.isArray(variantsData.combinations)
+      ? variantsData.combinations
+      : [];
 
-  const variantLocName = (n: any): string => typeof n === 'string' ? n : (n?.[locale] || n?.ru || n?.en || n?.hy || '');
+  const variantLocName = (n: any): string =>
+    typeof n === "string" ? n : n?.[locale] || n?.ru || n?.en || n?.hy || "";
   // Стабильный ключ параметра — по ru (комбинации хранятся по нему).
-  const variantKeyName = (n: any): string => typeof n === 'string' ? n : (n?.ru || n?.en || n?.hy || '');
+  const variantKeyName = (n: any): string =>
+    typeof n === "string" ? n : n?.ru || n?.en || n?.hy || "";
   // Эффективный выбор: что выбрал пользователь, иначе первое значение параметра.
   const effectiveVariantValues: Record<string, string> = {};
   vParams.forEach((p) => {
     const key = variantKeyName(p.name);
-    effectiveVariantValues[key] = selectedVariantValues[key] || (p.options?.[0] ?? '');
+    effectiveVariantValues[key] =
+      selectedVariantValues[key] || (p.options?.[0] ?? "");
   });
   const matchedCombo = vCombos.find((c) => {
     const keys = Object.keys(c.values || {});
-    return keys.length > 0 && keys.every((k) => effectiveVariantValues[k] === c.values[k]);
+    return (
+      keys.length > 0 &&
+      keys.every((k) => effectiveVariantValues[k] === c.values[k])
+    );
   });
   const displayPrice = matchedCombo ? matchedCombo.price : catalog.price;
 
@@ -326,14 +394,17 @@ export default function ProductPageContent({
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
   const allImages: any[] = catalog?.images || [];
-  const dbColors: { uuid: string; color: string; inStock: boolean }[] = (catalog as any)?.colors || [];
+  const dbColors: { uuid: string; color: string; inStock: boolean }[] =
+    (catalog as any)?.colors || [];
 
   // Фото для текущего выбранного цвета, или общие фото (без colorUuid)
   const filteredImages = React.useMemo(() => {
     if (selectedColor && dbColors.length > 0) {
-      const colorObj = dbColors.find(c => c.color === selectedColor);
+      const colorObj = dbColors.find((c) => c.color === selectedColor);
       if (colorObj) {
-        const colorImages = allImages.filter((img: any) => img.colorUuid === colorObj.uuid);
+        const colorImages = allImages.filter(
+          (img: any) => img.colorUuid === colorObj.uuid,
+        );
         if (colorImages.length > 0) return colorImages;
       }
     }
@@ -342,33 +413,41 @@ export default function ProductPageContent({
     return general.length > 0 ? general : allImages;
   }, [allImages, selectedColor, dbColors]);
 
-  const images = filteredImages.length > 0
-    ? filteredImages
-      .filter(({ image }: any) => !!image)
-      .map(({ image }: any) => {
-        const imagePath = image.startsWith("/") ? image : "/" + image;
-        return baseUrl + imagePath;
-      })
-    : [];
+  const images =
+    filteredImages.length > 0
+      ? filteredImages
+          .filter(({ image }: any) => !!image)
+          .map(({ image }: any) => {
+            const imagePath = image.startsWith("/") ? image : "/" + image;
+            return baseUrl + imagePath;
+          })
+      : [];
 
   const handleCheckout = () => {
     // if (!isAuth) { router.push('/security/login'); return; }
     // if (!currentBaskets?.data?.length) { showToast('Basket is empty', 'warning'); return; }
     // setShowPaymentModal(true);
-    console.log('checkout clicked');
+    console.log("checkout clicked");
     route.push(`/order`);
   };
 
   return (
     <div className={styles.body}>
       <div className={styles.contantHeader}>
-        <Breadcrumb items={[
-          { label: t('productPageContent.breadcrumb.home'), href: '/' },
-          { label: t('productPageContent.breadcrumb.catalog'), href: '/catalog' },
-          { label: finalCategoryName, href: categoryPath },
-          ...(finalSubCategoryName ? [{ label: finalSubCategoryName, href: subCategoryPath }] : []),
-          { label: getLoc(catalog?.name, locale) },
-        ]} />
+        <Breadcrumb
+          items={[
+            { label: t("productPageContent.breadcrumb.home"), href: "/" },
+            {
+              label: t("productPageContent.breadcrumb.catalog"),
+              href: "/catalog",
+            },
+            { label: finalCategoryName, href: categoryPath },
+            ...(finalSubCategoryName
+              ? [{ label: finalSubCategoryName, href: subCategoryPath }]
+              : []),
+            { label: getLoc(catalog?.name, locale) },
+          ]}
+        />
       </div>
 
       {/* Основной контент товара */}
@@ -426,7 +505,7 @@ export default function ProductPageContent({
             </div>
           ) : (
             <div className={styles.imagePlaceholder}>
-              <p>{t('productPageContent.gallery.noImages')}</p>
+              <p>{t("productPageContent.gallery.noImages")}</p>
             </div>
           )}
         </div>
@@ -435,12 +514,20 @@ export default function ProductPageContent({
         <div className={styles.gridItemInfo}>
           {/* Блок 1: Название + Цена */}
           <div className={styles.infoBlock1}>
-            <h1 className={styles.productTitle}>{getLoc(catalog.name, locale)}</h1>
+            <h1 className={styles.productTitle}>
+              {getLoc(catalog.name, locale)}
+            </h1>
             <div className={styles.priceRow}>
-              {(catalog as any).isDiscount && (catalog as any).discountPercent > 0 ? (
+              {(catalog as any).isDiscount &&
+              (catalog as any).discountPercent > 0 ? (
                 <>
                   <span className={styles.currentPrice}>
-                    {formatPriceHook(Math.round(Number(displayPrice) * (1 - (catalog as any).discountPercent / 100)))}
+                    {formatPriceHook(
+                      Math.round(
+                        Number(displayPrice) *
+                          (1 - (catalog as any).discountPercent / 100),
+                      ),
+                    )}
                   </span>
                   <span className={styles.oldPrice}>
                     {formatPriceHook(displayPrice)}
@@ -475,14 +562,22 @@ export default function ProductPageContent({
               return (
                 <div className={styles.colorSelector}>
                   <span className={styles.colorSelectorLabel}>
-                    {t('productPageContent.color')} :
+                    {t("productPageContent.color")} :
                   </span>
                   {dbColors.map((c) => (
                     <button
                       key={c.uuid}
-                      className={`${styles.colorDot} ${selectedColor === c.color ? styles.colorDotActive : ''}`}
-                      style={{ backgroundColor: c.color, opacity: c.inStock ? 1 : 0.35 }}
-                      onClick={() => { setSelectedColor(prev => prev === c.color ? null : c.color); setActiveIndex(0); }}
+                      className={`${styles.colorDot} ${selectedColor === c.color ? styles.colorDotActive : ""}`}
+                      style={{
+                        backgroundColor: c.color,
+                        opacity: c.inStock ? 1 : 0.35,
+                      }}
+                      onClick={() => {
+                        setSelectedColor((prev) =>
+                          prev === c.color ? null : c.color,
+                        );
+                        setActiveIndex(0);
+                      }}
                       title={c.color}
                     />
                   ))}
@@ -509,15 +604,29 @@ export default function ProductPageContent({
                   return (
                     <div key={pi} className={styles.variantParamRow}>
                       <span className={styles.variantParamLabel}>{label}:</span>
-                      <div className={styles.variantOptions} style={{ justifyContent: (p.options || []).length >= 4 ? 'space-between' : 'flex-start' }}>
+                      <div
+                        className={styles.variantOptions}
+                        style={{
+                          justifyContent:
+                            (p.options || []).length >= 4
+                              ? "space-between"
+                              : "flex-start",
+                        }}
+                      >
                         {(p.options || []).map((opt, oi) => {
-                          const active = effectiveVariantValues[keyName] === opt;
+                          const active =
+                            effectiveVariantValues[keyName] === opt;
                           return (
                             <button
                               key={oi}
                               type="button"
-                              className={`${styles.storageBtn} ${active ? styles.storageBtnActive : ''}`}
-                              onClick={() => setSelectedVariantValues((prev) => ({ ...prev, [keyName]: opt }))}
+                              className={`${styles.storageBtn} ${active ? styles.storageBtnActive : ""}`}
+                              onClick={() =>
+                                setSelectedVariantValues((prev) => ({
+                                  ...prev,
+                                  [keyName]: opt,
+                                }))
+                              }
                             >
                               {opt}
                             </button>
@@ -533,7 +642,7 @@ export default function ProductPageContent({
             {/* Выбор памяти/хранилища */}
             {(() => {
               const storageGroup = catalog.groupOption?.find(
-                (g: groupOptionItem) => getLoc(g.name, 'ru') === "Память",
+                (g: groupOptionItem) => getLoc(g.name, "ru") === "Память",
               );
               const parseStorage = (s: string) => {
                 const n = parseFloat(s);
@@ -545,12 +654,21 @@ export default function ProductPageContent({
               const storageItems =
                 storageGroup?.options && storageGroup.options.length > 0
                   ? storageGroup.options
-                    .map((o: OptionsItem) => getLoc(o.value, locale))
-                    .sort((a: string, b: string) => parseStorage(a) - parseStorage(b))
+                      .map((o: OptionsItem) => getLoc(o.value, locale))
+                      .sort(
+                        (a: string, b: string) =>
+                          parseStorage(a) - parseStorage(b),
+                      )
                   : [];
               if (storageItems.length === 0) return null;
               return (
-                <div className={styles.storageSelector} style={{ justifyContent: storageItems.length >= 4 ? 'space-between' : 'flex-start' }}>
+                <div
+                  className={styles.storageSelector}
+                  style={{
+                    justifyContent:
+                      storageItems.length >= 4 ? "space-between" : "flex-start",
+                  }}
+                >
                   {storageItems.map((val: string, i: number) => (
                     <button
                       key={i}
@@ -566,31 +684,46 @@ export default function ProductPageContent({
 
             {/* Характеристики */}
             {(() => {
-              const dynSpecs = (catalog.productSpecs || []).map((s: ProductSpecItem) => {
-                const DynIcon = s.icon ? (require('lucide-react') as Record<string, any>)[s.icon] : null;
-                return {
-                  name: getLoc(s.name, locale),
-                  value: getLoc(s.value, locale),
-                  icon: DynIcon ? React.createElement(DynIcon, { size: 18 }) : null,
-                };
-              });
+              const dynSpecs = (catalog.productSpecs || []).map(
+                (s: ProductSpecItem) => {
+                  const DynIcon = s.icon
+                    ? (require("lucide-react") as Record<string, any>)[s.icon]
+                    : null;
+                  return {
+                    name: getLoc(s.name, locale),
+                    value: getLoc(s.value, locale),
+                    icon: DynIcon
+                      ? React.createElement(DynIcon, { size: 18 })
+                      : null,
+                  };
+                },
+              );
               if (dynSpecs.length === 0) return null;
               return <ProductSpecsGrid specs={dynSpecs} />;
             })()}
 
             {/* Описание */}
             {(() => {
-              const desc = getLoc(catalog.description, locale) || staticDescription;
+              const desc =
+                getLoc(catalog.description, locale) || staticDescription;
               const isLong = desc.length > 50;
-              const displayedDesc = isLong && !showFullDesc ? desc.slice(0, 50) + "..." : desc;
+              const displayedDesc =
+                isLong && !showFullDesc ? desc.slice(0, 50) + "..." : desc;
               return (
                 <div className={styles.descriptionSection}>
-                  <p className={`${styles.descriptionText} ${styles.descriptionTextFull}`}>
+                  <p
+                    className={`${styles.descriptionText} ${styles.descriptionTextFull}`}
+                  >
                     {displayedDesc}
                   </p>
                   {isLong && (
-                    <button className={styles.moreBtn} onClick={() => setShowFullDesc((p) => !p)}>
-                      {showFullDesc ? t('productPageContent.description.less') : t('productPageContent.description.more')}
+                    <button
+                      className={styles.moreBtn}
+                      onClick={() => setShowFullDesc((p) => !p)}
+                    >
+                      {showFullDesc
+                        ? t("productPageContent.description.less")
+                        : t("productPageContent.description.more")}
                     </button>
                   )}
                 </div>
@@ -606,17 +739,23 @@ export default function ProductPageContent({
                 className={styles.btnWishlist}
                 onClick={handleWishlistClick}
               >
-                {t('productPageContent.actions.addToWishlist')}
+                {t("productPageContent.actions.addToWishlist")}
               </button>
               <button
                 className={styles.btnCart}
                 onClick={handleAddToBasket}
                 disabled={stockBadge.isBlocked}
-                style={stockBadge.isBlocked ? { opacity: 0.5, cursor: 'not-allowed' } : undefined}
+                style={
+                  stockBadge.isBlocked
+                    ? { opacity: 0.5, cursor: "not-allowed" }
+                    : undefined
+                }
               >
                 {stockBadge.isBlocked
-                  ? t('productPageContent.delivery.stock.outOfStock')
-                  : isInCart ? `${t('productPageContent.actions.inCart')}` : `${t('productPageContent.actions.addToCart')}`}
+                  ? t("productPageContent.delivery.stock.outOfStock")
+                  : isInCart
+                    ? `${t("productPageContent.actions.inCart")}`
+                    : `${t("productPageContent.actions.addToCart")}`}
               </button>
               {/* <button
                 className={styles.btnWishlist}
@@ -637,15 +776,17 @@ export default function ProductPageContent({
               // тот же stockBadge, что и у кнопки "В корзину" — раньше тут был
               // отдельный расчёт только по stockStatus, без учёта stockQuantity,
               // из-за чего плашка могла говорить "в наличии" при остатке 0.
-              const stockLabel = stockBadge.status === 'inStock'
-                ? t('productPageContent.delivery.stock.subtitle')
-                : t(stockBadge.labelKey);
+              const stockLabel =
+                stockBadge.status === "inStock"
+                  ? t("productPageContent.delivery.stock.subtitle")
+                  : t(stockBadge.labelKey);
 
-              const warrantyLabel = warrantyMonths === 0
-                ? t('productPageContent.delivery.guarantee.noWarranty')
-                : warrantyMonths >= 12
-                ? `${Math.floor(warrantyMonths / 12)} ${t('productPageContent.delivery.guarantee.year')}`
-                : `${warrantyMonths} ${t('productPageContent.delivery.guarantee.month')}`;
+              const warrantyLabel =
+                warrantyMonths === 0
+                  ? t("productPageContent.delivery.guarantee.noWarranty")
+                  : warrantyMonths >= 12
+                    ? `${Math.floor(warrantyMonths / 12)} ${t("productPageContent.delivery.guarantee.year")}`
+                    : `${warrantyMonths} ${t("productPageContent.delivery.guarantee.month")}`;
 
               return (
                 <div className={styles.deliveryStrip}>
@@ -657,10 +798,13 @@ export default function ProductPageContent({
                     </div>
                     <div className={styles.deliveryText}>
                       <span className={styles.deliveryTitle}>
-                        {hasFreeDelivery ? t('productPageContent.delivery.free.title') : t('productPageContent.delivery.paid.title')}
+                        {hasFreeDelivery
+                          ? t("productPageContent.delivery.free.title")
+                          : t("productPageContent.delivery.paid.title")}
                       </span>
                       <span className={styles.deliverySubtitle}>
-                        {deliveryDays}-{deliveryDays + 1} {t('productPageContent.delivery.free.days')}
+                        {deliveryDays}-{deliveryDays + 1}{" "}
+                        {t("productPageContent.delivery.free.days")}
                       </span>
                     </div>
                   </div>
@@ -671,8 +815,12 @@ export default function ProductPageContent({
                       </div>
                     </div>
                     <div className={styles.deliveryText}>
-                      <span className={styles.deliveryTitle}>{t('productPageContent.delivery.stock.title')}</span>
-                      <span className={styles.deliverySubtitle}>{stockLabel}</span>
+                      <span className={styles.deliveryTitle}>
+                        {t("productPageContent.delivery.stock.title")}
+                      </span>
+                      <span className={styles.deliverySubtitle}>
+                        {stockLabel}
+                      </span>
                     </div>
                   </div>
                   <div className={styles.deliveryItem}>
@@ -682,8 +830,12 @@ export default function ProductPageContent({
                       </div>
                     </div>
                     <div className={styles.deliveryText}>
-                      <span className={styles.deliveryTitle}>{t('productPageContent.delivery.guarantee.title')}</span>
-                      <span className={styles.deliverySubtitle}>{warrantyLabel}</span>
+                      <span className={styles.deliveryTitle}>
+                        {t("productPageContent.delivery.guarantee.title")}
+                      </span>
+                      <span className={styles.deliverySubtitle}>
+                        {warrantyLabel}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -698,7 +850,6 @@ export default function ProductPageContent({
 
       {/* Reviews section */}
       <ProductReviewsSection catalog={catalog} />
-
 
       {/* Похожие товары */}
       <SimilarProducts
