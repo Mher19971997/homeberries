@@ -179,8 +179,53 @@ export default function ProductPageContent({
     return { values: eff, price: m ? m.price : (catalog as any).price };
   };
 
+  // --- Универсальные варианты с ценой: { params:[{name,options}], combinations:[{values,price,stockQuantity}] } ---
+  const variantsData: any = (catalog as any).variants;
+  const vParams: Array<{ name: any; options: string[] }> =
+    variantsData &&
+    !Array.isArray(variantsData) &&
+    Array.isArray(variantsData.params)
+      ? variantsData.params
+      : [];
+  const vCombos: Array<{
+    values: Record<string, string>;
+    price: number;
+    stockQuantity?: number;
+  }> =
+    variantsData &&
+    !Array.isArray(variantsData) &&
+    Array.isArray(variantsData.combinations)
+      ? variantsData.combinations
+      : [];
+
+  const variantLocName = (n: any): string =>
+    typeof n === "string" ? n : n?.[locale] || n?.ru || n?.en || n?.hy || "";
+  // Стабильный ключ параметра — по ru (комбинации хранятся по нему).
+  const variantKeyName = (n: any): string =>
+    typeof n === "string" ? n : n?.ru || n?.en || n?.hy || "";
+  // Эффективный выбор: что выбрал пользователь, иначе первое значение параметра.
+  const effectiveVariantValues: Record<string, string> = {};
+  vParams.forEach((p) => {
+    const key = variantKeyName(p.name);
+    effectiveVariantValues[key] =
+      selectedVariantValues[key] || (p.options?.[0] ?? "");
+  });
+  const findCombo = (values: Record<string, string>) =>
+    vCombos.find((c) => {
+      const keys = Object.keys(c.values || {});
+      return keys.length > 0 && keys.every((k) => values[k] === c.values[k]);
+    });
+  const matchedCombo = findCombo(effectiveVariantValues);
+  const displayPrice = matchedCombo ? matchedCombo.price : catalog?.price;
+
+  // Остаток выбранной комбинации, если она есть — иначе общий остаток товара.
+  // stockQuantity не задан у комбинации (старые товары) -> считаем "неограничено".
+  // Ручной stockStatus на самом товаре (outOfStock/underOrder) всегда в приоритете,
+  // независимо от вариантов — так же, как было для товара без вариантов.
   const stockBadge = getStockBadge(
-    (catalog as any)?.stockQuantity,
+    vCombos.length > 0 && matchedCombo
+      ? matchedCombo.stockQuantity
+      : (catalog as any)?.stockQuantity,
     (catalog as any)?.stockStatus,
   );
 
@@ -332,46 +377,6 @@ export default function ProductPageContent({
     getLoc(catalog?.category?.name, locale) || categoryName || "";
   const finalSubCategoryName =
     getLoc(catalog?.subCategorie?.name, locale) || subCategoryName || "";
-
-  // --- Универсальные варианты с ценой: { params:[{name,options}], combinations:[{values,price,inStock}] } ---
-  const variantsData: any = (catalog as any).variants;
-  const vParams: Array<{ name: any; options: string[] }> =
-    variantsData &&
-    !Array.isArray(variantsData) &&
-    Array.isArray(variantsData.params)
-      ? variantsData.params
-      : [];
-  const vCombos: Array<{
-    values: Record<string, string>;
-    price: number;
-    inStock?: boolean;
-  }> =
-    variantsData &&
-    !Array.isArray(variantsData) &&
-    Array.isArray(variantsData.combinations)
-      ? variantsData.combinations
-      : [];
-
-  const variantLocName = (n: any): string =>
-    typeof n === "string" ? n : n?.[locale] || n?.ru || n?.en || n?.hy || "";
-  // Стабильный ключ параметра — по ru (комбинации хранятся по нему).
-  const variantKeyName = (n: any): string =>
-    typeof n === "string" ? n : n?.ru || n?.en || n?.hy || "";
-  // Эффективный выбор: что выбрал пользователь, иначе первое значение параметра.
-  const effectiveVariantValues: Record<string, string> = {};
-  vParams.forEach((p) => {
-    const key = variantKeyName(p.name);
-    effectiveVariantValues[key] =
-      selectedVariantValues[key] || (p.options?.[0] ?? "");
-  });
-  const matchedCombo = vCombos.find((c) => {
-    const keys = Object.keys(c.values || {});
-    return (
-      keys.length > 0 &&
-      keys.every((k) => effectiveVariantValues[k] === c.values[k])
-    );
-  });
-  const displayPrice = matchedCombo ? matchedCombo.price : catalog.price;
 
   const decodedCategory =
     typeof routeParams?.category === "string"
@@ -616,17 +621,32 @@ export default function ProductPageContent({
                         {(p.options || []).map((opt, oi) => {
                           const active =
                             effectiveVariantValues[keyName] === opt;
+                          // Есть ли остаток у комбинации, которая получится,
+                          // если выбрать этот вариант (при текущих остальных
+                          // выборах)? stockQuantity не задан -> неограничено.
+                          const hypCombo = findCombo({
+                            ...effectiveVariantValues,
+                            [keyName]: opt,
+                          });
+                          const isOutOfStock = hypCombo?.stockQuantity === 0;
                           return (
                             <button
                               key={oi}
                               type="button"
+                              disabled={isOutOfStock}
                               className={`${styles.storageBtn} ${active ? styles.storageBtnActive : ""}`}
-                              onClick={() =>
+                              style={
+                                isOutOfStock
+                                  ? { opacity: 0.35, cursor: "not-allowed" }
+                                  : undefined
+                              }
+                              onClick={() => {
+                                if (isOutOfStock) return;
                                 setSelectedVariantValues((prev) => ({
                                   ...prev,
                                   [keyName]: opt,
-                                }))
-                              }
+                                }));
+                              }}
                             >
                               {opt}
                             </button>
