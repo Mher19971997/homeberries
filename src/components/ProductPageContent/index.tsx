@@ -220,8 +220,7 @@ export default function ProductPageContent({
   // текущего языка интерфейса и не нужно).
   const COLOR_PARAM_NAMES = ["цвет", "color", "գույն"];
   const isColorParamName = (n: any): boolean => {
-    const candidates =
-      typeof n === "string" ? [n] : [n?.ru, n?.en, n?.hy];
+    const candidates = typeof n === "string" ? [n] : [n?.ru, n?.en, n?.hy];
     return candidates.some(
       (c) => c && COLOR_PARAM_NAMES.includes(String(c).trim().toLowerCase()),
     );
@@ -256,7 +255,10 @@ export default function ProductPageContent({
     )?.uuid;
     mutate({
       catalogUuid: catalog!.uuid,
-      selectedVariant: {...computeSelectedVariant(), colorUuid: selectedColorUuid},
+      selectedVariant: {
+        ...computeSelectedVariant(),
+        colorUuid: selectedColorUuid,
+      },
     });
   };
 
@@ -589,7 +591,7 @@ export default function ProductPageContent({
                       {t("productPageContent.color")} :
                     </span>
                     {options.map((opt, oi) => {
-                      const active = effectiveVariantValues[colorParamKey] === opt;
+                      const active = selectedColor === opt;
                       const hypCombo = findCombo({
                         ...effectiveVariantValues,
                         [colorParamKey]: opt,
@@ -608,11 +610,29 @@ export default function ProductPageContent({
                           }}
                           onClick={() => {
                             if (isOutOfStock) return;
+
+                            const isSameColor = selectedColor === opt;
+
+                            if (isSameColor) {
+                              setSelectedColor(null);
+
+                              setSelectedVariantValues((prev) => ({
+                                ...prev,
+                                [colorParamKey]: colorParam.options?.[0] ?? opt,
+                              }));
+
+                              setActiveIndex(0);
+                              return;
+                            }
+
+                            // Если выбрали новый цвет
+                            setSelectedColor(opt);
+
                             setSelectedVariantValues((prev) => ({
                               ...prev,
                               [colorParamKey]: opt,
                             }));
-                            setSelectedColor(opt);
+
                             setActiveIndex(0);
                           }}
                           title={opt}
