@@ -1,6 +1,7 @@
 .specsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* grid-template-columns: repeat(3, 1fr); */
+  grid-template-columns: repeat(3, minmax(0, 350px));
   gap: 16px;
 }
 
@@ -8,7 +9,8 @@
   border: none;
   border-radius: 7px;
   min-height: 64px;
-  max-width: 168px;
+  /* max-width: 168px; */
+  max-width: 100%;
   width: 100%;
   background-color: #f4f4f4;
   display: flex;
