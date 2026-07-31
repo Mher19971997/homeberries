@@ -134,17 +134,12 @@ export default function ProductPageContent({
   const isAuth = checkToken();
   const [showAuthModal, setShowAuthModal] = React.useState(false);
   const { mutate } = useMutation({
-    mutationFn: (payload: {
-      catalogUuid: string;
-      selectedVariant?: any;
-      colorUuid?: string;
-    }) =>
+    mutationFn: (payload: { catalogUuid: string; selectedVariant?: any }) =>
       insertBasket(
         {
           catalogUuid: payload.catalogUuid,
           quantity: 1,
           selectedVariant: payload.selectedVariant,
-          colorUuid: payload.colorUuid,
         },
         cookies.token,
       ),
@@ -216,6 +211,26 @@ export default function ProductPageContent({
       return keys.length > 0 && keys.every((k) => values[k] === c.values[k]);
     });
   const matchedCombo = findCombo(effectiveVariantValues);
+
+  // Параметр "цвет" внутри Комбинаций — если он есть, рендерим его не как
+  // текстовые кнопки, а как цветовые кружки (значения опций — hex-коды),
+  // и его выбор одновременно двигает selectedColor для фильтрации фото по цвету.
+  // Матчим по ru/en/hy напрямую (не через variantLocName/locale — тот ещё не
+  // инициализирован в этой точке функции, а определять параметр цвета от
+  // текущего языка интерфейса и не нужно).
+  const COLOR_PARAM_NAMES = ["цвет", "color", "գույն"];
+  const isColorParamName = (n: any): boolean => {
+    const candidates =
+      typeof n === "string" ? [n] : [n?.ru, n?.en, n?.hy];
+    return candidates.some(
+      (c) => c && COLOR_PARAM_NAMES.includes(String(c).trim().toLowerCase()),
+    );
+  };
+  const colorParam = vParams.find((p) => isColorParamName(p.name));
+  const colorParamKey = colorParam ? variantKeyName(colorParam.name) : null;
+  const restVParams = colorParam
+    ? vParams.filter((p) => p !== colorParam)
+    : vParams;
   const displayPrice = matchedCombo ? matchedCombo.price : catalog?.price;
 
   // Остаток выбранной комбинации, если она есть — иначе общий остаток товара.
@@ -561,8 +576,53 @@ export default function ProductPageContent({
 
           {/* Блок 2: Color + Storage + Specs + Описание */}
           <div className={styles.infoBlock2}>
-            {/* Выбор цвета */}
+            {/* Выбор цвета — если цвет является параметром Комбинаций, кружки
+                строятся из его опций (hex) и участвуют в подборе комбинации/остатка;
+                иначе — старый режим: просто фото-цвета без связи со стоком. */}
             {(() => {
+              if (colorParam && colorParamKey) {
+                const options = colorParam.options || [];
+                if (options.length === 0) return null;
+                return (
+                  <div className={styles.colorSelector}>
+                    <span className={styles.colorSelectorLabel}>
+                      {t("productPageContent.color")} :
+                    </span>
+                    {options.map((opt, oi) => {
+                      const active = effectiveVariantValues[colorParamKey] === opt;
+                      const hypCombo = findCombo({
+                        ...effectiveVariantValues,
+                        [colorParamKey]: opt,
+                      });
+                      const isOutOfStock = hypCombo?.stockQuantity === 0;
+                      return (
+                        <button
+                          key={oi}
+                          type="button"
+                          disabled={isOutOfStock}
+                          className={`${styles.colorDot} ${active ? styles.colorDotActive : ""}`}
+                          style={{
+                            backgroundColor: opt,
+                            opacity: isOutOfStock ? 0.35 : 1,
+                            cursor: isOutOfStock ? "not-allowed" : "pointer",
+                          }}
+                          onClick={() => {
+                            if (isOutOfStock) return;
+                            setSelectedVariantValues((prev) => ({
+                              ...prev,
+                              [colorParamKey]: opt,
+                            }));
+                            setSelectedColor(opt);
+                            setActiveIndex(0);
+                          }}
+                          title={opt}
+                        />
+                      );
+                    })}
+                  </div>
+                );
+              }
+
               if (dbColors.length === 0) return null;
               return (
                 <div className={styles.colorSelector}>
@@ -586,24 +646,15 @@ export default function ProductPageContent({
                       title={c.color}
                     />
                   ))}
-
-                  {/* {colors.map((color: string, i: number) => (
-                    <button
-                      key={i}
-                      className={`${styles.colorDot} ${selectedColor === color ? styles.colorDotActive : ""}`}
-                      style={{ backgroundColor: color }}
-                      onClick={() => { setSelectedColor(color); setActiveIndex(0); }}
-                      title={color}
-                    />
-                  ))} */}
                 </div>
               );
             })()}
 
-            {/* Универсальные варианты с ценой (память/мощность/обороты…) */}
-            {vParams.length > 0 && (
+            {/* Универсальные варианты с ценой (память/мощность/обороты…) — цвет,
+                если он есть среди параметров, отрисован отдельно выше кружками. */}
+            {restVParams.length > 0 && (
               <div className={styles.variantParams}>
-                {vParams.map((p, pi) => {
+                {restVParams.map((p, pi) => {
                   const keyName = variantKeyName(p.name);
                   const label = variantLocName(p.name);
                   return (
